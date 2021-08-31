@@ -1,6 +1,6 @@
 # budgets
 
-A new Flutter project.
+A Flutter App that allows the user to track their budgets, add incomes and expenses. Using Bloc State Management.
 
 ## Getting Started
 

@@ -1,4 +1,5 @@
-import 'package:budgets/screens/home_screen.dart';
+import 'package:budgets/constants.dart';
+import 'package:budgets/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,7 +14,10 @@ class MyApp extends StatelessWidget {
       title: 'Budgets App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: kBackgroundColor,
+        primaryColor: kPrimayColor,
+        accentColor: kAccentColor,
+        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
       ),
       home: HomeScreen(),
     );

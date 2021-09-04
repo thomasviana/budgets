@@ -1,4 +1,7 @@
+import 'package:budgets/constants.dart';
+import 'package:budgets/widgets/transaction_listtile.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class RecordsScreen extends StatelessWidget {
   static const routeName = '/records-screen';
@@ -6,12 +9,23 @@ class RecordsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+        headerSliverBuilder: (context, isScrolled) => [
           CupertinoSliverNavigationBar(
             largeTitle: Text('Records'),
           ),
         ],
-        body: Container(),
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+          child: CustomScrollView(
+            physics: BouncingScrollPhysics(),
+            slivers: [
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                    (context, index) => TransactionListTile()),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

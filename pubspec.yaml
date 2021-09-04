@@ -24,7 +24,10 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  google_fonts: ^2.1.0
+  intl: ^0.17.0
   sliver_tools: ^0.2.5
+  animated_splash_screen: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -52,13 +55,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand-Regular.ttf
+        - asset: assets/fonts/Quicksand-Bold.ttf
+    # - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf

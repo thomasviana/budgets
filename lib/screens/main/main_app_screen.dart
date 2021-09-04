@@ -1,8 +1,8 @@
 import 'package:budgets/constants.dart';
-import 'package:budgets/screens/budgets/budgets_screen.dart';
 import 'package:budgets/screens/home/home_screen.dart';
 import 'package:budgets/screens/records/records_screen.dart';
 import 'package:budgets/screens/settings/settings_screen.dart';
+import 'package:budgets/screens/stats/stats_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainAppScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
 
   List _screens = [
     HomeScreen(),
-    BudgetsScreen(),
+    StatsScreen(),
     RecordsScreen(),
     SettingScreen(),
   ];
@@ -44,6 +44,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
               Row(
                 children: [
                   MaterialButton(
+                    highlightColor: Colors.white,
                     minWidth: 80,
                     onPressed: () {
                       setState(() {
@@ -71,6 +72,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                     ),
                   ),
                   MaterialButton(
+                    highlightColor: Colors.white,
                     minWidth: 80,
                     onPressed: () {
                       setState(() {
@@ -89,7 +91,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                               _currentIndex == 1 ? kAccentColor : Colors.grey,
                         ),
                         Text(
-                          'Budgets',
+                          'Stats',
                           style: TextStyle(
                             fontSize: 10,
                             color:
@@ -104,6 +106,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
               Row(
                 children: [
                   MaterialButton(
+                    highlightColor: Colors.white,
                     minWidth: 80,
                     onPressed: () {
                       setState(() {
@@ -131,6 +134,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                     ),
                   ),
                   MaterialButton(
+                    highlightColor: Colors.white,
                     minWidth: 80,
                     onPressed: () {
                       setState(() {

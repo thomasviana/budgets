@@ -12,15 +12,15 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 234;
-
-  @override
-  double get minExtent => 234;
-
-  @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
+
+  @override
+  double get maxExtent => 235;
+
+  @override
+  double get minExtent => 235;
 }
 
 class BodyHeader extends StatelessWidget {
@@ -37,7 +37,7 @@ class BodyHeader extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.only(bottom: kDefaultPadding),
-          height: size.height * 0.23,
+          height: 205,
           color: kBackgroundColor,
           child: Stack(
             children: [
@@ -47,7 +47,7 @@ class BodyHeader extends StatelessWidget {
                     right: kDefaultPadding,
                     top: kDefaultPadding,
                     bottom: kDefaultPadding),
-                height: size.height * 0.23 - 40,
+                height: 170,
                 width: size.width,
                 decoration: BoxDecoration(
                   color: kPrimayColor,
@@ -56,6 +56,10 @@ class BodyHeader extends StatelessWidget {
                     bottomRight: Radius.circular(60),
                   ),
                 ),
+              ),
+              Positioned(
+                top: 0,
+                left: 25,
                 child: Text(
                   'Hi Thomas!',
                   style: Theme.of(context).textTheme.headline5!.copyWith(
@@ -69,8 +73,16 @@ class BodyHeader extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    MainCard(),
-                    MainCard(),
+                    MainCard(
+                      icon: Icons.food_bank,
+                      title: 'BANK',
+                      amount: 100000,
+                    ),
+                    MainCard(
+                      icon: Icons.money,
+                      title: 'CASH',
+                      amount: 100000,
+                    ),
                   ],
                 ),
               ),

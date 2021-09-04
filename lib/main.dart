@@ -1,9 +1,9 @@
 import 'package:budgets/constants.dart';
-import 'package:budgets/screens/budgets/budgets_screen.dart';
 import 'package:budgets/screens/home/home_screen.dart';
-import 'package:budgets/screens/main_app_screen.dart';
+import 'package:budgets/screens/main/main_app_screen.dart';
 import 'package:budgets/screens/records/records_screen.dart';
 import 'package:budgets/screens/settings/settings_screen.dart';
+import 'package:budgets/screens/stats/stats_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Budgets App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'Quicksand',
         scaffoldBackgroundColor: kBackgroundColor,
         primaryColor: kPrimayColor,
         accentColor: kAccentColor,
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       home: MainAppScreen(),
       routes: {
         HomeScreen.routeName: (ctx) => HomeScreen(),
-        BudgetsScreen.routeName: (ctx) => BudgetsScreen(),
+        StatsScreen.routeName: (ctx) => StatsScreen(),
         RecordsScreen.routeName: (ctx) => RecordsScreen(),
         SettingScreen.routeName: (ctx) => SettingScreen(),
       },

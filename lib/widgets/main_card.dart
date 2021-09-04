@@ -1,9 +1,12 @@
+import 'package:budgets/constants.dart';
 import 'package:flutter/material.dart';
 
 class MainCard extends StatelessWidget {
-  const MainCard({
-    Key? key,
-  }) : super(key: key);
+  final IconData icon;
+  final String title;
+  final double amount;
+
+  MainCard({required this.icon, required this.title, required this.amount});
 
   @override
   Widget build(BuildContext context) {
@@ -26,22 +29,21 @@ class MainCard extends StatelessWidget {
                 width: 30,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: Colors.lightBlue,
+                  color: kAccentColor,
                 ),
-                child: Icon(Icons.account_balance_wallet_sharp,
-                    color: Colors.white)),
+                child: Icon(icon, color: Colors.white)),
             SizedBox(
               height: 8,
             ),
             Text(
-              'GENERAL',
+              title,
               style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 8,
             ),
             Text(
-              '\$ 100.000 COP',
+              '\$ ${currency.format(amount)}',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ],

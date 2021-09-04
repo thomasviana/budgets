@@ -1,5 +1,9 @@
 import 'package:budgets/constants.dart';
+import 'package:budgets/screens/budgets/budgets_screen.dart';
 import 'package:budgets/screens/home/home_screen.dart';
+import 'package:budgets/screens/main_app_screen.dart';
+import 'package:budgets/screens/records/records_screen.dart';
+import 'package:budgets/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,7 +23,13 @@ class MyApp extends StatelessWidget {
         accentColor: kAccentColor,
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
       ),
-      home: HomeScreen(),
+      home: MainAppScreen(),
+      routes: {
+        HomeScreen.routeName: (ctx) => HomeScreen(),
+        BudgetsScreen.routeName: (ctx) => BudgetsScreen(),
+        RecordsScreen.routeName: (ctx) => RecordsScreen(),
+        SettingScreen.routeName: (ctx) => SettingScreen(),
+      },
     );
   }
 }

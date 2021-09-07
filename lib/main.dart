@@ -1,20 +1,59 @@
+import 'package:authentication_repository/authentication_repository.dart';
 import 'package:budgets/constants.dart';
-import 'package:budgets/screens/home/home_screen.dart';
-import 'package:budgets/screens/main/main_app_screen.dart';
-import 'package:budgets/screens/records/records_screen.dart';
-import 'package:budgets/screens/settings/settings_screen.dart';
-import 'package:budgets/screens/stats/stats_screen.dart';
+import 'package:budgets/presentation/screens/home/view/home_screen.dart';
+import 'package:budgets/presentation/screens/splash/view/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
+
+import 'business_logic/authentication/bloc/authentication_bloc.dart';
+import 'login/login/login_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyApp(
+    authenticationRepository: AuthenticationRepository(),
+    userRepository: UserRepository(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({
+    Key? key,
+    required this.authenticationRepository,
+    required this.userRepository,
+  }) : super(key: key);
+
+  final AuthenticationRepository authenticationRepository;
+  final UserRepository userRepository;
+
+  @override
+  Widget build(BuildContext context) {
+    return RepositoryProvider.value(
+      value: authenticationRepository,
+      child: BlocProvider(
+        create: (_) => AuthenticationBloc(
+          authenticationRepository: authenticationRepository,
+          userRepository: userRepository,
+        ),
+        child: AppView(),
+      ),
+    );
+  }
+}
+
+class AppView extends StatefulWidget {
+  @override
+  _AppViewState createState() => _AppViewState();
+}
+
+class _AppViewState extends State<AppView> {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+  NavigatorState get _navigator => _navigatorKey.currentState!;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigatorKey,
       title: 'Budgets App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -24,13 +63,38 @@ class MyApp extends StatelessWidget {
         accentColor: kAccentColor,
         textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
       ),
-      home: MainAppScreen(),
-      routes: {
-        HomeScreen.routeName: (ctx) => HomeScreen(),
-        StatsScreen.routeName: (ctx) => StatsScreen(),
-        RecordsScreen.routeName: (ctx) => RecordsScreen(),
-        SettingScreen.routeName: (ctx) => SettingScreen(),
+      builder: (context, child) {
+        return BlocListener<AuthenticationBloc, AuthenticationState>(
+          listener: (context, state) {
+            switch (state.status) {
+              case AuthenticationStatus.authenticated:
+                _navigator.pushAndRemoveUntil<void>(
+                  HomeScreen.route(),
+                  (route) => false,
+                );
+                break;
+              case AuthenticationStatus.unauthenticated:
+                _navigator.pushAndRemoveUntil<void>(
+                  LoginScreen.route(),
+                  (route) => false,
+                );
+                break;
+              default:
+                break;
+            }
+          },
+          child: child,
+        );
       },
+      onGenerateRoute: (_) => SplashScreen.route(),
     );
+    // home: MainAppScreen(),
+    // routes: {
+    //   HomeScreen.routeName: (ctx) => HomeScreen(),
+    //   StatsScreen.routeName: (ctx) => StatsScreen(),
+    //   RecordsScreen.routeName: (ctx) => RecordsScreen(),
+    //   SettingScreen.routeName: (ctx) => SettingScreen(),
+    // },
+    // );
   }
 }

@@ -22,19 +22,20 @@ environment:
 
 dependencies:
   animated_splash_screen: ^1.1.0
+  authentication_repository:
+    path: packages/authentication_repository
   cupertino_icons: ^1.0.2
   equatable: ^2.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^7.2.0
+  formz: ^0.4.0
   google_fonts: ^2.1.0
   intl: ^0.17.0
   sliver_tools: ^0.2.5
-  uuid: ^3.0.4
-  authentication_repository:
-    path: packages/authentication_repository
   user_repository:
     path: packages/user_repository
+  uuid: ^3.0.4
 
 dev_dependencies:
   flutter_test:

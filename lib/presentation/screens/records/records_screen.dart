@@ -1,7 +1,8 @@
-import 'package:budgets/constants.dart';
-import 'package:budgets/presentation/widgets/transaction_listtile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:budgets/constants.dart';
+import 'package:budgets/presentation/widgets/transaction_listtile.dart';
 
 class RecordsScreen extends StatelessWidget {
   static const routeName = '/records-screen';

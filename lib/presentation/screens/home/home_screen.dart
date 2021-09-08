@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'package:budgets/constants.dart';
 import 'package:budgets/presentation/widgets/widget_card.dart';
-import 'package:flutter/material.dart';
 
 import 'components/body_header.dart';
 import 'components/last_records.dart';

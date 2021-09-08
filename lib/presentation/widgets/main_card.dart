@@ -1,5 +1,6 @@
-import 'package:budgets/constants.dart';
 import 'package:flutter/material.dart';
+
+import 'package:budgets/constants.dart';
 
 class MainCard extends StatelessWidget {
   final IconData icon;

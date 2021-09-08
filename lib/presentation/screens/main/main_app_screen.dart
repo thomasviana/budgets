@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
+
 import 'package:budgets/constants.dart';
 import 'package:budgets/presentation/screens/home/home_screen.dart';
 import 'package:budgets/presentation/screens/records/records_screen.dart';
 import 'package:budgets/presentation/screens/settings/settings_screen.dart';
 import 'package:budgets/presentation/screens/stats/stats_screen.dart';
-import 'package:flutter/material.dart';
 
 class MainAppScreen extends StatefulWidget {
-  static const routeName = '/';
+  static const routeName = '/main-screen';
   @override
   _MainAppScreenState createState() => _MainAppScreenState();
 }
@@ -18,7 +19,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
     HomeScreen(),
     StatsScreen(),
     RecordsScreen(),
-    SettingScreen(),
+    SettingsScreen(),
   ];
 
   @override

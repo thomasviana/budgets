@@ -1,7 +1,7 @@
-import 'package:budgets/presentation/widgets/main_card.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../constants.dart';
+import 'package:budgets/constants.dart';
+import 'package:budgets/presentation/widgets/main_card.dart';
 
 class HeaderDelegate extends SliverPersistentHeaderDelegate {
   @override

@@ -1,6 +1,4 @@
-import 'package:budgets/constants.dart';
 import 'package:flutter/material.dart';
-
 import 'body_header.dart';
 
 class Body extends StatelessWidget {

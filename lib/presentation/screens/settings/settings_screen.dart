@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class SettingScreen extends StatelessWidget {
+class SettingsScreen extends StatelessWidget {
   static const routeName = '/settings-screen';
   @override
   Widget build(BuildContext context) {

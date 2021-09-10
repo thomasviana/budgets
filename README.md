@@ -1,17 +1,9 @@
-# budgets
+# budgets BLoC
 
-A Flutter App that allows the user to track their budgets, add incomes and expenses. Using Bloc State Management.
+Using BLoC, this is an app that allows the user to SignIn by email, facebook, google and anonymously as well. You Can track your income, expenses, manage budgets and track your stats by date.
 
-## Getting Started
+![Simulator Screen Shot - iPhone 12 Pro Max - 2021-09-10 at 15 59 23](https://user-images.githubusercontent.com/85323846/132917023-62bbefa7-8284-431e-ac49-1d73629118ae.png)
 
-This project is a starting point for a Flutter application.
+![Simulator Screen Shot - iPhone 12 Pro Max - 2021-09-10 at 15 59 19](https://user-images.githubusercontent.com/85323846/132917040-f2dc03fc-75cb-4425-888c-6f16a01f1352.png)
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
 # budgets

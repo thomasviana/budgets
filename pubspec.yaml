@@ -9,11 +9,17 @@ environment:
 dependencies:
   bloc: ^7.1.0
   equatable: ^2.0.3
+  firebase_auth: ^3.1.1
+  firebase_core: ^1.6.0
   flutter:
     sdk: flutter
   flutter_bloc: ^7.1.0
+  flutter_facebook_auth: ^3.5.1
+  flutter_hooks: ^0.18.0
   google_fonts: ^2.1.0
+  google_sign_in: 5.0.2
   intl: ^0.17.0
+  page_indicator: ^0.4.1
 
 dev_dependencies:
   bloc_test: ^8.1.0
@@ -24,4 +30,4 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/
+    - assets/images/

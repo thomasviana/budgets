@@ -1,42 +1,21 @@
-import 'package:budgets/presentation/screens/auth/auth_screen.dart';
-import 'package:budgets/presentation/screens/home/home_screen.dart';
+import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
+import 'package:budgets/src/repository/implementation/auth_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:budgets/constants.dart';
-import 'package:budgets/presentation/screens/main/main_app_screen.dart';
-import 'package:budgets/presentation/screens/records/records_screen.dart';
-import 'package:budgets/presentation/screens/settings/settings_screen.dart';
-import 'package:budgets/presentation/screens/stats/stats_screen.dart';
+import 'package:budgets/src/app.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
-  runApp(AppView());
-}
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
-class AppView extends StatefulWidget {
-  @override
-  _AppViewState createState() => _AppViewState();
-}
+  final authCubit = AuthCubit(AuthRepository());
 
-class _AppViewState extends State<AppView> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Budgets App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: kBackgroundColor,
-        primaryColor: kPrimayColor,
-        accentColor: kAccentColor,
-        textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
-      ),
-      home: AuthScreen(),
-      routes: {
-        MainAppScreen.routeName: (ctx) => MainAppScreen(),
-        HomeScreen.routeName: (ctx) => HomeScreen(),
-        StatsScreen.routeName: (ctx) => StatsScreen(),
-        RecordsScreen.routeName: (ctx) => RecordsScreen(),
-        SettingsScreen.routeName: (ctx) => SettingsScreen(),
-      },
-    );
-  }
+  runApp(
+    BlocProvider(
+      create: (_) => authCubit..init(),
+      child: MyApp.create(),
+    ),
+  );
 }

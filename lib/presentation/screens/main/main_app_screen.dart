@@ -1,3 +1,4 @@
+import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:budgets/constants.dart';
@@ -5,9 +6,12 @@ import 'package:budgets/presentation/screens/home/home_screen.dart';
 import 'package:budgets/presentation/screens/records/records_screen.dart';
 import 'package:budgets/presentation/screens/settings/settings_screen.dart';
 import 'package:budgets/presentation/screens/stats/stats_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainAppScreen extends StatefulWidget {
   static const routeName = '/main-screen';
+  static Widget create(BuildContext context) => MainAppScreen();
+
   @override
   _MainAppScreenState createState() => _MainAppScreenState();
 }
@@ -25,7 +29,12 @@ class _MainAppScreenState extends State<MainAppScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      body: BlocBuilder<AuthCubit, AuthState>(
+          buildWhen: (previous, current) => current is AuthSignedIn,
+          builder: (_, state) {
+            final authUser = (state as AuthSignedIn).user;
+            return _screens[_currentIndex];
+          }),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {},

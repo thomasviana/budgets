@@ -8,9 +8,12 @@ environment:
 
 dependencies:
   bloc: ^7.1.0
+  cached_network_image: ^3.1.0
+  cloud_firestore: ^2.5.2
   equatable: ^2.0.3
   firebase_auth: ^3.1.1
   firebase_core: ^1.6.0
+  firebase_storage: ^10.0.3
   flutter:
     sdk: flutter
   flutter_bloc: ^7.1.0
@@ -18,8 +21,10 @@ dependencies:
   flutter_hooks: ^0.18.0
   google_fonts: ^2.1.0
   google_sign_in: 5.0.2
+  image_picker: ^0.8.4
   intl: ^0.17.0
   page_indicator: ^0.4.1
+  path: ^1.8.0
 
 dev_dependencies:
   bloc_test: ^8.1.0

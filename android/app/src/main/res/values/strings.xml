@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Budgets</string>
+    <string name="facebook_app_id">402621874660313</string>
+    <string name="fb_login_protocol_scheme">fb402621874660313</string>
+</resources>

@@ -1,7 +1,9 @@
+import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:budgets/constants.dart';
 import 'package:budgets/presentation/widgets/main_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HeaderDelegate extends SliverPersistentHeaderDelegate {
   @override

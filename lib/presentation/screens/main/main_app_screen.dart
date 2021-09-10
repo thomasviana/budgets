@@ -32,7 +32,6 @@ class _MainAppScreenState extends State<MainAppScreen> {
       body: BlocBuilder<AuthCubit, AuthState>(
           buildWhen: (previous, current) => current is AuthSignedIn,
           builder: (_, state) {
-            final authUser = (state as AuthSignedIn).user;
             return _screens[_currentIndex];
           }),
       floatingActionButton: FloatingActionButton(

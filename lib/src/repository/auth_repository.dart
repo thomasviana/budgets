@@ -16,5 +16,10 @@ abstract class AuthRepositoryBase {
   Stream<AuthUser?> get onAuthStateChanged;
   Future<AuthUser?> signInAnonymously();
   Future<AuthUser?> signInWithGoogle();
+  Future<AuthUser?> signInWithFacebook();
+  Future<AuthUser?> createUserWithEmailAndPassword(
+      String email, String password);
+  Future<AuthUser?> signInWithEmailAndPassword(String email, String password);
+
   Future<void> signOut();
 }

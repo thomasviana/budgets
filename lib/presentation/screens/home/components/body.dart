@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'body_header.dart';
+import 'header.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -8,7 +8,7 @@ class Body extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          BodyHeader(size: size),
+          Header(),
           ListView(
             children: [
               // WidgetCard(),

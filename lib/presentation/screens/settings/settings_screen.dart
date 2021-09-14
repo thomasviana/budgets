@@ -1,14 +1,12 @@
-import 'dart:io';
-
-import 'package:budgets/constants.dart';
-import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/src/bloc/cubit/user_cubit.dart';
-import 'package:budgets/src/models/user_model.dart';
-import 'package:budgets/src/repository/implementation/user_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
+
+import 'package:budgets/data/repository/implementation/user_repository.dart';
+import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
+import 'package:budgets/src/bloc/cubit/user_cubit.dart';
+
+import 'components/user_profile.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -19,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             CupertinoSliverNavigationBar(
-              largeTitle: Text('Seetings'),
+              largeTitle: Text('Settings'),
             ),
           ],
           body: BlocBuilder<UserCubit, UserState>(
@@ -52,60 +50,6 @@ class SettingsScreen extends StatelessWidget {
               throw Exception();
             },
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class UserProfile extends StatefulWidget {
-  final UserModel user;
-  final File? pickedImage;
-  final isSaving;
-
-  const UserProfile({
-    required this.user,
-    this.pickedImage,
-    this.isSaving,
-  });
-
-  @override
-  _UserProfileState createState() => _UserProfileState();
-}
-
-class _UserProfileState extends State<UserProfile> {
-  final _picker = ImagePicker();
-  var image = Image.asset(
-    'assets/images/profile_photo.jpg',
-    fit: BoxFit.cover,
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    if (widget.pickedImage != null) {
-      image = Image.file(widget.pickedImage!, fit: BoxFit.fill);
-    }
-
-    return SingleChildScrollView(
-      child: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(kDefaultPadding),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () async {
-                final pickedImage =
-                    await _picker.pickImage(source: ImageSource.gallery);
-                if (pickedImage != null) {
-                  context.read<UserCubit>().setImage(File(pickedImage.path));
-                }
-              },
-              child: CircleAvatar(
-                radius: 75,
-                backgroundImage: AssetImage('assets/images/profile_photo.jpg'),
-              ),
-            ),
-          ],
         ),
       ),
     );

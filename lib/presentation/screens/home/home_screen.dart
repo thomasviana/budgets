@@ -1,72 +1,37 @@
+import 'package:budgets/data/repository/implementation/auth_repository.dart';
+import 'package:budgets/data/repository/implementation/user_repository.dart';
+import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
+import 'package:budgets/src/bloc/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 
-import 'package:budgets/constants.dart';
-import 'package:budgets/presentation/widgets/widget_card.dart';
+import 'package:budgets/presentation/screens/home/components/spending_chart.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'components/body_header.dart';
+import 'components/header.dart';
+import 'components/header_actions.dart';
 import 'components/last_records.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/home-screen';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Widget> homeWidgets = [
-    SliverAppBar(
-      brightness: Brightness.light,
-      backgroundColor: kPrimayColor,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.notifications_on,
-            color: Colors.white,
-          ),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.settings,
-            color: Colors.white,
-          ),
-        ),
-      ],
-    ),
-    SliverPersistentHeader(
-      delegate: HeaderDelegate(),
-    ),
+    HeaderActions(),
+    HomeHeader(),
     LastRecordsWidget(),
-    WidgetCard(
-      title: 'Spending',
-      content: Container(
-        width: double.infinity,
-        height: 200,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Center(
-                  child:
-                      Icon(Icons.donut_large, size: 150, color: Colors.orange)),
-            ),
-            Text(
-              'Show more',
-              textAlign: TextAlign.end,
-              style: TextStyle(color: kAccentColor),
-            )
-          ],
-        ),
-      ),
-    )
+    SpendingChart(),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: homeWidgets,
+    return BlocProvider(
+      create: (context) => UserCubit(UserRepository())..getUser(),
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: homeWidgets,
+        ),
       ),
     );
   }

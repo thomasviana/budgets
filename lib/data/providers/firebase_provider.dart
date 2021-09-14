@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:budgets/src/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
+
+import 'package:budgets/data/models/user_model.dart';
 
 class FirebaseProvider {
   FirebaseStorage get storage => FirebaseStorage.instance;
@@ -18,7 +19,12 @@ class FirebaseProvider {
 
   Future<UserModel?> getUser() async {
     final snapshot = await firestore.doc('user/${currentUser.uid}').get();
-    if (snapshot.exists) return UserModel.fromFirebaseMap(snapshot.data()!);
+    if (snapshot.exists) {
+      print(snapshot.data()!['name']);
+      final userData = UserModel.fromFirebaseMap(snapshot.data()!);
+      print(userData.lastName);
+      return userData;
+    }
     return null;
   }
 

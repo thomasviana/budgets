@@ -1,15 +1,14 @@
-import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:budgets/constants.dart';
 import 'package:budgets/presentation/screens/home/home_screen.dart';
 import 'package:budgets/presentation/screens/records/records_screen.dart';
 import 'package:budgets/presentation/screens/settings/settings_screen.dart';
 import 'package:budgets/presentation/screens/stats/stats_screen.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
 
 class MainAppScreen extends StatefulWidget {
-  static const routeName = '/main-screen';
   static Widget create(BuildContext context) => MainAppScreen();
 
   @override
@@ -17,6 +16,10 @@ class MainAppScreen extends StatefulWidget {
 }
 
 class _MainAppScreenState extends State<MainAppScreen> {
+  bool homeSelected = true;
+  bool statsSelected = false;
+  bool recordsSelected = false;
+  bool settingSelected = false;
   int _currentIndex = 0;
 
   List _screens = [
@@ -25,6 +28,25 @@ class _MainAppScreenState extends State<MainAppScreen> {
     RecordsScreen(),
     SettingsScreen(),
   ];
+
+  void selectIcon(String selectedIcon) {
+    homeSelected = false;
+    statsSelected = false;
+    recordsSelected = false;
+    settingSelected = false;
+    if (selectedIcon == 'home') {
+      homeSelected = true;
+    }
+    if (selectedIcon == "stats") {
+      statsSelected = true;
+    }
+    if (selectedIcon == 'records') {
+      recordsSelected = true;
+    }
+    if (selectedIcon == 'settings') {
+      settingSelected = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,131 +74,94 @@ class _MainAppScreenState extends State<MainAppScreen> {
             children: [
               Row(
                 children: [
-                  MaterialButton(
-                    highlightColor: Colors.white,
-                    minWidth: 80,
-                    onPressed: () {
+                  buildNavButton(
+                    isSelected: homeSelected,
+                    setIndex: () {
                       setState(() {
                         _currentIndex = 0;
+                        selectIcon("home");
                       });
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          _currentIndex == 0 ? Icons.home : Icons.home_outlined,
-                          size: 35,
-                          color:
-                              _currentIndex == 0 ? kAccentColor : Colors.grey,
-                        ),
-                        Text(
-                          'Home',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color:
-                                _currentIndex == 0 ? kAccentColor : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
+                    icon: Icons.home_outlined,
+                    iconSelected: Icons.home,
+                    label: 'Home',
                   ),
-                  MaterialButton(
-                    highlightColor: Colors.white,
-                    minWidth: 80,
-                    onPressed: () {
+                  buildNavButton(
+                    isSelected: statsSelected,
+                    setIndex: () {
                       setState(() {
                         _currentIndex = 1;
+                        selectIcon("stats");
                       });
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          _currentIndex == 1
-                              ? Icons.pie_chart
-                              : Icons.pie_chart_outline,
-                          size: 30,
-                          color:
-                              _currentIndex == 1 ? kAccentColor : Colors.grey,
-                        ),
-                        Text(
-                          'Stats',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color:
-                                _currentIndex == 1 ? kAccentColor : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
+                    icon: Icons.pie_chart_outline,
+                    iconSelected: Icons.pie_chart,
+                    label: 'Stats',
+                  ),
                 ],
               ),
               Row(
                 children: [
-                  MaterialButton(
-                    highlightColor: Colors.white,
-                    minWidth: 80,
-                    onPressed: () {
+                  buildNavButton(
+                    isSelected: recordsSelected,
+                    setIndex: () {
                       setState(() {
                         _currentIndex = 2;
+                        selectIcon("records");
                       });
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.format_list_bulleted_rounded,
-                          size: 30,
-                          color:
-                              _currentIndex == 2 ? kAccentColor : Colors.grey,
-                        ),
-                        Text(
-                          'Records',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color:
-                                _currentIndex == 2 ? kAccentColor : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
+                    icon: Icons.format_list_bulleted_rounded,
+                    iconSelected: Icons.format_list_bulleted_rounded,
+                    label: 'Records',
                   ),
-                  MaterialButton(
-                    highlightColor: Colors.white,
-                    minWidth: 80,
-                    onPressed: () {
+                  buildNavButton(
+                    isSelected: settingSelected,
+                    setIndex: () {
                       setState(() {
                         _currentIndex = 3;
+                        selectIcon("settings");
                       });
                     },
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          _currentIndex == 3
-                              ? Icons.settings
-                              : Icons.settings_outlined,
-                          size: 30,
-                          color:
-                              _currentIndex == 3 ? kAccentColor : Colors.grey,
-                        ),
-                        Text(
-                          'Settings',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color:
-                                _currentIndex == 3 ? kAccentColor : Colors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
+                    icon: Icons.settings_outlined,
+                    iconSelected: Icons.settings,
+                    label: 'Settings',
+                  ),
                 ],
               )
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  MaterialButton buildNavButton({
+    required bool isSelected,
+    required final VoidCallback setIndex,
+    required final IconData icon,
+    required final IconData iconSelected,
+    required final String label,
+  }) {
+    return MaterialButton(
+      highlightColor: Colors.white,
+      minWidth: 80,
+      onPressed: setIndex,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            isSelected ? iconSelected : icon,
+            size: 35,
+            color: isSelected ? kAccentColor : Colors.grey,
+          ),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10,
+              color: isSelected ? kAccentColor : Colors.grey,
+            ),
+          )
+        ],
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:budgets/src/models/user_model.dart';
+import 'package:budgets/data/models/user_model.dart';
 
 abstract class UserRepositoryBase {
   Future<UserModel?> getUser();

@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "diamond_icon-removebg-preview (1).png",
+      "filename" : "launch_image.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "diamond_icon-removebg-preview (1)@2x.png",
+      "filename" : "launch_image@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "diamond_icon-removebg-preview (1)@3x.png",
+      "filename" : "launch_image@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

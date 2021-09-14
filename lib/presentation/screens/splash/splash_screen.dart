@@ -13,7 +13,7 @@ class SplashScreen extends StatelessWidget {
             CircularProgressIndicator(),
             SizedBox(height: 24),
             Text(
-              'Loafing...',
+              'Loading...',
               style: TextStyle(fontSize: 24),
             )
           ],

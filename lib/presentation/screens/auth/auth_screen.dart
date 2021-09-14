@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:budgets/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'components/custom_divider.dart';
+
 TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 
@@ -102,6 +104,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                         ),
                         TextFormField(
+                          obscureText: true,
                           controller: _passwordController,
                           cursorColor: kAccentColor,
                           keyboardType: TextInputType.emailAddress,
@@ -112,6 +115,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         if (isCreateAccountMode)
                           TextFormField(
+                            obscureText: true,
                             controller: _confirmPasswordController,
                             cursorColor: kAccentColor,
                             keyboardType: TextInputType.emailAddress,
@@ -128,29 +132,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       onPressed: trySubmit,
                       label: isCreateAccountMode ? "Create account" : "Login"),
                   SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 1,
-                        width: 100,
-                        color: Colors.grey.shade300,
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 40,
-                        child: Text(
-                          'or',
-                          style: TextStyle(color: Colors.grey.shade400),
-                        ),
-                      ),
-                      Container(
-                        height: 1,
-                        width: 100,
-                        color: Colors.grey.shade300,
-                      ),
-                    ],
-                  ),
+                  CustomDivider(),
                   SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

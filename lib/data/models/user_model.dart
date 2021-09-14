@@ -9,7 +9,6 @@ class UserModel extends Equatable {
   UserModel(this.id, this.name, this.lastName, {this.image});
 
   @override
-  // TODO: implement props
   List<Object?> get props => [id];
 
   Map<String, Object?> toFirebaseMap({String? newImage}) {

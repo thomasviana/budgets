@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:budgets/src/repository/auth_repository.dart';
-import 'package:budgets/src/repository/implementation/auth_repository.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:budgets/data/repository/auth_repository.dart';
 
 part 'auth_state.dart';
 

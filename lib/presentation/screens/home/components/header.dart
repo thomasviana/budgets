@@ -1,16 +1,20 @@
 import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
+import 'package:budgets/src/bloc/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:budgets/constants.dart';
 import 'package:budgets/presentation/widgets/main_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+class HomeHeader extends SliverPersistentHeader {
+  HomeHeader() : super(delegate: HeaderDelegate());
+}
+
 class HeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final size = MediaQuery.of(context).size;
-    return BodyHeader(size: size);
+    return Header();
   }
 
   @override
@@ -25,16 +29,10 @@ class HeaderDelegate extends SliverPersistentHeaderDelegate {
   double get minExtent => 235;
 }
 
-class BodyHeader extends StatelessWidget {
-  const BodyHeader({
-    Key? key,
-    required this.size,
-  }) : super(key: key);
-
-  final Size size;
-
+class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Column(
       children: [
         Container(
@@ -62,10 +60,20 @@ class BodyHeader extends StatelessWidget {
               Positioned(
                 top: 0,
                 left: 25,
-                child: Text(
-                  'Hi Thomas!',
-                  style: Theme.of(context).textTheme.headline5!.copyWith(
-                      fontWeight: FontWeight.bold, color: Colors.white),
+                child: BlocBuilder<UserCubit, UserState>(
+                  builder: (_, state) {
+                    if (state is UserLoadingState) {
+                      return CircularProgressIndicator();
+                    }
+                    if (state is UserReadyState) {
+                      return Text(
+                        'Hi ${state.user.name}!',
+                        style: Theme.of(context).textTheme.headline5!.copyWith(
+                            fontWeight: FontWeight.bold, color: Colors.white),
+                      );
+                    }
+                    throw Exception();
+                  },
                 ),
               ),
               Positioned(

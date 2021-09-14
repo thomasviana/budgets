@@ -1,7 +1,7 @@
 import 'package:budgets/presentation/screens/auth/auth_screen.dart';
 import 'package:budgets/presentation/screens/main/main_app_screen.dart';
-import 'package:budgets/src/ui/intro_screen.dart';
-import 'package:budgets/src/ui/splash_screen.dart';
+import 'package:budgets/presentation/screens/intro/intro_screen.dart';
+import 'package:budgets/presentation/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -20,6 +20,7 @@ class Routes {
         return _buildRoute(AuthScreen.create);
       case main:
         return _buildRoute(MainAppScreen.create);
+
       default:
         throw Exception('Route does not exist');
     }

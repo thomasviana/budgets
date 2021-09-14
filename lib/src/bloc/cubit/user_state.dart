@@ -17,5 +17,5 @@ class UserReadyState extends UserState {
   UserReadyState(this.user, this.pickedImage, {this.isSaving = false});
 
   @override
-  List<Object?> get props => [user, pickedImage?.path];
+  List<Object?> get props => [user, pickedImage?.path, isSaving];
 }

@@ -81,5 +81,12 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To choose user profile image</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To take user profile image</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To allow recording audio</string>
+	
 </dict>
 </plist>

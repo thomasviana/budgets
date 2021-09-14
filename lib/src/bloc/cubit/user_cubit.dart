@@ -24,14 +24,15 @@ class UserCubit extends Cubit<UserState> {
   Future<void> getUser() async {
     emit(UserLoadingState());
     print('getUserCubit');
-    _user =
-        await _userRepository.getUser() ?? UserModel('Thomas', 'Viasna', 'sss');
+    _user = await _userRepository.getUser() ?? UserModel('', '', '', '');
     print('close getUserCubit');
     emit(UserReadyState(_user, _pickedImage));
   }
 
-  Future<void> saveUser(String uid, String name, String lastName) async {
-    _user = UserModel(uid, name, lastName, image: _user.image);
+  Future<void> saveUser(String uid, String name, String lastName, String email,
+      String phoneNumber) async {
+    _user = UserModel(uid, name, lastName, email,
+        image: _user.image, phoneNumber: _user.phoneNumber);
     emit(UserReadyState(_user, _pickedImage, isSaving: true));
 
     await _userRepository.saveUser(_user, _pickedImage);

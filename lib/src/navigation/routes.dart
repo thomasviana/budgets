@@ -1,6 +1,7 @@
 import 'package:budgets/presentation/screens/auth/auth_screen.dart';
 import 'package:budgets/presentation/screens/main/main_app_screen.dart';
 import 'package:budgets/presentation/screens/intro/intro_screen.dart';
+import 'package:budgets/presentation/screens/profile/profile_screen.dart';
 import 'package:budgets/presentation/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class Routes {
   static const intro = '/intro';
   static const auth = '/auth';
   static const main = '/main';
+  static const profile = '/profile';
 
   static Route routes(RouteSettings settings) {
     switch (settings.name) {
@@ -20,7 +22,8 @@ class Routes {
         return _buildRoute(AuthScreen.create);
       case main:
         return _buildRoute(MainAppScreen.create);
-
+      case profile:
+        return _buildRoute(ProfileSreen.create);
       default:
         throw Exception('Route does not exist');
     }

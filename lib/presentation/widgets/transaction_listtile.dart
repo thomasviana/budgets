@@ -27,6 +27,7 @@ class TransactionListTile extends StatelessWidget {
           ),
         ],
       ),
+      onTap: () {},
     );
   }
 }

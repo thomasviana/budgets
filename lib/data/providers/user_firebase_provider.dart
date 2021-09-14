@@ -7,7 +7,7 @@ import 'package:path/path.dart' as path;
 
 import 'package:budgets/data/models/user_model.dart';
 
-class FirebaseProvider {
+class UserFirebaseProvider {
   FirebaseStorage get storage => FirebaseStorage.instance;
   FirebaseFirestore get firestore => FirebaseFirestore.instance;
 
@@ -18,18 +18,17 @@ class FirebaseProvider {
   }
 
   Future<UserModel?> getUser() async {
-    final snapshot = await firestore.doc('user/${currentUser.uid}').get();
+    final snapshot = await firestore.doc('users/${currentUser.uid}').get();
     if (snapshot.exists) {
-      print(snapshot.data()!['name']);
       final userData = UserModel.fromFirebaseMap(snapshot.data()!);
-      print(userData.lastName);
+      print(userData.name);
       return userData;
     }
     return null;
   }
 
   Future<void> saveUser(UserModel user, File? image) async {
-    final ref = firestore.doc('user/${currentUser.uid}');
+    final ref = firestore.doc('users/${currentUser.uid}');
     if (image == null) {
       await ref.set(user.toFirebaseMap(), SetOptions(merge: true));
     } else {

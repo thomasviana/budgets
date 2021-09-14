@@ -44,7 +44,7 @@ class GetStarted extends StatelessWidget {
             },
             label: 'Get Started',
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 60),
           Text(
             text,
             style: TextStyle(color: Colors.white),

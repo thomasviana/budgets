@@ -8,7 +8,7 @@ class AuthRepository extends AuthRepositoryBase {
   final _firebaseAuth = FirebaseAuth.instance;
 
   AuthUser? _userFromFirebase(User? user) {
-    return user == null ? null : AuthUser(user.uid, user.email);
+    return user == null ? null : AuthUser(user.uid, user.email, user.photoURL);
   }
 
   @override

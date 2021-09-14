@@ -5,10 +5,6 @@ import 'package:budgets/presentation/widgets/transaction_listtile.dart';
 import 'package:budgets/presentation/widgets/widget_card.dart';
 
 class LastRecordsWidget extends StatelessWidget {
-  const LastRecordsWidget({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return WidgetCard(

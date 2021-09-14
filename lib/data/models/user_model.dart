@@ -5,8 +5,11 @@ class UserModel extends Equatable {
   final String name;
   final String lastName;
   final String? image;
+  final String? email;
+  final String? phoneNumber;
 
-  UserModel(this.id, this.name, this.lastName, {this.image});
+  UserModel(this.id, this.name, this.lastName, this.email,
+      {this.image, this.phoneNumber});
 
   @override
   List<Object?> get props => [id];
@@ -16,7 +19,9 @@ class UserModel extends Equatable {
       'id': id,
       'name': name,
       'lastName': lastName,
+      'email': email,
       'image': newImage ?? image,
+      'phoneNumber': phoneNumber,
     };
   }
 
@@ -24,5 +29,7 @@ class UserModel extends Equatable {
       : id = data['id'] as String,
         name = data['name'] as String,
         lastName = data['lastName'] as String,
-        image = data['image'] as String;
+        email = data['email'] as String,
+        image = data['image'] as String,
+        phoneNumber = data['phoneNumber'] as String;
 }

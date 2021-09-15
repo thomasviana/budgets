@@ -7,7 +7,11 @@ class MainCard extends StatelessWidget {
   final String title;
   final double amount;
 
-  MainCard({required this.icon, required this.title, required this.amount});
+  const MainCard({
+    required this.icon,
+    required this.title,
+    required this.amount,
+  });
 
   @override
   Widget build(BuildContext context) {

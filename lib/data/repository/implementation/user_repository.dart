@@ -10,7 +10,7 @@ class UserRepository extends UserRepositoryBase {
 
   @override
   Future<UserModel?> getUser() async {
-    return await provider.getUser();
+    return provider.getUser();
   }
 
   @override

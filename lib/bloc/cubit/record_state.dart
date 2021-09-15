@@ -21,7 +21,7 @@ class RecordAddedState extends RecordState {
   final String userId;
   final Record record;
 
-  RecordAddedState(this.userId, this.record);
+  const RecordAddedState(this.userId, this.record);
 
   @override
   List<Object> get props => [record];
@@ -32,7 +32,7 @@ class RecordDeletedState extends RecordState {
 
   final String id;
 
-  RecordDeletedState(this.userId, this.id);
+  const RecordDeletedState(this.userId, this.id);
 
   @override
   List<Object> get props => [id];

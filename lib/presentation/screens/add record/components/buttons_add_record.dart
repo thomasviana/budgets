@@ -5,7 +5,7 @@ class ButtonAddRecord extends StatelessWidget {
   final String title;
   final VoidCallback onPress;
 
-  ButtonAddRecord(
+  const ButtonAddRecord(
       {required this.color, required this.title, required this.onPress});
 
   @override
@@ -14,15 +14,15 @@ class ButtonAddRecord extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: color,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(40)),
           ),
-          fixedSize: Size(0, 55),
+          fixedSize: const Size(0, 55),
         ),
         onPressed: onPress,
         child: Text(
           title,
-          style: TextStyle(fontSize: 15),
+          style: const TextStyle(fontSize: 15),
         ),
       ),
     );

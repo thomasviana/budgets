@@ -4,15 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:budgets/data/repository/implementation/record_repository.dart';
 import 'package:budgets/data/repository/implementation/user_repository.dart';
-import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/src/bloc/cubit/record_cubit.dart';
-import 'package:budgets/src/bloc/cubit/user_cubit.dart';
+import 'package:budgets/bloc/cubit/auth_cubit.dart';
+import 'package:budgets/bloc/cubit/record_cubit.dart';
+import 'package:budgets/bloc/cubit/user_cubit.dart';
 import 'package:budgets/src/navigation/routes.dart';
 
 import 'constants.dart';
 import 'data/repository/implementation/auth_repository.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final authCubit = AuthCubit(AuthRepository());

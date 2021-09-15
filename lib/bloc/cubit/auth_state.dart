@@ -16,7 +16,7 @@ class AuthSigningIn extends AuthState {}
 class AuthError extends AuthState {
   final String message;
 
-  AuthError(this.message);
+  const AuthError(this.message);
 
   @override
   List<Object> get props => [message];
@@ -25,7 +25,7 @@ class AuthError extends AuthState {
 class AuthSignedIn extends AuthState {
   final AuthUser user;
 
-  AuthSignedIn(this.user);
+  const AuthSignedIn(this.user);
 
   @override
   List<Object> get props => [user];

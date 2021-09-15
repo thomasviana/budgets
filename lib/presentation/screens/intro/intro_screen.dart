@@ -4,14 +4,12 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:page_indicator/page_indicator.dart';
 
 import 'package:budgets/constants.dart';
-import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
+import 'package:budgets/bloc/cubit/auth_cubit.dart';
 
 import 'components/description_page.dart';
 import 'components/get_started.dart';
 
 class IntroScreen extends StatelessWidget {
-  static Widget create(BuildContext context) => IntroScreen();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

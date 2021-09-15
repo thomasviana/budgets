@@ -5,10 +5,6 @@ import 'package:budgets/presentation/widgets/widget_card.dart';
 import '../../../../constants.dart';
 
 class SpendingChart extends StatelessWidget {
-  const SpendingChart({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return WidgetCard(
@@ -18,6 +14,7 @@ class SpendingChart extends StatelessWidget {
         height: 200,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
+          // ignore: prefer_const_literals_to_create_immutables
           children: [
             Expanded(
               child: Center(

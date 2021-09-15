@@ -12,10 +12,12 @@ class UserLoadingState extends UserState {}
 class UserReadyState extends UserState {
   final UserModel user;
   final File? pickedImage;
-  final isSaving;
 
-  UserReadyState(this.user, this.pickedImage, {this.isSaving = false});
+  const UserReadyState(
+    this.user,
+    this.pickedImage,
+  );
 
   @override
-  List<Object?> get props => [user, pickedImage?.path, isSaving];
+  List<Object?> get props => [user, pickedImage?.path];
 }

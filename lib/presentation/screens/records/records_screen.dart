@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 import 'package:budgets/constants.dart';
 import 'package:budgets/presentation/widgets/transaction_listtile.dart';
-import 'package:budgets/src/bloc/cubit/record_cubit.dart';
+import 'package:budgets/bloc/cubit/record_cubit.dart';
 
 class RecordsScreen extends StatefulWidget {
   @override
@@ -15,10 +15,11 @@ class RecordsScreen extends StatefulWidget {
 class _RecordsScreenState extends State<RecordsScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RecordCubit, RecordState>(
+    return BlocConsumer<RecordCubit, RecordState>(
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is RecordLoadingState) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -28,7 +29,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
           return CupertinoPageScaffold(
             child: NestedScrollView(
               headerSliverBuilder: (context, isScrolled) => [
-                CupertinoSliverNavigationBar(
+                const CupertinoSliverNavigationBar(
                   largeTitle: Text('Records'),
                 ),
               ],
@@ -36,18 +37,18 @@ class _RecordsScreenState extends State<RecordsScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                 child: CustomScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   slivers: [
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) => TransactionListTile(
                           title: recordList[index].title,
-                          subtitle: recordList[index].tag,
+                          tag: recordList[index].tag,
                           amount:
                               '\$${currency.format(recordList[index].amount)}',
                           date: DateFormat.MMMd()
                               .add_jm()
-                              .format((recordList[index].date.toDate()))
+                              .format(recordList[index].date.toDate())
                               .toString(),
                         ),
                         childCount: recordList.length,

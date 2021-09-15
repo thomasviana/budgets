@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:budgets/constants.dart';
 import 'package:budgets/presentation/widgets/rounded_button.dart';
-import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
+import 'package:budgets/bloc/cubit/auth_cubit.dart';
 
 import 'components/custom_divider.dart';
 
@@ -11,14 +11,12 @@ TextEditingController emailController = TextEditingController();
 TextEditingController passwordController = TextEditingController();
 
 class AuthScreen extends StatefulWidget {
-  static Widget create(BuildContext context) => AuthScreen();
-
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  var isCreateAccountMode = false;
+  bool isCreateAccountMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,23 +28,23 @@ class _AuthScreenState extends State<AuthScreen> {
 
     String? emailValidator(String? value) {
       if (value!.isEmpty) {
-        return "This is a required field.";
+        return 'This is a required field.';
       }
-      if (!value.contains("@")) {
-        return "Enter a valid email";
+      if (!value.contains('@')) {
+        return 'Enter a valid email';
       }
     }
 
     String? passwordValidator(String? value) {
       if (value!.isEmpty) {
-        return "This is a required field.";
+        return 'This is a required field.';
       }
       if (isCreateAccountMode) {
         if (value.length < 6) {
           return 'Password must be at least 6 characters long.';
         }
         if (_passwordController.text != _confirmPasswordController.text) {
-          return "Password do not match.";
+          return 'Password do not match.';
         }
       }
     }
@@ -57,7 +55,6 @@ class _AuthScreenState extends State<AuthScreen> {
           context.read<AuthCubit>().createUserWithEmailAndPassword(
               _emailController.text, _passwordController.text);
         } else {
-          print('login');
           context.read<AuthCubit>().signInWithEmailAndPassword(
               _emailController.text, _passwordController.text);
         }
@@ -100,7 +97,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           keyboardType: TextInputType.emailAddress,
                           validator: emailValidator,
                           decoration: InputDecoration(
-                            hintText: "Enter email",
+                            hintText: 'Enter email',
                           ),
                         ),
                         TextFormField(
@@ -110,7 +107,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           keyboardType: TextInputType.emailAddress,
                           validator: passwordValidator,
                           decoration: InputDecoration(
-                            hintText: "Enter password",
+                            hintText: 'Enter password',
                           ),
                         ),
                         if (isCreateAccountMode)
@@ -121,7 +118,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             keyboardType: TextInputType.emailAddress,
                             validator: passwordValidator,
                             decoration: InputDecoration(
-                              hintText: "Confirm password",
+                              hintText: 'Confirm password',
                             ),
                           ),
                       ],
@@ -130,7 +127,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   SizedBox(height: 30),
                   RoundedButton(
                       onPressed: trySubmit,
-                      label: isCreateAccountMode ? "Create account" : "Login"),
+                      label: isCreateAccountMode ? 'Create account' : 'Login'),
                   SizedBox(height: 20),
                   CustomDivider(),
                   SizedBox(height: 20),

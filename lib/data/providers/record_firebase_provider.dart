@@ -10,16 +10,9 @@ class RecordFirebaseProvider {
   }
 
   Future<void> addRecord(String userId, Record record) async {
-    await _fireStore.collection('users/$userId/transactions').add(
-      {
-        'id': record.id,
-        'title': record.title,
-        'tag': record.tag,
-        'amount': record.amount,
-        'date': record.date,
-        'type': record.type,
-      },
-    );
+    await _fireStore
+        .collection('users/$userId/transactions')
+        .add(record.toFirebaseMap());
   }
 
   Future<void> deleteRecord(String userId, String id) async {
@@ -27,28 +20,28 @@ class RecordFirebaseProvider {
   }
 
   Future<List<Record>> getRecords(String userId) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+    final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users/$userId/transactions')
         .orderBy('date')
         .get();
     final allData = querySnapshot.docs;
 
-    List<Record> recordsList = [];
-    for (var tx in allData) {
-      final txTitle = tx['title'];
-      final txTag = tx['tag'];
-      final txAmount = tx['amount'];
-      final txDate = tx['date'];
-      final txId = tx['id'];
-      final txType = tx['type'];
+    final List<Record> recordsList = [];
+    for (final record in allData) {
+      final recordId = record.id;
+      final recordTitle = record['title'] as String;
+      final recordTag = record['tag'] as String;
+      final recordAmount = record['amount'] as double;
+      final recordDate = record['date'] as Timestamp;
+      final recordType = record['type'] as String;
 
       final newRecord = Record(
-        id: txId,
-        title: txTitle,
-        tag: txTag,
-        amount: txAmount.toDouble(),
-        date: txDate,
-        type: txType,
+        id: recordId,
+        title: recordTitle,
+        tag: recordTag,
+        amount: recordAmount.toDouble(),
+        date: recordDate,
+        type: recordType,
       );
       recordsList.add(newRecord);
     }

@@ -12,6 +12,7 @@ class LastRecordsWidget extends StatelessWidget {
         height: 200,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
+          // ignore: prefer_const_literals_to_create_immutables
           children: [
             // TransactionListTile(),
             // TransactionListTile(),

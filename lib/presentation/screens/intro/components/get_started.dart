@@ -8,7 +8,7 @@ import '../../../../constants.dart';
 class GetStarted extends StatelessWidget {
   final String text;
 
-  GetStarted({required this.text});
+  const GetStarted({required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,11 @@ class GetStarted extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [kPrimayColor, kAccentColor],
+          // ignore: prefer_const_literals_to_create_immutables
+          colors: [
+            kPrimayColor,
+            kAccentColor,
+          ],
         ),
       ),
       height: size.height,

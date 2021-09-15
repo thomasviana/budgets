@@ -8,20 +8,18 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:budgets/data/models/user_model.dart';
 import 'package:budgets/presentation/widgets/rounded_button.dart';
-import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/src/bloc/cubit/user_cubit.dart';
+import 'package:budgets/bloc/cubit/auth_cubit.dart';
+import 'package:budgets/bloc/cubit/user_cubit.dart';
 
 import '../../../../constants.dart';
 
 class UserProfile extends StatefulWidget {
   final UserModel user;
   final File? pickedImage;
-  final isSaving;
 
   const UserProfile({
     required this.user,
     this.pickedImage,
-    this.isSaving,
   });
 
   @override
@@ -29,18 +27,17 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _picker = ImagePicker();
 
   late Widget image;
+  late String? _imageUrl;
 
   Future<void> pickImage() async {
     try {
       final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
       if (pickedImage == null) return;
+      // ignore: use_build_context_synchronously
       context.read<UserCubit>().setImage(File(pickedImage.path));
     } on PlatformException catch (e) {
       print(e);
@@ -49,23 +46,29 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final isSaving = context.watch<UserCubit>().state is UserLoadingState;
+    final isSavingForm = context.watch<UserCubit>().state is UserLoadingState;
+    final authUserData =
+        (context.watch<AuthCubit>().state as AuthSignedIn).user;
+    final userModelData =
+        (context.watch<UserCubit>().state as UserReadyState).user;
+    String? _nameField;
+    String? _emailField;
+    String? _phoneField;
 
-    final userData = (context.read<AuthCubit>().state as AuthSignedIn).user;
-    final imageUrl = userData.image;
+    if (authUserData.image != null) {
+      _imageUrl = authUserData.image!;
+    } else if (widget.user.image != null) {
+      _imageUrl = widget.user.image!;
+    } else {
+      _imageUrl =
+          'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg';
+    }
 
-    // image = CachedNetworkImage(
-    //   imageUrl: imageUrl ?? widget.user.image!,
-    //   progressIndicatorBuilder: (_, __, progress) =>
-    //       CircularProgressIndicator(value: progress.progress),
-    //   errorWidget: (_, __, ___) => Icon(Icons.error),
-    //   fit: BoxFit.cover,
-    // );
     if (widget.pickedImage != null) {
       image = Image.file(widget.pickedImage!, fit: BoxFit.cover);
-    } else if (widget.user.image != null && widget.user.image!.isNotEmpty) {
+    } else if (_imageUrl != null) {
       image = CachedNetworkImage(
-        imageUrl: imageUrl ?? widget.user.image!,
+        imageUrl: _imageUrl!,
         progressIndicatorBuilder: (_, __, progress) =>
             CircularProgressIndicator(value: progress.progress),
         errorWidget: (_, __, ___) => Icon(Icons.error),
@@ -83,6 +86,7 @@ class _UserProfileState extends State<UserProfile> {
               InkWell(
                 onTap: pickImage,
                 child: ClipOval(
+                  // ignore: sized_box_for_whitespace
                   child: Container(height: 150, width: 150, child: image),
                 ),
               ),
@@ -90,58 +94,68 @@ class _UserProfileState extends State<UserProfile> {
               BlocBuilder<AuthCubit, AuthState>(
                 buildWhen: (_, current) => current is AuthSignedIn,
                 builder: (_, state) {
+                  // ignore: avoid_print
+                  print(userModelData.name);
+                  // ignore: avoid_print
+                  print(authUserData.name);
                   return Text(
                     'User ID: ${(state as AuthSignedIn).user.uid}',
                   );
                 },
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Form(
                 key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
-                      initialValue: userData.name,
-                      decoration: InputDecoration(labelText: 'Name'),
-                    ),
+                        initialValue: authUserData.name ?? userModelData.name,
+                        decoration: InputDecoration(labelText: 'Name'),
+                        onSaved: (value) {
+                          _nameField = value;
+                          print(_nameField);
+                        }),
                     TextFormField(
-                      enabled: false,
-                      initialValue: userData.email,
-                      decoration: InputDecoration(labelText: 'Email'),
-                    ),
+                        enabled: false,
+                        initialValue: authUserData.email ?? userModelData.email,
+                        decoration: InputDecoration(labelText: 'Email'),
+                        onSaved: (value) {
+                          _emailField = value;
+                        }),
                     TextFormField(
-                      initialValue: userData.phone,
-                      decoration: InputDecoration(labelText: 'Phone'),
-                    ),
+                        initialValue:
+                            authUserData.phone ?? userModelData.phoneNumber,
+                        decoration: InputDecoration(labelText: 'Phone'),
+                        onSaved: (value) {
+                          _phoneField = value;
+                        }),
                   ],
                 ),
               ),
               SizedBox(height: 20),
-              BlocBuilder<UserCubit, UserState>(
-                builder: (context, state) {
-                  if (state is UserLoadingState) {
-                    return CircularProgressIndicator();
-                  } else if (state is UserReadyState) {
-                    return RoundedButton(
-                      onPressed: widget.isSaving
-                          ? () {}
-                          : () {
-                              context.read<UserCubit>().saveUser(
-                                    (context.read<AuthCubit>().state
-                                            as AuthSignedIn)
-                                        .user
-                                        .uid,
-                                    _nameController.text,
-                                    _emailController.text,
-                                    _phoneController.text,
-                                  );
-                            },
-                      label: 'Save',
-                    );
-                  }
-                  throw Exception();
-                },
-              )
+              if (isSavingForm)
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              if (!isSavingForm)
+                RoundedButton(
+                  onPressed: () {
+                    _formKey.currentState!.save();
+                    // ignore: avoid_print
+                    print(userModelData.name);
+                    // ignore: avoid_print
+                    print(authUserData.name);
+                    context.read<UserCubit>().saveUser(
+                          (context.read<AuthCubit>().state as AuthSignedIn)
+                              .user
+                              .uid,
+                          _nameField,
+                          _emailField,
+                          _phoneField,
+                        );
+                  },
+                  label: 'Save',
+                ),
             ],
           ),
         ),

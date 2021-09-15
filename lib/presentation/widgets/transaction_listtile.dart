@@ -4,13 +4,13 @@ import 'package:budgets/constants.dart';
 
 class TransactionListTile extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final String tag;
   final String amount;
   final String date;
 
   const TransactionListTile({
     required this.title,
-    required this.subtitle,
+    required this.tag,
     required this.amount,
     required this.date,
   });
@@ -18,7 +18,6 @@ class TransactionListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
       minVerticalPadding: 20,
       leading: CircleAvatar(
         backgroundColor: kPrimayColor,
@@ -28,7 +27,7 @@ class TransactionListTile extends StatelessWidget {
         title,
         style: Theme.of(context).textTheme.bodyText1,
       ),
-      subtitle: Text(subtitle),
+      subtitle: Text(tag),
       trailing: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,

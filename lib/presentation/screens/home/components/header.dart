@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:budgets/constants.dart';
 import 'package:budgets/presentation/widgets/main_card.dart';
-import 'package:budgets/src/bloc/cubit/user_cubit.dart';
+import 'package:budgets/bloc/cubit/user_cubit.dart';
 
 class HomeHeader extends SliverPersistentHeader {
   HomeHeader() : super(delegate: HeaderDelegate());
@@ -66,7 +66,7 @@ class Header extends StatelessWidget {
                     }
                     if (state is UserReadyState) {
                       return Text(
-                        'Hi ${state.user.name}!',
+                        'Hi ${state.user.name!.split(' ')[0]}!',
                         style: Theme.of(context).textTheme.headline5!.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.white),
                       );

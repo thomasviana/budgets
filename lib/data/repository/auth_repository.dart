@@ -7,10 +7,10 @@ class AuthUser extends Equatable {
   final String? image;
   final String? phone;
 
-  AuthUser(this.uid, this.name, this.email, this.image, this.phone);
+  const AuthUser(this.uid, this.name, this.email, this.image, this.phone);
 
   @override
-  List<Object?> get props => [uid];
+  List<Object?> get props => [uid, email];
 }
 
 abstract class AuthRepositoryBase {

@@ -6,7 +6,7 @@ class WidgetCard extends StatelessWidget {
   final String title;
   final Widget content;
 
-  WidgetCard({required this.title, required this.content});
+  const WidgetCard({required this.title, required this.content});
 
   @override
   Widget build(BuildContext context) {

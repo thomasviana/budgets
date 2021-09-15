@@ -16,21 +16,21 @@ class Routes {
   static Route routes(RouteSettings settings) {
     switch (settings.name) {
       case splash:
-        return _buildRoute(SplashScreen.create);
+        return _buildRoute(SplashScreen());
       case intro:
-        return _buildRoute(IntroScreen.create);
+        return _buildRoute(IntroScreen());
       case auth:
-        return _buildRoute(AuthScreen.create);
+        return _buildRoute(AuthScreen());
       case main:
-        return _buildRoute(MainAppScreen.create);
+        return _buildRoute(MainAppScreen());
       case profile:
-        return _buildRoute(ProfileSreen.create);
+        return _buildRoute(ProfileSreen());
       default:
         throw Exception('Route does not exist');
     }
   }
 
-  static MaterialPageRoute _buildRoute(Function build) {
-    return MaterialPageRoute(builder: (context) => build(context));
+  static MaterialPageRoute _buildRoute(Widget screen) {
+    return MaterialPageRoute(builder: (context) => screen);
   }
 }

@@ -1,11 +1,9 @@
-import 'package:budgets/data/repository/implementation/auth_repository.dart';
-import 'package:budgets/data/repository/implementation/user_repository.dart';
-import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/src/bloc/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
-
-import 'package:budgets/presentation/screens/home/components/spending_chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:budgets/data/repository/implementation/user_repository.dart';
+import 'package:budgets/presentation/screens/home/components/spending_chart.dart';
+import 'package:budgets/src/bloc/cubit/user_cubit.dart';
 
 import 'components/header.dart';
 import 'components/header_actions.dart';

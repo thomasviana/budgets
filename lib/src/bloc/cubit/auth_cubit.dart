@@ -43,14 +43,11 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> _signIn(Future<AuthUser?> auxUser) async {
     try {
       emit(AuthSigningIn());
-      print('ing');
       await Future.delayed(Duration(seconds: 5));
       final user = await auxUser;
       if (user == null) {
-        print('error');
         emit(AuthError('Unknown error, try again later.'));
       } else {
-        print('in');
         emit(AuthSignedIn(user));
       }
     } catch (e) {

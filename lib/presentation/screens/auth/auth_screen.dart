@@ -1,9 +1,9 @@
-import 'package:budgets/presentation/widgets/rounded_button.dart';
-import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:budgets/constants.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:budgets/presentation/widgets/rounded_button.dart';
+import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
 
 import 'components/custom_divider.dart';
 
@@ -188,10 +188,9 @@ class LoginButton extends StatelessWidget {
   final VoidCallback? onTap;
 
   const LoginButton({
-    Key? key,
     required this.imagePath,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

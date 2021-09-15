@@ -1,10 +1,12 @@
-import 'package:budgets/data/repository/implementation/user_repository.dart';
-import 'package:budgets/src/bloc/cubit/user_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:budgets/data/repository/implementation/record_repository.dart';
+import 'package:budgets/data/repository/implementation/user_repository.dart';
 import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
+import 'package:budgets/src/bloc/cubit/record_cubit.dart';
+import 'package:budgets/src/bloc/cubit/user_cubit.dart';
 import 'package:budgets/src/navigation/routes.dart';
 
 import 'constants.dart';
@@ -15,6 +17,7 @@ void main() async {
   await Firebase.initializeApp();
   final authCubit = AuthCubit(AuthRepository());
   final userCubit = UserCubit(UserRepository());
+  final recordCubit = RecordCubit(RecordRepository());
 
   runApp(
     MultiBlocProvider(
@@ -25,6 +28,11 @@ void main() async {
         BlocProvider(
           create: (context) => userCubit..getUser(),
         ),
+        BlocProvider(
+          create: (context) => recordCubit
+            ..getRecords(
+                (context.read<AuthCubit>().state as AuthSignedIn).user.uid),
+        )
       ],
       child: MyApp.create(),
     ),

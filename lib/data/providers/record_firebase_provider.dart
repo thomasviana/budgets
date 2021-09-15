@@ -1,10 +1,16 @@
-import 'package:budgets/data/models/record.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
+
+import 'package:budgets/data/models/record.dart';
 
 class RecordFirebaseProvider {
+  final _fireStore = FirebaseFirestore.instance;
+
+  Stream<QuerySnapshot> init() {
+    return _fireStore.collection('CRUD').snapshots();
+  }
+
   Future<void> addRecord(String userId, Record record) async {
-    FirebaseFirestore.instance.collection('users/$userId/transactions').add(
+    await _fireStore.collection('users/$userId/transactions').add(
       {
         'id': record.id,
         'title': record.title,
@@ -17,10 +23,7 @@ class RecordFirebaseProvider {
   }
 
   Future<void> deleteRecord(String userId, String id) async {
-    await FirebaseFirestore.instance
-        .collection('users/$userId/transactions')
-        .doc(id)
-        .delete();
+    await _fireStore.collection('users/$userId/transactions').doc(id).delete();
   }
 
   Future<List<Record>> getRecords(String userId) async {
@@ -43,13 +46,12 @@ class RecordFirebaseProvider {
         id: txId,
         title: txTitle,
         tag: txTag,
-        amount: txAmount,
+        amount: txAmount.toDouble(),
         date: txDate,
         type: txType,
       );
       recordsList.add(newRecord);
     }
-    print(recordsList);
     return recordsList;
   }
 }

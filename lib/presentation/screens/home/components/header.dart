@@ -1,10 +1,9 @@
-import 'package:budgets/src/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/src/bloc/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:budgets/constants.dart';
 import 'package:budgets/presentation/widgets/main_card.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:budgets/src/bloc/cubit/user_cubit.dart';
 
 class HomeHeader extends SliverPersistentHeader {
   HomeHeader() : super(delegate: HeaderDelegate());

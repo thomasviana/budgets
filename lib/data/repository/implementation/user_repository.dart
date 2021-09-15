@@ -1,16 +1,15 @@
 import 'dart:io';
 
 import 'package:budgets/data/models/user_model.dart';
-import 'package:budgets/data/providers/firebase_provider.dart';
+import 'package:budgets/data/providers/user_firebase_provider.dart';
 
 import '../user_repository.dart';
 
 class UserRepository extends UserRepositoryBase {
-  final provider = FirebaseProvider();
+  final provider = UserFirebaseProvider();
 
   @override
   Future<UserModel?> getUser() async {
-    print('try');
     return await provider.getUser();
   }
 

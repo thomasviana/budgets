@@ -21,7 +21,6 @@ class UserFirebaseProvider {
     final snapshot = await firestore.doc('users/${currentUser.uid}').get();
     if (snapshot.exists) {
       final userData = UserModel.fromFirebaseMap(snapshot.data()!);
-      print(userData.name);
       return userData;
     }
     return null;

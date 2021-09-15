@@ -30,10 +30,9 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   final _nameController = TextEditingController();
-  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   final _picker = ImagePicker();
 
   late Widget image;
@@ -50,15 +49,18 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl =
-        (context.read<AuthCubit>().state as AuthSignedIn).user.image;
-    image = CachedNetworkImage(
-      imageUrl: imageUrl ?? widget.user.image!,
-      progressIndicatorBuilder: (_, __, progress) =>
-          CircularProgressIndicator(value: progress.progress),
-      errorWidget: (_, __, ___) => Icon(Icons.error),
-      fit: BoxFit.cover,
-    );
+    final isSaving = context.watch<UserCubit>().state is UserLoadingState;
+
+    final userData = (context.read<AuthCubit>().state as AuthSignedIn).user;
+    final imageUrl = userData.image;
+
+    // image = CachedNetworkImage(
+    //   imageUrl: imageUrl ?? widget.user.image!,
+    //   progressIndicatorBuilder: (_, __, progress) =>
+    //       CircularProgressIndicator(value: progress.progress),
+    //   errorWidget: (_, __, ___) => Icon(Icons.error),
+    //   fit: BoxFit.cover,
+    // );
     if (widget.pickedImage != null) {
       image = Image.file(widget.pickedImage!, fit: BoxFit.cover);
     } else if (widget.user.image != null && widget.user.image!.isNotEmpty) {
@@ -89,43 +91,56 @@ class _UserProfileState extends State<UserProfile> {
                 buildWhen: (_, current) => current is AuthSignedIn,
                 builder: (_, state) {
                   return Text(
-                    'User ID: ${(state as AuthSignedIn).user.email}',
+                    'User ID: ${(state as AuthSignedIn).user.uid}',
                   );
                 },
               ),
               SizedBox(height: 50),
-              TextFormField(
-                controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: _lastNameController,
-                decoration: InputDecoration(labelText: 'Last Name'),
-              ),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-              ),
-              TextField(
-                controller: _phoneController,
-                decoration: InputDecoration(labelText: 'Phone'),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      initialValue: userData.name,
+                      decoration: InputDecoration(labelText: 'Name'),
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: userData.email,
+                      decoration: InputDecoration(labelText: 'Email'),
+                    ),
+                    TextFormField(
+                      initialValue: userData.phone,
+                      decoration: InputDecoration(labelText: 'Phone'),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 20),
-              RoundedButton(
-                onPressed: widget.isSaving
-                    ? () {}
-                    : () {
-                        context.read<UserCubit>().saveUser(
-                              (context.read<AuthCubit>().state as AuthSignedIn)
-                                  .user
-                                  .uid,
-                              _nameController.text,
-                              _lastNameController.text,
-                              _emailController.text,
-                              _phoneController.text,
-                            );
-                      },
-                label: 'Save',
+              BlocBuilder<UserCubit, UserState>(
+                builder: (context, state) {
+                  if (state is UserLoadingState) {
+                    return CircularProgressIndicator();
+                  } else if (state is UserReadyState) {
+                    return RoundedButton(
+                      onPressed: widget.isSaving
+                          ? () {}
+                          : () {
+                              context.read<UserCubit>().saveUser(
+                                    (context.read<AuthCubit>().state
+                                            as AuthSignedIn)
+                                        .user
+                                        .uid,
+                                    _nameController.text,
+                                    _emailController.text,
+                                    _phoneController.text,
+                                  );
+                            },
+                      label: 'Save',
+                    );
+                  }
+                  throw Exception();
+                },
               )
             ],
           ),

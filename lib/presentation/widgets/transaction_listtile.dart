@@ -3,26 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:budgets/constants.dart';
 
 class TransactionListTile extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String amount;
+  final String date;
+
+  const TransactionListTile({
+    required this.title,
+    required this.subtitle,
+    required this.amount,
+    required this.date,
+  });
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 0),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
       minVerticalPadding: 20,
       leading: CircleAvatar(
         backgroundColor: kPrimayColor,
         child: Icon(Icons.money, color: Colors.white),
       ),
       title: Text(
-        'title',
+        title,
         style: Theme.of(context).textTheme.bodyText1,
       ),
+      subtitle: Text(subtitle),
       trailing: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("${currency.format(100000)}"),
+          Text(amount),
           Text(
-            '1 Sept 2021',
+            date,
             style: Theme.of(context).textTheme.caption,
           ),
         ],

@@ -6,7 +6,6 @@ import 'package:budgets/constants.dart';
 import 'components/stat_card.dart';
 
 class StatsScreen extends StatelessWidget {
-  static const routeName = '/stats-screen';
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(

@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 
 class HeaderActions extends StatelessWidget {
-  const HeaderActions({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(

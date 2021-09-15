@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Transaction {
+class Record {
   final String id;
   final String title;
   final String tag;
@@ -8,7 +8,7 @@ class Transaction {
   final Timestamp date;
   final String type;
 
-  Transaction({
+  Record({
     required this.id,
     required this.title,
     required this.tag,

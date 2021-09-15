@@ -11,13 +11,17 @@ class RecordInitialState extends RecordState {}
 
 class RecordLoadingState extends RecordState {}
 
-class RecordReadyState extends RecordState {}
+class RecordReadyState extends RecordState {
+  final List<Record> recordList;
+
+  RecordReadyState(this.recordList);
+}
 
 class RecordAddedState extends RecordState {
   final String userId;
   final Record record;
 
-  RecordAddedState(this.record, this.userId);
+  RecordAddedState(this.userId, this.record);
 
   @override
   List<Object> get props => [record];
@@ -28,7 +32,7 @@ class RecordDeletedState extends RecordState {
 
   final String id;
 
-  RecordDeletedState(this.id, this.userId);
+  RecordDeletedState(this.userId, this.id);
 
   @override
   List<Object> get props => [id];

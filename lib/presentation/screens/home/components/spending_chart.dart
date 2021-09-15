@@ -21,8 +21,8 @@ class SpendingChart extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                  child:
-                      Icon(Icons.donut_large, size: 150, color: Colors.orange)),
+                child: Icon(Icons.donut_large, size: 150, color: Colors.orange),
+              ),
             ),
             Text(
               'Show more',

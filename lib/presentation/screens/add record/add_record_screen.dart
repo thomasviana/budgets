@@ -43,21 +43,20 @@ class _AddRecordState extends State<AddRecord> {
     }
     if (currentValue == 1) {
       incomeTypeVal == 0 ? recordTag = 'AI' : recordTag = 'PI';
-
-      final newRecord = Record(
-        id: DateTime.now().toIso8601String(),
-        title: _conceptController.text,
-        tag: recordTag,
-        amount: double.parse(_amountController.text),
-        date: dateTime,
-        type: currentValue == 0 ? 'Expense' : 'Income',
-      );
-      Navigator.pop(context);
-
-      final userId = (context.read<AuthCubit>().state as AuthSignedIn).user.uid;
-
-      await context.read<RecordCubit>().addRecord(userId, newRecord);
     }
+    final newRecord = Record(
+      id: DateTime.now().toIso8601String(),
+      title: _conceptController.text,
+      tag: recordTag,
+      amount: double.parse(_amountController.text),
+      date: dateTime,
+      type: currentValue == 0 ? 'Expense' : 'Income',
+    );
+    Navigator.pop(context);
+
+    final userId = (context.read<AuthCubit>().state as AuthSignedIn).user.uid;
+
+    await context.read<RecordCubit>().addRecord(userId, newRecord);
   }
 
   @override

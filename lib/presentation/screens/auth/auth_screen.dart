@@ -83,7 +83,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   SizedBox(height: 50),
                   Text(
-                    'Login',
+                    isCreateAccountMode ? 'Register' : 'Login',
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   SizedBox(height: 50),

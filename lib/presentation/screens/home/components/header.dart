@@ -81,16 +81,17 @@ class Header extends StatelessWidget {
                 left: 0,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     MainCard(
                       icon: Icons.food_bank,
                       title: 'BANK',
-                      amount: 100000,
+                      amount: 16000,
                     ),
                     MainCard(
                       icon: Icons.money,
                       title: 'CASH',
-                      amount: 100000,
+                      amount: 6300,
                     ),
                   ],
                 ),

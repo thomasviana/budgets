@@ -7,21 +7,24 @@ class TransactionListTile extends StatelessWidget {
   final String tag;
   final String amount;
   final String date;
+  final bool isIncome;
 
   const TransactionListTile({
     required this.title,
     required this.tag,
     required this.amount,
     required this.date,
+    required this.isIncome,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      minVerticalPadding: 20,
+      // minVerticalPadding: 20,
       leading: CircleAvatar(
-        backgroundColor: kPrimayColor,
-        child: Icon(Icons.money, color: Colors.white),
+        backgroundColor: isIncome ? Colors.greenAccent : kAccentColor,
+        child: Icon(isIncome ? Icons.arrow_forward : Icons.arrow_back,
+            color: Colors.white),
       ),
       title: Text(
         title,

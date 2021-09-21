@@ -10,10 +10,16 @@
             "type": "dart"
         },
         {
-            "name": "iPhone",
+            "name": "iPhone 12 Pro Max",
             "request": "launch",
             "type": "dart",
             "deviceId": "007153FC-9053-4A68-851A-20D1B6013518"
+        },
+        {
+            "name": "iPhone 11",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "73EE2120-4DB0-42FD-AA3A-DD4D417FE40A"
         },
         {
             "name": "Android",

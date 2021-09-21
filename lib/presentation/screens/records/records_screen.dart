@@ -42,6 +42,9 @@ class _RecordsScreenState extends State<RecordsScreen> {
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) => TransactionListTile(
+                          isIncome:
+                              // ignore: avoid_bool_literals_in_conditional_expressions
+                              recordList[index].type == 'Income' ? true : false,
                           title: recordList[index].title,
                           tag: recordList[index].tag,
                           amount:

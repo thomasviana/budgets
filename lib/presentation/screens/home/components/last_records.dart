@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/widgets/transaction_listtile.dart';
 import 'package:flutter/material.dart';
 
 import 'package:budgets/constants.dart';
@@ -8,15 +9,30 @@ class LastRecordsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return WidgetCard(
       title: 'Last records',
-      content: Container(
-        height: 200,
+      content: SizedBox(
+        height: 250,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           // ignore: prefer_const_literals_to_create_immutables
           children: [
-            // TransactionListTile(),
-            // TransactionListTile(),
-            // TransactionListTile(),
+            TransactionListTile(
+                isIncome: true,
+                title: 'New shoes',
+                tag: 'CLO',
+                amount: '160,00',
+                date: 'Sept 4'),
+            TransactionListTile(
+                isIncome: true,
+                title: 'Restaurant',
+                tag: 'DIV',
+                amount: '110,00',
+                date: 'Sept 1'),
+            TransactionListTile(
+                isIncome: false,
+                title: 'Salary',
+                tag: 'Active Income',
+                amount: '5.000,00',
+                date: 'Ago 30'),
             Spacer(),
             Text(
               'Show more',

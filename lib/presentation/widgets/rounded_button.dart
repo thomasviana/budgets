@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:budgets/constants.dart';
+import '../../constants.dart';
 
 class RoundedButton extends StatelessWidget {
   final Function onPressed;

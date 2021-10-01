@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:budgets/constants.dart';
+import '../../../../constants.dart';
 
 SliverToBoxAdapter statCard(
   BuildContext context, {

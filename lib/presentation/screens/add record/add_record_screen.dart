@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:budgets/data/models/record.dart';
-import 'package:budgets/data/repository/implementation/user_repository.dart';
-import 'package:budgets/presentation/widgets/custom_textfield.dart';
-import 'package:budgets/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/bloc/cubit/record_cubit.dart';
-import 'package:budgets/bloc/cubit/user_cubit.dart';
+import '../../../data/models/record.dart';
+import '../../../data/repository/implementation/user_repository.dart';
+import '../../widgets/custom_textfield.dart';
+import '../../../bloc/cubit/auth_cubit.dart';
+import '../../../bloc/cubit/record_cubit.dart';
+import '../../../bloc/cubit/user_cubit.dart';
 
 import 'components/buttons_add_record.dart';
 

@@ -1,10 +1,10 @@
+import 'package:budgets/core/navigation/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:budgets/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/bloc/cubit/user_cubit.dart';
-import 'package:budgets/src/navigation/routes.dart';
+import '../../../bloc/cubit/auth_cubit.dart';
+import '../../../bloc/cubit/user_cubit.dart';
 
 import '../../../constants.dart';
 

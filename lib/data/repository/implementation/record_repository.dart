@@ -1,6 +1,6 @@
-import 'package:budgets/data/models/record.dart';
-import 'package:budgets/data/providers/record_firebase_provider.dart';
-import 'package:budgets/data/repository/record_repository.dart';
+import '../../models/record.dart';
+import '../../providers/record_firebase_provider.dart';
+import '../record_repository.dart';
 
 class RecordRepository extends RecordRepositoryBase {
   final provider = RecordFirebaseProvider();

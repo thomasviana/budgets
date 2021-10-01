@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:budgets/constants.dart';
-import 'package:budgets/presentation/widgets/rounded_button.dart';
-import 'package:budgets/bloc/cubit/auth_cubit.dart';
+import '../../../constants.dart';
+import '../../widgets/rounded_button.dart';
+import '../../../bloc/cubit/auth_cubit.dart';
 
 import 'components/custom_divider.dart';
 

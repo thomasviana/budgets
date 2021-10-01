@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:budgets/presentation/widgets/widget_card.dart';
+import '../../../widgets/widget_card.dart';
 
 import '../../../../constants.dart';
 

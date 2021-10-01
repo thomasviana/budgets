@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:budgets/data/models/user_model.dart';
-import 'package:budgets/data/repository/user_repository.dart';
+import '../../data/models/user_model.dart';
+import '../../data/repository/user_repository.dart';
 
 part 'user_state.dart';
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:budgets/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/constants.dart';
-import 'package:budgets/presentation/screens/add%20record/add_record_screen.dart';
-import 'package:budgets/presentation/screens/home/home_screen.dart';
-import 'package:budgets/presentation/screens/records/records_screen.dart';
-import 'package:budgets/presentation/screens/settings/settings_screen.dart';
-import 'package:budgets/presentation/screens/stats/stats_screen.dart';
+import '../../../bloc/cubit/auth_cubit.dart';
+import '../../../constants.dart';
+import '../add%20record/add_record_screen.dart';
+import '../home/home_screen.dart';
+import '../records/records_screen.dart';
+import '../settings/settings_screen.dart';
+import '../stats/stats_screen.dart';
 
 class MainAppScreen extends StatefulWidget {
   @override

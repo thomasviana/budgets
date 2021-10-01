@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:budgets/data/models/user_model.dart';
-import 'package:budgets/presentation/widgets/rounded_button.dart';
-import 'package:budgets/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/bloc/cubit/user_cubit.dart';
+import '../../../../data/models/user_model.dart';
+import '../../../widgets/rounded_button.dart';
+import '../../../../bloc/cubit/auth_cubit.dart';
+import '../../../../bloc/cubit/user_cubit.dart';
 
 import '../../../../constants.dart';
 

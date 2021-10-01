@@ -2,12 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:budgets/data/repository/implementation/record_repository.dart';
-import 'package:budgets/data/repository/implementation/user_repository.dart';
-import 'package:budgets/bloc/cubit/auth_cubit.dart';
-import 'package:budgets/bloc/cubit/record_cubit.dart';
-import 'package:budgets/bloc/cubit/user_cubit.dart';
-import 'package:budgets/src/navigation/routes.dart';
+import 'core/navigation/routes.dart';
+import 'data/repository/implementation/record_repository.dart';
+import 'data/repository/implementation/user_repository.dart';
+import 'bloc/cubit/auth_cubit.dart';
+import 'bloc/cubit/record_cubit.dart';
+import 'bloc/cubit/user_cubit.dart';
 
 import 'constants.dart';
 import 'data/repository/implementation/auth_repository.dart';

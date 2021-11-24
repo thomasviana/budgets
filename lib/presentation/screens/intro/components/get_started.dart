@@ -1,7 +1,7 @@
-import 'package:budgets/core/navigation/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/navigation/routes.dart';
 import '../../../widgets/rounded_button.dart';
 
 class GetStarted extends StatelessWidget {

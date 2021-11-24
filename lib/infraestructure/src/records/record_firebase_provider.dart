@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/record.dart';
+import '../../../domain/records.dart';
 
 class RecordFirebaseProvider {
   final _fireStore = FirebaseFirestore.instance;

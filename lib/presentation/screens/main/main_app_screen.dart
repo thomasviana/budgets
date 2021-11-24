@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../bloc/cubit/auth_cubit.dart';
+import '../../../application/auth.dart';
 import '../../../constants.dart';
 import '../add%20record/add_record_screen.dart';
 import '../home/home_screen.dart';
@@ -85,7 +85,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                     setIndex: () {
                       setState(() {
                         _currentIndex = 0;
-                        selectIcon("home");
+                        selectIcon('home');
                       });
                     },
                     icon: Icons.home_outlined,
@@ -97,7 +97,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                     setIndex: () {
                       setState(() {
                         _currentIndex = 1;
-                        selectIcon("stats");
+                        selectIcon('stats');
                       });
                     },
                     icon: Icons.pie_chart_outline,
@@ -113,7 +113,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                     setIndex: () {
                       setState(() {
                         _currentIndex = 2;
-                        selectIcon("records");
+                        selectIcon('records');
                       });
                     },
                     icon: Icons.format_list_bulleted_rounded,
@@ -125,7 +125,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                     setIndex: () {
                       setState(() {
                         _currentIndex = 3;
-                        selectIcon("settings");
+                        selectIcon('settings');
                       });
                     },
                     icon: Icons.settings_outlined,

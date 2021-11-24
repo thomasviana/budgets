@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/navigation/routes.dart';
+import '../../../routes/routes.dart';
 import '../../../widgets/rounded_button.dart';
 
 class GetStarted extends StatelessWidget {
@@ -13,30 +12,29 @@ class GetStarted extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          // ignore: prefer_const_literals_to_create_immutables
-          colors: [
-            kPrimayColor,
-            kAccentColor,
-          ],
-        ),
-      ),
+      // decoration: BoxDecoration(
+      //   gradient: LinearGradient(
+      //     // ignore: prefer_const_literals_to_create_immutables
+      //     colors: [
+      //       kPrimayColor,
+      //       kAccentColor,
+      //     ],
+      //   ),
+      // ),
       height: size.height,
       width: size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.donut_large,
-            size: 200,
-            color: Colors.white,
+          Image.asset(
+            'assets/images/logo.png',
+            width: 250,
+            height: 250,
           ),
           SizedBox(height: 50),
           Text(
             'Welcome',
             style: Theme.of(context).textTheme.headline3!.copyWith(
-                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
           ),
@@ -48,10 +46,7 @@ class GetStarted extends StatelessWidget {
             label: 'Get Started',
           ),
           SizedBox(height: 60),
-          Text(
-            text,
-            style: TextStyle(color: Colors.white),
-          )
+          Text(text)
         ],
       ),
     );

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../widgets/widget_card.dart';
-
 import '../../../../constants.dart';
+import '../../../widgets/widget_card.dart';
 
 class SpendingChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WidgetCard(
       title: 'Spending',
-      content: Container(
+      content: SizedBox(
         width: double.infinity,
         height: 200,
         child: Column(

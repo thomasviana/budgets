@@ -3,13 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/models/record.dart';
-import '../../../data/repository/implementation/user_repository.dart';
+import '../../../application/auth.dart';
+import '../../../application/records.dart';
+import '../../../domain/records.dart';
+import '../../../infraestructure/auth.dart';
 import '../../widgets/custom_textfield.dart';
-import '../../../bloc/cubit/auth_cubit.dart';
-import '../../../bloc/cubit/record_cubit.dart';
-import '../../../bloc/cubit/user_cubit.dart';
-
 import 'components/buttons_add_record.dart';
 
 class AddRecord extends StatefulWidget {
@@ -76,7 +74,7 @@ class _AddRecordState extends State<AddRecord> {
           height: 150,
           child: CupertinoDatePicker(
               initialDateTime: DateTime.now(),
-              minimumDate: DateTime(DateTime.now().year, 2, 1),
+              minimumDate: DateTime(DateTime.now().year, 2),
               maximumDate: DateTime.now(),
               onDateTimeChanged: (dateTime) {
                 final timeStamp = Timestamp.fromDate(dateTime);

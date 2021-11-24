@@ -14,7 +14,7 @@ class RecordLoadingState extends RecordState {}
 class RecordReadyState extends RecordState {
   final List<Record> recordList;
 
-  RecordReadyState(this.recordList);
+  const RecordReadyState(this.recordList);
 }
 
 class RecordAddedState extends RecordState {

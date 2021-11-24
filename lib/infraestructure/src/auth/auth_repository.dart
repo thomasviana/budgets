@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../auth_repository.dart';
+import '../../../domain/auth.dart';
 
 class AuthRepository extends AuthRepositoryBase {
   final _firebaseAuth = FirebaseAuth.instance;

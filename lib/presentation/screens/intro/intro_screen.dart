@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:page_indicator/page_indicator.dart';
 
+import '../../../application/auth.dart';
 import '../../../constants.dart';
-import '../../../bloc/cubit/auth_cubit.dart';
-
 import 'components/description_page.dart';
 import 'components/get_started.dart';
 
@@ -23,36 +22,38 @@ class _IntroPager extends HookWidget {
   Widget build(BuildContext context) {
     final isSigningIn = context.watch<AuthCubit>().state is AuthSigningIn;
 
-    return AbsorbPointer(
-      absorbing: isSigningIn,
-      child: PageIndicatorContainer(
-        child: PageView(
-          children: [
-            GetStarted(text: 'Swipe to learn more about the app'),
-            DescriptionPage(
-              imagePath: 'assets/images/logo.png',
-              text: 'Track your personasl finances.',
-            ),
-            DescriptionPage(
-              imagePath: 'assets/images/logo.png',
-              text: 'Review your stats and budgets.',
-            ),
-            DescriptionPage(
-              imagePath: 'assets/images/logo.png',
-              text: 'Add incomes and expenses.',
-            ),
-            DescriptionPage(
-              imagePath: 'assets/images/logo.png',
-              text: 'Have a good experience while manage your budgets.',
-            ),
-            GetStarted(
-              text: '',
-            ),
-          ],
+    return SafeArea(
+      child: AbsorbPointer(
+        absorbing: isSigningIn,
+        child: PageIndicatorContainer(
+          child: PageView(
+            children: const [
+              GetStarted(text: 'Swipe to learn more about the app'),
+              DescriptionPage(
+                imagePath: 'assets/images/logo.png',
+                text: 'Register your incomes.',
+              ),
+              DescriptionPage(
+                imagePath: 'assets/images/logo.png',
+                text: 'Control your expenses.',
+              ),
+              DescriptionPage(
+                imagePath: 'assets/images/logo.png',
+                text: 'Track your growth with your assets.',
+              ),
+              DescriptionPage(
+                imagePath: 'assets/images/logo.png',
+                text: 'Know your debt.',
+              ),
+              GetStarted(
+                text: 'Now your are ready.',
+              ),
+            ],
+          ),
+          length: 5,
+          indicatorColor: kPrimayColor.withOpacity(0.3),
+          indicatorSelectorColor: kPrimayColor,
         ),
-        length: 5,
-        indicatorColor: kPrimayColor.withOpacity(0.3),
-        indicatorSelectorColor: kPrimayColor,
       ),
     );
   }

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../../application/records.dart';
 import '../../../constants.dart';
 import '../../widgets/transaction_listtile.dart';
-import '../../../bloc/cubit/record_cubit.dart';
 
 class RecordsScreen extends StatefulWidget {
   @override

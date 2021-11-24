@@ -2,14 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/cubit/auth_cubit.dart';
-import 'bloc/cubit/record_cubit.dart';
-import 'bloc/cubit/user_cubit.dart';
+import 'application/auth.dart';
+import 'application/records.dart';
 import 'constants.dart';
-import 'core/navigation/routes.dart';
-import 'data/repository/implementation/auth_repository.dart';
-import 'data/repository/implementation/record_repository.dart';
-import 'data/repository/implementation/user_repository.dart';
+import 'infraestructure/auth.dart';
+import 'infraestructure/records.dart';
+import 'presentation/routes/routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

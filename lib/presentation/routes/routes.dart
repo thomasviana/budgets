@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../presentation/screens/auth/auth_screen.dart';
-import '../../presentation/screens/intro/intro_screen.dart';
-import '../../presentation/screens/main/main_app_screen.dart';
-import '../../presentation/screens/profile/profile_screen.dart';
-import '../../presentation/screens/splash/splash_screen.dart';
+import '../screens/auth/auth_screen.dart';
+import '../screens/intro/intro_screen.dart';
+import '../screens/main/main_app_screen.dart';
+import '../screens/profile/profile_screen.dart';
+import '../screens/splash/splash_screen.dart';
 
 class Routes {
   static const splash = '/';

@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 
-import '../models/user_model.dart';
+import '../../../domain/auth.dart';
 
 class UserFirebaseProvider {
   FirebaseStorage get storage => FirebaseStorage.instance;

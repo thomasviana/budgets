@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../data/repository/implementation/user_repository.dart';
-import 'components/spending_chart.dart';
-import '../../../bloc/cubit/user_cubit.dart';
-
+import '../../../application/auth.dart';
+import '../../../infraestructure/auth.dart';
 import 'components/header.dart';
 import 'components/header_actions.dart';
 import 'components/last_records.dart';
+import 'components/spending_chart.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

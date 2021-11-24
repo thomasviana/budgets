@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../application/auth.dart';
 import '../../../constants.dart';
 import '../../widgets/rounded_button.dart';
-import '../../../bloc/cubit/auth_cubit.dart';
-
 import 'components/custom_divider.dart';
 
 TextEditingController emailController = TextEditingController();

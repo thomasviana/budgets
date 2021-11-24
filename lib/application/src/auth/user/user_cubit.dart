@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../data/models/user_model.dart';
-import '../../data/repository/user_repository.dart';
+import '../../../../domain/auth.dart';
 
 part 'user_state.dart';
 

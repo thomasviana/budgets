@@ -1,7 +1,7 @@
-import '../../../widgets/transaction_listtile.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
+import '../../../widgets/transaction_listtile.dart';
 import '../../../widgets/widget_card.dart';
 
 class LastRecordsWidget extends StatelessWidget {

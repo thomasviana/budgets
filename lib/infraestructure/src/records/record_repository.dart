@@ -1,6 +1,5 @@
-import '../../models/record.dart';
-import '../../providers/record_firebase_provider.dart';
-import '../record_repository.dart';
+import '../../../domain/records.dart';
+import 'record_firebase_provider.dart';
 
 class RecordRepository extends RecordRepositoryBase {
   final provider = RecordFirebaseProvider();

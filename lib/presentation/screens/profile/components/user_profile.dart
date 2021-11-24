@@ -6,12 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../data/models/user_model.dart';
-import '../../../widgets/rounded_button.dart';
-import '../../../../bloc/cubit/auth_cubit.dart';
-import '../../../../bloc/cubit/user_cubit.dart';
-
+import '../../../../application/auth.dart';
 import '../../../../constants.dart';
+import '../../../../domain/auth.dart';
+import '../../../widgets/rounded_button.dart';
 
 class UserProfile extends StatefulWidget {
   final UserModel user;
@@ -56,9 +54,9 @@ class _UserProfileState extends State<UserProfile> {
     String? _phoneField;
 
     if (authUserData.image != null) {
-      _imageUrl = authUserData.image!;
+      _imageUrl = authUserData.image;
     } else if (widget.user.image != null) {
-      _imageUrl = widget.user.image!;
+      _imageUrl = widget.user.image;
     } else {
       _imageUrl =
           'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg';

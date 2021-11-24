@@ -7,9 +7,8 @@ environment:
   sdk: ">=2.13.0 <3.0.0"
 
 dependencies:
-  cupertino_icons: ^1.0.3
-  lint: ^1.0.0
   bloc: ^7.1.0
+  cupertino_icons: ^1.0.3
   cached_network_image: ^3.1.0
   cloud_firestore: ^2.5.2
   equatable: ^2.0.3
@@ -25,6 +24,7 @@ dependencies:
   google_sign_in: 5.0.2
   image_picker: ^0.8.4
   intl: ^0.17.0
+  lint: ^1.0.0
   page_indicator: ^0.4.1
   path: ^1.8.0
 

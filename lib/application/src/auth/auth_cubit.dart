@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../data/repository/auth_repository.dart';
+import '../../../domain/auth.dart';
 
 part 'auth_state.dart';
 

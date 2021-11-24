@@ -1,4 +1,4 @@
-import '../models/record.dart';
+import 'record.dart';
 
 abstract class RecordRepositoryBase {
   Future<List<Record>> getRecords(String userId);

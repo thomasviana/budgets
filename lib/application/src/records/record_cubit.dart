@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../data/models/record.dart';
-import '../../data/repository/record_repository.dart';
+import '../../../domain/records.dart';
 
 part 'record_state.dart';
 

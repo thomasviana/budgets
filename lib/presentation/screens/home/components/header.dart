@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../application/auth.dart';
-import '../../../../constants.dart';
+import '../../../resources/constants.dart';
 import '../../../widgets/main_card.dart';
 
 class HomeHeader extends SliverPersistentHeader {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants.dart';
+import '../../../resources/constants.dart';
 import '../../../widgets/widget_card.dart';
 
 class SpendingChart extends StatelessWidget {

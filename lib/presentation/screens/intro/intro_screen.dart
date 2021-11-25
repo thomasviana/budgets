@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:page_indicator/page_indicator.dart';
 
 import '../../../application/auth.dart';
-import '../../../constants.dart';
+import '../../resources/constants.dart';
 import 'components/description_page.dart';
 import 'components/get_started.dart';
 

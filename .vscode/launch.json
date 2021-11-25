@@ -10,6 +10,12 @@
             "type": "dart"
         },
         {
+            "name": "iPhone 13",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "EFB99DE9-5209-4446-A1CF-A4D4F7E7CF4F"
+        },
+        {
             "name": "iPhone 12 Pro Max",
             "request": "launch",
             "type": "dart",

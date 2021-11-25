@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'application/auth.dart';
 import 'application/records.dart';
-import 'constants.dart';
 import 'infraestructure/auth.dart';
 import 'infraestructure/records.dart';
+import 'presentation/resources/constants.dart';
 import 'presentation/routes/routes.dart';
 
 Future<void> main() async {

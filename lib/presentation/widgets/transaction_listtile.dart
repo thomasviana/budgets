@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
+import '../resources/constants.dart';
 
 class TransactionListTile extends StatelessWidget {
   final String title;

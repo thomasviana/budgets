@@ -1,4 +1,5 @@
 import 'package:budgets/presentation/screens/home/cubit/home_screen_cubit.dart';
+import 'package:budgets/presentation/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,7 +59,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
       case 2:
         return StatsScreen();
       case 3:
-        return StatsScreen();
+        return SettingsScreen();
 
       default:
         return Placeholder(color: Colors.black);

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:page_indicator/page_indicator.dart';
 
-import '../../../application/auth.dart';
 import '../../resources/constants.dart';
 import 'components/description_page.dart';
 import 'components/get_started.dart';
@@ -20,11 +18,9 @@ class IntroScreen extends StatelessWidget {
 class _IntroPager extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final isSigningIn = context.watch<AuthCubit>().state is AuthSigningIn;
-
     return SafeArea(
       child: AbsorbPointer(
-        absorbing: isSigningIn,
+        absorbing: false,
         child: PageIndicatorContainer(
           child: PageView(
             children: const [

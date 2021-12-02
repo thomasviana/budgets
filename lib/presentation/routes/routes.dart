@@ -1,36 +1,64 @@
+import 'package:budgets/presentation/screens/auth/cubit/auth_screen_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../dependency_injection.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/intro/intro_screen.dart';
 import '../screens/main/main_app_screen.dart';
-import '../screens/profile/profile_screen.dart';
 import '../screens/splash/splash_screen.dart';
+import 'app_navigator.dart';
 
 class Routes {
-  static const splash = '/';
-  static const intro = '/intro';
-  static const auth = '/auth';
-  static const main = '/main';
-  static const profile = '/profile';
-
   static Route routes(RouteSettings settings) {
     switch (settings.name) {
-      case splash:
-        return _buildRoute(SplashScreen());
-      case intro:
-        return _buildRoute(IntroScreen());
-      case auth:
-        return _buildRoute(AuthScreen());
-      case main:
-        return _buildRoute(MainAppScreen());
-      case profile:
-        return _buildRoute(ProfileSreen());
+      case AppNavigator.ROUTE_SPLASH_PAGE:
+        return _buildRoute(
+          settings,
+          SplashScreen(),
+        );
+      case AppNavigator.ROUTE_INTRO_PAGE:
+        return _buildRoute(
+          settings,
+          IntroScreen(),
+        );
+      case AppNavigator.ROUTE_AUTH_PAGE:
+        return _buildRoute(
+          settings,
+          BlocProvider(
+            create: (context) => sl<AuthScreenCubit>(),
+            child: AuthScreen(),
+          ),
+        );
+      case AppNavigator.ROUTE_MAIN_PAGE:
+        return _buildRoute(
+          settings,
+          MainAppScreen(),
+        );
+      case AppNavigator.ROUTE_PROFILE_PAGE:
+        return _buildRoute(
+          settings,
+          Container(),
+        );
       default:
-        throw Exception('Route does not exist');
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => Scaffold(
+            body: Center(
+              child: Text('No route defined for ${settings.name}'),
+            ),
+          ),
+        );
     }
   }
 
-  static MaterialPageRoute _buildRoute(Widget screen) {
-    return MaterialPageRoute(builder: (context) => screen);
+  static MaterialPageRoute _buildRoute(
+    RouteSettings settings,
+    Widget screen,
+  ) {
+    return MaterialPageRoute(
+      settings: settings,
+      builder: (context) => screen,
+    );
   }
 }

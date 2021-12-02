@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 import 'header.dart';
 
 class Body extends StatelessWidget {
+  final String displayName;
+  const Body({
+    Key? key,
+    required this.displayName,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

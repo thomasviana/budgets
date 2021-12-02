@@ -1,12 +1,11 @@
+import 'package:budgets/presentation/screens/home/cubit/home_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/auth.dart';
+import '../../../dependency_injection.dart';
 import '../../resources/constants.dart';
-import '../add%20record/add_record_screen.dart';
 import '../home/home_screen.dart';
 import '../records/records_screen.dart';
-import '../settings/settings_screen.dart';
 import '../stats/stats_screen.dart';
 
 class MainAppScreen extends StatefulWidget {
@@ -19,13 +18,13 @@ class _MainAppScreenState extends State<MainAppScreen> {
   bool statsSelected = false;
   bool recordsSelected = false;
   bool settingSelected = false;
-  int _currentIndex = 0;
+  int selectedPageIndex = 0;
 
   final List<Widget> _screens = [
     HomeScreen(),
     StatsScreen(),
     RecordsScreen(),
-    SettingsScreen(),
+    Container(),
   ];
 
   void selectIcon(String selectedIcon) {
@@ -47,14 +46,29 @@ class _MainAppScreenState extends State<MainAppScreen> {
     }
   }
 
+  Widget _buildPage(BuildContext context, int selectedPageIndex) {
+    switch (selectedPageIndex) {
+      case 0:
+        return BlocProvider(
+          create: (context) => sl<HomeScreenCubit>(),
+          child: HomeScreen(),
+        );
+      case 1:
+        return StatsScreen();
+      case 2:
+        return StatsScreen();
+      case 3:
+        return StatsScreen();
+
+      default:
+        return Placeholder(color: Colors.black);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AuthCubit, AuthState>(
-          buildWhen: (previous, current) => current is AuthSignedIn,
-          builder: (_, state) {
-            return _screens[_currentIndex];
-          }),
+      body: _buildPage(context, selectedPageIndex),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
@@ -62,7 +76,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
             backgroundColor: Colors.transparent,
             isScrollControlled: true,
             context: context,
-            builder: (context) => AddRecord(),
+            builder: (context) => StatsScreen(),
           );
         },
       ),
@@ -82,9 +96,9 @@ class _MainAppScreenState extends State<MainAppScreen> {
                 children: [
                   buildNavButton(
                     isSelected: homeSelected,
-                    setIndex: () {
+                    onPressed: () {
                       setState(() {
-                        _currentIndex = 0;
+                        selectedPageIndex = 0;
                         selectIcon('home');
                       });
                     },
@@ -94,9 +108,9 @@ class _MainAppScreenState extends State<MainAppScreen> {
                   ),
                   buildNavButton(
                     isSelected: statsSelected,
-                    setIndex: () {
+                    onPressed: () {
                       setState(() {
-                        _currentIndex = 1;
+                        selectedPageIndex = 1;
                         selectIcon('stats');
                       });
                     },
@@ -110,9 +124,9 @@ class _MainAppScreenState extends State<MainAppScreen> {
                 children: [
                   buildNavButton(
                     isSelected: recordsSelected,
-                    setIndex: () {
+                    onPressed: () {
                       setState(() {
-                        _currentIndex = 2;
+                        selectedPageIndex = 2;
                         selectIcon('records');
                       });
                     },
@@ -122,9 +136,9 @@ class _MainAppScreenState extends State<MainAppScreen> {
                   ),
                   buildNavButton(
                     isSelected: settingSelected,
-                    setIndex: () {
+                    onPressed: () {
                       setState(() {
-                        _currentIndex = 3;
+                        selectedPageIndex = 3;
                         selectIcon('settings');
                       });
                     },
@@ -143,7 +157,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
 
   MaterialButton buildNavButton({
     required bool isSelected,
-    required final VoidCallback setIndex,
+    required final VoidCallback onPressed,
     required final IconData icon,
     required final IconData iconSelected,
     required final String label,
@@ -151,7 +165,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
     return MaterialButton(
       highlightColor: Colors.white,
       minWidth: 80,
-      onPressed: setIndex,
+      onPressed: onPressed,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

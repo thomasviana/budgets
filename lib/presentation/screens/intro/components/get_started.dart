@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../routes/routes.dart';
+import '../../../routes/app_navigator.dart';
 import '../../../widgets/rounded_button.dart';
 
 class GetStarted extends StatelessWidget {
@@ -11,7 +11,7 @@ class GetStarted extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       // decoration: BoxDecoration(
       //   gradient: LinearGradient(
       //     // ignore: prefer_const_literals_to_create_immutables
@@ -41,7 +41,7 @@ class GetStarted extends StatelessWidget {
           SizedBox(height: 30),
           RoundedButton(
             onPressed: () {
-              Navigator.pushNamed(context, Routes.auth);
+              AppNavigator.navigateToAuthPage(context);
             },
             label: 'Get Started',
           ),

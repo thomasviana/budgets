@@ -1,7 +1,7 @@
+import 'package:budgets/presentation/screens/home/cubit/home_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../application/auth.dart';
 import '../../../resources/constants.dart';
 import '../../../widgets/main_card.dart';
 
@@ -59,19 +59,17 @@ class Header extends StatelessWidget {
               Positioned(
                 top: 0,
                 left: 25,
-                child: BlocBuilder<UserCubit, UserState>(
+                child: BlocBuilder<HomeScreenCubit, HomeScreenState>(
                   builder: (_, state) {
-                    if (state is UserLoadingState) {
-                      return CircularProgressIndicator();
-                    }
-                    if (state is UserReadyState) {
+                    if (state.isLoading) {
+                      return CircularProgressIndicator.adaptive();
+                    } else {
                       return Text(
-                        'Hi ${state.user.name!.split(' ')[0]}!',
+                        'Hi ${state.userName!.getOrCrash().split(' ')[0]}!',
                         style: Theme.of(context).textTheme.headline5!.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.white),
                       );
                     }
-                    throw Exception();
                   },
                 ),
               ),

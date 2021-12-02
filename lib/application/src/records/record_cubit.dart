@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../domain/records.dart';
 
 part 'record_state.dart';
 
+@injectable
 class RecordCubit extends Cubit<RecordState> {
   final RecordRepositoryBase _recordRepository;
 

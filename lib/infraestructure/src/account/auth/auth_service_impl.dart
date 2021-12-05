@@ -1,13 +1,11 @@
-import 'dart:io';
-
-import 'package:budgets/domain/account.dart';
-import 'package:budgets/domain/core.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../domain/account.dart';
+import '../../../../domain/core.dart';
 import 'user_firebase_prov.dart';
 
 @LazySingleton(as: AuthService)
@@ -32,7 +30,7 @@ class AuthServiceImpl implements AuthService {
             name: UserName(user.displayName!),
             emailAddress: EmailAddress(user.email!),
             phoneNumber: PhoneNumber(user.phoneNumber!),
-            userImage: UserImage(File(user.photoURL!)),
+            photoUrl: user.photoURL,
           );
   }
 
@@ -149,7 +147,12 @@ class AuthServiceImpl implements AuthService {
   }
 
   @override
-  Future<void> saveUser(UserEntity user, File? imageFile) {
-    return _userFirebaseProvider.saveUser(user, imageFile);
+  Future<void> saveUser(UserEntity user) {
+    return _userFirebaseProvider.saveUser(user);
+  }
+
+  @override
+  Future<void> setProfileImage(UserEntity user) {
+    return _userFirebaseProvider.setImage(user);
   }
 }

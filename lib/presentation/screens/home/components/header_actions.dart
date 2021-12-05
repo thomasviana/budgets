@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../resources/constants.dart';
+import '../../../resources/colors.dart';
 
 class HeaderActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       brightness: Brightness.light,
-      backgroundColor: kPrimayColor,
+      backgroundColor: AppColors.primayColor,
       actions: [
         IconButton(
           onPressed: () {},

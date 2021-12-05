@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:budgets/domain/account.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart' as path;
 
+import '../../../../domain/account.dart';
 import 'user_entity_dto.dart';
 
 @lazySingleton
@@ -39,22 +39,43 @@ class UserFirebaseProv {
       final snapshot = await _firebaseFirestore.doc('users/${user.uid}').get();
       if (snapshot.exists) {
         final userData = UserEntityDTO.fromFirebaseMap(snapshot.data()!);
-        return some(userData.toDomain());
+        print(userData.toDomain().emailAddress);
+        print(userData.toDomain().name);
+        print(userData.toDomain().phoneNumber);
+        print(userData.toDomain().photoUrl);
+        final userEntity = userData.toDomain();
+        return some(userEntity);
       }
       return Future.value(none());
     }
   }
 
-  Future<void> saveUser(UserEntity user, File? image) async {
+  Future<void> saveUser(UserEntity user) async {
     final ref = _firebaseFirestore.doc('users/${currentUser!.uid}');
     final userDTO = UserEntityDTO.fromDomain(user);
-    if (image == null) {
+    if (user.imagePath == null) {
       await ref.set(userDTO.toFirebaseMap(), SetOptions(merge: true));
     } else {
       final imagePath =
-          '${currentUser!.uid}/profile/${path.basename(image.path)}';
+          '${currentUser!.uid}/profile/${path.basename(user.imagePath!.getOrCrash())}';
       final storageRef = _firebaseStorage.ref(imagePath);
-      await storageRef.putFile(image);
+      await storageRef.putFile(File(user.imagePath!.getOrCrash()));
+      final url = await storageRef.getDownloadURL();
+      await ref.set(
+          userDTO.toFirebaseMap(newImage: url), SetOptions(merge: true));
+    }
+  }
+
+  Future<void> setImage(UserEntity user) async {
+    final ref = _firebaseFirestore.doc('users/${currentUser!.uid}');
+    final userDTO = UserEntityDTO.fromDomain(user);
+    if (user.imagePath == null) {
+      await ref.set(userDTO.toFirebaseMap(), SetOptions(merge: true));
+    } else {
+      final imagePath =
+          '${currentUser!.uid}/profile/${path.basename(user.imagePath!.getOrCrash())}';
+      final storageRef = _firebaseStorage.ref(imagePath);
+      await storageRef.putFile(File(user.imagePath!.getOrCrash()));
       final url = await storageRef.getDownloadURL();
       await ref.set(
           userDTO.toFirebaseMap(newImage: url), SetOptions(merge: true));

@@ -1,12 +1,12 @@
-import 'package:budgets/presentation/screens/home/cubit/home_screen_cubit.dart';
-import 'package:budgets/presentation/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dependency_injection.dart';
-import '../../resources/constants.dart';
+import '../../resources/colors.dart';
+import '../home/cubit/home_screen_cubit.dart';
 import '../home/home_screen.dart';
-import '../records/records_screen.dart';
+import '../settings/cubit/settings_screen_cubit.dart';
+import '../settings/settings_screen.dart';
 import '../stats/stats_screen.dart';
 
 class MainAppScreen extends StatefulWidget {
@@ -20,13 +20,6 @@ class _MainAppScreenState extends State<MainAppScreen> {
   bool recordsSelected = false;
   bool settingSelected = false;
   int selectedPageIndex = 0;
-
-  final List<Widget> _screens = [
-    HomeScreen(),
-    StatsScreen(),
-    RecordsScreen(),
-    Container(),
-  ];
 
   void selectIcon(String selectedIcon) {
     homeSelected = false;
@@ -59,7 +52,10 @@ class _MainAppScreenState extends State<MainAppScreen> {
       case 2:
         return StatsScreen();
       case 3:
-        return SettingsScreen();
+        return BlocProvider(
+          create: (context) => sl<SettingsScreenCubit>(),
+          child: SettingsScreen(),
+        );
 
       default:
         return Placeholder(color: Colors.black);
@@ -173,13 +169,14 @@ class _MainAppScreenState extends State<MainAppScreen> {
           Icon(
             isSelected ? iconSelected : icon,
             size: 35,
-            color: isSelected ? kAccentColor : Colors.grey,
+            color: isSelected ? AppColors.accentColor : AppColors.greySecondary,
           ),
           Text(
             label,
             style: TextStyle(
               fontSize: 10,
-              color: isSelected ? kAccentColor : Colors.grey,
+              color:
+                  isSelected ? AppColors.accentColor : AppColors.greySecondary,
             ),
           )
         ],

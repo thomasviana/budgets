@@ -22,13 +22,13 @@ class _$UserEntityDTOTearOff {
       required String? name,
       required String? emailAddress,
       required String? phoneNumber,
-      required String? userImage}) {
+      required String? photoUrl}) {
     return _UserEntityDTO(
       id: id,
       name: name,
       emailAddress: emailAddress,
       phoneNumber: phoneNumber,
-      userImage: userImage,
+      photoUrl: photoUrl,
     );
   }
 }
@@ -42,7 +42,7 @@ mixin _$UserEntityDTO {
   String? get name => throw _privateConstructorUsedError;
   String? get emailAddress => throw _privateConstructorUsedError;
   String? get phoneNumber => throw _privateConstructorUsedError;
-  String? get userImage => throw _privateConstructorUsedError;
+  String? get photoUrl => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserEntityDTOCopyWith<UserEntityDTO> get copyWith =>
@@ -59,7 +59,7 @@ abstract class $UserEntityDTOCopyWith<$Res> {
       String? name,
       String? emailAddress,
       String? phoneNumber,
-      String? userImage});
+      String? photoUrl});
 }
 
 /// @nodoc
@@ -77,7 +77,7 @@ class _$UserEntityDTOCopyWithImpl<$Res>
     Object? name = freezed,
     Object? emailAddress = freezed,
     Object? phoneNumber = freezed,
-    Object? userImage = freezed,
+    Object? photoUrl = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -96,9 +96,9 @@ class _$UserEntityDTOCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String?,
-      userImage: userImage == freezed
-          ? _value.userImage
-          : userImage // ignore: cast_nullable_to_non_nullable
+      photoUrl: photoUrl == freezed
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -116,7 +116,7 @@ abstract class _$UserEntityDTOCopyWith<$Res>
       String? name,
       String? emailAddress,
       String? phoneNumber,
-      String? userImage});
+      String? photoUrl});
 }
 
 /// @nodoc
@@ -136,7 +136,7 @@ class __$UserEntityDTOCopyWithImpl<$Res>
     Object? name = freezed,
     Object? emailAddress = freezed,
     Object? phoneNumber = freezed,
-    Object? userImage = freezed,
+    Object? photoUrl = freezed,
   }) {
     return _then(_UserEntityDTO(
       id: id == freezed
@@ -155,9 +155,9 @@ class __$UserEntityDTOCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String?,
-      userImage: userImage == freezed
-          ? _value.userImage
-          : userImage // ignore: cast_nullable_to_non_nullable
+      photoUrl: photoUrl == freezed
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -171,7 +171,7 @@ class _$_UserEntityDTO extends _UserEntityDTO {
       required this.name,
       required this.emailAddress,
       required this.phoneNumber,
-      required this.userImage})
+      required this.photoUrl})
       : super._();
 
   @override
@@ -183,11 +183,11 @@ class _$_UserEntityDTO extends _UserEntityDTO {
   @override
   final String? phoneNumber;
   @override
-  final String? userImage;
+  final String? photoUrl;
 
   @override
   String toString() {
-    return 'UserEntityDTO(id: $id, name: $name, emailAddress: $emailAddress, phoneNumber: $phoneNumber, userImage: $userImage)';
+    return 'UserEntityDTO(id: $id, name: $name, emailAddress: $emailAddress, phoneNumber: $phoneNumber, photoUrl: $photoUrl)';
   }
 
   @override
@@ -201,13 +201,13 @@ class _$_UserEntityDTO extends _UserEntityDTO {
                 other.emailAddress == emailAddress) &&
             (identical(other.phoneNumber, phoneNumber) ||
                 other.phoneNumber == phoneNumber) &&
-            (identical(other.userImage, userImage) ||
-                other.userImage == userImage));
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, name, emailAddress, phoneNumber, userImage);
+      Object.hash(runtimeType, id, name, emailAddress, phoneNumber, photoUrl);
 
   @JsonKey(ignore: true)
   @override
@@ -221,7 +221,7 @@ abstract class _UserEntityDTO extends UserEntityDTO {
       required String? name,
       required String? emailAddress,
       required String? phoneNumber,
-      required String? userImage}) = _$_UserEntityDTO;
+      required String? photoUrl}) = _$_UserEntityDTO;
   const _UserEntityDTO._() : super._();
 
   @override
@@ -233,7 +233,7 @@ abstract class _UserEntityDTO extends UserEntityDTO {
   @override
   String? get phoneNumber;
   @override
-  String? get userImage;
+  String? get photoUrl;
   @override
   @JsonKey(ignore: true)
   _$UserEntityDTOCopyWith<_UserEntityDTO> get copyWith =>

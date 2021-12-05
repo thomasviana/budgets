@@ -1,10 +1,11 @@
-import 'package:budgets/presentation/core/auth/auth_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../resources/constants.dart';
+import '../../core/auth/auth_cubit.dart';
+import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
+import 'cubit/settings_screen_cubit.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -12,10 +13,26 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  late SettingsScreenCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+
+    cubit = context.read<SettingsScreenCubit>();
+    cubit.init();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SettingsScreenCubit, SettingsScreenState>(
+      builder: _buildState,
+    );
+  }
+
+  Widget _buildState(BuildContext context, SettingsScreenState state) {
     return CupertinoPageScaffold(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: AppColors.backgroundColor,
       child: NestedScrollView(
         headerSliverBuilder: (context, _) => [
           CupertinoSliverNavigationBar(
@@ -25,12 +42,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         body: Column(
           children: [
             ListTile(
-                title: Text('Profile'),
-                leading: Icon(Icons.person),
-                trailing: Icon(Icons.arrow_forward_ios),
-                autofocus: true,
-                enableFeedback: true,
-                onTap: () => AppNavigator.navigateToProfilePage(context)),
+              title: Text('Profile'),
+              leading: Icon(Icons.person),
+              trailing: Icon(Icons.arrow_forward_ios),
+              autofocus: true,
+              enableFeedback: true,
+              onTap: () {
+                cubit.getProfileInfo();
+                AppNavigator.navigateToProfilePage(context);
+              },
+            ),
             Divider(),
             ListTile(
                 title: Text('Categories'),

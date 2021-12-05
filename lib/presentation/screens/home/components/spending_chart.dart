@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../resources/constants.dart';
+import '../../../resources/colors.dart';
 import '../../../widgets/widget_card.dart';
 
 class SpendingChart extends StatelessWidget {
@@ -23,7 +23,9 @@ class SpendingChart extends StatelessWidget {
             Text(
               'Show more',
               textAlign: TextAlign.end,
-              style: TextStyle(color: kAccentColor),
+              style: TextStyle(
+                color: AppColors.accentColor,
+              ),
             )
           ],
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../resources/constants.dart';
+import '../resources/colors.dart';
 
 class MainCard extends StatelessWidget {
   final IconData icon;
@@ -34,7 +34,7 @@ class MainCard extends StatelessWidget {
                 width: 30,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: kAccentColor,
+                  color: AppColors.accentColor,
                 ),
                 child: Icon(icon, color: Colors.white)),
             SizedBox(

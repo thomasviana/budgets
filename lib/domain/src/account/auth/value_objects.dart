@@ -1,9 +1,8 @@
-import 'dart:io';
-
-import 'package:budgets/domain/src/core/failures.dart';
-import 'package:budgets/domain/src/core/value_objects.dart';
-import 'package:budgets/domain/src/core/value_validators.dart';
 import 'package:dartz/dartz.dart';
+
+import '../../core/failures.dart';
+import '../../core/value_objects.dart';
+import '../../core/value_validators.dart';
 
 class EmailAddress extends ValueObject<String> {
   @override
@@ -65,15 +64,15 @@ class PhoneNumber extends ValueObject<String> {
   const PhoneNumber._(this.value);
 }
 
-class UserImage extends ValueObject<File> {
+class ImagePath extends ValueObject<String> {
   @override
-  final Either<ValueFailure<File>, File> value;
+  final Either<ValueFailure<String>, String> value;
 
-  factory UserImage(File input) {
-    return UserImage._(
+  factory ImagePath(String input) {
+    return ImagePath._(
       right(input),
     );
   }
 
-  const UserImage._(this.value);
+  const ImagePath._(this.value);
 }

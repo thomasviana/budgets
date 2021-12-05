@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../application/records.dart';
-import '../../resources/constants.dart';
+import '../../resources/colors.dart';
 import '../../widgets/transaction_listtile.dart';
 
 class RecordsScreen extends StatefulWidget {

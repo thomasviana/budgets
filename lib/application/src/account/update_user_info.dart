@@ -1,14 +1,13 @@
-import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../domain/account.dart';
 
 @injectable
-class GetProfileInfo {
+class UpdateUserInfo {
   final AuthService _authService;
-  GetProfileInfo(
+  UpdateUserInfo(
     this._authService,
   );
 
-  Future<Option<UserEntity>> call() => _authService.getUser();
+  Future<void> call(UserEntity user) => _authService.saveUser(user);
 }

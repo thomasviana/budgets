@@ -1,6 +1,7 @@
-import 'package:budgets/domain/account.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../domain/account.dart';
 
 @injectable
 class CreateAccount {

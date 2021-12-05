@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../resources/constants.dart';
+import '../resources/colors.dart';
 
 class TransactionListTile extends StatelessWidget {
   final String title;
@@ -22,7 +22,8 @@ class TransactionListTile extends StatelessWidget {
     return ListTile(
       // minVerticalPadding: 20,
       leading: CircleAvatar(
-        backgroundColor: isIncome ? Colors.greenAccent : kAccentColor,
+        backgroundColor:
+            isIncome ? AppColors.primayColor : AppColors.accentColor,
         child: Icon(isIncome ? Icons.arrow_forward : Icons.arrow_back,
             color: Colors.white),
       ),

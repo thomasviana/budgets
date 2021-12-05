@@ -1,11 +1,11 @@
 import 'package:another_flushbar/flushbar_helper.dart';
-import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/auth/components/auth_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../resources/constants.dart';
+import '../../resources/colors.dart';
+import '../../routes/app_navigator.dart';
 import '../../widgets/rounded_button.dart';
+import 'components/auth_form.dart';
 import 'components/custom_divider.dart';
 import 'cubit/auth_screen_cubit.dart';
 
@@ -67,7 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   Icon(
                     Icons.donut_large,
                     size: 150,
-                    color: kAccentColor,
+                    color: AppColors.accentColor,
                   ),
                   SizedBox(height: 50),
                   Text(
@@ -193,7 +193,7 @@ class LoginButton extends StatelessWidget {
         onTap: onTap,
         child: CircleAvatar(
           backgroundImage: AssetImage(imagePath),
-          backgroundColor: kBackgroundColor,
+          backgroundColor: AppColors.backgroundColor,
         ),
       ),
     );

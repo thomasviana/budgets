@@ -1,8 +1,7 @@
-import 'dart:io';
-
-import 'package:budgets/domain/account.dart';
-import 'package:budgets/domain/core.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../domain/account.dart';
+import '../../../../domain/core.dart';
 
 part 'user_entity_dto.freezed.dart';
 
@@ -16,7 +15,7 @@ abstract class UserEntityDTO implements _$UserEntityDTO {
     required String? name,
     required String? emailAddress,
     required String? phoneNumber,
-    required String? userImage,
+    required String? photoUrl,
   }) = _UserEntityDTO;
 
   factory UserEntityDTO.fromDomain(UserEntity userEntity) {
@@ -25,7 +24,7 @@ abstract class UserEntityDTO implements _$UserEntityDTO {
       name: userEntity.name!.getOrCrash(),
       emailAddress: userEntity.emailAddress!.getOrCrash(),
       phoneNumber: userEntity.phoneNumber!.getOrCrash(),
-      userImage: userEntity.userImage!.getOrCrash().path,
+      photoUrl: userEntity.photoUrl,
     );
   }
 
@@ -35,26 +34,27 @@ abstract class UserEntityDTO implements _$UserEntityDTO {
       name: UserName(name!),
       emailAddress: EmailAddress(emailAddress!),
       phoneNumber: PhoneNumber(phoneNumber!),
-      userImage: UserImage(File(userImage!)),
+      photoUrl: photoUrl,
     );
   }
 
   factory UserEntityDTO.fromFirebaseMap(Map<String?, Object?> data) {
     return UserEntityDTO(
-        id: data['id']! as String,
-        name: data['name']! as String,
-        emailAddress: data['email']! as String,
-        phoneNumber: data['phoneNumber']! as String,
-        userImage: data['image'] as String? ?? 'dd');
+      id: data['id']! as String,
+      name: data['name']! as String,
+      emailAddress: data['email']! as String,
+      phoneNumber: data['phoneNumber']! as String,
+      photoUrl: data['photoUrl'] as String?,
+    );
   }
 
   Map<String, Object?> toFirebaseMap({String? newImage}) {
     return <String, Object?>{
       'id': id,
       'name': name,
-      'emailAddress': emailAddress,
+      'email': emailAddress,
       'phoneNumber': phoneNumber,
-      'userImage': newImage ?? userImage,
+      'photoUrl': photoUrl ?? photoUrl,
     };
   }
 }

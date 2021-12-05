@@ -1,7 +1,8 @@
-import 'package:budgets/presentation/core/auth/auth_cubit.dart';
-import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../core/auth/auth_cubit.dart';
+import '../../routes/app_navigator.dart';
 
 class SplashScreen extends StatelessWidget {
   @override

@@ -1,17 +1,22 @@
 import 'package:bloc/bloc.dart';
-import 'package:budgets/application/src/account/check_auth_status.dart';
-import 'package:budgets/application/src/account/log_out.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../application/account.dart';
+import '../../../application/src/account/check_auth_status.dart';
+import '../../../application/src/account/log_out.dart';
+import '../../../domain/account.dart';
 
 part 'auth_state.dart';
 
 @injectable
 class AuthCubit extends Cubit<AuthState> {
   CheckAuthStatus checkAuthStatus;
+  GetProfileInfo getProfileInfo;
   LogOut logOut;
 
   AuthCubit(
     this.checkAuthStatus,
+    this.getProfileInfo,
     this.logOut,
   ) : super(AuthState.initial());
 
@@ -20,7 +25,9 @@ class AuthCubit extends Cubit<AuthState> {
 
     userOption.fold(
       () => emit(state.copyWith(isUnauthenticated: true)),
-      (_) => emit(state.copyWith(isAuthenticated: true)),
+      (user) => emit(
+        state.copyWith(isAuthenticated: true, userEntity: user),
+      ),
     );
   }
 

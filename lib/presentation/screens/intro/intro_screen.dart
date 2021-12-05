@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:page_indicator/page_indicator.dart';
 
-import '../../resources/constants.dart';
+import '../../resources/colors.dart';
 import 'components/description_page.dart';
 import 'components/get_started.dart';
 
@@ -47,8 +47,8 @@ class _IntroPager extends HookWidget {
             ],
           ),
           length: 5,
-          indicatorColor: kPrimayColor.withOpacity(0.3),
-          indicatorSelectorColor: kPrimayColor,
+          indicatorColor: AppColors.accentColor.withOpacity(0.3),
+          indicatorSelectorColor: AppColors.primayColor,
         ),
       ),
     );

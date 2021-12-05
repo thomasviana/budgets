@@ -5,7 +5,7 @@ import 'package:injectable/injectable.dart';
 
 import 'dependency_injection.dart';
 import 'presentation/core/auth/auth_cubit.dart';
-import 'presentation/resources/constants.dart';
+import 'presentation/resources/colors.dart';
 import 'presentation/routes/routes.dart';
 import 'presentation/widgets/view.dart';
 
@@ -44,10 +44,11 @@ class MyApp extends StatelessWidget {
           );
         },
         theme: ThemeData(
-          scaffoldBackgroundColor: kBackgroundColor,
-          primaryColor: kPrimayColor,
-          accentColor: kAccentColor,
-          textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
+          scaffoldBackgroundColor: AppColors.backgroundColor,
+          primaryColor: AppColors.primayColor,
+          accentColor: AppColors.accentColor,
+          textTheme:
+              Theme.of(context).textTheme.apply(bodyColor: AppColors.textColor),
         ),
         home: WillPopScope(
           child: Navigator(

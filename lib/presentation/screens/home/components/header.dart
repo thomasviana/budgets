@@ -1,9 +1,9 @@
-import 'package:budgets/presentation/screens/home/cubit/home_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../resources/constants.dart';
+import '../../../resources/colors.dart';
 import '../../../widgets/main_card.dart';
+import '../cubit/home_screen_cubit.dart';
 
 class HomeHeader extends SliverPersistentHeader {
   HomeHeader() : super(delegate: HeaderDelegate());
@@ -37,7 +37,7 @@ class Header extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(bottom: kDefaultPadding),
           height: 205,
-          color: kBackgroundColor,
+          color: AppColors.backgroundColor,
           child: Stack(
             children: [
               Container(
@@ -49,7 +49,7 @@ class Header extends StatelessWidget {
                 height: 170,
                 width: size.width,
                 decoration: BoxDecoration(
-                  color: kPrimayColor,
+                  color: AppColors.primayColor,
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(60),
                     bottomRight: Radius.circular(60),

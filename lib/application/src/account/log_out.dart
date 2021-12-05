@@ -1,5 +1,6 @@
-import 'package:budgets/domain/account.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../domain/account.dart';
 
 @injectable
 class LogOut {

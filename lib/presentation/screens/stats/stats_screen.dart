@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../resources/constants.dart';
+import '../../resources/colors.dart';
 import 'components/stat_card.dart';
 
 class StatsScreen extends StatelessWidget {
@@ -26,37 +26,61 @@ class StatsScreen extends StatelessWidget {
                 context,
                 title: 'BALANCE',
                 amount: 22300,
-                graph: Icon(Icons.donut_large, size: 50, color: kAccentColor),
+                graph: Icon(
+                  Icons.donut_large,
+                  size: 50,
+                  color: AppColors.accentColor,
+                ),
               ),
               statCard(
                 context,
                 title: 'INCOMES',
                 amount: 5000,
-                graph: Icon(Icons.donut_large, size: 50, color: kAccentColor),
+                graph: Icon(
+                  Icons.donut_large,
+                  size: 50,
+                  color: AppColors.accentColor,
+                ),
               ),
               statCard(
                 context,
                 title: 'SPENDING',
                 amount: 270,
-                graph: Icon(Icons.donut_large, size: 50, color: kAccentColor),
+                graph: Icon(
+                  Icons.donut_large,
+                  size: 50,
+                  color: AppColors.accentColor,
+                ),
               ),
               statCard(
                 context,
                 title: 'CASH FLOW',
                 amount: 4730,
-                graph: Icon(Icons.donut_large, size: 50, color: kAccentColor),
+                graph: Icon(
+                  Icons.donut_large,
+                  size: 50,
+                  color: AppColors.accentColor,
+                ),
               ),
               statCard(
                 context,
                 title: 'ASSETS',
                 amount: 100000,
-                graph: Icon(Icons.donut_large, size: 50, color: kAccentColor),
+                graph: Icon(
+                  Icons.donut_large,
+                  size: 50,
+                  color: AppColors.accentColor,
+                ),
               ),
               statCard(
                 context,
                 title: 'DEBT',
                 amount: 50000,
-                graph: Icon(Icons.donut_large, size: 50, color: kAccentColor),
+                graph: Icon(
+                  Icons.donut_large,
+                  size: 50,
+                  color: AppColors.accentColor,
+                ),
               ),
             ],
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../resources/constants.dart';
+import '../resources/colors.dart';
 
 class RoundedButton extends StatelessWidget {
   final Function onPressed;
@@ -15,7 +15,7 @@ class RoundedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: kAccentColor,
+          primary: AppColors.accentColor,
           elevation: 8,
           minimumSize: Size(200, 50),
           shape:

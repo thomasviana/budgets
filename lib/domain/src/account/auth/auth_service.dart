@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 
 import 'auth_failure.dart';
@@ -21,5 +19,6 @@ abstract class AuthService {
   });
   Future<void> logOut();
   Future<Option<UserEntity>> getUser();
-  Future<void> saveUser(UserEntity user, File? imageFile);
+  Future<void> saveUser(UserEntity user);
+  Future<void> setProfileImage(UserEntity user);
 }

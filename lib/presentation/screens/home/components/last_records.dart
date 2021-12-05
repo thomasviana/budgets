@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../resources/constants.dart';
+import '../../../resources/colors.dart';
 import '../../../widgets/transaction_listtile.dart';
 import '../../../widgets/widget_card.dart';
 
@@ -37,7 +37,9 @@ class LastRecordsWidget extends StatelessWidget {
             Text(
               'Show more',
               textAlign: TextAlign.end,
-              style: TextStyle(color: kAccentColor),
+              style: TextStyle(
+                color: AppColors.accentColor,
+              ),
             )
           ],
         ),

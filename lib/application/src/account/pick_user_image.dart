@@ -1,14 +1,14 @@
-import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../domain/account.dart';
 
 @injectable
-class GetProfileInfo {
+class PickUserImage {
   final AuthService _authService;
-  GetProfileInfo(
+  PickUserImage(
     this._authService,
   );
 
-  Future<Option<UserEntity>> call() => _authService.getUser();
+  Future<void> call(UserEntity user, ImagePath userImage) =>
+      _authService.setProfileImage(user);
 }

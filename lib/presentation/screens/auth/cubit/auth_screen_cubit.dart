@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:budgets/application/account.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../application/account.dart';
 import '../../../../domain/account.dart';
 
 part 'auth_screen_state.dart';

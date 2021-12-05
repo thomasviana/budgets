@@ -1,5 +1,6 @@
-import 'package:budgets/presentation/resources/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../../resources/colors.dart';
 
 class AuthForm extends StatefulWidget {
   final bool enabled;
@@ -41,7 +42,7 @@ class _AuthFormState extends State<AuthForm> {
         children: [
           TextFormField(
             key: ValueKey('email'),
-            cursorColor: kAccentColor,
+            cursorColor: AppColors.accentColor,
             keyboardType: TextInputType.emailAddress,
             // validator: emailValidator,
             decoration: InputDecoration(
@@ -53,7 +54,7 @@ class _AuthFormState extends State<AuthForm> {
           TextFormField(
               key: ValueKey('password'),
               obscureText: !_isPasswordVisible,
-              cursorColor: kAccentColor,
+              cursorColor: AppColors.accentColor,
               keyboardType: TextInputType.emailAddress,
               // validator: passwordValidator,
               decoration: InputDecoration(
@@ -64,7 +65,7 @@ class _AuthFormState extends State<AuthForm> {
             TextFormField(
               key: ValueKey('confirm_password'),
               obscureText: !_isPasswordVisible,
-              cursorColor: kAccentColor,
+              cursorColor: AppColors.accentColor,
               keyboardType: TextInputType.emailAddress,
               // validator: passwordValidator,
               decoration: InputDecoration(

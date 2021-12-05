@@ -1,163 +1,110 @@
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:cached_network_image/cached_network_image.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import '../../../../application/account.dart';
-// import '../../../../domain/account.dart';
-// import '../../../resources/constants.dart';
-// import '../../../widgets/rounded_button.dart';
+import '../../../../domain/account.dart';
+import '../../../resources/colors.dart';
+import '../../../widgets/rounded_button.dart';
+import '../cubit/profile_screen_cubit.dart';
 
-// class UserProfile extends StatefulWidget {
-//   final UserModel user;
-//   final File? pickedImage;
+class UserProfile extends StatelessWidget {
+  final UserEntity user;
+  final bool isSavingForm;
 
-//   const UserProfile({
-//     required this.user,
-//     this.pickedImage,
-//   });
+  UserProfile({
+    Key? key,
+    // this.pickedImage,
+    required this.user,
+    required this.isSavingForm,
+  }) : super(key: key);
 
-//   @override
-//   _UserProfileState createState() => _UserProfileState();
-// }
+  final _formKey = GlobalKey<FormState>();
 
-// class _UserProfileState extends State<UserProfile> {
-//   final _formKey = GlobalKey<FormState>();
-//   final _picker = ImagePicker();
+  @override
+  Widget build(BuildContext context) {
+    String? _nameField;
+    String? _emailField;
+    String? _phoneField;
+    Widget? image;
 
-//   late Widget image;
-//   late String? _imageUrl;
+    if (user.imagePath != null) {
+      image = Image.file(File(user.imagePath!.getOrCrash()), fit: BoxFit.cover);
+    } else if (user.photoUrl != null) {
+      image = CachedNetworkImage(
+        imageUrl: user.photoUrl!,
+        progressIndicatorBuilder: (_, __, progress) =>
+            CircularProgressIndicator(value: progress.progress),
+        errorWidget: (_, __, ___) => Icon(Icons.error),
+        fit: BoxFit.cover,
+      );
+    }
 
-//   Future<void> pickImage() async {
-//     try {
-//       final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
-//       if (pickedImage == null) return;
-//       // ignore: use_build_context_synchronously
-//       context.read<UserCubit>().setImage(File(pickedImage.path));
-//     } on PlatformException catch (e) {
-//       print(e);
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final isSavingForm = context.watch<UserCubit>().state is UserLoadingState;
-//     final authUserData =
-//         (context.watch<AuthCubit>().state as AuthSignedIn).user;
-//     final userModelData =
-//         (context.watch<UserCubit>().state as UserReadyState).user;
-//     String? _nameField;
-//     String? _emailField;
-//     String? _phoneField;
-
-//     if (authUserData.image != null) {
-//       _imageUrl = authUserData.image;
-//     } else if (widget.user.image != null) {
-//       _imageUrl = widget.user.image;
-//     } else {
-//       _imageUrl =
-//           'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg';
-//     }
-
-//     if (widget.pickedImage != null) {
-//       image = Image.file(widget.pickedImage!, fit: BoxFit.cover);
-//     } else if (_imageUrl != null) {
-//       image = CachedNetworkImage(
-//         imageUrl: _imageUrl!,
-//         progressIndicatorBuilder: (_, __, progress) =>
-//             CircularProgressIndicator(value: progress.progress),
-//         errorWidget: (_, __, ___) => Icon(Icons.error),
-//         fit: BoxFit.cover,
-//       );
-//     }
-
-//     return SingleChildScrollView(
-//       child: Card(
-//         child: Container(
-//           alignment: Alignment.center,
-//           padding: const EdgeInsets.all(kDefaultPadding),
-//           child: Column(
-//             children: [
-//               InkWell(
-//                 onTap: pickImage,
-//                 child: ClipOval(
-//                   // ignore: sized_box_for_whitespace
-//                   child: Container(height: 150, width: 150, child: image),
-//                 ),
-//               ),
-//               SizedBox(height: 50),
-//               BlocBuilder<AuthCubit, AuthState>(
-//                 buildWhen: (_, current) => current is AuthSignedIn,
-//                 builder: (_, state) {
-//                   // ignore: avoid_print
-//                   print(userModelData.name);
-//                   // ignore: avoid_print
-//                   print(authUserData.name);
-//                   return Text(
-//                     'User ID: ${(state as AuthSignedIn).user.uid}',
-//                   );
-//                 },
-//               ),
-//               const SizedBox(height: 50),
-//               Form(
-//                 key: _formKey,
-//                 child: Column(
-//                   children: [
-//                     TextFormField(
-//                         initialValue: authUserData.name ?? userModelData.name,
-//                         decoration: InputDecoration(labelText: 'Name'),
-//                         onSaved: (value) {
-//                           _nameField = value;
-//                           print(_nameField);
-//                         }),
-//                     TextFormField(
-//                         enabled: false,
-//                         initialValue: authUserData.email ?? userModelData.email,
-//                         decoration: InputDecoration(labelText: 'Email'),
-//                         onSaved: (value) {
-//                           _emailField = value;
-//                         }),
-//                     TextFormField(
-//                         initialValue:
-//                             authUserData.phone ?? userModelData.phoneNumber,
-//                         decoration: InputDecoration(labelText: 'Phone'),
-//                         onSaved: (value) {
-//                           _phoneField = value;
-//                         }),
-//                   ],
-//                 ),
-//               ),
-//               SizedBox(height: 20),
-//               if (isSavingForm)
-//                 Center(
-//                   child: CircularProgressIndicator(),
-//                 ),
-//               if (!isSavingForm)
-//                 RoundedButton(
-//                   onPressed: () {
-//                     _formKey.currentState!.save();
-//                     // ignore: avoid_print
-//                     print(userModelData.name);
-//                     // ignore: avoid_print
-//                     print(authUserData.name);
-//                     context.read<UserCubit>().saveUser(
-//                           (context.read<AuthCubit>().state as AuthSignedIn)
-//                               .user
-//                               .uid,
-//                           _nameField,
-//                           _emailField,
-//                           _phoneField,
-//                         );
-//                   },
-//                   label: 'Save',
-//                 ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+    return SingleChildScrollView(
+      child: Card(
+        child: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.all(kDefaultPadding),
+          child: Column(
+            children: [
+              InkWell(
+                onTap: context.read<ProfileScreenCubit>().onPickImage,
+                child: ClipOval(
+                  // ignore: sized_box_for_whitespace
+                  child: Container(height: 150, width: 150, child: image),
+                ),
+              ),
+              SizedBox(height: 50),
+              Text(
+                'User ID: ${user.id.getOrCrash()}',
+              ),
+              const SizedBox(height: 50),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                        initialValue: user.name!.getOrCrash(),
+                        decoration: InputDecoration(labelText: 'Name'),
+                        onSaved: (value) {
+                          _nameField = value;
+                        }),
+                    TextFormField(
+                        enabled: false,
+                        initialValue: user.emailAddress!.getOrCrash(),
+                        decoration: InputDecoration(labelText: 'Email'),
+                        onSaved: (value) {
+                          _emailField = value;
+                        }),
+                    TextFormField(
+                        initialValue: user.phoneNumber!.getOrCrash(),
+                        decoration: InputDecoration(labelText: 'Phone'),
+                        onSaved: (value) {
+                          _phoneField = value;
+                        }),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              if (isSavingForm)
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+              if (!isSavingForm)
+                RoundedButton(
+                  onPressed: () {
+                    _formKey.currentState!.save();
+                    context
+                        .read<ProfileScreenCubit>()
+                        .onUpdateUserInfo(_nameField, _phoneField);
+                  },
+                  label: 'Save',
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

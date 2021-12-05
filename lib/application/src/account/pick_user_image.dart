@@ -1,14 +1,23 @@
+import 'package:dartz/dartz.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:injectable/injectable.dart';
-
-import '../../../domain/account.dart';
 
 @injectable
 class PickUserImage {
-  final AuthService _authService;
+  final ImagePicker _imagePicker;
   PickUserImage(
-    this._authService,
+    this._imagePicker,
   );
 
-  Future<void> call(UserEntity user, ImagePath userImage) =>
-      _authService.setProfileImage(user);
+  Future<Option<XFile>> call() async {
+    try {
+      final optionImage =
+          await _imagePicker.pickImage(source: ImageSource.gallery);
+      if (optionImage != null) return some(optionImage);
+    } catch (e) {
+      // TODO: Manage Exception
+      print(e);
+    }
+    return none();
+  }
 }

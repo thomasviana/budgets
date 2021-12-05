@@ -29,6 +29,7 @@ class _ProfileSreenState extends State<ProfileSreen> {
 
   Widget _buildState(BuildContext context, ProfileScreenState state) {
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       child: NestedScrollView(
         headerSliverBuilder: (ctx, inner) => [
           CupertinoSliverNavigationBar(
@@ -52,6 +53,7 @@ class _ProfileSreenState extends State<ProfileSreen> {
           UserProfile(
             user: state.userEntity,
             isSavingForm: state.isSavingForm,
+            isSaveButtonEnabled: state.isSaveButtonEnabled,
           ),
         ],
       );

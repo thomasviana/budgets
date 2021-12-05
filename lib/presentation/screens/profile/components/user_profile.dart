@@ -9,31 +9,36 @@ import '../../../resources/colors.dart';
 import '../../../widgets/rounded_button.dart';
 import '../cubit/profile_screen_cubit.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
   final UserEntity user;
   final bool isSavingForm;
+  final bool isSaveButtonEnabled;
 
-  UserProfile({
+  const UserProfile({
     Key? key,
     // this.pickedImage,
     required this.user,
     required this.isSavingForm,
+    required this.isSaveButtonEnabled,
   }) : super(key: key);
 
-  final _formKey = GlobalKey<FormState>();
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
 
+class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
-    String? _nameField;
-    String? _emailField;
-    String? _phoneField;
     Widget? image;
 
-    if (user.imagePath != null) {
-      image = Image.file(File(user.imagePath!.getOrCrash()), fit: BoxFit.cover);
-    } else if (user.photoUrl != null) {
+    if (widget.user.imagePath != null) {
+      image = Image.file(
+        File(widget.user.imagePath!.getOrCrash()),
+        fit: BoxFit.cover,
+      );
+    } else if (widget.user.photoUrl != null) {
       image = CachedNetworkImage(
-        imageUrl: user.photoUrl!,
+        imageUrl: widget.user.photoUrl!,
         progressIndicatorBuilder: (_, __, progress) =>
             CircularProgressIndicator(value: progress.progress),
         errorWidget: (_, __, ___) => Icon(Icons.error),
@@ -42,6 +47,7 @@ class UserProfile extends StatelessWidget {
     }
 
     return SingleChildScrollView(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       child: Card(
         child: Container(
           alignment: Alignment.center,
@@ -57,50 +63,50 @@ class UserProfile extends StatelessWidget {
               ),
               SizedBox(height: 50),
               Text(
-                'User ID: ${user.id.getOrCrash()}',
+                'User ID: ${widget.user.id.getOrCrash()}',
               ),
               const SizedBox(height: 50),
               Form(
-                key: _formKey,
                 child: Column(
                   children: [
                     TextFormField(
-                        initialValue: user.name!.getOrCrash(),
-                        decoration: InputDecoration(labelText: 'Name'),
-                        onSaved: (value) {
-                          _nameField = value;
-                        }),
+                      initialValue: widget.user.name!.getOrCrash(),
+                      decoration: InputDecoration(labelText: 'Name'),
+                      keyboardType: TextInputType.name,
+                      onChanged: (name) => context
+                          .read<ProfileScreenCubit>()
+                          .onNameChanged(name),
+                    ),
                     TextFormField(
-                        enabled: false,
-                        initialValue: user.emailAddress!.getOrCrash(),
-                        decoration: InputDecoration(labelText: 'Email'),
-                        onSaved: (value) {
-                          _emailField = value;
-                        }),
+                      enabled: false,
+                      initialValue: widget.user.emailAddress!.getOrCrash(),
+                      decoration: InputDecoration(labelText: 'Email'),
+                    ),
                     TextFormField(
-                        initialValue: user.phoneNumber!.getOrCrash(),
-                        decoration: InputDecoration(labelText: 'Phone'),
-                        onSaved: (value) {
-                          _phoneField = value;
-                        }),
+                      initialValue: widget.user.phoneNumber!.getOrCrash(),
+                      decoration: InputDecoration(labelText: 'Phone'),
+                      keyboardType: TextInputType.phone,
+                      onChanged: (phone) => context
+                          .read<ProfileScreenCubit>()
+                          .onPhoneChanged(phone),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              if (isSavingForm)
+              SizedBox(height: 30),
+              if (widget.isSavingForm)
                 Center(
                   child: CircularProgressIndicator(),
                 ),
-              if (!isSavingForm)
+              if (!widget.isSavingForm)
                 RoundedButton(
-                  onPressed: () {
-                    _formKey.currentState!.save();
-                    context
-                        .read<ProfileScreenCubit>()
-                        .onUpdateUserInfo(_nameField, _phoneField);
-                  },
                   label: 'Save',
+                  isEnabled: widget.isSaveButtonEnabled,
+                  onPressed: () {
+                    context.read<ProfileScreenCubit>().onUpdateUserInfo();
+                  },
                 ),
+              SizedBox(height: 10),
             ],
           ),
         ),

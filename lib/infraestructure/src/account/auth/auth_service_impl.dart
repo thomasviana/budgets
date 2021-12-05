@@ -150,9 +150,4 @@ class AuthServiceImpl implements AuthService {
   Future<void> saveUser(UserEntity user) {
     return _userFirebaseProvider.saveUser(user);
   }
-
-  @override
-  Future<void> setProfileImage(UserEntity user) {
-    return _userFirebaseProvider.setImage(user);
-  }
 }

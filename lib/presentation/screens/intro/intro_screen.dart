@@ -24,7 +24,10 @@ class _IntroPager extends HookWidget {
         child: PageIndicatorContainer(
           child: PageView(
             children: const [
-              GetStarted(text: 'Swipe to learn more about the app'),
+              GetStarted(
+                text: 'Swipe to learn more about the app',
+                isButtonEnabled: true,
+              ),
               DescriptionPage(
                 imagePath: 'assets/images/logo.png',
                 text: 'Register your incomes.',
@@ -43,6 +46,7 @@ class _IntroPager extends HookWidget {
               ),
               GetStarted(
                 text: 'Now your are ready.',
+                isButtonEnabled: true,
               ),
             ],
           ),

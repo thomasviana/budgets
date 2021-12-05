@@ -93,12 +93,12 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                   if (!state.isSubmitting)
                     RoundedButton(
-                        onPressed: () {
-                          trySubmit();
-                        },
-                        label: state.isCreateAccountMode
-                            ? 'Create account'
-                            : 'Login'),
+                      label: state.isCreateAccountMode
+                          ? 'Create account'
+                          : 'Login',
+                      isEnabled: true,
+                      onPressed: trySubmit,
+                    ),
                   SizedBox(height: 20),
                   CustomDivider(),
                   SizedBox(height: 20),

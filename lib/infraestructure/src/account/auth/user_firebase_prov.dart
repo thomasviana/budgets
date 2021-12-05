@@ -65,20 +65,4 @@ class UserFirebaseProv {
           userDTO.toFirebaseMap(newImage: url), SetOptions(merge: true));
     }
   }
-
-  Future<void> setImage(UserEntity user) async {
-    final ref = _firebaseFirestore.doc('users/${currentUser!.uid}');
-    final userDTO = UserEntityDTO.fromDomain(user);
-    if (user.imagePath == null) {
-      await ref.set(userDTO.toFirebaseMap(), SetOptions(merge: true));
-    } else {
-      final imagePath =
-          '${currentUser!.uid}/profile/${path.basename(user.imagePath!.getOrCrash())}';
-      final storageRef = _firebaseStorage.ref(imagePath);
-      await storageRef.putFile(File(user.imagePath!.getOrCrash()));
-      final url = await storageRef.getDownloadURL();
-      await ref.set(
-          userDTO.toFirebaseMap(newImage: url), SetOptions(merge: true));
-    }
-  }
 }

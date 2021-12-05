@@ -5,8 +5,13 @@ import '../../../widgets/rounded_button.dart';
 
 class GetStarted extends StatelessWidget {
   final String text;
+  final bool isButtonEnabled;
 
-  const GetStarted({required this.text});
+  const GetStarted({
+    Key? key,
+    required this.text,
+    required this.isButtonEnabled,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +45,11 @@ class GetStarted extends StatelessWidget {
           ),
           SizedBox(height: 30),
           RoundedButton(
+            label: 'Get Started',
+            isEnabled: isButtonEnabled,
             onPressed: () {
               AppNavigator.navigateToAuthPage(context);
             },
-            label: 'Get Started',
           ),
           SizedBox(height: 60),
           Text(text)

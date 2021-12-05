@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'components/header.dart';
-import 'components/header_actions.dart';
-import 'components/last_records.dart';
-import 'components/spending_chart.dart';
+import '../../resources/colors.dart';
+import 'components/body.dart';
 import 'cubit/home_screen_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,7 +16,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-
     cubit = context.read<HomeScreenCubit>();
     cubit.init();
   }
@@ -32,16 +29,32 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildState(BuildContext context, HomeScreenState state) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: homeWidgets,
-      ),
+      backgroundColor: AppColors.primayColor,
+      appBar: buildAppBar(),
+      body: Body(),
     );
   }
 
-  List<Widget> homeWidgets = [
-    HeaderActions(),
-    HomeHeader(),
-    LastRecordsWidget(),
-    SpendingChart(),
-  ];
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: AppColors.primayColor,
+      elevation: 0,
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.notifications_on,
+            color: Colors.white,
+          ),
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.settings,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
 }

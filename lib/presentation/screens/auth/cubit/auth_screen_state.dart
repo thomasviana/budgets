@@ -25,7 +25,7 @@ class AuthScreenState {
         confirmationPassword: Password(''),
         showErrorMessages: false,
         isSubmitting: false,
-        isCreateAccountMode: false,
+        isCreateAccountMode: true,
         authFailureOrSuccessOption: none(),
       );
 

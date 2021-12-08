@@ -1,53 +1,92 @@
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 
 import '../../../resources/colors.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
+  final List<Tuple2> tabs;
+  const Body({
+    Key? key,
+    required this.tabs,
+  }) : super(key: key);
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: widget.tabs.length, vsync: this);
+    _tabController.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // It provide us total height and width
     Size size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          SizedBox(
-            height: size.height,
-            child: Stack(
-              children: [
-                Container(
-                  width: size.width,
-                  margin: EdgeInsets.only(top: size.height * 0.3),
-                  padding: EdgeInsets.only(
-                    top: size.height * 0.12,
-                    left: kDefaultPadding,
-                    right: kDefaultPadding,
-                  ),
-                  // height: 500,
-
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      // ColorAndSize(product: product),
-                      // SizedBox(height: kDefaultPaddin / 2),
-                      // Description(product: product),
-                      // SizedBox(height: kDefaultPaddin / 2),
-                      // CounterWithFavBtn(),
-                      // SizedBox(height: kDefaultPaddin / 2),
-                      // AddToCart(product: product)
-                    ],
-                  ),
-                ),
-                // ProductTitleWithImage(product: product)
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomLeft,
+              colors: const [
+                AppColors.primayColor,
+                AppColors.accentColor,
               ],
             ),
-          )
-        ],
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.notifications_on,
+                      color: Colors.white,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(top: size.height * 0.25),
+                padding: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
+                ),
+                child: TabBarView(
+                  controller: _tabController,
+                  children: widget.tabs
+                      .map((Tuple2 tab) => Tab(text: tab.item1 as String))
+                      .toList(),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

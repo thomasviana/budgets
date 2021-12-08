@@ -30,6 +30,7 @@ dependencies:
   intl: ^0.17.0
   page_indicator: ^0.4.1
   path: ^1.8.0
+  tuple: ^2.0.0
   uuid: ^3.0.5
 
 dev_dependencies:

@@ -23,6 +23,7 @@ class _IntroPager extends HookWidget {
         absorbing: false,
         child: PageIndicatorContainer(
           child: PageView(
+            allowImplicitScrolling: true,
             children: const [
               GetStarted(
                 text: 'Swipe to learn more about the app',
@@ -51,8 +52,8 @@ class _IntroPager extends HookWidget {
             ],
           ),
           length: 5,
-          indicatorColor: AppColors.accentColor.withOpacity(0.3),
-          indicatorSelectorColor: AppColors.primayColor,
+          indicatorColor: AppColors.greyDisabled,
+          indicatorSelectorColor: AppColors.accentColor,
         ),
       ),
     );

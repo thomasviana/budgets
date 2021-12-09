@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../resources/colors.dart';
 
 class RoundedButton extends StatelessWidget {
-  final Function onPressed;
+  final VoidCallback onPressed;
   final String label;
   final bool isEnabled;
 

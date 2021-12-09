@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/resources/colors.dart';
 import 'package:flutter/material.dart';
 
 class BudgetsTab extends StatelessWidget {
@@ -6,7 +7,8 @@ class BudgetsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
+      color: AppColors.backgroundColor,
+      child: Center(child: Text('Budgets')),
     );
   }
 }

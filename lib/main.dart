@@ -44,11 +44,11 @@ class MyApp extends StatelessWidget {
           );
         },
         theme: ThemeData(
-          scaffoldBackgroundColor: AppColors.backgroundColor,
           primaryColor: AppColors.primayColor,
           accentColor: AppColors.accentColor,
-          textTheme:
-              Theme.of(context).textTheme.apply(bodyColor: AppColors.textColor),
+          textTheme: Theme.of(context).textTheme.apply(
+                bodyColor: AppColors.textColor,
+              ),
         ),
         home: WillPopScope(
           child: Navigator(

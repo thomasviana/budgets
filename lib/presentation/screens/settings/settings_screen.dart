@@ -65,10 +65,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () => AppNavigator.navigateToProfilePage(context)),
             Divider(),
-            SizedBox(
-              height: 60,
-            ),
-            Divider(),
             ListTile(
               title: Text(
                 'LogOut',

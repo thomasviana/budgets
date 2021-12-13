@@ -53,7 +53,7 @@ class _IntroPager extends HookWidget {
           ),
           length: 5,
           indicatorColor: AppColors.greyDisabled,
-          indicatorSelectorColor: AppColors.accentColor,
+          indicatorSelectorColor: AppColors.primaryColor,
         ),
       ),
     );

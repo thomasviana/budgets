@@ -41,8 +41,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
               begin: Alignment.topLeft,
               end: Alignment.bottomLeft,
               colors: const [
-                AppColors.primayColor,
-                AppColors.accentColor,
+                AppColors.primaryVariant,
+                AppColors.primaryColor,
               ],
             ),
           ),

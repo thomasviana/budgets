@@ -16,9 +16,11 @@ class RoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: isEnabled ? AppColors.accentColor : AppColors.greyDisabled,
+        primary: isEnabled ? theme.colorScheme.primary : AppColors.greyDisabled,
         elevation: 8,
         minimumSize: Size(200, 50),
         shape: RoundedRectangleBorder(

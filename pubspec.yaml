@@ -47,3 +47,19 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+
+
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: fonts/Quicksand-Light.otf
+          weight: 300
+        - asset: fonts/Quicksand-Regular.otf
+          weight: 400
+        - asset: fonts/Quicksand-Medium.otf
+          weight: 500
+        - asset: fonts/Quicksand-SemoBold.ttf
+          weight: 600
+        - asset: fonts/Quicksand-Bold.otf
+          weight: 700
+    

@@ -67,7 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   Icon(
                     Icons.donut_large,
                     size: 150,
-                    color: AppColors.accentColor,
+                    color: AppColors.primaryColor,
                   ),
                   SizedBox(height: 50),
                   Text(
@@ -193,7 +193,7 @@ class LoginButton extends StatelessWidget {
         onTap: onTap,
         child: CircleAvatar(
           backgroundImage: AssetImage(imagePath),
-          backgroundColor: AppColors.backgroundColor,
+          backgroundColor: AppColors.greyBackground,
         ),
       ),
     );

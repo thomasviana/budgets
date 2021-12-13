@@ -32,7 +32,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildState(BuildContext context, SettingsScreenState state) {
     return CupertinoPageScaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.greyBackground,
       child: NestedScrollView(
         headerSliverBuilder: (context, _) => [
           CupertinoSliverNavigationBar(

@@ -34,7 +34,7 @@ class MainCard extends StatelessWidget {
                 width: 30,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: AppColors.accentColor,
+                  color: AppColors.primaryColor,
                 ),
                 child: Icon(icon, color: Colors.white)),
             SizedBox(

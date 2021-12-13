@@ -1,5 +1,6 @@
-import 'package:budgets/presentation/resources/colors.dart';
 import 'package:flutter/material.dart';
+
+import '../../../resources/colors.dart';
 
 class HomeSliverAppBar extends StatelessWidget {
   final String title;
@@ -22,7 +23,7 @@ class HomeSliverAppBar extends StatelessWidget {
         ),
       ],
       pinned: true,
-      backgroundColor: AppColors.primayColor,
+      backgroundColor: AppColors.primaryColor,
       expandedHeight: 210,
       flexibleSpace: FlexibleSpaceBar(
         background: Container(
@@ -33,8 +34,8 @@ class HomeSliverAppBar extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomLeft,
               colors: const [
-                AppColors.primayColor,
-                AppColors.accentColor,
+                AppColors.primaryColor,
+                AppColors.primaryVariant,
               ],
             ),
           ),
@@ -116,7 +117,7 @@ class AddButton extends StatelessWidget {
           child: IconButton(
             onPressed: onPressed,
             icon: Icon(iconData),
-            color: AppColors.accentColor,
+            color: AppColors.primaryColor,
           ),
         ),
         SizedBox(

@@ -36,7 +36,7 @@ class Header extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(bottom: kDefaultPadding),
           height: 205,
-          color: AppColors.backgroundColor,
+          color: AppColors.greyBackground,
           child: Stack(
             children: [
               Container(
@@ -49,7 +49,7 @@ class Header extends StatelessWidget {
                 height: 170,
                 width: size.width,
                 decoration: BoxDecoration(
-                  color: AppColors.primayColor,
+                  color: AppColors.primaryColor,
                   // borderRadius: BorderRadius.only(
                   //   bottomLeft: Radius.circular(60),
                   //   bottomRight: Radius.circular(60),

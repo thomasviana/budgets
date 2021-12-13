@@ -1,7 +1,8 @@
-import 'package:budgets/presentation/resources/colors.dart';
-import 'package:budgets/presentation/widgets/account_tile.dart';
-import 'package:budgets/presentation/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
+
+import '../../../resources/colors.dart';
+import '../../../widgets/account_tile.dart';
+import '../../../widgets/rounded_button.dart';
 
 class AccountsTab extends StatelessWidget {
   const AccountsTab({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class AccountsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppColors.backgroundColor,
+      color: AppColors.greyBackground,
       child: Column(
         children: [
           AccountTile(

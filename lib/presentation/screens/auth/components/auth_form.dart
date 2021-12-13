@@ -42,7 +42,7 @@ class _AuthFormState extends State<AuthForm> {
         children: [
           TextFormField(
             key: ValueKey('email'),
-            cursorColor: AppColors.accentColor,
+            cursorColor: AppColors.primaryColor,
             keyboardType: TextInputType.emailAddress,
             // validator: emailValidator,
             decoration: InputDecoration(
@@ -54,7 +54,7 @@ class _AuthFormState extends State<AuthForm> {
           TextFormField(
               key: ValueKey('password'),
               obscureText: !_isPasswordVisible,
-              cursorColor: AppColors.accentColor,
+              cursorColor: AppColors.primaryColor,
               keyboardType: TextInputType.emailAddress,
               // validator: passwordValidator,
               decoration: InputDecoration(
@@ -65,7 +65,7 @@ class _AuthFormState extends State<AuthForm> {
             TextFormField(
               key: ValueKey('confirm_password'),
               obscureText: !_isPasswordVisible,
-              cursorColor: AppColors.accentColor,
+              cursorColor: AppColors.primaryColor,
               keyboardType: TextInputType.emailAddress,
               // validator: passwordValidator,
               decoration: InputDecoration(

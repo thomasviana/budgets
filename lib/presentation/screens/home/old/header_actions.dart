@@ -7,7 +7,7 @@ class HeaderActions extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       brightness: Brightness.light,
-      backgroundColor: AppColors.primayColor,
+      backgroundColor: AppColors.primaryColor,
       actions: [
         IconButton(
           onPressed: () {},

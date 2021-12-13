@@ -1,8 +1,8 @@
-import 'package:budgets/presentation/resources/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../resources/colors.dart';
 import 'components/accounts_tab.dart';
 import 'components/budgets_tab.dart';
 import 'components/home_silver_app_bar.dart';
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen>
     return SafeArea(
       child: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
+          return [
             HomeSliverAppBar(
               title: tabs[_tabController.index].item1 as String,
             ),

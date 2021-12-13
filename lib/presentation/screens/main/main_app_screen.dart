@@ -65,7 +65,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primayColor,
+      backgroundColor: AppColors.primaryColor,
       body: _buildPage(context, selectedPageIndex),
       // floatingActionButton: FloatingActionButton(
       //   child: Icon(Icons.add),
@@ -162,14 +162,15 @@ class _MainAppScreenState extends State<MainAppScreen> {
           Icon(
             isSelected ? iconSelected : icon,
             size: 35,
-            color: isSelected ? AppColors.accentColor : AppColors.greySecondary,
+            color:
+                isSelected ? AppColors.primaryColor : AppColors.greySecondary,
           ),
           Text(
             label,
             style: TextStyle(
               fontSize: 10,
               color:
-                  isSelected ? AppColors.accentColor : AppColors.greySecondary,
+                  isSelected ? AppColors.primaryColor : AppColors.greySecondary,
             ),
           )
         ],

@@ -24,7 +24,7 @@ class SpendingChart extends StatelessWidget {
               'Show more',
               textAlign: TextAlign.end,
               style: TextStyle(
-                color: AppColors.accentColor,
+                color: AppColors.primaryColor,
               ),
             )
           ],

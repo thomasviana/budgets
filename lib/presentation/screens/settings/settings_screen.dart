@@ -34,10 +34,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return CupertinoPageScaffold(
       backgroundColor: AppColors.greyBackground,
       child: NestedScrollView(
-        headerSliverBuilder: (context, _) => [
+        headerSliverBuilder: (ctx, inner) => [
           CupertinoSliverNavigationBar(
-            largeTitle: Text('Settings'),
-          ),
+            largeTitle: Text('Profile'),
+            previousPageTitle: 'Settings',
+          )
         ],
         body: Column(
           children: [
@@ -54,16 +55,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             Divider(),
             ListTile(
-                title: Text('Categories'),
-                leading: Icon(Icons.folder),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () => AppNavigator.navigateToProfilePage(context)),
+              title: Text('Categories'),
+              leading: Icon(Icons.folder),
+              trailing: Icon(Icons.arrow_forward_ios),
+              onTap: () => AppNavigator.navigateToCategoriesPage(context),
+            ),
             Divider(),
             ListTile(
-                title: Text('Accounts'),
-                leading: Icon(Icons.comment_bank),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () => AppNavigator.navigateToProfilePage(context)),
+              title: Text('Accounts'),
+              leading: Icon(Icons.comment_bank),
+              trailing: Icon(Icons.arrow_forward_ios),
+              onTap: () => AppNavigator.navigateToProfilePage(context),
+            ),
             Divider(),
             ListTile(
               title: Text(

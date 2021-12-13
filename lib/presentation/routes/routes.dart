@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../dependency_injection.dart';
+import '../categories/categories_screen.dart';
+import '../categories/cubit/categories_screen_cubit.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/auth/cubit/auth_screen_cubit.dart';
 import '../screens/intro/intro_screen.dart';
@@ -43,6 +45,14 @@ class Routes {
           BlocProvider(
             create: (context) => sl<ProfileScreenCubit>()..getProfileInfo,
             child: ProfileSreen(),
+          ),
+        );
+      case AppNavigator.ROUTE_CATEGORIES_PAGE:
+        return _buildRoute(
+          settings,
+          BlocProvider(
+            create: (context) => sl<CategoriesScreenCubit>(),
+            child: CategoriesScreen(),
           ),
         );
       default:

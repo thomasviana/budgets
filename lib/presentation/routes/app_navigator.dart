@@ -10,6 +10,7 @@ class AppNavigator {
 
   // Settings
   static const ROUTE_PROFILE_PAGE = '/profile';
+  static const ROUTE_CATEGORIES_PAGE = '/categories';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
@@ -40,5 +41,9 @@ class AppNavigator {
 
   static void navigateToProfilePage(BuildContext context) {
     Navigator.pushNamed(context, ROUTE_PROFILE_PAGE);
+  }
+
+  static void navigateToCategoriesPage(BuildContext context) {
+    Navigator.pushNamed(context, ROUTE_CATEGORIES_PAGE);
   }
 }

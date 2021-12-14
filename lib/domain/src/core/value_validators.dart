@@ -10,7 +10,8 @@ Either<ValueFailure<String>, String> validateMaxStringLength(
     return right(input);
   } else {
     return left(
-        ValueFailure.exceedingLength(failedValue: input, max: maxLenght));
+      ValueFailure.exceedingLength(failedValue: input, max: maxLenght),
+    );
   }
 }
 
@@ -26,9 +27,11 @@ Either<ValueFailure<String>, String> validateSingleLine(String input) {
   if (!input.contains('\n')) {
     return right(input);
   } else {
-    return left(ValueFailure.multiLine(
-      failedValue: input,
-    ));
+    return left(
+      ValueFailure.multiLine(
+        failedValue: input,
+      ),
+    );
   }
 }
 

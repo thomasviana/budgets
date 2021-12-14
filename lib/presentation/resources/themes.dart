@@ -17,12 +17,19 @@ class AppTheme {
       .copyWith()
       .apply(fontFamily: 'Quicksand', bodyColor: AppColors.textColor);
 
+  final iconTheme = IconThemeData(color: AppColors.white);
+  final listTileTheme = ListTileTheme(
+    child: Text(''),
+    iconColor: _colorSchemeLight.surface,
+  );
+
   static ThemeData get light {
     return ThemeData.from(
       colorScheme: _colorSchemeLight,
       textTheme: _textThemeBlack,
     ).copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      iconTheme: IconThemeData(color: Colors.white, size: 20),
     );
   }
 }

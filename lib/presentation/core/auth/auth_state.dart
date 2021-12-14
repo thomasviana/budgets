@@ -17,10 +17,11 @@ class AuthState {
         userEntity: UserEntity.empty(),
       );
 
-  AuthState copyWith(
-          {bool? isAuthenticated,
-          bool? isUnauthenticated,
-          UserEntity? userEntity}) =>
+  AuthState copyWith({
+    bool? isAuthenticated,
+    bool? isUnauthenticated,
+    UserEntity? userEntity,
+  }) =>
       AuthState(
         isAuthenticated: isAuthenticated ?? this.isAuthenticated,
         isUnauthenticated: isUnauthenticated ?? this.isUnauthenticated,

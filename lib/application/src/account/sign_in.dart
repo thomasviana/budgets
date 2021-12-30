@@ -10,12 +10,6 @@ class SignIn {
     this._authService,
   );
 
-  void assertPasswordConfirmationIsValid(String password, String confirmation) {
-    if (PasswordValidator().isConfirmationValid(password, confirmation)) {
-      throw InvalidPasswordConfirmationException();
-    }
-  }
-
   Future<Either<AuthFailure, Unit>> anonymously() =>
       _authService.signInAnonymously();
 

@@ -5,7 +5,6 @@ import 'user_entity.dart';
 import 'value_objects.dart';
 
 abstract class AuthService {
-  Stream<UserEntity?> get onAuthStateChanged;
   Future<Either<AuthFailure, Unit>> signInAnonymously();
   Future<Either<AuthFailure, Unit>> signInWithGoogle();
   Future<Either<AuthFailure, Unit>> signInWithFacebook();

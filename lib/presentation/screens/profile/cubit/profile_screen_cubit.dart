@@ -71,7 +71,7 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
 
   void _onImageChanged(String userImagePath) => emit(
         state.copyWith(
-          userEntity: state.userEntity..setImage(userImagePath),
+          userEntity: state.userEntity..updateImagePath(userImagePath),
         ),
       );
 

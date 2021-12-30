@@ -21,23 +21,6 @@ class AuthServiceImpl implements AuthService {
     this._userFirebaseProvider,
   );
 
-  UserEntity? _userFromFirebase(User? user) {
-    return user == null
-        ? null
-        : UserEntity(
-            id: UserId(user.uid),
-            name: UserName(user.displayName!),
-            emailAddress: EmailAddress(user.email!),
-            phoneNumber: PhoneNumber(user.phoneNumber!),
-            photoUrl: user.photoURL,
-          );
-  }
-
-  // TODO: Is it needed?
-  @override
-  Stream<UserEntity?> get onAuthStateChanged =>
-      _firebaseAuth.authStateChanges().asyncMap(_userFromFirebase);
-
   @override
   Future<Either<AuthFailure, Unit>> signInAnonymously() async {
     try {

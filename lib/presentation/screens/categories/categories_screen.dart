@@ -17,7 +17,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   void initState() {
     super.initState();
-
     cubit = context.read<CategoriesScreenCubit>();
   }
 
@@ -45,11 +44,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 const Divider(),
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
-                title: Text(state.categories[index].name.value),
+                title: Text(state.categories[index].name),
                 leading: CircleAvatar(
                   maxRadius: 20,
                   // TODO: Icon data as string
-                  child: Icon(Icons.mobile_friendly),
+                  child: Icon(
+                    IconData(
+                      state.categories[index].icon,
+                      fontFamily: 'MaterialIcons',
+                    ),
+                  ),
                   backgroundColor: Color(state.categories[index].color),
                 ),
                 trailing: Icon(Icons.arrow_forward_ios),

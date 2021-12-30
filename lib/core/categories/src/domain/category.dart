@@ -1,106 +1,78 @@
-import 'package:uuid/uuid.dart';
-
-import '../../../../common/value_objects.dart';
-import '../../domain.dart';
+import 'category_model.dart';
 import 'sub_category.dart';
 
-class Category extends Entity<CategoryId> {
-  late CategoryName _name;
-  late String _iconName;
-  late int _color;
-  late double _totalAmount;
-  final List<SubCategory> subCategories;
+class Category extends CategoryModel {
+  List<SubCategory> subCategories;
+
   Category({
     required CategoryId id,
-    required CategoryName name,
-    required String iconName,
+    required String name,
+    required int icon,
     required int color,
-    required double totalAmount,
     required this.subCategories,
-  }) : super(id) {
-    name = _name;
-    iconName = _iconName;
-    color = _color;
-    totalAmount = _totalAmount;
-  }
-
-  CategoryName get name => _name;
-  String get icon => _iconName;
-  int get color => _color;
-
-  void updateName(CategoryName newName) => _name = newName;
-  void updateIcon(String newIcon) => _iconName = newIcon;
-  void updateColor(int newColor) => _color = newColor;
+  }) : super(id: id, name: name, icon: icon, color: color);
 
   factory Category.housing() => Category(
         id: CategoryId.auto(),
-        name: CategoryName('Vivienda'),
-        iconName: 'home',
+        name: 'Vivienda',
+        icon: 0xe318,
         color: 0xFFFFD426,
-        totalAmount: 0.0,
         subCategories: SubCategory.defaultHousingSubCategories,
       );
 
   factory Category.food() => Category(
         id: CategoryId.auto(),
-        name: CategoryName('Alimentación'),
-        iconName: 'food_bank',
+        name: 'Alimentación',
+        icon: 0xf784,
         color: 0xFFF53914,
-        totalAmount: 0.0,
         subCategories: SubCategory.defaultFoodSubCategories,
       );
 
   factory Category.transportation() => Category(
         id: CategoryId.auto(),
-        name: CategoryName('Transporte'),
-        iconName: 'car_repair',
+        name: 'Transporte',
+        icon: 0xf6b2,
         color: 0xFFD4D6D2,
-        totalAmount: 0.0,
         subCategories: [],
       );
 
   factory Category.healthCare() => Category(
         id: CategoryId.auto(),
-        name: CategoryName('Salud'),
-        iconName: 'local_hospital',
+        name: 'Salud',
+        icon: 0xf86f,
         color: 0xFFD4D6D2,
-        totalAmount: 0.0,
         subCategories: [],
       );
 
   factory Category.services() => Category(
         id: CategoryId.auto(),
-        name: CategoryName('Servicios'),
-        iconName: 'wifi',
+        name: 'Servicios',
+        icon: 0xe6e7,
         color: 0xFF735AD6,
-        totalAmount: 0.0,
         subCategories: [],
       );
 
   factory Category.recreation() => Category(
         id: CategoryId.auto(),
-        name: CategoryName('Recreación'),
-        iconName: 'restaurant',
+        name: 'Recreación',
+        icon: 0xe532,
         color: 0xFFD65CCE,
-        totalAmount: 0.0,
         subCategories: [],
       );
 
   factory Category.shopping() => Category(
         id: CategoryId.auto(),
-        name: CategoryName('Compras'),
-        iconName: 'shopping_bag_outlined',
+        name: 'Compras',
+        icon: 0xf37d,
         color: 0xFF47EDFF,
-        totalAmount: 0.0,
         subCategories: [],
       );
 
   factory Category.financial() => Category(
         id: CategoryId.auto(),
-        name: CategoryName('Gastos financieros'),
-        iconName: 'money_off',
+        name: 'Gastos financieros',
+        icon: 0xf58f,
         color: 0xFF35DB93,
-        totalAmount: 0.0,
         subCategories: [],
       );
 
@@ -116,10 +88,4 @@ class Category extends Entity<CategoryId> {
       Category.financial(),
     ];
   }
-}
-
-class CategoryId extends AlphanumericId {
-  const CategoryId(String value) : super(value);
-
-  CategoryId.auto() : this(const Uuid().v1());
 }

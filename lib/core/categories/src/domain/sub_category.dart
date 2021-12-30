@@ -1,76 +1,61 @@
-import '../../../../common/value_objects.dart';
-import '../../domain.dart';
+import 'package:budgets/core/categories/src/domain/category_model.dart';
 
-class SubCategory extends Entity<CategoryId> {
-  late CategoryName _name;
-  late String _iconName;
-  late int _color;
-  late double _totalAmount;
+import 'category.dart';
+
+class SubCategory extends CategoryModel {
+  final CategoryId parentCategoryId;
   SubCategory({
     required CategoryId id,
-    required CategoryName name,
-    required String iconName,
+    required this.parentCategoryId,
+    required String name,
+    required int icon,
     required int color,
-    required double totalAmount,
-  }) : super(id) {
-    name = _name;
-    iconName = _iconName;
-    color = _color;
-    totalAmount = _totalAmount;
-  }
-
-  CategoryName get name => _name;
-  String get icon => _iconName;
-  int get color => _color;
-
-  void setupdateName(CategoryName newName) => _name = newName;
-  void updateIcon(String newIcon) => _iconName = newIcon;
-  void updateColor(int newColor) => _color = newColor;
+  }) : super(id: id, name: name, icon: icon, color: color);
 
   factory SubCategory.rent() => SubCategory(
         id: CategoryId.auto(),
-        name: CategoryName('Arriendo'),
-        iconName: 'home',
-        color: 0xFFFFD942,
-        totalAmount: 0.0,
+        parentCategoryId: Category.housing().id,
+        name: 'Arriendo',
+        icon: Category.housing().icon,
+        color: Category.housing().color,
       );
 
   factory SubCategory.morgage() => SubCategory(
         id: CategoryId.auto(),
-        name: CategoryName('Hipoteca'),
-        iconName: 'home',
-        color: 0xFFFFD942,
-        totalAmount: 0.0,
+        parentCategoryId: Category.housing().id,
+        name: 'Hipoteca',
+        icon: Category.housing().icon,
+        color: Category.housing().color,
       );
 
   factory SubCategory.services() => SubCategory(
         id: CategoryId.auto(),
-        name: CategoryName('Servicios Públicos'),
-        iconName: 'home',
-        color: 0xFFFFD942,
-        totalAmount: 0.0,
+        parentCategoryId: Category.housing().id,
+        name: 'Servicios Públicos',
+        icon: Category.housing().icon,
+        color: Category.housing().color,
       );
 
   factory SubCategory.meats() => SubCategory(
         id: CategoryId.auto(),
-        name: CategoryName('Carnes'),
-        iconName: 'home',
-        color: 0xFFFFD942,
-        totalAmount: 0.0,
+        parentCategoryId: Category.food().id,
+        name: 'Carnes',
+        icon: Category.food().icon,
+        color: Category.food().color,
       );
   factory SubCategory.fruitsAndVegetables() => SubCategory(
         id: CategoryId.auto(),
-        name: CategoryName('Frutas y verduras'),
-        iconName: 'home',
-        color: 0xFFFFD942,
-        totalAmount: 0.0,
+        parentCategoryId: Category.food().id,
+        name: 'Frutas y verduras',
+        icon: Category.food().icon,
+        color: Category.food().color,
       );
   factory SubCategory.miscellaneous() => SubCategory(
         id: CategoryId.auto(),
-        name: CategoryName('Miscelaneos'),
-        iconName: 'home',
-        color: 0xFFFFD942,
-        totalAmount: 0.0,
+        parentCategoryId: Category.food().id,
+        name: 'Miscelaneos',
+        icon: Category.food().icon,
+        color: Category.food().color,
       );
 
   static List<SubCategory> get defaultHousingSubCategories {

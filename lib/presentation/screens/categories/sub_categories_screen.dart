@@ -51,7 +51,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                 const Divider(),
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
-                title: Text(subCategories[index].name.value),
+                title: Text(subCategories[index].name),
                 leading: CircleAvatar(
                   maxRadius: 20,
                   // TODO: Icon data as string

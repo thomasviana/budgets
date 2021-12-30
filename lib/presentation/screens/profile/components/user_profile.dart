@@ -33,9 +33,8 @@ class _UserProfileState extends State<UserProfile> {
 
     if (widget.user.imagePath != null) {
       print('path error');
-
       image = Image.file(
-        File('/assets/images/profile_photo.jpg'),
+        File(widget.user.imagePath!),
         fit: BoxFit.cover,
       );
     } else if (widget.user.photoUrl != null) {

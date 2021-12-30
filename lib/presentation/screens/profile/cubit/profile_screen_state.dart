@@ -1,19 +1,20 @@
 part of 'profile_screen_cubit.dart';
 
 class ProfileScreenState {
-  final UserEntity? userEntity;
+  final UserEntity userEntity;
   final bool isLoading;
   final bool isSavingForm;
   final bool isSaveButtonEnabled;
 
   ProfileScreenState({
-    this.userEntity,
+    required this.userEntity,
     required this.isLoading,
     required this.isSavingForm,
     required this.isSaveButtonEnabled,
   });
 
   factory ProfileScreenState.initial() => ProfileScreenState(
+        userEntity: UserEntity.empty(),
         isLoading: false,
         isSavingForm: false,
         isSaveButtonEnabled: false,

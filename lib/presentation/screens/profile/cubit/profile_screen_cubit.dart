@@ -25,7 +25,12 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
     emit(state.copyWith(isLoading: true));
     final displayName = await getProfileInfo();
     displayName.fold(
-      () => print('nullll'),
+      () => emit(
+        state.copyWith(
+          userEntity: UserEntity.empty(),
+          isLoading: false,
+        ),
+      ),
       (user) => emit(
         state.copyWith(
           userEntity: user,
@@ -37,14 +42,14 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
 
   void onNameChanged(String? name) => emit(
         state.copyWith(
-          userEntity: state.userEntity!..updateName(name),
+          userEntity: state.userEntity..updateName(name),
           isSaveButtonEnabled: true,
         ),
       );
 
   void onPhoneChanged(String? phone) => emit(
         state.copyWith(
-          userEntity: state.userEntity!..updatePhoneNumber(phone),
+          userEntity: state.userEntity..updatePhoneNumber(phone),
           isSaveButtonEnabled: true,
         ),
       );
@@ -67,13 +72,13 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
 
   void _onImageChanged(String userImagePath) => emit(
         state.copyWith(
-          userEntity: state.userEntity!..setImage(userImagePath),
+          userEntity: state.userEntity..setImage(userImagePath),
         ),
       );
 
   Future<void> onUpdateUserInfo() async {
     emit(state.copyWith(isSavingForm: true));
-    await updateUserInfo(state.userEntity!);
+    await updateUserInfo(state.userEntity);
     emit(
       state.copyWith(
         isSavingForm: false,

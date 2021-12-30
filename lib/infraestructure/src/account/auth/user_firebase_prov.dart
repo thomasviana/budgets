@@ -36,8 +36,6 @@ class UserFirebaseProv {
     if (user == null) {
       return Future.value(none());
     } else {
-      print(user.email);
-
       final snapshot =
           await _firebaseFirestore.doc('userTest/${user.uid}').get();
       if (snapshot.exists) {
@@ -48,9 +46,23 @@ class UserFirebaseProv {
         print(userData.toDomain().photoUrl);
         final userEntity = userData.toDomain();
         return some(userEntity);
+      } else {
+        final registeredUser = _userFromFirebase(user);
+        return some(registeredUser!);
       }
-      return Future.value(none());
     }
+  }
+
+  UserEntity? _userFromFirebase(User? user) {
+    return user == null
+        ? null
+        : UserEntity(
+            id: UserId(user.uid),
+            name: UserName(user.displayName ?? ''),
+            emailAddress: EmailAddress(user.email!),
+            phoneNumber: PhoneNumber(user.phoneNumber ?? ''),
+            photoUrl: user.photoURL,
+          );
   }
 
   Future<void> saveUser(UserEntity user) async {

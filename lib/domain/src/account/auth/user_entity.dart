@@ -18,7 +18,7 @@ class UserEntity extends Entity<UserId> {
     String? imagePath,
     String? photoUrl,
   }) : super(id) {
-    setImage(imagePath ?? '/assets/images/profile_photo.jpg');
+    setImage(imagePath);
     setPhotoUrl(photoUrl ??
         'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg');
     updateName(name!.value);
@@ -45,6 +45,16 @@ class UserEntity extends Entity<UserId> {
   String? get photoUrl => _photoUrl;
   UserName? get name => _name;
   PhoneNumber? get phoneNumber => _phoneNumber;
+
+  factory UserEntity.empty() => UserEntity(
+        id: UserId.auto(),
+        name: UserName(''),
+        emailAddress: EmailAddress(''),
+        phoneNumber: PhoneNumber(''),
+        imagePath: '/assets/images/profile_photo.jpg',
+        photoUrl:
+            'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg',
+      );
 }
 
 class UserId extends AlphanumericId {

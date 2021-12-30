@@ -20,7 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.initState();
 
     cubit = context.read<SettingsScreenCubit>();
-    cubit.init();
+    // cubit.init();
   }
 
   @override
@@ -48,7 +48,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               autofocus: true,
               enableFeedback: true,
               onTap: () {
-                cubit.getProfileInfo();
+                // TODO: Another ger profile nod needed
+                // cubit.getProfileInfo();
                 AppNavigator.navigateToProfilePage(context);
               },
             ),

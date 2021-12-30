@@ -33,6 +33,7 @@ class AuthServiceImpl implements AuthService {
           );
   }
 
+  // TODO: Is it needed?
   @override
   Stream<UserEntity?> get onAuthStateChanged =>
       _firebaseAuth.authStateChanges().asyncMap(_userFromFirebase);
@@ -98,8 +99,6 @@ class AuthServiceImpl implements AuthService {
         email: emailAddressString,
         password: passwordString,
       );
-      _userFirebaseProvider
-          .saveUser(UserEntity(id: UserId.auto(), emailAddress: emailAddress));
       return right(unit);
     } on FirebaseAuthException catch (e) {
       // Seems that there is a problem with FirebaseAuthException
@@ -124,8 +123,6 @@ class AuthServiceImpl implements AuthService {
         email: emailAddressString,
         password: passwordString,
       );
-      _userFirebaseProvider
-          .saveUser(UserEntity(id: UserId.auto(), emailAddress: emailAddress));
       return right(unit);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {

@@ -16,27 +16,31 @@ class SettingsScreenCubit extends Cubit<SettingsScreenState> {
     this.getProfileInfo,
   ) : super(SettingsScreenState.initial());
 
-  Future<void> init() async {
-    emit(state.copyWith(isLoading: true));
-    final displayName = await getProfileInfo();
-    displayName.fold(
-      () => null,
-      (user) => emit(state.copyWith(
-        userEntity: user,
-        isLoading: false,
-      )),
-    );
-  }
+  // TODO: Probably do not needed.
+  // Future<void> init() async {
+  //   emit(state.copyWith(isLoading: true));
+  //   final displayName = await getProfileInfo();
+  //   displayName.fold(
+  //     () => null,
+  //     (user) => emit(
+  //       state.copyWith(
+  //         userEntity: user,
+  //         isLoading: false,
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Future<void> onProfilePressed() async {
-    emit(state.copyWith(isLoading: true));
-    final optionUser = await getProfileInfo();
-    optionUser.fold(
-      () => null,
-      (user) => emit(state.copyWith(
-        userEntity: user,
-        isLoading: false,
-      )),
-    );
-  }
+  // TODO: Probably do not needed.
+  // Future<void> onProfilePressed() async {
+  //   emit(state.copyWith(isLoading: true));
+  //   final optionUser = await getProfileInfo();
+  //   optionUser.fold(
+  //     () => null,
+  //     (user) => emit(state.copyWith(
+  //       userEntity: user,
+  //       isLoading: false,
+  //     )),
+  //   );
+  // }
 }

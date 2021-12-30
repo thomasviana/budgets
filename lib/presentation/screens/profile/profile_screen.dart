@@ -51,7 +51,7 @@ class _ProfileSreenState extends State<ProfileSreen> {
       return Column(
         children: [
           UserProfile(
-            user: state.userEntity!,
+            user: state.userEntity,
             isSavingForm: state.isSavingForm,
             isSaveButtonEnabled: state.isSaveButtonEnabled,
           ),

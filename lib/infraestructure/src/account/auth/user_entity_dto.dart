@@ -53,7 +53,7 @@ abstract class UserEntityDTO implements _$UserEntityDTO {
       'name': name,
       'email': emailAddress,
       'phoneNumber': phoneNumber,
-      'photoUrl': photoUrl ?? photoUrl,
+      'photoUrl': newImage ?? photoUrl,
     };
   }
 }

@@ -1,21 +1,18 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import '../../../domain.dart';
 
-part 'user_entity_dto.freezed.dart';
-
-@freezed
-abstract class UserEntityDTO implements _$UserEntityDTO {
-  const UserEntityDTO._();
-
-  // ignore: sort_unnamed_constructors_first
-  const factory UserEntityDTO({
-    required String? id,
-    required String? name,
-    required String? emailAddress,
-    required String? phoneNumber,
-    required String? photoUrl,
-  }) = _UserEntityDTO;
+class UserEntityDTO {
+  final String? id;
+  final String? name;
+  final String? emailAddress;
+  final String? phoneNumber;
+  final String? photoUrl;
+  UserEntityDTO({
+    this.id,
+    this.name,
+    this.emailAddress,
+    required this.phoneNumber,
+    required this.photoUrl,
+  });
 
   factory UserEntityDTO.fromDomain(UserEntity userEntity) {
     return UserEntityDTO(

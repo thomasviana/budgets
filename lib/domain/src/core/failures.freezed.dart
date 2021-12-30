@@ -249,12 +249,14 @@ class _$ExceedingLength<T>
             other is ExceedingLength<T> &&
             const DeepCollectionEquality()
                 .equals(other.failedValue, failedValue) &&
-            (identical(other.max, max) || other.max == max));
+            const DeepCollectionEquality().equals(other.max, max));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(failedValue), max);
+      runtimeType,
+      const DeepCollectionEquality().hash(failedValue),
+      const DeepCollectionEquality().hash(max));
 
   @JsonKey(ignore: true)
   @override
@@ -619,12 +621,13 @@ class _$InvalidEmail<T>
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is InvalidEmail<T> &&
-            (identical(other.failedValue, failedValue) ||
-                other.failedValue == failedValue));
+            const DeepCollectionEquality()
+                .equals(other.failedValue, failedValue));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failedValue);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(failedValue));
 
   @JsonKey(ignore: true)
   @override
@@ -805,12 +808,13 @@ class _$ShortPassword<T>
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is ShortPassword<T> &&
-            (identical(other.failedValue, failedValue) ||
-                other.failedValue == failedValue));
+            const DeepCollectionEquality()
+                .equals(other.failedValue, failedValue));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failedValue);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(failedValue));
 
   @JsonKey(ignore: true)
   @override
@@ -992,12 +996,13 @@ class _$PasswordDoNotMatch<T>
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is PasswordDoNotMatch<T> &&
-            (identical(other.failedValue, failedValue) ||
-                other.failedValue == failedValue));
+            const DeepCollectionEquality()
+                .equals(other.failedValue, failedValue));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failedValue);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(failedValue));
 
   @JsonKey(ignore: true)
   @override
@@ -1373,12 +1378,14 @@ class _$ListToLong<T> with DiagnosticableTreeMixin implements ListToLong<T> {
             other is ListToLong<T> &&
             const DeepCollectionEquality()
                 .equals(other.failedValue, failedValue) &&
-            (identical(other.max, max) || other.max == max));
+            const DeepCollectionEquality().equals(other.max, max));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(failedValue), max);
+      runtimeType,
+      const DeepCollectionEquality().hash(failedValue),
+      const DeepCollectionEquality().hash(max));
 
   @JsonKey(ignore: true)
   @override
@@ -1561,12 +1568,13 @@ class _$InvalidUserName<T>
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is InvalidUserName<T> &&
-            (identical(other.failedValue, failedValue) ||
-                other.failedValue == failedValue));
+            const DeepCollectionEquality()
+                .equals(other.failedValue, failedValue));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failedValue);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(failedValue));
 
   @JsonKey(ignore: true)
   @override
@@ -1748,12 +1756,13 @@ class _$InvalidPhoneNumber<T>
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is InvalidPhoneNumber<T> &&
-            (identical(other.failedValue, failedValue) ||
-                other.failedValue == failedValue));
+            const DeepCollectionEquality()
+                .equals(other.failedValue, failedValue));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failedValue);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(failedValue));
 
   @JsonKey(ignore: true)
   @override

@@ -8,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:path/path.dart' as path;
 
 import '../../../../domain/account.dart';
+import '../../../../presentation/resources/constants.dart';
 import 'user_entity_dto.dart';
 
 @lazySingleton
@@ -38,29 +39,23 @@ class UserFirebaseProv {
           await _firebaseFirestore.doc('userTest/${user.uid}').get();
       if (snapshot.exists) {
         final userData = UserEntityDTO.fromFirebaseMap(snapshot.data()!);
-        // print(userData.toDomain().emailAddress);
-        // print(userData.toDomain().name);
-        // print(userData.toDomain().phoneNumber);
-        // print(userData.toDomain().photoUrl);
         final userEntity = userData.toDomain();
         return some(userEntity);
       } else {
         final registeredUser = _userFromFirebase(user);
-        return some(registeredUser!);
+        return some(registeredUser);
       }
     }
   }
 
-  UserEntity? _userFromFirebase(User? user) {
-    return user == null
-        ? null
-        : UserEntity(
-            id: UserId(user.uid),
-            name: UserName(user.displayName ?? ''),
-            emailAddress: EmailAddress(user.email!),
-            phoneNumber: PhoneNumber(user.phoneNumber ?? ''),
-            photoUrl: user.photoURL,
-          );
+  UserEntity _userFromFirebase(User user) {
+    return UserEntity(
+      id: UserId(user.uid),
+      name: UserName(user.displayName ?? ''),
+      emailAddress: EmailAddress(user.email!),
+      phoneNumber: PhoneNumber(user.phoneNumber ?? ''),
+      photoUrl: user.photoURL ?? kDefaultPhotoUrl,
+    );
   }
 
   Future<void> saveUser(UserEntity user) async {

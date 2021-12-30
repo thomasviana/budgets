@@ -1,6 +1,5 @@
 import 'package:uuid/uuid.dart';
 
-import '../../../../presentation/resources/constants.dart';
 import '../../../core.dart';
 import 'value_objects.dart';
 
@@ -17,7 +16,7 @@ class UserEntity extends Entity<UserId> {
     this.name,
     this.phoneNumber,
     this.imagePath,
-    this.photoUrl = kDefaultPhotoUrl,
+    this.photoUrl,
   }) : super(id);
 
   // ignore: use_setters_to_change_properties
@@ -34,9 +33,6 @@ class UserEntity extends Entity<UserId> {
         name: UserName(''),
         emailAddress: EmailAddress(''),
         phoneNumber: PhoneNumber(''),
-        imagePath: '/assets/images/profile_photo.jpg',
-        photoUrl:
-            'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg',
       );
 }
 

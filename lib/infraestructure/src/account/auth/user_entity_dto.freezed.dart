@@ -111,13 +111,12 @@ abstract class _$UserEntityDTOCopyWith<$Res>
           _UserEntityDTO value, $Res Function(_UserEntityDTO) then) =
       __$UserEntityDTOCopyWithImpl<$Res>;
   @override
-  $Res call({
-    String? id,
-    String? name,
-    String? emailAddress,
-    String? phoneNumber,
-    String? photoUrl,
-  });
+  $Res call(
+      {String? id,
+      String? name,
+      String? emailAddress,
+      String? phoneNumber,
+      String? photoUrl});
 }
 
 /// @nodoc
@@ -125,9 +124,8 @@ class __$UserEntityDTOCopyWithImpl<$Res>
     extends _$UserEntityDTOCopyWithImpl<$Res>
     implements _$UserEntityDTOCopyWith<$Res> {
   __$UserEntityDTOCopyWithImpl(
-    _UserEntityDTO _value,
-    $Res Function(_UserEntityDTO) _then,
-  ) : super(_value, (v) => _then(v as _UserEntityDTO));
+      _UserEntityDTO _value, $Res Function(_UserEntityDTO) _then)
+      : super(_value, (v) => _then(v as _UserEntityDTO));
 
   @override
   _UserEntityDTO get _value => super._value as _UserEntityDTO;
@@ -140,43 +138,41 @@ class __$UserEntityDTOCopyWithImpl<$Res>
     Object? phoneNumber = freezed,
     Object? photoUrl = freezed,
   }) {
-    return _then(
-      _UserEntityDTO(
-        id: id == freezed
-            ? _value.id
-            : id // ignore: cast_nullable_to_non_nullable
-                as String?,
-        name: name == freezed
-            ? _value.name
-            : name // ignore: cast_nullable_to_non_nullable
-                as String?,
-        emailAddress: emailAddress == freezed
-            ? _value.emailAddress
-            : emailAddress // ignore: cast_nullable_to_non_nullable
-                as String?,
-        phoneNumber: phoneNumber == freezed
-            ? _value.phoneNumber
-            : phoneNumber // ignore: cast_nullable_to_non_nullable
-                as String?,
-        photoUrl: photoUrl == freezed
-            ? _value.photoUrl
-            : photoUrl // ignore: cast_nullable_to_non_nullable
-                as String?,
-      ),
-    );
+    return _then(_UserEntityDTO(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      emailAddress: emailAddress == freezed
+          ? _value.emailAddress
+          : emailAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      phoneNumber: phoneNumber == freezed
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
+      photoUrl: photoUrl == freezed
+          ? _value.photoUrl
+          : photoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
   }
 }
 
 /// @nodoc
 
 class _$_UserEntityDTO extends _UserEntityDTO {
-  const _$_UserEntityDTO({
-    required this.id,
-    required this.name,
-    required this.emailAddress,
-    required this.phoneNumber,
-    required this.photoUrl,
-  }) : super._();
+  const _$_UserEntityDTO(
+      {required this.id,
+      required this.name,
+      required this.emailAddress,
+      required this.phoneNumber,
+      required this.photoUrl})
+      : super._();
 
   @override
   final String? id;
@@ -191,12 +187,7 @@ class _$_UserEntityDTO extends _UserEntityDTO {
 
   @override
   String toString() {
-    return '''
-      UserEntityDTO(id: $id, 
-      name: $name, 
-      emailAddress: $emailAddress, 
-      phoneNumber: $phoneNumber, 
-      photoUrl: $photoUrl)''';
+    return 'UserEntityDTO(id: $id, name: $name, emailAddress: $emailAddress, phoneNumber: $phoneNumber, photoUrl: $photoUrl)';
   }
 
   @override
@@ -204,19 +195,23 @@ class _$_UserEntityDTO extends _UserEntityDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _UserEntityDTO &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.emailAddress, emailAddress) ||
-                other.emailAddress == emailAddress) &&
-            (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber) &&
-            (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality()
+                .equals(other.emailAddress, emailAddress) &&
+            const DeepCollectionEquality()
+                .equals(other.phoneNumber, phoneNumber) &&
+            const DeepCollectionEquality().equals(other.photoUrl, photoUrl));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, emailAddress, phoneNumber, photoUrl);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(emailAddress),
+      const DeepCollectionEquality().hash(phoneNumber),
+      const DeepCollectionEquality().hash(photoUrl));
 
   @JsonKey(ignore: true)
   @override
@@ -225,13 +220,12 @@ class _$_UserEntityDTO extends _UserEntityDTO {
 }
 
 abstract class _UserEntityDTO extends UserEntityDTO {
-  const factory _UserEntityDTO({
-    required String? id,
-    required String? name,
-    required String? emailAddress,
-    required String? phoneNumber,
-    required String? photoUrl,
-  }) = _$_UserEntityDTO;
+  const factory _UserEntityDTO(
+      {required String? id,
+      required String? name,
+      required String? emailAddress,
+      required String? phoneNumber,
+      required String? photoUrl}) = _$_UserEntityDTO;
   const _UserEntityDTO._() : super._();
 
   @override

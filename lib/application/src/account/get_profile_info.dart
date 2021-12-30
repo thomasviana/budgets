@@ -6,9 +6,7 @@ import '../../../domain/account.dart';
 @injectable
 class GetProfileInfo {
   final AuthService _authService;
-  GetProfileInfo(
-    this._authService,
-  );
+  GetProfileInfo(this._authService);
 
   Future<Option<UserEntity>> call() => _authService.getUser();
 }

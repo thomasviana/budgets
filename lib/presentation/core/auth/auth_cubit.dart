@@ -9,12 +9,10 @@ part 'auth_state.dart';
 @injectable
 class AuthCubit extends Cubit<AuthState> {
   CheckAuthStatus checkAuthStatus;
-  GetProfileInfo getProfileInfo;
   LogOut logOut;
 
   AuthCubit(
     this.checkAuthStatus,
-    this.getProfileInfo,
     this.logOut,
   ) : super(AuthState.initial());
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../dependency_injection.dart';
-import '../../domain/categories.dart';
+import '../../core/categories/domain.dart';
+import '../../di/dependency_injection.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/auth/cubit/auth_screen_cubit.dart';
 import '../screens/categories/categories_cubit/categories_screen_cubit.dart';

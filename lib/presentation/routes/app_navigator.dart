@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/categories.dart';
+import '../../core/categories/domain.dart';
 
 class AppNavigator {
   AppNavigator._();

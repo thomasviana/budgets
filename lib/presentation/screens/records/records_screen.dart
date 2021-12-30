@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../application/records.dart';
+import '../../../core/records/application.dart';
 import '../../resources/colors.dart';
 import '../../widgets/transaction_listtile.dart';
 

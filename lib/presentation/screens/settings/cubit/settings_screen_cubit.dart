@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../application/account.dart';
-import '../../../../domain/account.dart';
+import '../../../../core/account/application.dart';
+import '../../../../core/account/domain.dart';
 
 part 'settings_screen_state.dart';
 

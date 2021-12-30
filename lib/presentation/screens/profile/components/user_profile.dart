@@ -4,7 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../domain/account.dart';
+import '../../../../core/account/domain.dart';
 import '../../../resources/colors.dart';
 import '../../../routes/app_navigator.dart';
 import '../../../widgets/rounded_button.dart';

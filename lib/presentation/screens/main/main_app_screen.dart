@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../dependency_injection.dart';
+import '../../../di/dependency_injection.dart';
 import '../../resources/colors.dart';
 import '../home/cubit/home_screen_cubit.dart';
 import '../home/home_screen.dart';

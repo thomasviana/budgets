@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../domain/categories.dart';
+import '../../../../core/categories/domain.dart';
 
 part 'categories_screen_state.dart';
 

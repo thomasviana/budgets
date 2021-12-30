@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../application/account.dart';
-import '../../../../domain/account.dart';
+import '../../../../core/account/application.dart';
+import '../../../../core/account/domain.dart';
 
 part 'auth_screen_state.dart';
 

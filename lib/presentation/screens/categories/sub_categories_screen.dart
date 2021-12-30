@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../domain/categories.dart';
+import '../../../core/categories/domain.dart';
 import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
 import 'sub_categories_cubit/sub_categories_screen_cubit.dart';

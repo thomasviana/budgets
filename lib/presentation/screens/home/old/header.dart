@@ -65,7 +65,7 @@ class Header extends StatelessWidget {
                       return CircularProgressIndicator.adaptive();
                     } else {
                       return Text(
-                        'Hi ${state.userName!.getOrCrash().split(' ')[0]}!',
+                        'Hi ${state.userName!.value.split(' ')[0]}!',
                         style: Theme.of(context).textTheme.headline5!.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.white),
                       );

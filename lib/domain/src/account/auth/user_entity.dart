@@ -1,57 +1,54 @@
-import 'package:dartz/dartz.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../core.dart';
 import 'value_objects.dart';
 
-class UserEntity {
-  final UniqueId id;
-  final UserName? name;
-  final EmailAddress? emailAddress;
-  final PhoneNumber? phoneNumber;
-  final ImagePath? imagePath;
-  final String? photoUrl;
+class UserEntity extends Entity<UserId> {
+  final EmailAddress emailAddress;
+  late UserName? _name;
+  late PhoneNumber? _phoneNumber;
+  late String? _imagePath;
+  late String? _photoUrl;
 
   UserEntity({
-    required this.id,
-    this.name,
-    this.emailAddress,
-    this.phoneNumber,
-    this.imagePath,
-    this.photoUrl,
-  });
-
-  factory UserEntity.empty() => UserEntity(
-        id: UniqueId(),
-        name: UserName(''),
-        emailAddress: EmailAddress(''),
-        phoneNumber: PhoneNumber(''),
-        imagePath: ImagePath('/assets/images/profile_photo.jpg'),
-        photoUrl:
-            'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg',
-      );
-
-  Option<ValueFailure<dynamic>> get failureOption {
-    return name!.value.fold(
-      (f) => some(f),
-      (_) => none(),
-    );
-  }
-
-  UserEntity copyWith({
-    UniqueId? id,
-    UserName? name,
-    EmailAddress? emailAddress,
+    required UserId id,
+    required this.emailAddress,
     PhoneNumber? phoneNumber,
-    ImagePath? imagePath,
+    UserName? name,
+    String? imagePath,
     String? photoUrl,
-  }) {
-    return UserEntity(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      emailAddress: emailAddress ?? this.emailAddress,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      imagePath: imagePath ?? this.imagePath,
-      photoUrl: photoUrl ?? this.photoUrl,
-    );
+  }) : super(id) {
+    setImage(imagePath ?? '/assets/images/profile_photo.jpg');
+    setPhotoUrl(photoUrl ??
+        'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg');
+    updateName(name!.value);
+    updatePhoneNumber(phoneNumber!.value);
   }
+
+  void setImage(String? newImagePath) {
+    _imagePath = newImagePath;
+  }
+
+  void setPhotoUrl(String? newPhotoUrl) {
+    _photoUrl = newPhotoUrl;
+  }
+
+  void updateName(String? newName) {
+    _name = UserName(newName!);
+  }
+
+  void updatePhoneNumber(String? newPhoneNumber) {
+    _phoneNumber = PhoneNumber(newPhoneNumber!);
+  }
+
+  String? get imagePath => _imagePath;
+  String? get photoUrl => _photoUrl;
+  UserName? get name => _name;
+  PhoneNumber? get phoneNumber => _phoneNumber;
+}
+
+class UserId extends AlphanumericId {
+  const UserId(String value) : super(value);
+
+  UserId.auto() : this(const Uuid().v1());
 }

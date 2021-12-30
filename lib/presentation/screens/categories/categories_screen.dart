@@ -45,11 +45,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 const Divider(),
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
-                title: Text(state.categories[index].name!.getOrCrash()),
+                title: Text(state.categories[index].name.value),
                 leading: CircleAvatar(
                   maxRadius: 20,
-                  child: state.categories[index].icon,
-                  backgroundColor: state.categories[index].color!.getOrCrash(),
+                  // TODO: Icon data as string
+                  child: Icon(Icons.mobile_friendly),
+                  backgroundColor: Color(state.categories[index].color),
                 ),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () => AppNavigator.navigateToSubCategoriesPage(

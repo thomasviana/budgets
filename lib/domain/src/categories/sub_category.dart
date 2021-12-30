@@ -1,86 +1,83 @@
-import 'package:dartz/dartz.dart';
-import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
-
-import '../../../presentation/resources/colors.dart';
 import '../../categories.dart';
 import '../../core.dart';
 
-class SubCategory {
-  final String? id;
-  final CategoryName? name;
-  final Icon? icon;
-  final CategoryColor? color;
-  final double? totalAmount;
+class SubCategory extends Entity<CategoryId> {
+  late CategoryName _name;
+  late String _iconName;
+  late int _color;
+  late double _totalAmount;
   SubCategory({
-    this.id,
-    this.name,
-    this.icon,
-    this.color,
-    this.totalAmount,
-  });
+    required CategoryId id,
+    required CategoryName name,
+    required String iconName,
+    required int color,
+    required double totalAmount,
+  }) : super(id) {
+    name = _name;
+    iconName = _iconName;
+    color = _color;
+    totalAmount = _totalAmount;
+  }
+
+  CategoryName get name => _name;
+  String get icon => _iconName;
+  int get color => _color;
+
+  void updateName(CategoryName newName) {
+    _name = newName;
+  }
+
+  void updateIcon(String newIcon) {
+    _iconName = newIcon;
+  }
+
+  void updateColor(int newColor) {
+    _color = newColor;
+  }
 
   factory SubCategory.rent() => SubCategory(
-        id: Uuid().v1(),
+        id: CategoryId.auto(),
         name: CategoryName('Arriendo'),
-        icon: Icon(
-          Icons.home,
-          color: AppColors.white,
-        ),
-        color: CategoryColor(Colors.amber),
+        iconName: 'home',
+        color: 0xFFFFD942,
         totalAmount: 0.0,
       );
 
   factory SubCategory.morgage() => SubCategory(
-        id: Uuid().v1(),
+        id: CategoryId.auto(),
         name: CategoryName('Hipoteca'),
-        icon: Icon(
-          Icons.home,
-          color: AppColors.white,
-        ),
-        color: CategoryColor(Colors.amber),
+        iconName: 'home',
+        color: 0xFFFFD942,
         totalAmount: 0.0,
       );
 
   factory SubCategory.services() => SubCategory(
-        id: Uuid().v1(),
+        id: CategoryId.auto(),
         name: CategoryName('Servicios Públicos'),
-        icon: Icon(
-          Icons.home,
-          color: AppColors.white,
-        ),
-        color: CategoryColor(Colors.amber),
+        iconName: 'home',
+        color: 0xFFFFD942,
         totalAmount: 0.0,
       );
 
   factory SubCategory.meats() => SubCategory(
-        id: Uuid().v1(),
+        id: CategoryId.auto(),
         name: CategoryName('Carnes'),
-        icon: Icon(
-          Icons.food_bank,
-          color: AppColors.white,
-        ),
-        color: CategoryColor(Colors.red),
+        iconName: 'home',
+        color: 0xFFFFD942,
         totalAmount: 0.0,
       );
   factory SubCategory.fruitsAndVegetables() => SubCategory(
-        id: Uuid().v1(),
+        id: CategoryId.auto(),
         name: CategoryName('Frutas y verduras'),
-        icon: Icon(
-          Icons.food_bank,
-          color: AppColors.white,
-        ),
-        color: CategoryColor(Colors.red),
+        iconName: 'home',
+        color: 0xFFFFD942,
         totalAmount: 0.0,
       );
   factory SubCategory.miscellaneous() => SubCategory(
-        id: Uuid().v1(),
+        id: CategoryId.auto(),
         name: CategoryName('Miscelaneos'),
-        icon: Icon(
-          Icons.food_bank,
-          color: AppColors.white,
-        ),
-        color: CategoryColor(Colors.red),
+        iconName: 'home',
+        color: 0xFFFFD942,
         totalAmount: 0.0,
       );
 
@@ -98,28 +95,5 @@ class SubCategory {
       SubCategory.fruitsAndVegetables(),
       SubCategory.miscellaneous(),
     ];
-  }
-
-  Option<ValueFailure<dynamic>> get failureOption {
-    return name!.value.fold(
-      (f) => some(f),
-      (_) => none(),
-    );
-  }
-
-  SubCategory copyWith({
-    String? id,
-    CategoryName? name,
-    Icon? icon,
-    CategoryColor? color,
-    double? totalAmount,
-  }) {
-    return SubCategory(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      icon: icon ?? this.icon,
-      color: color ?? this.color,
-      totalAmount: totalAmount ?? this.totalAmount,
-    );
   }
 }

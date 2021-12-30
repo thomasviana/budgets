@@ -52,11 +52,12 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                 const Divider(),
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
-                title: Text(subCategories[index].name!.getOrCrash()),
+                title: Text(subCategories[index].name.value),
                 leading: CircleAvatar(
                   maxRadius: 20,
-                  child: subCategories[index].icon,
-                  backgroundColor: subCategories[index].color!.getOrCrash(),
+                  // TODO: Icon data as string
+                  child: Icon(Icons.ac_unit),
+                  backgroundColor: Color(subCategories[index].color),
                 ),
                 trailing: Icon(Icons.arrow_forward_ios),
                 onTap: () => AppNavigator.navigateToProfilePage(context),

@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           child: Navigator(
             key: navigatorKey,
             onGenerateRoute: Routes.routes,
-            //observers: [appRouteObserver], FIXME review this later
+            //observers: [appRouteObserver], review this later
           ),
           onWillPop: () async => !(await navigatorKey.currentState!.maybePop()),
         ),

@@ -1,16 +1,15 @@
 part of 'settings_screen_cubit.dart';
 
 class SettingsScreenState {
-  final UserEntity userEntity;
+  final UserEntity? userEntity;
   final bool isLoading;
 
   SettingsScreenState({
-    required this.userEntity,
+    this.userEntity,
     required this.isLoading,
   });
 
   factory SettingsScreenState.initial() => SettingsScreenState(
-        userEntity: UserEntity.empty(),
         isLoading: false,
       );
 

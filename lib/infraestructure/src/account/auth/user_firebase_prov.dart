@@ -36,7 +36,10 @@ class UserFirebaseProv {
     if (user == null) {
       return Future.value(none());
     } else {
-      final snapshot = await _firebaseFirestore.doc('users/${user.uid}').get();
+      print(user.email);
+
+      final snapshot =
+          await _firebaseFirestore.doc('userTest/${user.uid}').get();
       if (snapshot.exists) {
         final userData = UserEntityDTO.fromFirebaseMap(snapshot.data()!);
         print(userData.toDomain().emailAddress);
@@ -51,15 +54,15 @@ class UserFirebaseProv {
   }
 
   Future<void> saveUser(UserEntity user) async {
-    final ref = _firebaseFirestore.doc('users/${currentUser!.uid}');
+    final ref = _firebaseFirestore.doc('userTest/${currentUser!.uid}');
     final userDTO = UserEntityDTO.fromDomain(user);
     if (user.imagePath == null) {
       await ref.set(userDTO.toFirebaseMap(), SetOptions(merge: true));
     } else {
       final imagePath =
-          '${currentUser!.uid}/profile/${path.basename(user.imagePath!.getOrCrash())}';
+          '${currentUser!.uid}/profile/${path.basename(user.imagePath!)}';
       final storageRef = _firebaseStorage.ref(imagePath);
-      await storageRef.putFile(File(user.imagePath!.getOrCrash()));
+      await storageRef.putFile(File(user.imagePath!));
       final url = await storageRef.getDownloadURL();
       await ref.set(
           userDTO.toFirebaseMap(newImage: url), SetOptions(merge: true));

@@ -46,7 +46,7 @@ class Routes {
         return _buildRoute(
           settings,
           BlocProvider(
-            create: (context) => sl<ProfileScreenCubit>()..getProfileInfo,
+            create: (context) => sl<ProfileScreenCubit>()..init(),
             child: ProfileSreen(),
           ),
         );

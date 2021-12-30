@@ -32,11 +32,14 @@ class _UserProfileState extends State<UserProfile> {
     Widget? image;
 
     if (widget.user.imagePath != null) {
+      print('path error');
+
       image = Image.file(
-        File(widget.user.imagePath!.getOrCrash()),
+        File('/assets/images/profile_photo.jpg'),
         fit: BoxFit.cover,
       );
     } else if (widget.user.photoUrl != null) {
+      print('url error');
       image = CachedNetworkImage(
         imageUrl: widget.user.photoUrl!,
         progressIndicatorBuilder: (_, __, progress) =>
@@ -63,14 +66,14 @@ class _UserProfileState extends State<UserProfile> {
               ),
               SizedBox(height: 50),
               Text(
-                'User ID: ${widget.user.id.getOrCrash()}',
+                'User ID: ${widget.user.id.value}',
               ),
               const SizedBox(height: 50),
               Form(
                 child: Column(
                   children: [
                     TextFormField(
-                      initialValue: widget.user.name!.getOrCrash(),
+                      initialValue: widget.user.name!.value,
                       decoration: InputDecoration(labelText: 'Name'),
                       keyboardType: TextInputType.name,
                       onChanged: (name) => context
@@ -79,11 +82,11 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     TextFormField(
                       enabled: false,
-                      initialValue: widget.user.emailAddress!.getOrCrash(),
+                      initialValue: widget.user.emailAddress.value,
                       decoration: InputDecoration(labelText: 'Email'),
                     ),
                     TextFormField(
-                      initialValue: widget.user.phoneNumber!.getOrCrash(),
+                      initialValue: widget.user.phoneNumber!.value,
                       decoration: InputDecoration(labelText: 'Phone'),
                       keyboardType: TextInputType.phone,
                       onChanged: (phone) => context

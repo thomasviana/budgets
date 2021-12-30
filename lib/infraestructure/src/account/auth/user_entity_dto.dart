@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../domain/account.dart';
-import '../../../../domain/core.dart';
 
 part 'user_entity_dto.freezed.dart';
 
@@ -20,17 +19,17 @@ abstract class UserEntityDTO implements _$UserEntityDTO {
 
   factory UserEntityDTO.fromDomain(UserEntity userEntity) {
     return UserEntityDTO(
-      id: userEntity.id.getOrCrash(),
-      name: userEntity.name!.getOrCrash(),
-      emailAddress: userEntity.emailAddress!.getOrCrash(),
-      phoneNumber: userEntity.phoneNumber!.getOrCrash(),
+      id: userEntity.id.value,
+      name: userEntity.name!.value,
+      emailAddress: userEntity.emailAddress.value,
+      phoneNumber: userEntity.phoneNumber!.value,
       photoUrl: userEntity.photoUrl,
     );
   }
 
   UserEntity toDomain() {
     return UserEntity(
-      id: UniqueId.fromUniqueString(id!),
+      id: UserId(id!),
       name: UserName(name!),
       emailAddress: EmailAddress(emailAddress!),
       phoneNumber: PhoneNumber(phoneNumber!),

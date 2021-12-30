@@ -35,7 +35,6 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
 
   Widget _buildState(BuildContext context, SubCategoriesScreenState state) {
     final subCategories = widget.category.subCategories;
-    print(subCategories[0].name);
     return Scaffold(
       body: CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,

@@ -12,7 +12,10 @@ class SliverPersistentHeaderDelegateImpl
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return Container(
       color: color,
       child: tabBar,

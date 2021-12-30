@@ -2,8 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../application/account.dart';
-import '../../../application/src/account/check_auth_status.dart';
-import '../../../application/src/account/log_out.dart';
 import '../../../domain/account.dart';
 
 part 'auth_state.dart';

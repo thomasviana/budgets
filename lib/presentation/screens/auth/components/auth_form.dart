@@ -56,15 +56,16 @@ class _AuthFormState extends State<AuthForm> {
             onChanged: widget.onEmailChanged,
           ),
           TextFormField(
-              key: ValueKey('password'),
-              obscureText: !_isPasswordVisible,
-              cursorColor: AppColors.primaryColor,
-              keyboardType: TextInputType.emailAddress,
-              validator: passwordValidator,
-              decoration: InputDecoration(
-                hintText: 'Enter password',
-              ),
-              onChanged: widget.onPasswordChanged),
+            key: ValueKey('password'),
+            obscureText: !_isPasswordVisible,
+            cursorColor: AppColors.primaryColor,
+            keyboardType: TextInputType.emailAddress,
+            validator: passwordValidator,
+            decoration: InputDecoration(
+              hintText: 'Enter password',
+            ),
+            onChanged: widget.onPasswordChanged,
+          ),
           if (widget.isCreateAccountMode)
             TextFormField(
               key: ValueKey('confirm_password'),
@@ -109,7 +110,7 @@ class _AuthFormState extends State<AuthForm> {
     //   return cubit.state.password.value.fold(
     //     (f) => f.maybeMap(
     //       empty: (_) => 'This is a required field.',
-    //       shortPassword: (_) => 'Password must be at least 6 characters long.',
+    //       shortPassword: (_) => 'Password must be at least 6 characters long.
     //       passwordDoNotMatch: (_) => 'Password do not match.',
     //       orElse: () {},
     //     ),

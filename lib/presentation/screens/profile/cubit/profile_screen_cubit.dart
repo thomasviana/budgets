@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../application/account.dart';
-import '../../../../application/src/account/update_user_info.dart';
 import '../../../../domain/account.dart';
 
 part 'profile_screen_state.dart';

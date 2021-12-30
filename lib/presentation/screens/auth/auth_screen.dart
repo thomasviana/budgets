@@ -37,24 +37,26 @@ class _AuthScreenState extends State<AuthScreen> {
       body: BlocConsumer<AuthScreenCubit, AuthScreenState>(
         listener: (context, state) {
           state.authFailureOrSuccessOption.fold(
-              () => {},
-              (either) => either.fold(
-                    (failure) => {
-                      FlushbarHelper.createError(
-                          message: failure.map(
-                        cancelledByUser: (_) => 'Cancelled',
-                        serverError: (_) => 'Server Error',
-                        userNotFound: (_) => 'User doesn\'t exist',
-                        emailAlreadyInUser: (_) => 'Email already in use',
-                        invalidEmailAndPasswordCombination: (_) =>
-                            'Invalid email and password combination',
-                      )).show(context)
-                    },
-                    (_) => {
-                      AppNavigator.navigateToMainPage(context),
-                      cubit.checkAuthStatus,
-                    },
-                  ));
+            () => {},
+            (either) => either.fold(
+              (failure) => {
+                FlushbarHelper.createError(
+                  message: failure.map(
+                    cancelledByUser: (_) => 'Cancelled',
+                    serverError: (_) => 'Server Error',
+                    userNotFound: (_) => "User doesn't exist",
+                    emailAlreadyInUser: (_) => 'Email already in use',
+                    invalidEmailAndPasswordCombination: (_) =>
+                        'Invalid email and password combination',
+                  ),
+                ).show(context)
+              },
+              (_) => {
+                AppNavigator.navigateToMainPage(context),
+                cubit.checkAuthStatus,
+              },
+            ),
+          );
         },
         builder: (context, state) {
           return Center(
@@ -108,26 +110,29 @@ class _AuthScreenState extends State<AuthScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       LoginButton(
-                          imagePath: 'assets/images/google_icon.png',
-                          onTap: () => context
-                              .read<AuthScreenCubit>()
-                              .onSignInWithGoogle()),
+                        imagePath: 'assets/images/google_icon.png',
+                        onTap: () => context
+                            .read<AuthScreenCubit>()
+                            .onSignInWithGoogle(),
+                      ),
                       SizedBox(
                         width: 22,
                       ),
                       LoginButton(
-                          imagePath: 'assets/images/facebook_icon.png',
-                          onTap: () => context
-                              .read<AuthScreenCubit>()
-                              .onSignInWithFacebook()),
+                        imagePath: 'assets/images/facebook_icon.png',
+                        onTap: () => context
+                            .read<AuthScreenCubit>()
+                            .onSignInWithFacebook(),
+                      ),
                       SizedBox(
                         width: 22,
                       ),
                       LoginButton(
-                          imagePath: 'assets/images/anonymous_icon.png',
-                          onTap: () => context
-                              .read<AuthScreenCubit>()
-                              .onSignInAnonymously()),
+                        imagePath: 'assets/images/anonymous_icon.png',
+                        onTap: () => context
+                            .read<AuthScreenCubit>()
+                            .onSignInAnonymously(),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -137,9 +142,11 @@ class _AuthScreenState extends State<AuthScreen> {
                     onPressed: () {
                       cubit.onAuthModeChanged();
                     },
-                    child: Text(state.isCreateAccountMode
-                        ? 'Already have an account? Login'
-                        : 'Create account'),
+                    child: Text(
+                      state.isCreateAccountMode
+                          ? 'Already have an account? Login'
+                          : 'Create account',
+                    ),
                   ),
                 ],
               ),

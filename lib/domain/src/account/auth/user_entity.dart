@@ -19,23 +19,17 @@ class UserEntity extends Entity<UserId> {
     String? photoUrl,
   }) : super(id) {
     setImage(imagePath);
-    setPhotoUrl(photoUrl ??
-        'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg');
+    setPhotoUrl(
+      photoUrl ??
+          'https://thumbs.dreamstime.com/b/vector-de-usuario-redes-sociales-perfil-avatar-predeterminado-retrato-vectorial-del-176194876.jpg',
+    );
     updateName(name!.value);
     updatePhoneNumber(phoneNumber!.value);
   }
 
-  void setImage(String? newImagePath) {
-    _imagePath = newImagePath;
-  }
-
-  void setPhotoUrl(String? newPhotoUrl) {
-    _photoUrl = newPhotoUrl;
-  }
-
-  void updateName(String? newName) {
-    _name = UserName(newName!);
-  }
+  void setImage(String? newImagePath) => _imagePath = newImagePath;
+  void setPhotoUrl(String? newPhotoUrl) => _photoUrl = newPhotoUrl;
+  void updateName(String? newName) => _name = UserName(newName!);
 
   void updatePhoneNumber(String? newPhoneNumber) {
     _phoneNumber = PhoneNumber(newPhoneNumber!);

@@ -32,7 +32,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(

@@ -50,9 +50,10 @@ class HomeSliverAppBar extends StatelessWidget {
               Text(
                 '\$0,00',
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               SizedBox(height: 20),
               Row(

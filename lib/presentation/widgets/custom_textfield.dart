@@ -7,12 +7,13 @@ class CustomTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final Icon prefixIcon;
 
-  const CustomTextField(
-      {required this.controller,
-      required this.hintText,
-      required this.keyboardType,
-      required this.onSubmit,
-      required this.prefixIcon});
+  const CustomTextField({
+    required this.controller,
+    required this.hintText,
+    required this.keyboardType,
+    required this.onSubmit,
+    required this.prefixIcon,
+  });
 
   @override
   Widget build(BuildContext context) {

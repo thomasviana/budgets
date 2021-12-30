@@ -23,17 +23,9 @@ class SubCategory extends Entity<CategoryId> {
   String get icon => _iconName;
   int get color => _color;
 
-  void updateName(CategoryName newName) {
-    _name = newName;
-  }
-
-  void updateIcon(String newIcon) {
-    _iconName = newIcon;
-  }
-
-  void updateColor(int newColor) {
-    _color = newColor;
-  }
+  void setupdateName(CategoryName newName) => _name = newName;
+  void updateIcon(String newIcon) => _iconName = newIcon;
+  void updateColor(int newColor) => _color = newColor;
 
   factory SubCategory.rent() => SubCategory(
         id: CategoryId.auto(),

@@ -52,6 +52,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                           date: DateFormat.MMMd()
                               .add_jm()
                               .format(recordList[index].date.toDate())
+                              // ignore: noop_primitive_operations
                               .toString(),
                         ),
                         childCount: recordList.length,

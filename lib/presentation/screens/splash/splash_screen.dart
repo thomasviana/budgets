@@ -10,10 +10,8 @@ class SplashScreen extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.isAuthenticated) {
-          print('is Authenticated');
           AppNavigator.navigateToMainPage(context);
         } else if (state.isUnauthenticated) {
-          print('is Unauthenticated');
           AppNavigator.navigateToIntroPage(context);
         }
       },

@@ -11,7 +11,10 @@ class HomeHeader extends SliverPersistentHeader {
 class HeaderDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return Header();
   }
 
@@ -67,7 +70,9 @@ class Header extends StatelessWidget {
                       return Text(
                         'Hi ${state.userName!.value.split(' ')[0]}!',
                         style: Theme.of(context).textTheme.headline5!.copyWith(
-                            fontWeight: FontWeight.bold, color: Colors.white),
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                       );
                     }
                   },

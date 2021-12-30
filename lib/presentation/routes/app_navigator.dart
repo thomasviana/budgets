@@ -34,12 +34,18 @@ class AppNavigator {
 
   static void navigateToMainPage(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(
-        context, ROUTE_MAIN_PAGE, (route) => false);
+      context,
+      ROUTE_MAIN_PAGE,
+      (route) => false,
+    );
   }
 
   static void navigateBackToMainPage(BuildContext context) {
     Navigator.pushNamedAndRemoveUntil(
-        context, ROUTE_MAIN_PAGE, (route) => false);
+      context,
+      ROUTE_MAIN_PAGE,
+      (route) => false,
+    );
   }
 
   static void navigateToProfilePage(BuildContext context) {
@@ -51,8 +57,13 @@ class AppNavigator {
   }
 
   static void navigateToSubCategoriesPage(
-      BuildContext context, Category category) {
-    Navigator.pushNamed(context, ROUTE_SUB_CATEGORIES_PAGE,
-        arguments: category);
+    BuildContext context,
+    Category category,
+  ) {
+    Navigator.pushNamed(
+      context,
+      ROUTE_SUB_CATEGORIES_PAGE,
+      arguments: category,
+    );
   }
 }

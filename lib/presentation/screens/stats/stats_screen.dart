@@ -16,9 +16,10 @@ class StatsScreen extends StatelessWidget {
         ],
         body: Container(
           padding: const EdgeInsets.only(
-              left: kDefaultPadding,
-              right: kDefaultPadding,
-              top: kDefaultPadding),
+            left: kDefaultPadding,
+            right: kDefaultPadding,
+            top: kDefaultPadding,
+          ),
           child: CustomScrollView(
             physics: BouncingScrollPhysics(),
             slivers: [

@@ -25,8 +25,10 @@ class TransactionListTile extends StatelessWidget {
         backgroundColor: isIncome
             ? theme.colorScheme.primary
             : theme.colorScheme.primaryVariant,
-        child: Icon(isIncome ? Icons.arrow_forward : Icons.arrow_back,
-            color: Colors.white),
+        child: Icon(
+          isIncome ? Icons.arrow_forward : Icons.arrow_back,
+          color: Colors.white,
+        ),
       ),
       title: Text(
         title,

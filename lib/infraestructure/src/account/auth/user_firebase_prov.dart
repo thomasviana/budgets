@@ -25,9 +25,7 @@ class UserFirebaseProv {
 
   User? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
-    // if (user == null) throw Exception('Not authenticated exception.');
-    if (user == null) print('No current user found');
-
+    if (user == null) throw Exception('Not authenticated exception.');
     return user;
   }
 
@@ -40,10 +38,10 @@ class UserFirebaseProv {
           await _firebaseFirestore.doc('userTest/${user.uid}').get();
       if (snapshot.exists) {
         final userData = UserEntityDTO.fromFirebaseMap(snapshot.data()!);
-        print(userData.toDomain().emailAddress);
-        print(userData.toDomain().name);
-        print(userData.toDomain().phoneNumber);
-        print(userData.toDomain().photoUrl);
+        // print(userData.toDomain().emailAddress);
+        // print(userData.toDomain().name);
+        // print(userData.toDomain().phoneNumber);
+        // print(userData.toDomain().photoUrl);
         final userEntity = userData.toDomain();
         return some(userEntity);
       } else {
@@ -77,7 +75,9 @@ class UserFirebaseProv {
       await storageRef.putFile(File(user.imagePath!));
       final url = await storageRef.getDownloadURL();
       await ref.set(
-          userDTO.toFirebaseMap(newImage: url), SetOptions(merge: true));
+        userDTO.toFirebaseMap(newImage: url),
+        SetOptions(merge: true),
+      );
     }
   }
 }

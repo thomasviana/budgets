@@ -59,7 +59,7 @@ class Routes {
           ),
         );
       case AppNavigator.ROUTE_SUB_CATEGORIES_PAGE:
-        final category = settings.arguments as Category;
+        final category = settings.arguments! as Category;
         return _buildRoute(
           settings,
           BlocProvider(

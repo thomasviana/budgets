@@ -52,34 +52,44 @@ class AuthScreenCubit extends Cubit<AuthScreenState> {
       ),
     );
     final failureOrSuccess = await signIn.anonymously();
-    emit(state.copyWith(
-      isSubmitting: false,
-      authFailureOrSuccessOption: some(failureOrSuccess),
-    ));
+    emit(
+      state.copyWith(
+        isSubmitting: false,
+        authFailureOrSuccessOption: some(failureOrSuccess),
+      ),
+    );
   }
 
   Future<void> onSignInWithGoogle() async {
-    emit(state.copyWith(
-      isSubmitting: true,
-      authFailureOrSuccessOption: none(),
-    ));
+    emit(
+      state.copyWith(
+        isSubmitting: true,
+        authFailureOrSuccessOption: none(),
+      ),
+    );
     final failureOrSuccess = await signIn.withGoogle();
-    emit(state.copyWith(
-      isSubmitting: false,
-      authFailureOrSuccessOption: some(failureOrSuccess),
-    ));
+    emit(
+      state.copyWith(
+        isSubmitting: false,
+        authFailureOrSuccessOption: some(failureOrSuccess),
+      ),
+    );
   }
 
   Future<void> onSignInWithFacebook() async {
-    emit(state.copyWith(
-      isSubmitting: true,
-      authFailureOrSuccessOption: none(),
-    ));
+    emit(
+      state.copyWith(
+        isSubmitting: true,
+        authFailureOrSuccessOption: none(),
+      ),
+    );
     final failureOrSuccess = await signIn.withFacebook();
-    emit(state.copyWith(
-      isSubmitting: false,
-      authFailureOrSuccessOption: some(failureOrSuccess),
-    ));
+    emit(
+      state.copyWith(
+        isSubmitting: false,
+        authFailureOrSuccessOption: some(failureOrSuccess),
+      ),
+    );
   }
 
   Future<void> onCreateUserWithEmailAndPassword() async {
@@ -88,28 +98,30 @@ class AuthScreenCubit extends Cubit<AuthScreenState> {
     final isConifirmationPasswordMatched =
         state.password == state.confirmationPassword;
 
-    print(state.emailAddress);
-    print(state.password);
-    print(state.confirmationPassword);
-
     if (isEmailValid && isPasswordSecure && isConifirmationPasswordMatched) {
-      emit(state.copyWith(
-        isSubmitting: true,
-        authFailureOrSuccessOption: none(),
-      ));
+      emit(
+        state.copyWith(
+          isSubmitting: true,
+          authFailureOrSuccessOption: none(),
+        ),
+      );
       final failureOrSuccess =
           await createAccount(state.emailAddress, state.password);
 
-      emit(state.copyWith(
-        isSubmitting: false,
-        authFailureOrSuccessOption: some(failureOrSuccess),
-      ));
+      emit(
+        state.copyWith(
+          isSubmitting: false,
+          authFailureOrSuccessOption: some(failureOrSuccess),
+        ),
+      );
     }
 
-    emit(state.copyWith(
-      showErrorMessages: true,
-      authFailureOrSuccessOption: none(),
-    ));
+    emit(
+      state.copyWith(
+        showErrorMessages: true,
+        authFailureOrSuccessOption: none(),
+      ),
+    );
   }
 
   Future<void> onSignInWithEmailAndPassword() async {
@@ -117,22 +129,28 @@ class AuthScreenCubit extends Cubit<AuthScreenState> {
     final isPasswordSecure = state.password.isSecure;
 
     if (isEmailValid && isPasswordSecure) {
-      emit(state.copyWith(
-        isSubmitting: true,
-        authFailureOrSuccessOption: none(),
-      ));
+      emit(
+        state.copyWith(
+          isSubmitting: true,
+          authFailureOrSuccessOption: none(),
+        ),
+      );
 
       final failureOrSuccess =
           await signIn.withEmailAndPassword(state.emailAddress, state.password);
-      emit(state.copyWith(
-        isSubmitting: false,
-        authFailureOrSuccessOption: some(failureOrSuccess),
-      ));
+      emit(
+        state.copyWith(
+          isSubmitting: false,
+          authFailureOrSuccessOption: some(failureOrSuccess),
+        ),
+      );
     }
-    emit(state.copyWith(
-      showErrorMessages: true,
-      authFailureOrSuccessOption: none(),
-    ));
+    emit(
+      state.copyWith(
+        showErrorMessages: true,
+        authFailureOrSuccessOption: none(),
+      ),
+    );
   }
 
   void onAuthModeChanged() {

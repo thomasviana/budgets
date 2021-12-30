@@ -32,13 +32,11 @@ class _UserProfileState extends State<UserProfile> {
     Widget? image;
 
     if (widget.user.imagePath != null) {
-      print('path error');
       image = Image.file(
         File(widget.user.imagePath!),
         fit: BoxFit.cover,
       );
     } else if (widget.user.photoUrl != null) {
-      print('url error');
       image = CachedNetworkImage(
         imageUrl: widget.user.photoUrl!,
         progressIndicatorBuilder: (_, __, progress) =>

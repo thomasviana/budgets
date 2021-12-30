@@ -78,7 +78,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
       //     );
       //   },
       // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         notchMargin: 10,

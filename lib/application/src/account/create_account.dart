@@ -11,7 +11,9 @@ class CreateAccount {
   );
 
   Future<Either<AuthFailure, Unit>> call(
-          EmailAddress email, Password password) =>
+    EmailAddress email,
+    Password password,
+  ) =>
       _authService.createUserWithEmailAndPassword(
         emailAddress: email,
         password: password,

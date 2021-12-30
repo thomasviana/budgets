@@ -17,8 +17,8 @@ class DescriptionPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 100.0),
           child: Image.asset(
             imagePath,
-            width: 500,
-            height: 500,
+            width: 300,
+            height: 300,
           ),
         ),
         Expanded(

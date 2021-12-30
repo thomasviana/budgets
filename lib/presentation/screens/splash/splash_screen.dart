@@ -7,13 +7,14 @@ import '../../routes/app_navigator.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // print(context.read<AuthCubit>().state);
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state.isAuthenticated) {
+          print('is Authenticated');
           AppNavigator.navigateToMainPage(context);
         } else if (state.isUnauthenticated) {
-          AppNavigator.navigateToAuthPage(context);
+          print('is Unauthenticated');
+          AppNavigator.navigateToIntroPage(context);
         }
       },
       child: Scaffold(

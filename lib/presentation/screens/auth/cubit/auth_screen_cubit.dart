@@ -23,27 +23,34 @@ class AuthScreenCubit extends Cubit<AuthScreenState> {
 
   Future<void> reset() async => emit(AuthScreenState.initial());
 
-  void onEmailChanged(String emailAddress) => emit(state.copyWith(
-        emailAddress: EmailAddress(emailAddress),
-        authFailureOrSuccessOption: none(),
-      ));
+  void onEmailChanged(String emailAddress) => emit(
+        state.copyWith(
+          emailAddress: EmailAddress(emailAddress),
+          authFailureOrSuccessOption: none(),
+        ),
+      );
 
-  void onPasswordChanged(String password) => emit(state.copyWith(
-        password: Password(password),
-        authFailureOrSuccessOption: none(),
-      ));
+  void onPasswordChanged(String password) => emit(
+        state.copyWith(
+          password: Password(password),
+          authFailureOrSuccessOption: none(),
+        ),
+      );
 
-  void onConfirmationPasswordChanged(String confirmationPassword) =>
-      emit(state.copyWith(
-        confirmationPassword: Password(confirmationPassword),
-        authFailureOrSuccessOption: none(),
-      ));
+  void onConfirmationPasswordChanged(String confirmationPassword) => emit(
+        state.copyWith(
+          confirmationPassword: Password(confirmationPassword),
+          authFailureOrSuccessOption: none(),
+        ),
+      );
 
   Future<void> onSignInAnonymously() async {
-    emit(state.copyWith(
-      isSubmitting: true,
-      authFailureOrSuccessOption: none(),
-    ));
+    emit(
+      state.copyWith(
+        isSubmitting: true,
+        authFailureOrSuccessOption: none(),
+      ),
+    );
     final failureOrSuccess = await signIn.anonymously();
     emit(state.copyWith(
       isSubmitting: false,
@@ -76,24 +83,16 @@ class AuthScreenCubit extends Cubit<AuthScreenState> {
   }
 
   Future<void> onCreateUserWithEmailAndPassword() async {
-    final isEmailValid = state.emailAddress.isValid();
-    final isPasswordValid = state.password.isValid();
+    final isEmailValid = state.emailAddress.isValid;
+    final isPasswordSecure = state.password.isSecure;
+    final isConifirmationPasswordMatched =
+        state.password == state.confirmationPassword;
 
     print(state.emailAddress);
     print(state.password);
-
     print(state.confirmationPassword);
 
-    if (isEmailValid && isPasswordValid) {
-      // final passwordString = state.password.getOrCrash();
-      // final confirmationPasswordString =
-      //     state.confirmationPassword.getOrCrash();
-
-      emit(state.copyWith(
-        showErrorMessages: true,
-        authFailureOrSuccessOption: none(),
-      ));
-
+    if (isEmailValid && isPasswordSecure && isConifirmationPasswordMatched) {
       emit(state.copyWith(
         isSubmitting: true,
         authFailureOrSuccessOption: none(),
@@ -103,7 +102,7 @@ class AuthScreenCubit extends Cubit<AuthScreenState> {
 
       emit(state.copyWith(
         isSubmitting: false,
-        authFailureOrSuccessOption: optionOf(failureOrSuccess),
+        authFailureOrSuccessOption: some(failureOrSuccess),
       ));
     }
 
@@ -114,12 +113,10 @@ class AuthScreenCubit extends Cubit<AuthScreenState> {
   }
 
   Future<void> onSignInWithEmailAndPassword() async {
-    final isEmailValid = state.emailAddress.isValid();
-    final isPasswordValid = state.password.isValid();
+    final isEmailValid = state.emailAddress.isValid;
+    final isPasswordSecure = state.password.isSecure;
 
-    print('login');
-
-    if (isEmailValid && isPasswordValid) {
+    if (isEmailValid && isPasswordSecure) {
       emit(state.copyWith(
         isSubmitting: true,
         authFailureOrSuccessOption: none(),

@@ -1,59 +1,52 @@
-import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:uuid/uuid.dart';
-
-import '../account/auth/value_objects.dart';
-import 'errors.dart';
-import 'failures.dart';
 
 @immutable
-abstract class ValueObject<T> {
-  const ValueObject();
-  Either<ValueFailure<T>, T> get value;
+abstract class ValueObject {}
 
-  Either<ValueFailure<dynamic>, Unit> get failureOrUnit {
-    return value.fold(
-      (l) => left(l),
-      (r) => right(unit),
-    );
-  }
+abstract class SingleValueObject<T extends Object> implements ValueObject {
+  const SingleValueObject(this.value);
 
-  bool isValid() => value.isRight();
+  final T value;
 
-  T getOrCrash() {
-    // id = identity = (r) => r
-    return value.fold((f) => throw UnexpectedValueError(f), id);
+  @override
+  String toString() {
+    return 'SingleValueObject{value: $value}';
   }
 
   @override
-  String toString() => '$value';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is EmailAddress && other.value == value;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SingleValueObject &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
 
   @override
   int get hashCode => value.hashCode;
 }
 
-class UniqueId extends ValueObject<String> {
+abstract class Entity<T extends ValueObject> {
+  const Entity(this.id);
+
+  final T id;
+
   @override
-  final Either<ValueFailure<String>, String> value;
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Entity && runtimeType == other.runtimeType && id == other.id;
 
-  factory UniqueId() {
-    return UniqueId._(
-      right(const Uuid().v1()),
-    );
-  }
+  @override
+  int get hashCode => id.hashCode;
+}
 
-  factory UniqueId.fromUniqueString(String uniqueId) {
-    return UniqueId._(
-      right(uniqueId),
-    );
-  }
+abstract class AlphanumericId extends SingleValueObject<String>
+    implements Comparable<AlphanumericId> {
+  const AlphanumericId(String value) : super(value);
 
-  const UniqueId._(this.value);
+  bool get isValid => value.isNotEmpty;
+
+  @override
+  String toString() => value;
+
+  @override
+  int compareTo(AlphanumericId other) => value.compareTo(other.value);
 }

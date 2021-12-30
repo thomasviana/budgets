@@ -26,7 +26,11 @@ class SignIn {
       _authService.signInWithFacebook();
 
   Future<Either<AuthFailure, Unit>> withEmailAndPassword(
-          EmailAddress email, Password password) =>
+    EmailAddress email,
+    Password password,
+  ) =>
       _authService.signInWithEmailAndPassword(
-          emailAddress: email, password: password);
+        emailAddress: email,
+        password: password,
+      );
 }

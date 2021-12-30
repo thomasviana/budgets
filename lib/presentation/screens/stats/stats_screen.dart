@@ -29,7 +29,7 @@ class StatsScreen extends StatelessWidget {
                 graph: Icon(
                   Icons.donut_large,
                   size: 50,
-                  color: AppColors.accentColor,
+                  color: AppColors.primaryColor,
                 ),
               ),
               statCard(
@@ -39,7 +39,7 @@ class StatsScreen extends StatelessWidget {
                 graph: Icon(
                   Icons.donut_large,
                   size: 50,
-                  color: AppColors.accentColor,
+                  color: AppColors.primaryColor,
                 ),
               ),
               statCard(
@@ -49,7 +49,7 @@ class StatsScreen extends StatelessWidget {
                 graph: Icon(
                   Icons.donut_large,
                   size: 50,
-                  color: AppColors.accentColor,
+                  color: AppColors.primaryColor,
                 ),
               ),
               statCard(
@@ -59,7 +59,7 @@ class StatsScreen extends StatelessWidget {
                 graph: Icon(
                   Icons.donut_large,
                   size: 50,
-                  color: AppColors.accentColor,
+                  color: AppColors.primaryColor,
                 ),
               ),
               statCard(
@@ -69,7 +69,7 @@ class StatsScreen extends StatelessWidget {
                 graph: Icon(
                   Icons.donut_large,
                   size: 50,
-                  color: AppColors.accentColor,
+                  color: AppColors.primaryColor,
                 ),
               ),
               statCard(
@@ -79,7 +79,7 @@ class StatsScreen extends StatelessWidget {
                 graph: Icon(
                   Icons.donut_large,
                   size: 50,
-                  color: AppColors.accentColor,
+                  color: AppColors.primaryColor,
                 ),
               ),
             ],

@@ -10,7 +10,8 @@ Either<ValueFailure<String>, String> validateMaxStringLength(
     return right(input);
   } else {
     return left(
-        ValueFailure.exceedingLength(failedValue: input, max: maxLenght));
+      ValueFailure.exceedingLength(failedValue: input, max: maxLenght),
+    );
   }
 }
 
@@ -26,53 +27,57 @@ Either<ValueFailure<String>, String> validateSingleLine(String input) {
   if (!input.contains('\n')) {
     return right(input);
   } else {
-    return left(ValueFailure.multiLine(
-      failedValue: input,
-    ));
+    return left(
+      ValueFailure.multiLine(
+        failedValue: input,
+      ),
+    );
   }
 }
 
-Either<ValueFailure<String>, String> validateEmailAddress(String input) {
+bool validateEmailAddress(String input) {
   const emailRegex = r'(^[\w\._+-]{1,}(\+[\w]{1,})?@[\w\.\-]{3,}.\w{2,5}$)';
   if (RegExp(emailRegex).hasMatch(input)) {
-    return right(input);
+    return true;
   } else {
-    return left(ValueFailure.invalidEmail(failedValue: input));
+    return false;
   }
 }
 
-Either<ValueFailure<String>, String> validatePasswordSecurity(String input) {
+bool validatePasswordSecurity(String input) {
   if (input.length >= 6) {
-    return right(input);
+    return true;
   } else {
-    return left(ValueFailure.shortPassword(failedValue: input));
+    return false;
   }
 }
 
-Either<ValueFailure<String>, String> validatePasswordMatch(
-    String password, String confirmation) {
+bool validatePasswordMatch(
+  String password,
+  String confirmation,
+) {
   if (password == confirmation) {
-    return right(password);
+    return true;
   } else {
-    return left(ValueFailure.passwordDoNotMatch(failedValue: confirmation));
+    return false;
   }
 }
 
-Either<ValueFailure<String>, String> validateUserName(String input) {
+bool validateUserName(String input) {
   const nameRegex = r'^[a-zA-Z]+';
   if (RegExp(nameRegex).hasMatch(input)) {
-    return right(input);
+    return true;
   } else {
-    return left(ValueFailure.invalidUserName(failedValue: input));
+    return false;
   }
 }
 
-Either<ValueFailure<String>, String> validatePhoneNumber(String input) {
+bool validatePhoneNumber(String input) {
   const nameRegex =
       r'^(([0]\d{1,2})?[\s.-]?[+-0]\d{1,3})?[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$';
   if (RegExp(nameRegex).hasMatch(input)) {
-    return right(input);
+    return true;
   } else {
-    return left(ValueFailure.invalidPhoneNumber(failedValue: input));
+    return false;
   }
 }

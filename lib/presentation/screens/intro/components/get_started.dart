@@ -36,14 +36,23 @@ class GetStarted extends StatelessWidget {
             width: 250,
             height: 250,
           ),
-          SizedBox(height: 50),
-          Text(
-            'Welcome',
-            style: Theme.of(context).textTheme.headline3!.copyWith(
-                  fontWeight: FontWeight.bold,
+          SizedBox(height: 20),
+          RichText(
+            text: TextSpan(
+              text: 'Welcome to ',
+              style: Theme.of(context).textTheme.headline3,
+              children: const [
+                TextSpan(
+                  text: 'Budgets',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
+              ],
+            ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: 30),
+          Text(text),
+          SizedBox(height: 60),
           RoundedButton(
             label: 'Get Started',
             isEnabled: isButtonEnabled,
@@ -51,8 +60,6 @@ class GetStarted extends StatelessWidget {
               AppNavigator.navigateToAuthPage(context);
             },
           ),
-          SizedBox(height: 60),
-          Text(text)
         ],
       ),
     );

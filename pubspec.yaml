@@ -4,45 +4,62 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.13.0 <3.0.0"
+  sdk: ">=2.15.0 <3.0.0"
 
 dependencies:
-  another_flushbar: ^1.10.26
-  bloc: ^7.1.0
-  cached_network_image: ^3.1.0
-  cloud_firestore: ^2.5.2
-  cupertino_icons: ^1.0.3
-  dartz: ^0.10.0
+  another_flushbar: ^1.10.28
+  bloc: ^8.0.1
+  cached_network_image: ^3.2.0
+  cloud_firestore: ^3.1.5
+  cupertino_icons: ^1.0.4
+  dartz: ^0.10.1
   equatable: ^2.0.3
-  firebase_auth: ^3.1.1
-  firebase_core: ^1.6.0
-  firebase_storage: ^10.0.3
+  firebase_auth: ^3.3.4
+  firebase_core: ^1.10.6
+  firebase_storage: ^10.2.4
   flutter:
     sdk: flutter
-  flutter_bloc: ^7.3.3
-  flutter_facebook_auth: ^3.5.1
+  flutter_bloc: ^8.0.0
+  flutter_facebook_auth: ^3.5.7
   flutter_hooks: ^0.18.1
-  freezed_annotation: ^1.0.0
-  google_fonts: ^2.1.0
-  google_sign_in: 5.0.2
-  image_picker: ^0.8.4
+  freezed_annotation: ^1.1.0
+  google_fonts: ^2.1.1
+  google_sign_in: 5.2.1
+  image_picker: ^0.8.4+4
   injectable: ^1.5.0
   intl: ^0.17.0
   page_indicator: ^0.4.1
   path: ^1.8.0
+  tuple: ^2.0.0
   uuid: ^3.0.5
 
 dev_dependencies:
-  bloc_test: ^8.1.0
-  build_runner: ^2.1.5
+  bloc_test: ^9.0.1
+  build_runner: ^2.1.7
   flutter_test:
     sdk: flutter
-  freezed: ^1.0.0
+  freezed: ^1.1.0
   injectable_generator: ^1.5.2
-  lint: ^1.0.0
-  mocktail: ^0.1.4
+  lint: ^1.8.1
+  mocktail: ^0.2.0
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/
+
+
+  fonts:
+    - family: Quicksand
+      fonts:
+        - asset: assets/fonts/Quicksand-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Quicksand-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Quicksand-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Quicksand-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Quicksand-Bold.ttf
+          weight: 700
+    

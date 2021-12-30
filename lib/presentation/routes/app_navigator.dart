@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/categories.dart';
+
 class AppNavigator {
   AppNavigator._();
 
@@ -10,6 +12,8 @@ class AppNavigator {
 
   // Settings
   static const ROUTE_PROFILE_PAGE = '/profile';
+  static const ROUTE_CATEGORIES_PAGE = '/categories';
+  static const ROUTE_SUB_CATEGORIES_PAGE = '/SUB-categories';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
@@ -40,5 +44,15 @@ class AppNavigator {
 
   static void navigateToProfilePage(BuildContext context) {
     Navigator.pushNamed(context, ROUTE_PROFILE_PAGE);
+  }
+
+  static void navigateToCategoriesPage(BuildContext context) {
+    Navigator.pushNamed(context, ROUTE_CATEGORIES_PAGE);
+  }
+
+  static void navigateToSubCategoriesPage(
+      BuildContext context, Category category) {
+    Navigator.pushNamed(context, ROUTE_SUB_CATEGORIES_PAGE,
+        arguments: category);
   }
 }

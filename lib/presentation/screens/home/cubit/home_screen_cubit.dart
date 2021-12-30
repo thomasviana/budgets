@@ -15,14 +15,14 @@ class HomeScreenCubit extends Cubit<HomeScreenState> {
   ) : super(HomeScreenState.initial());
 
   Future<void> init() async {
-    emit(state.copyWith(isLoading: true));
-    final displayName = await getProfileInfo();
-    displayName.fold(
-      () => null,
-      (user) => emit(state.copyWith(
-        userName: user.name,
-        isLoading: false,
-      )),
-    );
+    // emit(state.copyWith(isLoading: true));
+    // final displayName = await getProfileInfo();
+    // displayName.fold(
+    //   () => null,
+    //   (user) => emit(state.copyWith(
+    //     userName: user.name,
+    //     isLoading: false,
+    //   )),
+    // );
   }
 }

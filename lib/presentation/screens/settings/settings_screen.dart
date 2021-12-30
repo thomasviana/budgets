@@ -20,7 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     super.initState();
 
     cubit = context.read<SettingsScreenCubit>();
-    cubit.init();
+    // cubit.init();
   }
 
   @override
@@ -32,12 +32,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildState(BuildContext context, SettingsScreenState state) {
     return CupertinoPageScaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.greyBackground,
       child: NestedScrollView(
-        headerSliverBuilder: (context, _) => [
+        headerSliverBuilder: (ctx, inner) => [
           CupertinoSliverNavigationBar(
             largeTitle: Text('Settings'),
-          ),
+          )
         ],
         body: Column(
           children: [
@@ -48,25 +48,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
               autofocus: true,
               enableFeedback: true,
               onTap: () {
-                cubit.getProfileInfo();
+                // TODO: Another ger profile nod needed
+                // cubit.getProfileInfo();
                 AppNavigator.navigateToProfilePage(context);
               },
             ),
             Divider(),
             ListTile(
-                title: Text('Categories'),
-                leading: Icon(Icons.folder),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () => AppNavigator.navigateToProfilePage(context)),
+              title: Text('Categories'),
+              leading: Icon(Icons.folder),
+              trailing: Icon(Icons.arrow_forward_ios),
+              onTap: () => AppNavigator.navigateToCategoriesPage(context),
+            ),
             Divider(),
             ListTile(
-                title: Text('Accounts'),
-                leading: Icon(Icons.comment_bank),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () => AppNavigator.navigateToProfilePage(context)),
-            Divider(),
-            SizedBox(
-              height: 60,
+              title: Text('Accounts'),
+              leading: Icon(Icons.comment_bank),
+              trailing: Icon(Icons.arrow_forward_ios),
+              onTap: () => AppNavigator.navigateToProfilePage(context),
             ),
             Divider(),
             ListTile(

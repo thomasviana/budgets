@@ -65,19 +65,20 @@ class _MainAppScreenState extends State<MainAppScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primaryColor,
       body: _buildPage(context, selectedPageIndex),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          showModalBottomSheet(
-            backgroundColor: Colors.transparent,
-            isScrollControlled: true,
-            context: context,
-            builder: (context) => StatsScreen(),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () {
+      //     showModalBottomSheet(
+      //       backgroundColor: Colors.transparent,
+      //       isScrollControlled: true,
+      //       context: context,
+      //       builder: (context) => StatsScreen(),
+      //     );
+      //   },
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
@@ -87,64 +88,56 @@ class _MainAppScreenState extends State<MainAppScreen> {
           ),
           height: 60,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Row(
-                children: [
-                  buildNavButton(
-                    isSelected: homeSelected,
-                    onPressed: () {
-                      setState(() {
-                        selectedPageIndex = 0;
-                        selectIcon('home');
-                      });
-                    },
-                    icon: Icons.home_outlined,
-                    iconSelected: Icons.home,
-                    label: 'Home',
-                  ),
-                  buildNavButton(
-                    isSelected: statsSelected,
-                    onPressed: () {
-                      setState(() {
-                        selectedPageIndex = 1;
-                        selectIcon('stats');
-                      });
-                    },
-                    icon: Icons.pie_chart_outline,
-                    iconSelected: Icons.pie_chart,
-                    label: 'Stats',
-                  ),
-                ],
+              buildNavButton(
+                isSelected: homeSelected,
+                onPressed: () {
+                  setState(() {
+                    selectedPageIndex = 0;
+                    selectIcon('home');
+                  });
+                },
+                icon: Icons.home_outlined,
+                iconSelected: Icons.home,
+                label: 'Home',
               ),
-              Row(
-                children: [
-                  buildNavButton(
-                    isSelected: recordsSelected,
-                    onPressed: () {
-                      setState(() {
-                        selectedPageIndex = 2;
-                        selectIcon('records');
-                      });
-                    },
-                    icon: Icons.format_list_bulleted_rounded,
-                    iconSelected: Icons.format_list_bulleted_rounded,
-                    label: 'Records',
-                  ),
-                  buildNavButton(
-                    isSelected: settingSelected,
-                    onPressed: () {
-                      setState(() {
-                        selectedPageIndex = 3;
-                        selectIcon('settings');
-                      });
-                    },
-                    icon: Icons.settings_outlined,
-                    iconSelected: Icons.settings,
-                    label: 'Settings',
-                  ),
-                ],
-              )
+              buildNavButton(
+                isSelected: statsSelected,
+                onPressed: () {
+                  setState(() {
+                    selectedPageIndex = 1;
+                    selectIcon('stats');
+                  });
+                },
+                icon: Icons.pie_chart_outline,
+                iconSelected: Icons.pie_chart,
+                label: 'Stats',
+              ),
+              buildNavButton(
+                isSelected: recordsSelected,
+                onPressed: () {
+                  setState(() {
+                    selectedPageIndex = 2;
+                    selectIcon('records');
+                  });
+                },
+                icon: Icons.format_list_bulleted_rounded,
+                iconSelected: Icons.format_list_bulleted_rounded,
+                label: 'Records',
+              ),
+              buildNavButton(
+                isSelected: settingSelected,
+                onPressed: () {
+                  setState(() {
+                    selectedPageIndex = 3;
+                    selectIcon('settings');
+                  });
+                },
+                icon: Icons.settings_outlined,
+                iconSelected: Icons.settings,
+                label: 'Settings',
+              ),
             ],
           ),
         ),
@@ -169,14 +162,15 @@ class _MainAppScreenState extends State<MainAppScreen> {
           Icon(
             isSelected ? iconSelected : icon,
             size: 35,
-            color: isSelected ? AppColors.accentColor : AppColors.greySecondary,
+            color:
+                isSelected ? AppColors.primaryColor : AppColors.greySecondary,
           ),
           Text(
             label,
             style: TextStyle(
               fontSize: 10,
               color:
-                  isSelected ? AppColors.accentColor : AppColors.greySecondary,
+                  isSelected ? AppColors.primaryColor : AppColors.greySecondary,
             ),
           )
         ],

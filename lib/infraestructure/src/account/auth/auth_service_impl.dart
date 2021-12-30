@@ -5,7 +5,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../domain/account.dart';
-import '../../../../domain/core.dart';
 import 'user_firebase_prov.dart';
 
 @LazySingleton(as: AuthService)
@@ -26,7 +25,7 @@ class AuthServiceImpl implements AuthService {
     return user == null
         ? null
         : UserEntity(
-            id: UniqueId.fromUniqueString(user.uid),
+            id: UserId(user.uid),
             name: UserName(user.displayName!),
             emailAddress: EmailAddress(user.email!),
             phoneNumber: PhoneNumber(user.phoneNumber!),
@@ -34,6 +33,7 @@ class AuthServiceImpl implements AuthService {
           );
   }
 
+  // TODO: Is it needed?
   @override
   Stream<UserEntity?> get onAuthStateChanged =>
       _firebaseAuth.authStateChanges().asyncMap(_userFromFirebase);
@@ -92,20 +92,21 @@ class AuthServiceImpl implements AuthService {
     required EmailAddress emailAddress,
     required Password password,
   }) async {
-    final emailAddressString = emailAddress.getOrCrash();
-    final passwordString = password.getOrCrash();
+    final emailAddressString = emailAddress.value;
+    final passwordString = password.value;
     try {
-      print('doing');
-      _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
         email: emailAddressString,
         password: passwordString,
       );
       return right(unit);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        return left(const AuthFailure.emailAlreadyInUser());
-      } else {
-        return left(const AuthFailure.serverError());
+      // Seems that there is a problem with FirebaseAuthException
+      switch (e.code) {
+        case 'email-already-in-use':
+          return left(const AuthFailure.emailAlreadyInUser());
+        default:
+          return left(const AuthFailure.serverError());
       }
     }
   }
@@ -115,8 +116,8 @@ class AuthServiceImpl implements AuthService {
     required EmailAddress emailAddress,
     required Password password,
   }) async {
-    final emailAddressString = emailAddress.getOrCrash();
-    final passwordString = password.getOrCrash();
+    final emailAddressString = emailAddress.value;
+    final passwordString = password.value;
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
         email: emailAddressString,

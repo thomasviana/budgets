@@ -67,7 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   Icon(
                     Icons.donut_large,
                     size: 150,
-                    color: AppColors.accentColor,
+                    color: AppColors.primaryColor,
                   ),
                   SizedBox(height: 50),
                   Text(
@@ -76,6 +76,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   SizedBox(height: 50),
                   AuthForm(
+                    state: state,
                     enabled: !state.isSubmitting,
                     errorEnabled: state.showErrorMessages,
                     isCreateAccountMode: state.isCreateAccountMode,
@@ -84,7 +85,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         cubit.onPasswordChanged(password),
                     onConfirmationPasswordChanged: (confirmationPassword) =>
                         cubit.onConfirmationPasswordChanged(
-                            confirmationPassword),
+                      confirmationPassword,
+                    ),
                   ),
                   SizedBox(height: 30),
                   if (state.isSubmitting)
@@ -148,28 +150,41 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  String? emailValidator(String? value) {
-    return cubit.state.emailAddress.value.fold(
-      (f) => f.maybeMap(
-        empty: (_) => 'This is a required field.',
-        invalidEmail: (_) => 'Enter a valid email.',
-        orElse: () {},
-      ),
-      (r) => null,
-    );
-  }
+  // String? emailValidator(String? value) {
+  //   if (!cubit.state.emailAddress.value.isNotEmpty) {
+  //     return 'This is a required field.';
+  //   } else if (!cubit.state.emailAddress.isValid) {
+  //     return 'Enter a valid email.';
+  //   }
+  //   // }
+  //   // // return !cubit.state.emailAddress.isValid ? 'Enter a valid email.' : null;
+  //   // return cubit.state.emailAddress.value.fold(
+  //   //   (f) => f.maybeMap(
+  //   //     empty: (_) => 'This is a required field.',
+  //   //     invalidEmail: (_) => 'Enter a valid email.',
+  //   //     orElse: () {},
+  //   //   ),
+  //   //   (r) => null,
+  //   // );
+  // }
 
-  String? passwordValidator(String? value) {
-    return cubit.state.password.value.fold(
-      (f) => f.maybeMap(
-        empty: (_) => 'This is a required field.',
-        shortPassword: (_) => 'Password must be at least 6 characters long.',
-        passwordDoNotMatch: (_) => 'Password do not match.',
-        orElse: () {},
-      ),
-      (r) => null,
-    );
-  }
+  // String? passwordValidator(String? value) {
+  //   if (!cubit.state.password.value.isNotEmpty) {
+  //     return 'This is a required field.';
+  //   } else if (!cubit.state.password.isSecure) {
+  //     return 'Password must be at least 6 characters long.';
+  //   }
+  //   //   return cubit.state.password.value.fold(
+  //   //     (f) => f.maybeMap(
+  //   //       empty: (_) => 'This is a required field.',
+  //   //       shortPassword: (_) => 'Password must be at least 6 characters long.',
+  //   //       passwordDoNotMatch: (_) => 'Password do not match.',
+  //   //       orElse: () {},
+  //   //     ),
+  //   //     (r) => null,
+  //   //   );
+  //   // }
+  // }
 }
 
 class LoginButton extends StatelessWidget {
@@ -193,7 +208,7 @@ class LoginButton extends StatelessWidget {
         onTap: onTap,
         child: CircleAvatar(
           backgroundImage: AssetImage(imagePath),
-          backgroundColor: AppColors.backgroundColor,
+          backgroundColor: AppColors.greyBackground,
         ),
       ),
     );

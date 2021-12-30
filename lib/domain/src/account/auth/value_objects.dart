@@ -1,78 +1,26 @@
-import 'package:dartz/dartz.dart';
-
-import '../../core/failures.dart';
 import '../../core/value_objects.dart';
 import '../../core/value_validators.dart';
 
-class EmailAddress extends ValueObject<String> {
-  @override
-  final Either<ValueFailure<String>, String> value;
+class EmailAddress extends SingleValueObject<String> {
+  const EmailAddress(String value) : super(value);
 
-  factory EmailAddress(String input) {
-    return EmailAddress._(
-      validateStringNotEmpty(input).flatMap(
-        validateEmailAddress,
-      ),
-    );
-  }
-
-  const EmailAddress._(this.value);
+  bool get isValid => validateEmailAddress(value);
 }
 
-class Password extends ValueObject<String> {
-  @override
-  final Either<ValueFailure<String>, String> value;
+class Password extends SingleValueObject<String> {
+  const Password(String value) : super(value);
 
-  factory Password(String input) {
-    return Password._(
-      validateStringNotEmpty(input).flatMap(
-        validatePasswordSecurity,
-      ),
-    );
-  }
-
-  const Password._(this.value);
+  bool get isSecure => validatePasswordSecurity(value);
 }
 
-class UserName extends ValueObject<String> {
-  @override
-  final Either<ValueFailure<String>, String> value;
+class UserName extends SingleValueObject<String> {
+  const UserName(String value) : super(value);
 
-  static const maxLength = 30;
-
-  factory UserName(String input) {
-    return UserName._(
-      validateMaxStringLength(input, maxLength)
-          .flatMap(validateStringNotEmpty)
-          .flatMap(validateSingleLine),
-    );
-  }
-
-  const UserName._(this.value);
+  bool get isSecure => validateUserName(value);
 }
 
-class PhoneNumber extends ValueObject<String> {
-  @override
-  final Either<ValueFailure<String>, String> value;
+class PhoneNumber extends SingleValueObject<String> {
+  const PhoneNumber(String value) : super(value);
 
-  factory PhoneNumber(String input) {
-    return PhoneNumber._(
-      validatePhoneNumber(input),
-    );
-  }
-
-  const PhoneNumber._(this.value);
-}
-
-class ImagePath extends ValueObject<String> {
-  @override
-  final Either<ValueFailure<String>, String> value;
-
-  factory ImagePath(String input) {
-    return ImagePath._(
-      right(input),
-    );
-  }
-
-  const ImagePath._(this.value);
+  bool get isSecure => validatePhoneNumber(value);
 }

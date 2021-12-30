@@ -39,3 +39,4 @@ linter:
   
     # Back to the 80s
     lines_longer_than_80_chars: true
+    always_use_package_imports: false

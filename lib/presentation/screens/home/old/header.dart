@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../resources/colors.dart';
-import '../../../widgets/main_card.dart';
 import '../cubit/home_screen_cubit.dart';
 
 class HomeHeader extends SliverPersistentHeader {
@@ -37,23 +36,24 @@ class Header extends StatelessWidget {
         Container(
           margin: EdgeInsets.only(bottom: kDefaultPadding),
           height: 205,
-          color: AppColors.backgroundColor,
+          color: AppColors.greyBackground,
           child: Stack(
             children: [
               Container(
                 padding: EdgeInsets.only(
-                    left: kDefaultPadding,
-                    right: kDefaultPadding,
-                    top: kDefaultPadding,
-                    bottom: kDefaultPadding),
+                  left: kDefaultPadding,
+                  right: kDefaultPadding,
+                  top: kDefaultPadding,
+                  bottom: kDefaultPadding,
+                ),
                 height: 170,
                 width: size.width,
                 decoration: BoxDecoration(
-                  color: AppColors.primayColor,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(60),
-                    bottomRight: Radius.circular(60),
-                  ),
+                  color: AppColors.primaryColor,
+                  // borderRadius: BorderRadius.only(
+                  //   bottomLeft: Radius.circular(60),
+                  //   bottomRight: Radius.circular(60),
+                  // ),
                 ),
               ),
               Positioned(
@@ -65,33 +65,12 @@ class Header extends StatelessWidget {
                       return CircularProgressIndicator.adaptive();
                     } else {
                       return Text(
-                        'Hi ${state.userName!.getOrCrash().split(' ')[0]}!',
+                        'Hi ${state.userName!.value.split(' ')[0]}!',
                         style: Theme.of(context).textTheme.headline5!.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.white),
                       );
                     }
                   },
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    MainCard(
-                      icon: Icons.food_bank,
-                      title: 'BANK',
-                      amount: 16000,
-                    ),
-                    MainCard(
-                      icon: Icons.money,
-                      title: 'CASH',
-                      amount: 6300,
-                    ),
-                  ],
                 ),
               ),
             ],

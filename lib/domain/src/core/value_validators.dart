@@ -64,7 +64,7 @@ bool validatePasswordMatch(
 }
 
 bool validateUserName(String input) {
-  const nameRegex = r'^[a-zA-Z]+';
+  const nameRegex = '^[a-zA-Z]+';
   if (RegExp(nameRegex).hasMatch(input)) {
     return true;
   } else {

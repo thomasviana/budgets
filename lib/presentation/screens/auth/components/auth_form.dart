@@ -1,7 +1,7 @@
-import 'package:budgets/presentation/screens/auth/cubit/auth_screen_cubit.dart';
 import 'package:flutter/material.dart';
 
 import '../../../resources/colors.dart';
+import '../cubit/auth_screen_cubit.dart';
 
 class AuthForm extends StatefulWidget {
   final bool enabled;
@@ -89,16 +89,6 @@ class _AuthFormState extends State<AuthForm> {
     } else if (!widget.state.emailAddress.isValid) {
       return 'Enter a valid email.';
     }
-    // }
-    // // return !cubit.state.emailAddress.isValid ? 'Enter a valid email.' : null;
-    // return cubit.state.emailAddress.value.fold(
-    //   (f) => f.maybeMap(
-    //     empty: (_) => 'This is a required field.',
-    //     invalidEmail: (_) => 'Enter a valid email.',
-    //     orElse: () {},
-    //   ),
-    //   (r) => null,
-    // );
   }
 
   String? passwordValidator(String? value) {
@@ -107,35 +97,16 @@ class _AuthFormState extends State<AuthForm> {
     } else if (!widget.state.password.isSecure) {
       return 'Password must be at least 6 characters long.';
     }
-    //   return cubit.state.password.value.fold(
-    //     (f) => f.maybeMap(
-    //       empty: (_) => 'This is a required field.',
-    //       shortPassword: (_) => 'Password must be at least 6 characters long.
-    //       passwordDoNotMatch: (_) => 'Password do not match.',
-    //       orElse: () {},
-    //     ),
-    //     (r) => null,
-    //   );
-    // }
   }
 
   String? passwordConfirmationValidator(String? value) {
-    if (!widget.state.password.value.isNotEmpty) {
+    if (!widget.state.confirmationPassword.value.isNotEmpty) {
       return 'This is a required field.';
     }
     if (widget.state.isCreateAccountMode) {
-      if (!widget.state.password.isSecure) {
-        return 'Password must be at least 6 characters long.';
+      if (widget.state.password != widget.state.confirmationPassword) {
+        return "Doesn't match the previous one.";
       }
     }
-
-    // return widget.state.password.value.fold(
-    //   (f) => f.maybeMap(
-    //     empty: (_) => 'This is a required field.',
-    //     passwordDoNotMatch: (_) => 'Password do not match.',
-    //     orElse: () {},
-    //   ),
-    //   (r) => null,
-    // );
   }
 }

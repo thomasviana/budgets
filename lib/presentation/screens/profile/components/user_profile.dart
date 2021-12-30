@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/account.dart';
 import '../../../resources/colors.dart';
+import '../../../routes/app_navigator.dart';
 import '../../../widgets/rounded_button.dart';
 import '../cubit/profile_screen_cubit.dart';
 
@@ -103,7 +104,9 @@ class _UserProfileState extends State<UserProfile> {
                   label: 'Save',
                   isEnabled: widget.isSaveButtonEnabled,
                   onPressed: () {
-                    context.read<ProfileScreenCubit>().onUpdateUserInfo();
+                    context.read<ProfileScreenCubit>().onUpdateUserInfo().then(
+                          (value) => AppNavigator.navigateBack(context),
+                        );
                   },
                 ),
               SizedBox(height: 10),

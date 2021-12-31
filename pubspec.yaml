@@ -13,6 +13,7 @@ dependencies:
   cloud_firestore: ^3.1.5
   cupertino_icons: ^1.0.4
   dartz: ^0.10.1
+  drift: ^1.2.0
   equatable: ^2.0.3
   firebase_auth: ^3.3.4
   firebase_core: ^1.10.6
@@ -30,12 +31,14 @@ dependencies:
   intl: ^0.17.0
   page_indicator: ^0.4.1
   path: ^1.8.0
+  path_provider: ^2.0.8
+  sqlite3_flutter_libs: ^0.5.2
   tuple: ^2.0.0
   uuid: ^3.0.5
 
 dev_dependencies:
-  bloc_test: ^9.0.1
   build_runner: ^2.1.7
+  drift_dev: ^1.1.0
   flutter_test:
     sdk: flutter
   freezed: ^1.1.0
@@ -47,7 +50,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-
 
   fonts:
     - family: Quicksand
@@ -62,4 +64,3 @@ flutter:
           weight: 600
         - asset: assets/fonts/Quicksand-Bold.ttf
           weight: 700
-    

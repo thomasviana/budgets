@@ -2,25 +2,25 @@ part of 'sub_categories_screen_cubit.dart';
 
 class SubCategoriesScreenState {
   final bool isLoading;
-  List<SubCategory> categories;
+  List<SubCategory> subCategories;
 
   SubCategoriesScreenState({
     required this.isLoading,
-    required this.categories,
+    required this.subCategories,
   });
 
   factory SubCategoriesScreenState.initial() => SubCategoriesScreenState(
         isLoading: false,
-        categories: [],
+        subCategories: [],
       );
 
   SubCategoriesScreenState copyWith({
     bool? isLoading,
-    List<SubCategory>? categories,
+    List<SubCategory>? subCategories,
   }) {
     return SubCategoriesScreenState(
       isLoading: isLoading ?? this.isLoading,
-      categories: categories ?? this.categories,
+      subCategories: subCategories ?? this.subCategories,
     );
   }
 }

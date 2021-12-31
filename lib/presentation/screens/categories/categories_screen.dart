@@ -47,16 +47,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 title: Text(state.categories[index].name),
                 leading: CircleAvatar(
                   maxRadius: 20,
-                  // TODO: Icon data as string
                   child: Icon(
                     IconData(
                       state.categories[index].icon,
                       fontFamily: 'MaterialIcons',
                     ),
+                    color: AppColors.white,
                   ),
                   backgroundColor: Color(state.categories[index].color),
                 ),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                ),
                 onTap: () => AppNavigator.navigateToSubCategoriesPage(
                   context,
                   state.categories[index],

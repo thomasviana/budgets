@@ -13,7 +13,7 @@ class AppNavigator {
   // Settings
   static const ROUTE_PROFILE_PAGE = '/profile';
   static const ROUTE_CATEGORIES_PAGE = '/categories';
-  static const ROUTE_SUB_CATEGORIES_PAGE = '/SUB-categories';
+  static const ROUTE_SUB_CATEGORIES_PAGE = '/sub-categories';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 

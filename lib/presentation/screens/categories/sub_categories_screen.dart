@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/categories/domain.dart';
 import '../../resources/colors.dart';
-import '../../routes/app_navigator.dart';
 import 'sub_categories_cubit/sub_categories_screen_cubit.dart';
 
 class SubCategoriesScreen extends StatefulWidget {
@@ -54,12 +53,16 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
                 title: Text(subCategories[index].name),
                 leading: CircleAvatar(
                   maxRadius: 20,
-                  // TODO: Icon data as string
-                  child: Icon(Icons.ac_unit),
+                  child: Icon(
+                    IconData(
+                      subCategories[index].icon,
+                      fontFamily: 'MaterialIcons',
+                    ),
+                    color: AppColors.white,
+                  ),
                   backgroundColor: Color(subCategories[index].color),
                 ),
-                trailing: Icon(Icons.arrow_forward_ios),
-                onTap: () => AppNavigator.navigateToProfilePage(context),
+                onTap: () {},
               );
             },
           ),

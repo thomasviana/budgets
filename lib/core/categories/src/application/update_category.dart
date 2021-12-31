@@ -1,0 +1,36 @@
+import '../../application.dart';
+import '../../domain.dart';
+
+class UpdateCategory {
+  final CategoryRepository _categoryRepository;
+  final GetCategories _getCategories;
+
+  const UpdateCategory(
+    this._categoryRepository,
+    this._getCategories,
+  );
+
+  Future<void> call({
+    required CategoryUserId userId,
+    required CategoryId categoryId,
+    String? name,
+    int? icon,
+    int? color,
+  }) =>
+      _getCategories(userId)
+          .first
+          .then(
+            (categories) => categories.firstWhere(
+              (category) => category.id == categoryId,
+              orElse: () => throw Exception("Category doesn't exist"),
+            ),
+          )
+          .then(
+            (category) => _categoryRepository.save(
+              category
+                ..updateName(name ?? category.name)
+                ..updateIcon(icon ?? category.icon)
+                ..updateColor(color ?? category.color),
+            ),
+          );
+}

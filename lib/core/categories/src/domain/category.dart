@@ -11,7 +11,14 @@ class Category extends CategoryModel {
     required int icon,
     required int color,
     required this.subCategories,
-  }) : super(id: id, name: name, icon: icon, color: color);
+    CategoryUserId? categoryUserId,
+  }) : super(
+          id: id,
+          categoryUserId: categoryUserId,
+          name: name,
+          icon: icon,
+          color: color,
+        );
 
   factory Category.housing() => Category(
         id: CategoryId.auto(),

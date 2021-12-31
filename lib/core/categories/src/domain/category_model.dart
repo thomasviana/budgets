@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 import '../../../../common/value_objects.dart';
 
 class CategoryModel extends Entity<CategoryId> {
+  CategoryUserId? categoryUserId;
   String name;
   int icon;
   int color;
@@ -12,6 +13,7 @@ class CategoryModel extends Entity<CategoryId> {
     required this.name,
     required this.icon,
     required this.color,
+    this.categoryUserId,
   }) : super(id);
 
 // ignore: use_setters_to_change_properties
@@ -26,4 +28,10 @@ class CategoryId extends AlphanumericId {
   const CategoryId(String value) : super(value);
 
   CategoryId.auto() : this(const Uuid().v1());
+}
+
+class CategoryUserId extends AlphanumericId {
+  const CategoryUserId(String value) : super(value);
+
+  CategoryUserId.auto() : this(const Uuid().v1());
 }

@@ -7,6 +7,8 @@ import '../screens/auth/auth_screen.dart';
 import '../screens/auth/cubit/auth_screen_cubit.dart';
 import '../screens/categories/categories_cubit/categories_screen_cubit.dart';
 import '../screens/categories/categories_screen.dart';
+import '../screens/categories/edit_category_cubit/edit_category_screen_cubit.dart';
+import '../screens/categories/edit_category_screen.dart';
 import '../screens/categories/sub_categories_cubit/sub_categories_screen_cubit.dart';
 import '../screens/categories/sub_categories_screen.dart';
 import '../screens/intro/intro_screen.dart';
@@ -65,6 +67,15 @@ class Routes {
           BlocProvider(
             create: (context) => sl<SubCategoriesScreenCubit>(),
             child: SubCategoriesScreen(category: category),
+          ),
+        );
+      case AppNavigator.ROUTE_EDIT_CATEGORY_PAGE:
+        final category = settings.arguments! as Category;
+        return _buildRoute(
+          settings,
+          BlocProvider(
+            create: (context) => sl<EditCategoryScreenCubit>(),
+            child: EditCategoryScreen(category: category),
           ),
         );
       default:

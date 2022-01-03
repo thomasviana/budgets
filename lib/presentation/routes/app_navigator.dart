@@ -14,6 +14,7 @@ class AppNavigator {
   static const ROUTE_PROFILE_PAGE = '/profile';
   static const ROUTE_CATEGORIES_PAGE = '/categories';
   static const ROUTE_SUB_CATEGORIES_PAGE = '/sub-categories';
+  static const ROUTE_EDIT_CATEGORY_PAGE = '/edit-category';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
@@ -63,6 +64,17 @@ class AppNavigator {
     Navigator.pushNamed(
       context,
       ROUTE_SUB_CATEGORIES_PAGE,
+      arguments: category,
+    );
+  }
+
+  static void navigateToEditCategoryPage(
+    BuildContext context,
+    Category category,
+  ) {
+    Navigator.pushNamed(
+      context,
+      ROUTE_EDIT_CATEGORY_PAGE,
       arguments: category,
     );
   }

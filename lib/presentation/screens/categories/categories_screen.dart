@@ -59,7 +59,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 trailing: Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => AppNavigator.navigateToSubCategoriesPage(
+                onTap: () => AppNavigator.navigateToEditCategoryPage(
                   context,
                   state.categories[index],
                 ),

@@ -22,8 +22,8 @@ class ProfileScreenCubit extends Cubit<ProfileScreenState> {
 
   Future<void> init() async {
     emit(state.copyWith(isLoading: true));
-    final displayName = await getProfileInfo();
-    displayName.fold(
+    final userOption = await getProfileInfo();
+    userOption.fold(
       () => emit(
         state.copyWith(
           userEntity: UserEntity.empty(),

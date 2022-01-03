@@ -62,7 +62,7 @@ class _UserProfileState extends State<UserProfile> {
                   child: Container(height: 150, width: 150, child: image),
                 ),
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               Text(
                 'User ID: ${widget.user.id.value}',
               ),

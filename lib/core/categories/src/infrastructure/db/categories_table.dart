@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:injectable/injectable.dart';
 
 import 'categories_db.dart';
 
@@ -20,6 +21,7 @@ class CategoryTable extends Table {
   String get tableName => 'category';
 }
 
+@lazySingleton
 @DriftAccessor(tables: [CategoryTable])
 class CategoryDao extends DatabaseAccessor<CategoriesDatabase>
     with _$CategoryDaoMixin {
@@ -34,6 +36,6 @@ class CategoryDao extends DatabaseAccessor<CategoriesDatabase>
   Future<void> createOrUpdate(CategoryDbDto category) =>
       into(categoryTable).insertOnConflictUpdate(category);
 
-  Future<void> deleteNote(String categoryId) =>
+  Future<void> deleteCategory(String categoryId) =>
       (delete(categoryTable)..where((tbl) => tbl.id.equals(categoryId))).go();
 }

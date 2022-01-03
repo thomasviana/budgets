@@ -1,6 +1,9 @@
+import 'package:injectable/injectable.dart';
+
 import '../../domain.dart';
 import '../../infrastructure.dart';
 
+@lazySingleton
 class CategoryMapper {
   const CategoryMapper();
 
@@ -14,8 +17,7 @@ class CategoryMapper {
       name: dto.name,
       color: dto.color,
       icon: dto.icon,
-      //TODO: Subcategories
-      subCategories: [],
+      subCategories: [], //TODO: Subcategories
     );
   }
 

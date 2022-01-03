@@ -22,11 +22,6 @@ class SplashScreen extends StatelessWidget {
             // ignore: prefer_const_literals_to_create_immutables
             children: [
               CircularProgressIndicator(),
-              SizedBox(height: 24),
-              Text(
-                'Loading...',
-                style: TextStyle(fontSize: 24),
-              )
             ],
           ),
         ),

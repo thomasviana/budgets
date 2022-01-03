@@ -33,8 +33,11 @@ class CategoryDao extends DatabaseAccessor<CategoriesDatabase>
     return query.watch();
   }
 
-  Future<void> createOrUpdate(CategoryDbDto category) =>
-      into(categoryTable).insertOnConflictUpdate(category);
+  // Future<void> createOrUpdate(CategoryDbDto category) =>
+  //     into(categoryTable).insertOnConflictUpdate(category);
+
+  Future<void> createOrUpdate(Insertable<CategoryDbDto> category) =>
+      into(categoryTable).insert(category);
 
   Future<void> deleteCategory(String categoryId) =>
       (delete(categoryTable)..where((tbl) => tbl.id.equals(categoryId))).go();

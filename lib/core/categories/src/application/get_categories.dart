@@ -10,6 +10,6 @@ class GetCategories {
     this._categoryRepository,
   );
 
-  Stream<List<Category>> call(CategoryUserId? userId) =>
+  Stream<List<Category>?> call(CategoryUserId userId) =>
       _categoryRepository.fetchCategories(userId);
 }

@@ -22,6 +22,8 @@ class CategoryModel extends Entity<CategoryId> {
   void updateIcon(int newIcon) => icon = newIcon;
   // ignore: use_setters_to_change_properties
   void updateColor(int newColor) => color = newColor;
+  // ignore: use_setters_to_change_properties
+  void setUserId(String userId) => categoryUserId = CategoryUserId(userId);
 }
 
 class CategoryId extends AlphanumericId {

@@ -1,7 +1,8 @@
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../domain.dart';
-import '../../infrastructure.dart';
+import '../../../../domain.dart';
+import 'categories_db.dart';
 
 @lazySingleton
 class CategoryMapper {
@@ -24,13 +25,17 @@ class CategoryMapper {
   List<Category> fromDbDtoList(List<CategoryDbDto> dtos) =>
       dtos.map((dto) => fromDbDto(dto)).toList();
 
-  CategoryDbDto toDbDto(Category category) {
-    return CategoryDbDto(
-      id: category.id.value,
-      userId: category.categoryUserId!.value,
-      name: category.name,
-      color: category.color,
-      icon: category.icon,
+  CategoryTableCompanion toDbDto(Category category) {
+    return CategoryTableCompanion(
+      id: Value(category.id.value),
+      userId: Value(category.categoryUserId!.value),
+      name: Value(category.name),
+      color: Value(category.color),
+      icon: Value(category.icon),
     );
+  }
+
+  List<CategoryTableCompanion> toDbDtoList(List<Category> categories) {
+    return categories.map((category) => toDbDto(category)).toList();
   }
 }

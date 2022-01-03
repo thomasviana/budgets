@@ -23,7 +23,7 @@ class UpdateCategory {
       _getCategories(userId)
           .first
           .then(
-            (categories) => categories.firstWhere(
+            (categories) => categories!.firstWhere(
               (category) => category.id == categoryId,
               orElse: () => throw Exception("Category doesn't exist"),
             ),

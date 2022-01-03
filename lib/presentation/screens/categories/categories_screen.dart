@@ -1,3 +1,4 @@
+import 'package:budgets/core/categories/domain.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   void initState() {
     super.initState();
     cubit = context.read<CategoriesScreenCubit>();
+    cubit.init();
   }
 
   @override
@@ -36,38 +38,66 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             CupertinoSliverNavigationBar(
               largeTitle: Text('Categories'),
               previousPageTitle: 'Settings',
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: AppColors.primaryColor,
+                ),
+                onPressed: () {
+                  cubit.onAddCategory();
+                  cubit.listenCategories();
+                },
+              ),
             )
           ],
-          body: ListView.separated(
-            itemCount: state.categories.length,
+          body: _buildBody(context, cubit, state),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context, CategoriesScreenCubit cubit,
+      CategoriesScreenState state) {
+    if (state.isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return StreamBuilder<List<Category>?>(
+        stream: cubit.listenCategories(),
+        builder: (context, AsyncSnapshot<List<Category>?> snapshot) {
+          final categories = snapshot.data ?? [];
+          print(categories.length);
+          return ListView.separated(
+            itemCount: categories.length,
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(),
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
-                title: Text(state.categories[index].name),
+                title: Text(categories[index].name),
                 leading: CircleAvatar(
                   maxRadius: 20,
                   child: Icon(
                     IconData(
-                      state.categories[index].icon,
+                      categories[index].icon,
                       fontFamily: 'MaterialIcons',
                     ),
                     color: AppColors.white,
                   ),
-                  backgroundColor: Color(state.categories[index].color),
+                  backgroundColor: Color(categories[index].color),
                 ),
                 trailing: Icon(
                   Icons.arrow_forward_ios,
                 ),
                 onTap: () => AppNavigator.navigateToEditCategoryPage(
                   context,
-                  state.categories[index],
+                  categories[index],
                 ),
               );
             },
-          ),
-        ),
-      ),
-    );
+          );
+        },
+      );
+    }
   }
 }

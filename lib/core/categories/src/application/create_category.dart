@@ -14,12 +14,15 @@ class CreateCategory {
     required int icon,
     required int color,
   }) {
-    return _categoryRepository.save(Category(
-      id: CategoryId.auto(),
-      name: name,
-      icon: icon,
-      color: color,
-      subCategories: [],
-    ));
+    return _categoryRepository.save(
+      Category(
+        id: CategoryId.auto(),
+        categoryUserId: categoryUserId,
+        name: name,
+        icon: icon,
+        color: color,
+        subCategories: [],
+      ),
+    );
   }
 }

@@ -5,7 +5,7 @@ abstract class CategoryRepository {
     CategoryUserId? userId,
   );
 
-  Future<void> save(Category note);
+  Future<void> save(Category category);
 
   Future<void> delete(CategoryId categoryId);
 }

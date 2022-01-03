@@ -1,6 +1,9 @@
+import 'package:injectable/injectable.dart';
+
 import '../../application.dart';
 import '../../domain.dart';
 
+@injectable
 class UpdateCategory {
   final CategoryRepository _categoryRepository;
   final GetCategories _getCategories;

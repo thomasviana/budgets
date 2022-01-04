@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain.dart';
@@ -10,6 +11,6 @@ class GetCategories {
     this._categoryRepository,
   );
 
-  Stream<List<Category>?> call(CategoryUserId userId) =>
+  Future<Option<List<Category>>> call(CategoryUserId userId) =>
       _categoryRepository.fetchCategories(userId);
 }

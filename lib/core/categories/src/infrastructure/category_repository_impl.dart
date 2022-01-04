@@ -1,4 +1,5 @@
 import 'package:budgets/core/categories/src/infrastructure/datasources/local/local_data_source.dart';
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain.dart';
@@ -17,7 +18,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   }
 
   @override
-  Stream<List<Category>> fetchCategories(CategoryUserId userId) {
+  Future<Option<List<Category>>> fetchCategories(CategoryUserId userId) {
     return _localDataSource.getCachedCategories(userId);
   }
 

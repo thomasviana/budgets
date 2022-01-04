@@ -26,23 +26,21 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> onAuthCheckRequested() async {
     final userOption = await checkAuthStatus();
     userOption.fold(
-        () => emit(
-              state.copyWith(
-                isUnauthenticated: true,
-              ),
-            ), (user) async {
-      getCategories(CategoryUserId(user.id.value)).first.then(
-            (categories) => {
-              emit(
-                state.copyWith(
-                  isAuthenticated: true,
-                  userEntity: user,
-                  // categories: categories ?? state.categories,
-                ),
-              ),
-            },
-          );
-    });
+      () => emit(
+        state.copyWith(
+          isUnauthenticated: true,
+        ),
+      ),
+      (user) async {
+        emit(
+          state.copyWith(
+            isAuthenticated: true,
+            userEntity: user,
+            // categories: categories ?? state.categories,
+          ),
+        );
+      },
+    );
   }
 
   // Future<void> _saveCategoriesOnDb() async {

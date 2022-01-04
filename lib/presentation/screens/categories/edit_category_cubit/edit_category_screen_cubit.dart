@@ -45,13 +45,17 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
         ),
       );
 
-  void onCategoryDeleted() {}
+  Future<void> onCategoryDeleted() async {
+    await deleteCategory(state.category!.id);
+  }
 
-  void onCategorySaved() {
-    updateCategory(
+  Future<void> onCategorySaved() async {
+    await updateCategory(
       userId: CategoryUserId(state.user!.id.value),
       categoryId: state.category!.id,
       name: state.category!.name,
+      color: state.category!.color,
+      icon: state.category!.icon,
     );
   }
 }

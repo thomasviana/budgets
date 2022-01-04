@@ -71,11 +71,12 @@ class AppNavigator {
   static void navigateToEditCategoryPage(
     BuildContext context,
     Category category,
+    Function(Object?) function,
   ) {
     Navigator.pushNamed(
       context,
       ROUTE_EDIT_CATEGORY_PAGE,
       arguments: category,
-    );
+    ).then(function);
   }
 }

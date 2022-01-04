@@ -28,41 +28,35 @@ class CategoriesScreenCubit extends Cubit<CategoriesScreenState> {
     userOption.fold(
       () => null,
       (user) {
-        getCategories(CategoryUserId(user.id.value)).first.then(
-              (categories) => emit(
-                state.copyWith(
-                  userEntity: user,
-                  categories: categories ?? state.categories,
-                  isLoading: false,
-                ),
-              ),
-            );
+        emit(state.copyWith(user: user, isLoading: false));
       },
     );
+    getUserCategories();
   }
 
-  Future<void> saveCategoriesToDb() async {
-    state.categories
-        .map((category) => category.setUserId(state.userEntity!.id.value));
-    saveCategories(categories: state.categories);
+  Future<void> getUserCategories() async {
+    final userCategories =
+        await getCategories(CategoryUserId(state.user!.id.value));
+    userCategories.fold(
+      () => _setDefaultCategories(),
+      (categories) => emit(state.copyWith(categories: categories)),
+    );
   }
 
-  Future<void> onAddCategory() async {
+  Future<void> _setDefaultCategories() async {
+    final list = Category.defaultCategories;
+    for (final cat in list) {
+      cat.setUserId(state.user!.id.value);
+    }
+    await saveCategories(categories: list);
+  }
+
+  Future<void> addUserCategory() async {
     await createCategory(
-      categoryUserId: CategoryUserId(state.userEntity!.id.value),
+      categoryUserId: CategoryUserId(state.user!.id.value),
       color: 0xFFF44336,
       icon: 0xe318,
-      name: 'Other Category',
+      name: 'Testing Category',
     );
-    listenCategories();
-  }
-
-  Stream<List<Category>?> listenCategories() async* {
-    await getCategories(CategoryUserId(state.userEntity!.id.value)).first.then(
-          (categories) => emit(
-            state.copyWith(categories: categories),
-          ),
-        );
-    yield state.categories;
   }
 }

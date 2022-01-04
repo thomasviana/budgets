@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,14 +53,20 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                       Icons.delete_outline,
                       color: Colors.red,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      cubit.onCategoryDeleted();
+                      AppNavigator.navigateBack(context);
+                    },
                   ),
                   IconButton(
                     icon: Icon(
                       Icons.check,
                       color: AppColors.primaryColor,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      cubit.onCategorySaved();
+                      AppNavigator.navigateBack(context);
+                    },
                   ),
                 ],
               ),

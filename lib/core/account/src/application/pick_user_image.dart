@@ -10,9 +10,8 @@ class PickUserImage {
   );
 
   Future<Option<XFile>> call() async {
-    final optionImage =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
-    if (optionImage != null) return some(optionImage);
+    final imageFile = await _imagePicker.pickImage(source: ImageSource.gallery);
+    if (imageFile != null) return some(imageFile);
     return none();
   }
 }

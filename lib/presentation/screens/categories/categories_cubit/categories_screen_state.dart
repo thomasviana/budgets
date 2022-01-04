@@ -3,12 +3,12 @@ part of 'categories_screen_cubit.dart';
 class CategoriesScreenState {
   final bool isLoading;
   List<Category> categories;
-  UserEntity? userEntity;
+  UserEntity? user;
 
   CategoriesScreenState({
     required this.isLoading,
     required this.categories,
-    this.userEntity,
+    this.user,
   });
 
   factory CategoriesScreenState.initial() => CategoriesScreenState(
@@ -19,12 +19,12 @@ class CategoriesScreenState {
   CategoriesScreenState copyWith({
     bool? isLoading,
     List<Category>? categories,
-    UserEntity? userEntity,
+    UserEntity? user,
   }) {
     return CategoriesScreenState(
       isLoading: isLoading ?? this.isLoading,
       categories: categories ?? this.categories,
-      userEntity: userEntity ?? this.userEntity,
+      user: user ?? this.user,
     );
   }
 }

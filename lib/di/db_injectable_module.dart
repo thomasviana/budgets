@@ -1,5 +1,6 @@
-import 'package:budgets/core/categories/infrastructure.dart';
 import 'package:injectable/injectable.dart';
+
+import '../core/categories/infrastructure.dart';
 
 @module
 abstract class DbInjectableModule {

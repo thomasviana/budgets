@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/categories/application.dart';
-import 'package:budgets/core/categories/domain.dart';
-import 'package:budgets/core/categories/src/application/save_categories.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/account/application.dart';
 import '../../../core/account/domain.dart';
+import '../../../core/categories/application.dart';
+import '../../../core/categories/domain.dart';
 
 part 'auth_state.dart';
 

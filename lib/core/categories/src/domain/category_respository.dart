@@ -9,7 +9,7 @@ abstract class CategoryRepository {
 
   Future<void> save(Category category);
 
-  Future<void> saveList(List<Category> category);
+  Future<void> saveList(List<Category> categories);
 
   Future<void> delete(CategoryId categoryId);
 }

@@ -33,7 +33,6 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
   }
 
   Widget _buildState(BuildContext context, SubCategoriesScreenState state) {
-    final subCategories = widget.category.subCategories;
     return Scaffold(
       body: CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
@@ -44,25 +43,31 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
               previousPageTitle: 'Categories',
             )
           ],
-          body: ListView.separated(
-            itemCount: subCategories.length,
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text(subCategories[index].name),
-                leading: CircleAvatar(
-                  maxRadius: 20,
-                  child: Icon(
-                    IconData(
-                      subCategories[index].icon,
-                      fontFamily: 'MaterialIcons',
+          body: FutureBuilder(
+            future: cubit.getUserSubCategories(widget.category.id),
+            builder: (context, snapshot) {
+              final subCategories = state.subCategories;
+              return ListView.separated(
+                itemCount: subCategories.length,
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(subCategories[index].name),
+                    leading: CircleAvatar(
+                      maxRadius: 20,
+                      child: Icon(
+                        IconData(
+                          subCategories[index].icon,
+                          fontFamily: 'MaterialIcons',
+                        ),
+                        color: AppColors.white,
+                      ),
+                      backgroundColor: Color(subCategories[index].color),
                     ),
-                    color: AppColors.white,
-                  ),
-                  backgroundColor: Color(subCategories[index].color),
-                ),
-                onTap: () {},
+                    onTap: () {},
+                  );
+                },
               );
             },
           ),

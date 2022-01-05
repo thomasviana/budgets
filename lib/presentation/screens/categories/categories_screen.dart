@@ -1,9 +1,9 @@
-import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../resources/colors.dart';
+import '../../routes/app_navigator.dart';
 import 'categories_cubit/categories_screen_cubit.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -75,38 +75,39 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       );
     } else {
       return FutureBuilder(
-          future: cubit.getUserCategories(),
-          builder: (context, snapshot) {
-            return ListView.separated(
-              itemCount: state.categories.length,
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(state.categories[index].name),
-                  leading: CircleAvatar(
-                    maxRadius: 20,
-                    child: Icon(
-                      IconData(
-                        state.categories[index].icon,
-                        fontFamily: 'MaterialIcons',
-                      ),
-                      color: AppColors.white,
+        future: cubit.getUserCategories(),
+        builder: (context, snapshot) {
+          return ListView.separated(
+            itemCount: state.categories.length,
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text(state.categories[index].name),
+                leading: CircleAvatar(
+                  maxRadius: 20,
+                  child: Icon(
+                    IconData(
+                      state.categories[index].icon,
+                      fontFamily: 'MaterialIcons',
                     ),
-                    backgroundColor: Color(state.categories[index].color),
+                    color: AppColors.white,
                   ),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                  ),
-                  onTap: () => AppNavigator.navigateToEditCategoryPage(
-                    context,
-                    state.categories[index],
-                    (_) => cubit.getUserCategories(),
-                  ),
-                );
-              },
-            );
-          });
+                  backgroundColor: Color(state.categories[index].color),
+                ),
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                ),
+                onTap: () => AppNavigator.navigateToEditCategoryPage(
+                  context,
+                  state.categories[index],
+                  (_) => cubit.getUserCategories(),
+                ),
+              );
+            },
+          );
+        },
+      );
     }
   }
 }

@@ -5,43 +5,43 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../core/categories/domain.dart';
 import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
-import 'edit_category_cubit/edit_category_screen_cubit.dart';
+import 'edit_sub_category_cubit/edit_sub_category_screen_cubit.dart';
 
-class EditCategoryScreen extends StatefulWidget {
-  final Category category;
-  const EditCategoryScreen({
+class EditSubCategoryScreen extends StatefulWidget {
+  final SubCategory subCategory;
+  const EditSubCategoryScreen({
     Key? key,
-    required this.category,
+    required this.subCategory,
   }) : super(key: key);
   @override
-  _EditCategoryScreenState createState() => _EditCategoryScreenState();
+  _EditSubCategoryScreenState createState() => _EditSubCategoryScreenState();
 }
 
-class _EditCategoryScreenState extends State<EditCategoryScreen> {
-  late EditCategoryScreenCubit cubit;
+class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
+  late EditSubCategoryScreenCubit cubit;
 
   @override
   void initState() {
     super.initState();
-    cubit = context.read<EditCategoryScreenCubit>();
-    cubit.init(widget.category);
+    cubit = context.read<EditSubCategoryScreenCubit>();
+    cubit.init(widget.subCategory);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditCategoryScreenCubit, EditCategoryScreenState>(
+    return BlocBuilder<EditSubCategoryScreenCubit, EditSubCategoryScreenState>(
       builder: _buildState,
     );
   }
 
-  Widget _buildState(BuildContext context, EditCategoryScreenState state) {
+  Widget _buildState(BuildContext context, EditSubCategoryScreenState state) {
     return Scaffold(
       body: CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
         child: NestedScrollView(
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
-              largeTitle: Text('Edit category'),
+              largeTitle: Text('Edit subcategory'),
               previousPageTitle: 'Back',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -52,7 +52,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                       color: Colors.red,
                     ),
                     onPressed: () {
-                      cubit.onCategoryDeleted();
+                      cubit.onSubCategoryDeleted();
                       AppNavigator.navigateBack(context);
                     },
                   ),
@@ -62,7 +62,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                       color: AppColors.primaryColor,
                     ),
                     onPressed: () {
-                      cubit.onCategorySaved();
+                      cubit.onSubCategorySaved();
                       AppNavigator.navigateBack(context);
                     },
                   ),
@@ -76,7 +76,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
     );
   }
 
-  Widget _buildBody(BuildContext context, EditCategoryScreenState state) {
+  Widget _buildBody(BuildContext context, EditSubCategoryScreenState state) {
     if (state.isLoading) {
       return Center(
         child: CircularProgressIndicator(),
@@ -95,58 +95,23 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                   maxRadius: 40,
                   child: Icon(
                     IconData(
-                      state.category!.icon,
+                      state.subCategory!.icon,
                       fontFamily: 'MaterialIcons',
                     ),
                     color: AppColors.white,
                     size: 40,
                   ),
-                  backgroundColor: Color(state.category!.color),
+                  backgroundColor: Color(state.subCategory!.color),
                 ),
               ),
               SizedBox(height: 20),
               TextFormField(
-                initialValue: state.category!.name,
+                initialValue: state.subCategory!.name,
                 decoration: InputDecoration(labelText: 'Name'),
                 keyboardType: TextInputType.name,
                 onChanged: (name) => cubit.onNameChanged(name),
               ),
-              Expanded(
-                child: FutureBuilder(
-                  future: cubit.getUserSubCategories(),
-                  builder: (context, snapshot) {
-                    final subCategories = state.subCategories ?? [];
-                    return ListView.separated(
-                      itemCount: subCategories.length,
-                      separatorBuilder: (BuildContext context, int index) =>
-                          const Divider(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return ListTile(
-                          title: Text(subCategories[index].name),
-                          leading: CircleAvatar(
-                            maxRadius: 20,
-                            child: Icon(
-                              IconData(
-                                subCategories[index].icon,
-                                fontFamily: 'MaterialIcons',
-                              ),
-                              color: AppColors.white,
-                            ),
-                            backgroundColor: Color(subCategories[index].color),
-                          ),
-                          onTap: () {
-                            AppNavigator.navigateToEditSubCategoryPage(
-                              context,
-                              subCategories[index],
-                              (_) => cubit.getUserSubCategories(),
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

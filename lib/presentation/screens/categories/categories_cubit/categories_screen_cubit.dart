@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/account/application.dart';
-import 'package:budgets/core/account/src/domain/auth/user_entity.dart';
-import 'package:budgets/core/categories/application.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/account/application.dart';
+import '../../../../core/account/src/domain/auth/user_entity.dart';
+import '../../../../core/categories/application.dart';
 import '../../../../core/categories/domain.dart';
 
 part 'categories_screen_state.dart';
@@ -23,7 +23,6 @@ class CategoriesScreenCubit extends Cubit<CategoriesScreenState> {
   ) : super(CategoriesScreenState.initial());
 
   Future<void> init() async {
-    emit(state.copyWith(isLoading: true));
     final userOption = await getProfileInfo();
     userOption.fold(
       () => null,
@@ -44,19 +43,19 @@ class CategoriesScreenCubit extends Cubit<CategoriesScreenState> {
   }
 
   Future<void> _setDefaultCategories() async {
-    final list = Category.defaultCategories;
-    for (final cat in list) {
-      cat.setUserId(state.user!.id.value);
+    final categories = Category.defaultCategories;
+    for (final category in categories) {
+      category.setUserId(state.user!.id.value);
     }
-    await saveCategories(categories: list);
+    await saveCategories(categories: categories);
   }
 
   Future<void> addUserCategory() async {
     await createCategory(
-      categoryUserId: CategoryUserId(state.user!.id.value),
-      color: 0xFFF44336,
-      icon: 0xe318,
-      name: 'Testing Category',
-    );
+        categoryUserId: CategoryUserId(state.user!.id.value),
+        color: 0xFFF44336,
+        icon: 0xe318,
+        name: 'Testing Category',
+        type: CategoryType.expense);
   }
 }

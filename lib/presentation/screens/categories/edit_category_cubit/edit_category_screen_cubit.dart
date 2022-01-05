@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/account/domain.dart';
-import 'package:budgets/core/account/src/application/get_profile_info.dart';
-import 'package:budgets/core/categories/application.dart';
-import 'package:budgets/core/categories/domain.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/account/domain.dart';
+import '../../../../core/account/src/application/get_profile_info.dart';
+import '../../../../core/categories/application.dart';
+import '../../../../core/categories/domain.dart';
 
 part 'edit_category_screen_state.dart';
 
@@ -12,15 +13,19 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
   UpdateCategory updateCategory;
   DeleteCategory deleteCategory;
   GetProfileInfo getProfileInfo;
+  GetSubCategories getSubCategories;
+  SaveSubCategories saveSubCategories;
 
   EditCategoryScreenCubit(
     this.updateCategory,
     this.deleteCategory,
     this.getProfileInfo,
+    this.getSubCategories,
+    this.saveSubCategories,
   ) : super(EditCategoryScreenState.initial());
 
   Future<void> init(Category category) async {
-    emit(state.copyWith(isLoading: true, category: category));
+    emit(state.copyWith(category: category));
     final userOption = await getProfileInfo();
     userOption.fold(
       () => emit(
@@ -36,6 +41,20 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
         ),
       ),
     );
+    getUserSubCategories();
+  }
+
+  Future<void> getUserSubCategories() async {
+    final userSubCategories = await getSubCategories(state.category!.id);
+    userSubCategories.fold(
+      () => _setDefaultSubCategories().then((_) => getUserSubCategories()),
+      (subCategories) => emit(state.copyWith(subCategories: subCategories)),
+    );
+  }
+
+  Future<void> _setDefaultSubCategories() async {
+    final subCategories = SubCategory.allSubCategories;
+    await saveSubCategories(subCategories: subCategories);
   }
 
   void onNameChanged(String? name) => emit(

@@ -39,20 +39,3 @@ class UpdateCategory {
     }
   }
 }
-
-  // _getCategories(userId)
-  //     .then(
-  //       (categories) => categories!.firstWhere(
-  //         (category) => category.id == categoryId,
-  //         orElse: () => throw Exception("Category doesn't exist"),
-  //       ),
-  //     )
-  //     .then(
-  //       (category) => _categoryRepository.save(
-  //         category
-  //           ..updateName(name ?? category.name)
-  //           ..updateIcon(icon ?? category.icon)
-  //           ..updateColor(color ?? category.color),
-  //       ),
-  //     );
-

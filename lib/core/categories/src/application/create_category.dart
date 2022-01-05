@@ -9,19 +9,20 @@ class CreateCategory {
   const CreateCategory(this._categoryRepository);
 
   Future<void> call({
-    required CategoryUserId categoryUserId,
     required String name,
     required int icon,
     required int color,
+    required CategoryType type,
+    required CategoryUserId categoryUserId,
   }) {
     return _categoryRepository.save(
       Category(
         id: CategoryId.auto(),
-        categoryUserId: categoryUserId,
         name: name,
         icon: icon,
         color: color,
-        subCategories: [],
+        type: type,
+        categoryUserId: categoryUserId,
       ),
     );
   }

@@ -1,87 +1,96 @@
+import 'package:uuid/uuid.dart';
+
+import '../../../../common/value_objects.dart';
 import '../../../../presentation/resources/colors.dart';
-import 'category_model.dart';
-import 'sub_category.dart';
+import '../../domain.dart';
+
+enum CategoryType { income, expense }
 
 class Category extends CategoryModel {
-  List<SubCategory> subCategories;
+  final CategoryType type;
+  CategoryUserId? categoryUserId;
 
   Category({
     required CategoryId id,
     required String name,
     required int icon,
     required int color,
-    required this.subCategories,
-    CategoryUserId? categoryUserId,
+    double? amount,
+    required this.type,
+    this.categoryUserId,
   }) : super(
           id: id,
-          categoryUserId: categoryUserId,
           name: name,
           icon: icon,
           color: color,
+          amount: amount ?? 0,
         );
 
+  // ignore: use_setters_to_change_properties
+  void setUserId(String userId) => categoryUserId = CategoryUserId(userId);
+
   factory Category.housing() => Category(
-        id: CategoryId.auto(),
+        id: CategoryId('housing'),
         name: 'Vivienda',
         icon: 0xe318,
         color: CategoryColors.amber,
-        subCategories: SubCategory.housingSubCategories,
+        type: CategoryType.expense,
       );
 
   factory Category.food() => Category(
-        id: CategoryId.auto(),
+        id: CategoryId('food'),
         name: 'Alimentación',
         icon: 0xe532,
         color: CategoryColors.red,
-        subCategories: SubCategory.foodSubCategories,
+        type: CategoryType.expense,
       );
 
   factory Category.transportation() => Category(
-        id: CategoryId.auto(),
+        id: CategoryId('transportation'),
         name: 'Transporte',
         icon: 0xf6b2,
         color: CategoryColors.blue_grey,
-        subCategories: SubCategory.transportationSubCategories,
+        type: CategoryType.expense,
       );
 
   factory Category.healthCare() => Category(
-        id: CategoryId.auto(),
+        id: CategoryId('healthCare'),
         name: 'Salud',
         icon: 0xf86f,
         color: CategoryColors.cyan,
-        subCategories: SubCategory.healthCareSubCategories,
+        type: CategoryType.expense,
       );
 
   factory Category.services() => Category(
-        id: CategoryId.auto(),
+        id: CategoryId('services'),
         name: 'Servicios',
         icon: 0xe6e7,
         color: CategoryColors.indigo,
-        subCategories: SubCategory.servicesSubCategories,
+        type: CategoryType.expense,
       );
 
   factory Category.recreation() => Category(
-        id: CategoryId.auto(),
+        id: CategoryId('recreation'),
         name: 'Recreación',
         icon: 0xf736,
         color: CategoryColors.green,
-        subCategories: SubCategory.recreationSubCategories,
+        type: CategoryType.expense,
       );
 
   factory Category.shopping() => Category(
-        id: CategoryId.auto(),
+        id: CategoryId('shopping'),
         name: 'Compras',
         icon: 0xf016f,
         color: CategoryColors.blue,
-        subCategories: SubCategory.shoppingSubCategories,
+        type: CategoryType.expense,
       );
 
   factory Category.financial() => Category(
-        id: CategoryId.auto(),
+        id: CategoryId('financial'),
         name: 'Gastos financieros',
         icon: 0xf58f,
         color: CategoryColors.teal,
-        subCategories: SubCategory.financialSubCategories,
+        type: CategoryType.expense,
       );
 
   static List<Category> get defaultCategories {
@@ -102,14 +111,21 @@ class Category extends CategoryModel {
     String? name,
     int? icon,
     int? color,
-    List<SubCategory>? subCategories,
+    double? amount,
+    CategoryType? type,
   }) {
     return Category(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      icon: icon ?? this.icon,
-      color: color ?? this.color,
-      subCategories: subCategories ?? this.subCategories,
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        icon: icon ?? this.icon,
+        color: color ?? this.color,
+        amount: amount ?? this.amount,
+        type: type ?? this.type);
   }
+}
+
+class CategoryUserId extends AlphanumericId {
+  const CategoryUserId(String value) : super(value);
+
+  CategoryUserId.auto() : this(const Uuid().v1());
 }

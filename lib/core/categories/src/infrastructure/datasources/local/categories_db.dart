@@ -18,7 +18,10 @@ LazyDatabase _openConnection() {
   });
 }
 
-@DriftDatabase(tables: [CategoryTable], daos: [CategoryDao])
+@DriftDatabase(
+  tables: [CategoriesTable, SubCategoriesTable],
+  daos: [CategoryDao, SubCategoryDao],
+)
 class CategoriesDatabase extends _$CategoriesDatabase {
   CategoriesDatabase() : super(_openConnection());
 

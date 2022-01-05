@@ -7,5 +7,9 @@ part of 'categories_table.dart';
 // **************************************************************************
 
 mixin _$CategoryDaoMixin on DatabaseAccessor<CategoriesDatabase> {
-  $CategoryTableTable get categoryTable => attachedDatabase.categoryTable;
+  $CategoriesTableTable get categoriesTable => attachedDatabase.categoriesTable;
+}
+mixin _$SubCategoryDaoMixin on DatabaseAccessor<CategoriesDatabase> {
+  $SubCategoriesTableTable get subCategoriesTable =>
+      attachedDatabase.subCategoriesTable;
 }

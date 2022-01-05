@@ -9,52 +9,67 @@ part of 'categories_db.dart';
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class CategoryDbDto extends DataClass implements Insertable<CategoryDbDto> {
   final String id;
-  final String? userId;
   final String name;
   final int icon;
   final int color;
+  final double amount;
+  final CategoryTypeTable type;
+  final String? userId;
   CategoryDbDto(
       {required this.id,
-      this.userId,
       required this.name,
       required this.icon,
-      required this.color});
+      required this.color,
+      required this.amount,
+      required this.type,
+      this.userId});
   factory CategoryDbDto.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return CategoryDbDto(
       id: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      userId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       icon: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}icon'])!,
       color: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
+      amount: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
+      type: $CategoriesTableTable.$converter0.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
+      userId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    if (!nullToAbsent || userId != null) {
-      map['user_id'] = Variable<String?>(userId);
-    }
     map['name'] = Variable<String>(name);
     map['icon'] = Variable<int>(icon);
     map['color'] = Variable<int>(color);
+    map['amount'] = Variable<double>(amount);
+    {
+      final converter = $CategoriesTableTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type)!);
+    }
+    if (!nullToAbsent || userId != null) {
+      map['user_id'] = Variable<String?>(userId);
+    }
     return map;
   }
 
-  CategoryTableCompanion toCompanion(bool nullToAbsent) {
-    return CategoryTableCompanion(
+  CategoriesTableCompanion toCompanion(bool nullToAbsent) {
+    return CategoriesTableCompanion(
       id: Value(id),
-      userId:
-          userId == null && nullToAbsent ? const Value.absent() : Value(userId),
       name: Value(name),
       icon: Value(icon),
       color: Value(color),
+      amount: Value(amount),
+      type: Value(type),
+      userId:
+          userId == null && nullToAbsent ? const Value.absent() : Value(userId),
     );
   }
 
@@ -63,10 +78,12 @@ class CategoryDbDto extends DataClass implements Insertable<CategoryDbDto> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CategoryDbDto(
       id: serializer.fromJson<String>(json['id']),
-      userId: serializer.fromJson<String?>(json['userId']),
       name: serializer.fromJson<String>(json['name']),
       icon: serializer.fromJson<int>(json['icon']),
       color: serializer.fromJson<int>(json['color']),
+      amount: serializer.fromJson<double>(json['amount']),
+      type: serializer.fromJson<CategoryTypeTable>(json['type']),
+      userId: serializer.fromJson<String?>(json['userId']),
     );
   }
   @override
@@ -74,98 +91,127 @@ class CategoryDbDto extends DataClass implements Insertable<CategoryDbDto> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'userId': serializer.toJson<String?>(userId),
       'name': serializer.toJson<String>(name),
       'icon': serializer.toJson<int>(icon),
       'color': serializer.toJson<int>(color),
+      'amount': serializer.toJson<double>(amount),
+      'type': serializer.toJson<CategoryTypeTable>(type),
+      'userId': serializer.toJson<String?>(userId),
     };
   }
 
   CategoryDbDto copyWith(
-          {String? id, String? userId, String? name, int? icon, int? color}) =>
+          {String? id,
+          String? name,
+          int? icon,
+          int? color,
+          double? amount,
+          CategoryTypeTable? type,
+          String? userId}) =>
       CategoryDbDto(
         id: id ?? this.id,
-        userId: userId ?? this.userId,
         name: name ?? this.name,
         icon: icon ?? this.icon,
         color: color ?? this.color,
+        amount: amount ?? this.amount,
+        type: type ?? this.type,
+        userId: userId ?? this.userId,
       );
   @override
   String toString() {
     return (StringBuffer('CategoryDbDto(')
           ..write('id: $id, ')
-          ..write('userId: $userId, ')
           ..write('name: $name, ')
           ..write('icon: $icon, ')
-          ..write('color: $color')
+          ..write('color: $color, ')
+          ..write('amount: $amount, ')
+          ..write('type: $type, ')
+          ..write('userId: $userId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, userId, name, icon, color);
+  int get hashCode => Object.hash(id, name, icon, color, amount, type, userId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is CategoryDbDto &&
           other.id == this.id &&
-          other.userId == this.userId &&
           other.name == this.name &&
           other.icon == this.icon &&
-          other.color == this.color);
+          other.color == this.color &&
+          other.amount == this.amount &&
+          other.type == this.type &&
+          other.userId == this.userId);
 }
 
-class CategoryTableCompanion extends UpdateCompanion<CategoryDbDto> {
+class CategoriesTableCompanion extends UpdateCompanion<CategoryDbDto> {
   final Value<String> id;
-  final Value<String?> userId;
   final Value<String> name;
   final Value<int> icon;
   final Value<int> color;
-  const CategoryTableCompanion({
+  final Value<double> amount;
+  final Value<CategoryTypeTable> type;
+  final Value<String?> userId;
+  const CategoriesTableCompanion({
     this.id = const Value.absent(),
-    this.userId = const Value.absent(),
     this.name = const Value.absent(),
     this.icon = const Value.absent(),
     this.color = const Value.absent(),
-  });
-  CategoryTableCompanion.insert({
-    required String id,
+    this.amount = const Value.absent(),
+    this.type = const Value.absent(),
     this.userId = const Value.absent(),
+  });
+  CategoriesTableCompanion.insert({
+    required String id,
     required String name,
     required int icon,
     required int color,
+    this.amount = const Value.absent(),
+    required CategoryTypeTable type,
+    this.userId = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
         icon = Value(icon),
-        color = Value(color);
+        color = Value(color),
+        type = Value(type);
   static Insertable<CategoryDbDto> custom({
     Expression<String>? id,
-    Expression<String?>? userId,
     Expression<String>? name,
     Expression<int>? icon,
     Expression<int>? color,
+    Expression<double>? amount,
+    Expression<CategoryTypeTable>? type,
+    Expression<String?>? userId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (userId != null) 'user_id': userId,
       if (name != null) 'name': name,
       if (icon != null) 'icon': icon,
       if (color != null) 'color': color,
+      if (amount != null) 'amount': amount,
+      if (type != null) 'type': type,
+      if (userId != null) 'user_id': userId,
     });
   }
 
-  CategoryTableCompanion copyWith(
+  CategoriesTableCompanion copyWith(
       {Value<String>? id,
-      Value<String?>? userId,
       Value<String>? name,
       Value<int>? icon,
-      Value<int>? color}) {
-    return CategoryTableCompanion(
+      Value<int>? color,
+      Value<double>? amount,
+      Value<CategoryTypeTable>? type,
+      Value<String?>? userId}) {
+    return CategoriesTableCompanion(
       id: id ?? this.id,
-      userId: userId ?? this.userId,
       name: name ?? this.name,
       icon: icon ?? this.icon,
       color: color ?? this.color,
+      amount: amount ?? this.amount,
+      type: type ?? this.type,
+      userId: userId ?? this.userId,
     );
   }
 
@@ -174,9 +220,6 @@ class CategoryTableCompanion extends UpdateCompanion<CategoryDbDto> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<String>(id.value);
-    }
-    if (userId.present) {
-      map['user_id'] = Variable<String?>(userId.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -187,27 +230,39 @@ class CategoryTableCompanion extends UpdateCompanion<CategoryDbDto> {
     if (color.present) {
       map['color'] = Variable<int>(color.value);
     }
+    if (amount.present) {
+      map['amount'] = Variable<double>(amount.value);
+    }
+    if (type.present) {
+      final converter = $CategoriesTableTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type.value)!);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String?>(userId.value);
+    }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('CategoryTableCompanion(')
+    return (StringBuffer('CategoriesTableCompanion(')
           ..write('id: $id, ')
-          ..write('userId: $userId, ')
           ..write('name: $name, ')
           ..write('icon: $icon, ')
-          ..write('color: $color')
+          ..write('color: $color, ')
+          ..write('amount: $amount, ')
+          ..write('type: $type, ')
+          ..write('userId: $userId')
           ..write(')'))
         .toString();
   }
 }
 
-class $CategoryTableTable extends CategoryTable
-    with TableInfo<$CategoryTableTable, CategoryDbDto> {
+class $CategoriesTableTable extends CategoriesTable
+    with TableInfo<$CategoriesTableTable, CategoryDbDto> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $CategoryTableTable(this._db, [this._alias]);
+  $CategoriesTableTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -215,11 +270,6 @@ class $CategoryTableTable extends CategoryTable
       type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'UNIQUE');
-  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
-  @override
-  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
-      'user_id', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
@@ -235,12 +285,31 @@ class $CategoryTableTable extends CategoryTable
   late final GeneratedColumn<int?> color = GeneratedColumn<int?>(
       'color', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
-  List<GeneratedColumn> get $columns => [id, userId, name, icon, color];
+  late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
+      'amount', aliasedName, false,
+      type: const RealType(),
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0.0));
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  String get aliasedName => _alias ?? 'category';
+  late final GeneratedColumnWithTypeConverter<CategoryTypeTable, int?> type =
+      GeneratedColumn<int?>('type', aliasedName, false,
+              type: const IntType(), requiredDuringInsert: true)
+          .withConverter<CategoryTypeTable>($CategoriesTableTable.$converter0);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
-  String get actualTableName => 'category';
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, icon, color, amount, type, userId];
+  @override
+  String get aliasedName => _alias ?? 'categories';
+  @override
+  String get actualTableName => 'categories';
   @override
   VerificationContext validateIntegrity(Insertable<CategoryDbDto> instance,
       {bool isInserting = false}) {
@@ -250,10 +319,6 @@ class $CategoryTableTable extends CategoryTable
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     } else if (isInserting) {
       context.missing(_idMeta);
-    }
-    if (data.containsKey('user_id')) {
-      context.handle(_userIdMeta,
-          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -273,6 +338,15 @@ class $CategoryTableTable extends CategoryTable
     } else if (isInserting) {
       context.missing(_colorMeta);
     }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    }
+    context.handle(_typeMeta, const VerificationResult.success());
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    }
     return context;
   }
 
@@ -285,18 +359,355 @@ class $CategoryTableTable extends CategoryTable
   }
 
   @override
-  $CategoryTableTable createAlias(String alias) {
-    return $CategoryTableTable(_db, alias);
+  $CategoriesTableTable createAlias(String alias) {
+    return $CategoriesTableTable(_db, alias);
+  }
+
+  static TypeConverter<CategoryTypeTable, int> $converter0 =
+      const EnumIndexConverter<CategoryTypeTable>(CategoryTypeTable.values);
+}
+
+class SubCategoryDbDto extends DataClass
+    implements Insertable<SubCategoryDbDto> {
+  final String id;
+  final String name;
+  final int icon;
+  final int color;
+  final double amount;
+  final String cateogryId;
+  SubCategoryDbDto(
+      {required this.id,
+      required this.name,
+      required this.icon,
+      required this.color,
+      required this.amount,
+      required this.cateogryId});
+  factory SubCategoryDbDto.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return SubCategoryDbDto(
+      id: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      icon: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}icon'])!,
+      color: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
+      amount: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
+      cateogryId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}cateogry_id'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['name'] = Variable<String>(name);
+    map['icon'] = Variable<int>(icon);
+    map['color'] = Variable<int>(color);
+    map['amount'] = Variable<double>(amount);
+    map['cateogry_id'] = Variable<String>(cateogryId);
+    return map;
+  }
+
+  SubCategoriesTableCompanion toCompanion(bool nullToAbsent) {
+    return SubCategoriesTableCompanion(
+      id: Value(id),
+      name: Value(name),
+      icon: Value(icon),
+      color: Value(color),
+      amount: Value(amount),
+      cateogryId: Value(cateogryId),
+    );
+  }
+
+  factory SubCategoryDbDto.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SubCategoryDbDto(
+      id: serializer.fromJson<String>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      icon: serializer.fromJson<int>(json['icon']),
+      color: serializer.fromJson<int>(json['color']),
+      amount: serializer.fromJson<double>(json['amount']),
+      cateogryId: serializer.fromJson<String>(json['cateogryId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'name': serializer.toJson<String>(name),
+      'icon': serializer.toJson<int>(icon),
+      'color': serializer.toJson<int>(color),
+      'amount': serializer.toJson<double>(amount),
+      'cateogryId': serializer.toJson<String>(cateogryId),
+    };
+  }
+
+  SubCategoryDbDto copyWith(
+          {String? id,
+          String? name,
+          int? icon,
+          int? color,
+          double? amount,
+          String? cateogryId}) =>
+      SubCategoryDbDto(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        icon: icon ?? this.icon,
+        color: color ?? this.color,
+        amount: amount ?? this.amount,
+        cateogryId: cateogryId ?? this.cateogryId,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('SubCategoryDbDto(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('icon: $icon, ')
+          ..write('color: $color, ')
+          ..write('amount: $amount, ')
+          ..write('cateogryId: $cateogryId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, icon, color, amount, cateogryId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SubCategoryDbDto &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.icon == this.icon &&
+          other.color == this.color &&
+          other.amount == this.amount &&
+          other.cateogryId == this.cateogryId);
+}
+
+class SubCategoriesTableCompanion extends UpdateCompanion<SubCategoryDbDto> {
+  final Value<String> id;
+  final Value<String> name;
+  final Value<int> icon;
+  final Value<int> color;
+  final Value<double> amount;
+  final Value<String> cateogryId;
+  const SubCategoriesTableCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.icon = const Value.absent(),
+    this.color = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.cateogryId = const Value.absent(),
+  });
+  SubCategoriesTableCompanion.insert({
+    required String id,
+    required String name,
+    required int icon,
+    required int color,
+    this.amount = const Value.absent(),
+    required String cateogryId,
+  })  : id = Value(id),
+        name = Value(name),
+        icon = Value(icon),
+        color = Value(color),
+        cateogryId = Value(cateogryId);
+  static Insertable<SubCategoryDbDto> custom({
+    Expression<String>? id,
+    Expression<String>? name,
+    Expression<int>? icon,
+    Expression<int>? color,
+    Expression<double>? amount,
+    Expression<String>? cateogryId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (icon != null) 'icon': icon,
+      if (color != null) 'color': color,
+      if (amount != null) 'amount': amount,
+      if (cateogryId != null) 'cateogry_id': cateogryId,
+    });
+  }
+
+  SubCategoriesTableCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? name,
+      Value<int>? icon,
+      Value<int>? color,
+      Value<double>? amount,
+      Value<String>? cateogryId}) {
+    return SubCategoriesTableCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
+      amount: amount ?? this.amount,
+      cateogryId: cateogryId ?? this.cateogryId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (icon.present) {
+      map['icon'] = Variable<int>(icon.value);
+    }
+    if (color.present) {
+      map['color'] = Variable<int>(color.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<double>(amount.value);
+    }
+    if (cateogryId.present) {
+      map['cateogry_id'] = Variable<String>(cateogryId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SubCategoriesTableCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('icon: $icon, ')
+          ..write('color: $color, ')
+          ..write('amount: $amount, ')
+          ..write('cateogryId: $cateogryId')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $SubCategoriesTableTable extends SubCategoriesTable
+    with TableInfo<$SubCategoriesTableTable, SubCategoryDbDto> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $SubCategoriesTableTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
+      'id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      $customConstraints: 'UNIQUE');
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _iconMeta = const VerificationMeta('icon');
+  @override
+  late final GeneratedColumn<int?> icon = GeneratedColumn<int?>(
+      'icon', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _colorMeta = const VerificationMeta('color');
+  @override
+  late final GeneratedColumn<int?> color = GeneratedColumn<int?>(
+      'color', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
+      'amount', aliasedName, false,
+      type: const RealType(),
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0.0));
+  final VerificationMeta _cateogryIdMeta = const VerificationMeta('cateogryId');
+  @override
+  late final GeneratedColumn<String?> cateogryId = GeneratedColumn<String?>(
+      'cateogry_id', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: true,
+      defaultConstraints: 'REFERENCES categories (id)');
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, name, icon, color, amount, cateogryId];
+  @override
+  String get aliasedName => _alias ?? 'subcategories';
+  @override
+  String get actualTableName => 'subcategories';
+  @override
+  VerificationContext validateIntegrity(Insertable<SubCategoryDbDto> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('icon')) {
+      context.handle(
+          _iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
+    } else if (isInserting) {
+      context.missing(_iconMeta);
+    }
+    if (data.containsKey('color')) {
+      context.handle(
+          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+    } else if (isInserting) {
+      context.missing(_colorMeta);
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    }
+    if (data.containsKey('cateogry_id')) {
+      context.handle(
+          _cateogryIdMeta,
+          cateogryId.isAcceptableOrUnknown(
+              data['cateogry_id']!, _cateogryIdMeta));
+    } else if (isInserting) {
+      context.missing(_cateogryIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  SubCategoryDbDto map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return SubCategoryDbDto.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $SubCategoriesTableTable createAlias(String alias) {
+    return $SubCategoriesTableTable(_db, alias);
   }
 }
 
 abstract class _$CategoriesDatabase extends GeneratedDatabase {
   _$CategoriesDatabase(QueryExecutor e)
       : super(SqlTypeSystem.defaultInstance, e);
-  late final $CategoryTableTable categoryTable = $CategoryTableTable(this);
+  late final $CategoriesTableTable categoriesTable =
+      $CategoriesTableTable(this);
+  late final $SubCategoriesTableTable subCategoriesTable =
+      $SubCategoriesTableTable(this);
   late final CategoryDao categoryDao = CategoryDao(this as CategoriesDatabase);
+  late final SubCategoryDao subCategoryDao =
+      SubCategoryDao(this as CategoriesDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [categoryTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [categoriesTable, subCategoriesTable];
 }

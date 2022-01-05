@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../domain.dart';
-import 'categories_db.dart';
+import '../../../../infrastructure.dart';
 
 @lazySingleton
 class CategoryMapper {
@@ -11,31 +11,36 @@ class CategoryMapper {
   Category fromDbDto(CategoryDbDto dto) {
     final id = CategoryId(dto.id);
     final userId = CategoryUserId(dto.userId!);
+    final categoryType = CategoryType.values[dto.type.index];
 
     return Category(
       id: id,
       categoryUserId: userId,
       name: dto.name,
-      color: dto.color,
       icon: dto.icon,
-      subCategories: [], //TODO: Subcategories
+      color: dto.color,
+      amount: dto.amount,
+      type: categoryType,
     );
   }
 
   List<Category> fromDbDtoList(List<CategoryDbDto> dtos) =>
       dtos.map((dto) => fromDbDto(dto)).toList();
 
-  CategoryTableCompanion toDbDto(Category category) {
-    return CategoryTableCompanion(
+  CategoriesTableCompanion toDbDto(Category category) {
+    final categoryType = CategoryTypeTable.values[category.type.index];
+    return CategoriesTableCompanion(
       id: Value(category.id.value),
-      userId: Value(category.categoryUserId!.value),
       name: Value(category.name),
-      color: Value(category.color),
       icon: Value(category.icon),
+      color: Value(category.color),
+      amount: Value(category.amount),
+      type: Value(categoryType),
+      userId: Value(category.categoryUserId!.value),
     );
   }
 
-  List<CategoryTableCompanion> toDbDtoList(List<Category> categories) {
+  List<CategoriesTableCompanion> toDbDtoList(List<Category> categories) {
     return categories.map((category) => toDbDto(category)).toList();
   }
 }

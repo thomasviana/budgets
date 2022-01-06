@@ -77,4 +77,20 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
       icon: state.category!.icon,
     );
   }
+
+  Future<void> onColorUpdated(int newColor) async {
+    emit(
+      state.copyWith(
+        category: state.category!..updateColor(newColor),
+      ),
+    );
+  }
+
+  Future<void> onIconUpdated(int newIcon) async {
+    emit(
+      state.copyWith(
+        category: state.category!..updateIcon(newIcon),
+      ),
+    );
+  }
 }

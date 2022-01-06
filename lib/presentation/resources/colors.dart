@@ -17,7 +17,7 @@ class AppColors {
 class CategoryColors {
   static const int red = 0xFFF44336;
   static const int pink = 0xFFE91E63;
-  static const int purple = 0xFF9C27B0;
+  static const int purple = 0xFFC449C2;
   static const int deep_purple = 0xFF7C4DFF;
   static const int indigo = 0xFF3F51B5;
   static const int blue = 0xFF03A9F4;

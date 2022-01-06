@@ -48,6 +48,7 @@ class _SubCategoriesScreenState extends State<SubCategoriesScreen> {
             builder: (context, snapshot) {
               final subCategories = state.subCategories;
               return ListView.separated(
+                padding: const EdgeInsets.only(top: 8),
                 itemCount: subCategories.length,
                 separatorBuilder: (BuildContext context, int index) =>
                     const Divider(),

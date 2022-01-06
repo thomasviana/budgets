@@ -42,15 +42,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 children: [
                   IconButton(
                     icon: Icon(
-                      Icons.replay_outlined,
-                      color: AppColors.primaryColor,
-                    ),
-                    onPressed: () {
-                      cubit.getUserCategories();
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
                       Icons.add,
                       color: AppColors.primaryColor,
                     ),
@@ -78,6 +69,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         future: cubit.getUserCategories(),
         builder: (context, snapshot) {
           return ListView.separated(
+            padding: EdgeInsets.only(top: 8),
             itemCount: state.categories.length,
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(),

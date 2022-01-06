@@ -23,6 +23,8 @@ dependencies:
   flutter_bloc: ^8.0.0
   flutter_facebook_auth: ^3.5.7
   flutter_hooks: ^0.18.1
+  flutter_iconpicker: ^3.1.2
+  flutter_material_color_picker: ^1.1.0+2
   freezed_annotation: ^1.1.0
   google_fonts: ^2.1.1
   google_sign_in: 5.2.1

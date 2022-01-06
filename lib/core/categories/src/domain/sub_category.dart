@@ -44,7 +44,39 @@ class SubCategory extends CategoryModel {
         categoryId: CategoryId('housing'),
       );
 
+  factory SubCategory.admin() => SubCategory(
+        id: CategoryId.auto(),
+        name: 'Administración',
+        icon: 0xe318,
+        color: CategoryColors.amber,
+        categoryId: CategoryId('housing'),
+      );
+
+  factory SubCategory.houseMaintenance() => SubCategory(
+        id: CategoryId.auto(),
+        name: 'Mantenimiento',
+        icon: 0xe318,
+        color: CategoryColors.amber,
+        categoryId: CategoryId('housing'),
+      );
+
+  factory SubCategory.propertyTaxes() => SubCategory(
+        id: CategoryId.auto(),
+        name: 'Impuesto predial',
+        icon: 0xe318,
+        color: CategoryColors.amber,
+        categoryId: CategoryId('housing'),
+      );
+
   // ??????  FOOD
+
+  factory SubCategory.generalFood() => SubCategory(
+        id: CategoryId.auto(),
+        name: 'Mercado general',
+        icon: 0xe532,
+        color: CategoryColors.red,
+        categoryId: CategoryId('food'),
+      );
 
   factory SubCategory.meats() => SubCategory(
         id: CategoryId.auto(),
@@ -53,6 +85,7 @@ class SubCategory extends CategoryModel {
         color: CategoryColors.red,
         categoryId: CategoryId('food'),
       );
+
   factory SubCategory.fruitsAndVegetables() => SubCategory(
         id: CategoryId.auto(),
         name: 'Frutas y verduras',
@@ -60,9 +93,10 @@ class SubCategory extends CategoryModel {
         color: CategoryColors.red,
         categoryId: CategoryId('food'),
       );
+
   factory SubCategory.miscellaneous() => SubCategory(
         id: CategoryId.auto(),
-        name: 'Miscelaneos',
+        name: 'Otros',
         icon: 0xe532,
         color: CategoryColors.red,
         categoryId: CategoryId('food'),
@@ -72,7 +106,7 @@ class SubCategory extends CategoryModel {
 
   factory SubCategory.publicTransport() => SubCategory(
         id: CategoryId.auto(),
-        name: 'Transporte Público',
+        name: 'Transporte público',
         icon: 0xf6b0,
         color: CategoryColors.blue_grey,
         categoryId: CategoryId('transportation'),
@@ -224,7 +258,7 @@ class SubCategory extends CategoryModel {
         id: CategoryId.auto(),
         name: 'Restaurantes',
         icon: 0xf0112,
-        color: CategoryColors.green,
+        color: CategoryColors.purple,
         categoryId: CategoryId('recreation'),
       );
 
@@ -232,7 +266,7 @@ class SubCategory extends CategoryModel {
         id: CategoryId.auto(),
         name: 'Cine',
         icon: 0xed7e,
-        color: CategoryColors.green,
+        color: CategoryColors.purple,
         categoryId: CategoryId('recreation'),
       );
 
@@ -240,7 +274,7 @@ class SubCategory extends CategoryModel {
         id: CategoryId.auto(),
         name: 'Otros eventos',
         icon: 0xe23e,
-        color: CategoryColors.green,
+        color: CategoryColors.purple,
         categoryId: CategoryId('recreation'),
       );
 
@@ -340,6 +374,10 @@ class SubCategory extends CategoryModel {
     SubCategory.rent(),
     SubCategory.morgage(),
     SubCategory.services(),
+    SubCategory.admin(),
+    SubCategory.houseMaintenance(),
+    SubCategory.propertyTaxes(),
+    SubCategory.generalFood(),
     SubCategory.meats(),
     SubCategory.fruitsAndVegetables(),
     SubCategory.miscellaneous(),

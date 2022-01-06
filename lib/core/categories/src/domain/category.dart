@@ -73,7 +73,7 @@ class Category extends CategoryModel {
         id: CategoryId('recreation'),
         name: 'Recreación',
         icon: 0xf736,
-        color: CategoryColors.green,
+        color: CategoryColors.purple,
         type: CategoryType.expense,
       );
 

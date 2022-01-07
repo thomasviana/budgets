@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:budgets/core/user/domain.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/account/application.dart';
-import '../../../../core/account/src/domain/auth/user_entity.dart';
 import '../../../../core/categories/application.dart';
 import '../../../../core/categories/domain.dart';
+import '../../../../core/user/application.dart';
 
 part 'categories_screen_state.dart';
 

@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:budgets/core/user/application.dart';
+import 'package:budgets/core/user/domain.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/account/domain.dart';
-import '../../../../core/account/src/application/get_profile_info.dart';
 import '../../../../core/categories/application.dart';
 import '../../../../core/categories/domain.dart';
 

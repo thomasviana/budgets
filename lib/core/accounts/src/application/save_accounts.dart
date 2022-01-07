@@ -3,10 +3,10 @@ import 'package:injectable/injectable.dart';
 import '../../domain.dart';
 
 @injectable
-class SaveCategories {
+class SaveAccounts {
   final AccountRepository _accountRepository;
 
-  const SaveCategories(this._accountRepository);
+  const SaveAccounts(this._accountRepository);
 
   Future<void> call({
     required List<Account> accounts,

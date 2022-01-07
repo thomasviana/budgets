@@ -4,11 +4,11 @@ import 'package:injectable/injectable.dart';
 import '../../domain.dart';
 
 @injectable
-class UpdateCategory {
+class UpdateAccount {
   final AccountRepository _accountRepository;
   final GetAccounts _getAccounts;
 
-  const UpdateCategory(
+  const UpdateAccount(
     this._accountRepository,
     this._getAccounts,
   );

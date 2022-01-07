@@ -2,13 +2,34 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/auth.dart';
 import 'components/user_profile.dart';
+import 'cubit/profile_screen_cubit.dart';
 
-class ProfileSreen extends StatelessWidget {
+class ProfileSreen extends StatefulWidget {
+  @override
+  State<ProfileSreen> createState() => _ProfileSreenState();
+}
+
+class _ProfileSreenState extends State<ProfileSreen> {
+  late ProfileScreenCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = context.read<ProfileScreenCubit>();
+    cubit.init();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
+      builder: _buildState,
+    );
+  }
+
+  Widget _buildState(BuildContext context, ProfileScreenState state) {
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       child: NestedScrollView(
         headerSliverBuilder: (ctx, inner) => [
           CupertinoSliverNavigationBar(
@@ -16,27 +37,26 @@ class ProfileSreen extends StatelessWidget {
             previousPageTitle: 'Settings',
           )
         ],
-        body: BlocBuilder<UserCubit, UserState>(
-          builder: (context, state) {
-            if (state is UserLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is UserReadyState) {
-              return Column(
-                children: [
-                  UserProfile(
-                    user: state.user,
-                    pickedImage: state.pickedImage,
-                  ),
-                ],
-              );
-            }
-            throw Exception();
-          },
-        ),
+        body: _buildBody(context, state),
       ),
     );
+  }
+
+  Widget _buildBody(BuildContext context, ProfileScreenState state) {
+    if (state.isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Column(
+        children: [
+          UserProfile(
+            user: state.userEntity,
+            isSavingForm: state.isSavingForm,
+            isSaveButtonEnabled: state.isSaveButtonEnabled,
+          ),
+        ],
+      );
+    }
   }
 }

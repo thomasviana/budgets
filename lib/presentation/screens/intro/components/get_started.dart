@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../../../routes/routes.dart';
+import '../../../routes/app_navigator.dart';
 import '../../../widgets/rounded_button.dart';
 
 class GetStarted extends StatelessWidget {
   final String text;
+  final bool isButtonEnabled;
 
-  const GetStarted({required this.text});
+  const GetStarted({
+    Key? key,
+    required this.text,
+    required this.isButtonEnabled,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
       // decoration: BoxDecoration(
       //   gradient: LinearGradient(
       //     // ignore: prefer_const_literals_to_create_immutables
@@ -31,22 +36,30 @@ class GetStarted extends StatelessWidget {
             width: 250,
             height: 250,
           ),
-          SizedBox(height: 50),
-          Text(
-            'Welcome',
-            style: Theme.of(context).textTheme.headline3!.copyWith(
-                  fontWeight: FontWeight.bold,
+          SizedBox(height: 20),
+          RichText(
+            text: TextSpan(
+              text: 'Welcome to ',
+              style: Theme.of(context).textTheme.headline3,
+              children: const [
+                TextSpan(
+                  text: 'Budgets',
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
+              ],
+            ),
+            textAlign: TextAlign.center,
           ),
           SizedBox(height: 30),
-          RoundedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, Routes.auth);
-            },
-            label: 'Get Started',
-          ),
+          Text(text),
           SizedBox(height: 60),
-          Text(text)
+          RoundedButton(
+            label: 'Get Started',
+            isEnabled: isButtonEnabled,
+            onPressed: () {
+              AppNavigator.navigateToAuthPage(context);
+            },
+          ),
         ],
       ),
     );

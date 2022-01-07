@@ -1,13 +1,13 @@
+import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/auth.dart';
-import '../../../constants.dart';
+import '../../resources/colors.dart';
+import '../../routes/app_navigator.dart';
 import '../../widgets/rounded_button.dart';
+import 'components/auth_form.dart';
 import 'components/custom_divider.dart';
-
-TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
+import 'cubit/auth_screen_cubit.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -15,53 +15,49 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  bool isCreateAccountMode = false;
+  late AuthScreenCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cubit = context.read<AuthScreenCubit>();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final isSigningIn = context.watch<AuthCubit>().state is AuthSigningIn;
-    final _formKey = GlobalKey<FormState>();
-    final _emailController = TextEditingController();
-    final _passwordController = TextEditingController();
-    final _confirmPasswordController = TextEditingController();
-
-    String? emailValidator(String? value) {
-      if (value!.isEmpty) {
-        return 'This is a required field.';
-      }
-      if (!value.contains('@')) {
-        return 'Enter a valid email';
-      }
-    }
-
-    String? passwordValidator(String? value) {
-      if (value!.isEmpty) {
-        return 'This is a required field.';
-      }
-      if (isCreateAccountMode) {
-        if (value.length < 6) {
-          return 'Password must be at least 6 characters long.';
-        }
-        if (_passwordController.text != _confirmPasswordController.text) {
-          return 'Password do not match.';
-        }
-      }
-    }
-
-    void trySubmit() {
-      if (_formKey.currentState?.validate() == true) {
-        if (isCreateAccountMode) {
-          context.read<AuthCubit>().createUserWithEmailAndPassword(
-              _emailController.text, _passwordController.text);
-        } else {
-          context.read<AuthCubit>().signInWithEmailAndPassword(
-              _emailController.text, _passwordController.text);
-        }
+    Future<void> trySubmit() async {
+      if (cubit.state.isCreateAccountMode) {
+        await cubit.onCreateUserWithEmailAndPassword();
+      } else {
+        await cubit.onSignInWithEmailAndPassword();
       }
     }
 
     return Scaffold(
-      body: BlocBuilder<AuthCubit, AuthState>(
+      body: BlocConsumer<AuthScreenCubit, AuthScreenState>(
+        listener: (context, state) {
+          state.authFailureOrSuccessOption.fold(
+            () => {},
+            (either) => either.fold(
+              (failure) => {
+                FlushbarHelper.createError(
+                  message: failure.map(
+                    cancelledByUser: (_) => 'Cancelled',
+                    serverError: (_) => 'Server Error',
+                    userNotFound: (_) => "User doesn't exist",
+                    emailAlreadyInUser: (_) => 'Email already in use',
+                    invalidEmailAndPasswordCombination: (_) =>
+                        'Invalid email and password combination',
+                  ),
+                ).show(context)
+              },
+              (_) => {
+                AppNavigator.navigateToMainPage(context),
+                cubit.checkAuthStatus,
+              },
+            ),
+          );
+        },
         builder: (context, state) {
           return Center(
             child: Padding(
@@ -70,63 +66,43 @@ class _AuthScreenState extends State<AuthScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (state is AuthError)
-                    Text(state.message.toString(),
-                        style: TextStyle(
-                          color: Theme.of(context).errorColor,
-                        )),
                   Icon(
                     Icons.donut_large,
                     size: 150,
-                    color: kAccentColor,
+                    color: AppColors.primaryColor,
                   ),
                   SizedBox(height: 50),
                   Text(
-                    isCreateAccountMode ? 'Register' : 'Login',
+                    state.isCreateAccountMode ? 'Register' : 'Login',
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   SizedBox(height: 50),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _emailController,
-                          cursorColor: kAccentColor,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: emailValidator,
-                          decoration: InputDecoration(
-                            hintText: 'Enter email',
-                          ),
-                        ),
-                        TextFormField(
-                          obscureText: true,
-                          controller: _passwordController,
-                          cursorColor: kAccentColor,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: passwordValidator,
-                          decoration: InputDecoration(
-                            hintText: 'Enter password',
-                          ),
-                        ),
-                        if (isCreateAccountMode)
-                          TextFormField(
-                            obscureText: true,
-                            controller: _confirmPasswordController,
-                            cursorColor: kAccentColor,
-                            keyboardType: TextInputType.emailAddress,
-                            validator: passwordValidator,
-                            decoration: InputDecoration(
-                              hintText: 'Confirm password',
-                            ),
-                          ),
-                      ],
+                  AuthForm(
+                    state: state,
+                    enabled: !state.isSubmitting,
+                    errorEnabled: state.showErrorMessages,
+                    isCreateAccountMode: state.isCreateAccountMode,
+                    onEmailChanged: (email) => cubit.onEmailChanged(email),
+                    onPasswordChanged: (password) =>
+                        cubit.onPasswordChanged(password),
+                    onConfirmationPasswordChanged: (confirmationPassword) =>
+                        cubit.onConfirmationPasswordChanged(
+                      confirmationPassword,
                     ),
                   ),
                   SizedBox(height: 30),
-                  RoundedButton(
+                  if (state.isSubmitting)
+                    Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  if (!state.isSubmitting)
+                    RoundedButton(
+                      label: state.isCreateAccountMode
+                          ? 'Create account'
+                          : 'Login',
+                      isEnabled: true,
                       onPressed: trySubmit,
-                      label: isCreateAccountMode ? 'Create account' : 'Login'),
+                    ),
                   SizedBox(height: 20),
                   CustomDivider(),
                   SizedBox(height: 20),
@@ -134,23 +110,29 @@ class _AuthScreenState extends State<AuthScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       LoginButton(
-                          imagePath: 'assets/images/google_icon.png',
-                          onTap: () =>
-                              context.read<AuthCubit>().signInWithGoogle()),
+                        imagePath: 'assets/images/google_icon.png',
+                        onTap: () => context
+                            .read<AuthScreenCubit>()
+                            .onSignInWithGoogle(),
+                      ),
                       SizedBox(
                         width: 22,
                       ),
                       LoginButton(
-                          imagePath: 'assets/images/facebook_icon.png',
-                          onTap: () =>
-                              context.read<AuthCubit>().signInWithFacebook()),
+                        imagePath: 'assets/images/facebook_icon.png',
+                        onTap: () => context
+                            .read<AuthScreenCubit>()
+                            .onSignInWithFacebook(),
+                      ),
                       SizedBox(
                         width: 22,
                       ),
                       LoginButton(
-                          imagePath: 'assets/images/anonymous_icon.png',
-                          onTap: () =>
-                              context.read<AuthCubit>().signInAnonymously()),
+                        imagePath: 'assets/images/anonymous_icon.png',
+                        onTap: () => context
+                            .read<AuthScreenCubit>()
+                            .onSignInAnonymously(),
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -158,16 +140,13 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      setState(() {
-                        isCreateAccountMode = !isCreateAccountMode;
-                      });
-                      context.read<AuthCubit>().reset();
+                      cubit.onAuthModeChanged();
                     },
-                    child: isSigningIn
-                        ? CircularProgressIndicator()
-                        : Text(isCreateAccountMode
-                            ? 'Already have an account? Login'
-                            : 'Create account'),
+                    child: Text(
+                      state.isCreateAccountMode
+                          ? 'Already have an account? Login'
+                          : 'Create account',
+                    ),
                   ),
                 ],
               ),
@@ -177,6 +156,42 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     );
   }
+
+  // String? emailValidator(String? value) {
+  //   if (!cubit.state.emailAddress.value.isNotEmpty) {
+  //     return 'This is a required field.';
+  //   } else if (!cubit.state.emailAddress.isValid) {
+  //     return 'Enter a valid email.';
+  //   }
+  //   // }
+  //   // // return !cubit.state.emailAddress.isValid ? 'Enter a valid email.' : null;
+  //   // return cubit.state.emailAddress.value.fold(
+  //   //   (f) => f.maybeMap(
+  //   //     empty: (_) => 'This is a required field.',
+  //   //     invalidEmail: (_) => 'Enter a valid email.',
+  //   //     orElse: () {},
+  //   //   ),
+  //   //   (r) => null,
+  //   // );
+  // }
+
+  // String? passwordValidator(String? value) {
+  //   if (!cubit.state.password.value.isNotEmpty) {
+  //     return 'This is a required field.';
+  //   } else if (!cubit.state.password.isSecure) {
+  //     return 'Password must be at least 6 characters long.';
+  //   }
+  //   //   return cubit.state.password.value.fold(
+  //   //     (f) => f.maybeMap(
+  //   //       empty: (_) => 'This is a required field.',
+  //   //       shortPassword: (_) => 'Password must be at least 6 characters long.',
+  //   //       passwordDoNotMatch: (_) => 'Password do not match.',
+  //   //       orElse: () {},
+  //   //     ),
+  //   //     (r) => null,
+  //   //   );
+  //   // }
+  // }
 }
 
 class LoginButton extends StatelessWidget {
@@ -200,7 +215,7 @@ class LoginButton extends StatelessWidget {
         onTap: onTap,
         child: CircleAvatar(
           backgroundImage: AssetImage(imagePath),
-          backgroundColor: kBackgroundColor,
+          backgroundColor: AppColors.greyBackground,
         ),
       ),
     );

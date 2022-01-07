@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/auth.dart';
-import '../../../constants.dart';
-import '../add%20record/add_record_screen.dart';
+import '../../../di/dependency_injection.dart';
+import '../../resources/colors.dart';
+import '../home/cubit/home_screen_cubit.dart';
 import '../home/home_screen.dart';
-import '../records/records_screen.dart';
+import '../settings/cubit/settings_screen_cubit.dart';
 import '../settings/settings_screen.dart';
 import '../stats/stats_screen.dart';
 
@@ -19,14 +19,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
   bool statsSelected = false;
   bool recordsSelected = false;
   bool settingSelected = false;
-  int _currentIndex = 0;
-
-  final List<Widget> _screens = [
-    HomeScreen(),
-    StatsScreen(),
-    RecordsScreen(),
-    SettingsScreen(),
-  ];
+  int selectedPageIndex = 0;
 
   void selectIcon(String selectedIcon) {
     homeSelected = false;
@@ -47,26 +40,45 @@ class _MainAppScreenState extends State<MainAppScreen> {
     }
   }
 
+  Widget _buildPage(BuildContext context, int selectedPageIndex) {
+    switch (selectedPageIndex) {
+      case 0:
+        return BlocProvider(
+          create: (context) => sl<HomeScreenCubit>(),
+          child: HomeScreen(),
+        );
+      case 1:
+        return StatsScreen();
+      case 2:
+        return StatsScreen();
+      case 3:
+        return BlocProvider(
+          create: (context) => sl<SettingsScreenCubit>(),
+          child: SettingsScreen(),
+        );
+
+      default:
+        return Placeholder(color: Colors.black);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<AuthCubit, AuthState>(
-          buildWhen: (previous, current) => current is AuthSignedIn,
-          builder: (_, state) {
-            return _screens[_currentIndex];
-          }),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          showModalBottomSheet(
-            backgroundColor: Colors.transparent,
-            isScrollControlled: true,
-            context: context,
-            builder: (context) => AddRecord(),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      backgroundColor: AppColors.primaryColor,
+      body: _buildPage(context, selectedPageIndex),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () {
+      //     showModalBottomSheet(
+      //       backgroundColor: Colors.transparent,
+      //       isScrollControlled: true,
+      //       context: context,
+      //       builder: (context) => StatsScreen(),
+      //     );
+      //   },
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
@@ -76,64 +88,56 @@ class _MainAppScreenState extends State<MainAppScreen> {
           ),
           height: 60,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Row(
-                children: [
-                  buildNavButton(
-                    isSelected: homeSelected,
-                    setIndex: () {
-                      setState(() {
-                        _currentIndex = 0;
-                        selectIcon('home');
-                      });
-                    },
-                    icon: Icons.home_outlined,
-                    iconSelected: Icons.home,
-                    label: 'Home',
-                  ),
-                  buildNavButton(
-                    isSelected: statsSelected,
-                    setIndex: () {
-                      setState(() {
-                        _currentIndex = 1;
-                        selectIcon('stats');
-                      });
-                    },
-                    icon: Icons.pie_chart_outline,
-                    iconSelected: Icons.pie_chart,
-                    label: 'Stats',
-                  ),
-                ],
+              buildNavButton(
+                isSelected: homeSelected,
+                onPressed: () {
+                  setState(() {
+                    selectedPageIndex = 0;
+                    selectIcon('home');
+                  });
+                },
+                icon: Icons.home_outlined,
+                iconSelected: Icons.home,
+                label: 'Home',
               ),
-              Row(
-                children: [
-                  buildNavButton(
-                    isSelected: recordsSelected,
-                    setIndex: () {
-                      setState(() {
-                        _currentIndex = 2;
-                        selectIcon('records');
-                      });
-                    },
-                    icon: Icons.format_list_bulleted_rounded,
-                    iconSelected: Icons.format_list_bulleted_rounded,
-                    label: 'Records',
-                  ),
-                  buildNavButton(
-                    isSelected: settingSelected,
-                    setIndex: () {
-                      setState(() {
-                        _currentIndex = 3;
-                        selectIcon('settings');
-                      });
-                    },
-                    icon: Icons.settings_outlined,
-                    iconSelected: Icons.settings,
-                    label: 'Settings',
-                  ),
-                ],
-              )
+              buildNavButton(
+                isSelected: statsSelected,
+                onPressed: () {
+                  setState(() {
+                    selectedPageIndex = 1;
+                    selectIcon('stats');
+                  });
+                },
+                icon: Icons.pie_chart_outline,
+                iconSelected: Icons.pie_chart,
+                label: 'Stats',
+              ),
+              buildNavButton(
+                isSelected: recordsSelected,
+                onPressed: () {
+                  setState(() {
+                    selectedPageIndex = 2;
+                    selectIcon('records');
+                  });
+                },
+                icon: Icons.format_list_bulleted_rounded,
+                iconSelected: Icons.format_list_bulleted_rounded,
+                label: 'Records',
+              ),
+              buildNavButton(
+                isSelected: settingSelected,
+                onPressed: () {
+                  setState(() {
+                    selectedPageIndex = 3;
+                    selectIcon('settings');
+                  });
+                },
+                icon: Icons.settings_outlined,
+                iconSelected: Icons.settings,
+                label: 'Settings',
+              ),
             ],
           ),
         ),
@@ -143,7 +147,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
 
   MaterialButton buildNavButton({
     required bool isSelected,
-    required final VoidCallback setIndex,
+    required final VoidCallback onPressed,
     required final IconData icon,
     required final IconData iconSelected,
     required final String label,
@@ -151,20 +155,22 @@ class _MainAppScreenState extends State<MainAppScreen> {
     return MaterialButton(
       highlightColor: Colors.white,
       minWidth: 80,
-      onPressed: setIndex,
+      onPressed: onPressed,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             isSelected ? iconSelected : icon,
             size: 35,
-            color: isSelected ? kAccentColor : Colors.grey,
+            color:
+                isSelected ? AppColors.primaryColor : AppColors.greySecondary,
           ),
           Text(
             label,
             style: TextStyle(
               fontSize: 10,
-              color: isSelected ? kAccentColor : Colors.grey,
+              color:
+                  isSelected ? AppColors.primaryColor : AppColors.greySecondary,
             ),
           )
         ],

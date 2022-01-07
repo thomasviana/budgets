@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:page_indicator/page_indicator.dart';
 
-import '../../../application/auth.dart';
-import '../../../constants.dart';
+import '../../resources/colors.dart';
 import 'components/description_page.dart';
 import 'components/get_started.dart';
 
@@ -20,15 +18,17 @@ class IntroScreen extends StatelessWidget {
 class _IntroPager extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final isSigningIn = context.watch<AuthCubit>().state is AuthSigningIn;
-
     return SafeArea(
       child: AbsorbPointer(
-        absorbing: isSigningIn,
+        absorbing: false,
         child: PageIndicatorContainer(
           child: PageView(
+            allowImplicitScrolling: true,
             children: const [
-              GetStarted(text: 'Swipe to learn more about the app'),
+              GetStarted(
+                text: 'Swipe to learn more about the app',
+                isButtonEnabled: true,
+              ),
               DescriptionPage(
                 imagePath: 'assets/images/logo.png',
                 text: 'Register your incomes.',
@@ -47,12 +47,13 @@ class _IntroPager extends HookWidget {
               ),
               GetStarted(
                 text: 'Now your are ready.',
+                isButtonEnabled: true,
               ),
             ],
           ),
           length: 5,
-          indicatorColor: kPrimayColor.withOpacity(0.3),
-          indicatorSelectorColor: kPrimayColor,
+          indicatorColor: AppColors.greyDisabled,
+          indicatorSelectorColor: AppColors.primaryColor,
         ),
       ),
     );

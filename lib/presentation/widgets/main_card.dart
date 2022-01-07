@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
+import '../resources/colors.dart';
 
 class MainCard extends StatelessWidget {
   final IconData icon;
@@ -29,14 +29,15 @@ class MainCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                alignment: Alignment.center,
-                height: 30,
-                width: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: kAccentColor,
-                ),
-                child: Icon(icon, color: Colors.white)),
+              alignment: Alignment.center,
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppColors.primaryColor,
+              ),
+              child: Icon(icon, color: Colors.white),
+            ),
             SizedBox(
               height: 8,
             ),

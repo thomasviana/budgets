@@ -5,8 +5,11 @@ class ButtonAddRecord extends StatelessWidget {
   final String title;
   final VoidCallback onPress;
 
-  const ButtonAddRecord(
-      {required this.color, required this.title, required this.onPress});
+  const ButtonAddRecord({
+    required this.color,
+    required this.title,
+    required this.onPress,
+  });
 
   @override
   Widget build(BuildContext context) {

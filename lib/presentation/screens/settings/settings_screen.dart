@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../application/auth.dart';
-import '../../../constants.dart';
-import '../../routes/routes.dart';
+import '../../core/auth/auth_cubit.dart';
+import '../../resources/colors.dart';
+import '../../routes/app_navigator.dart';
+import 'cubit/settings_screen_cubit.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -12,67 +13,72 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  late SettingsScreenCubit cubit;
+
+  @override
+  void initState() {
+    super.initState();
+
+    cubit = context.read<SettingsScreenCubit>();
+    // cubit.init();
+  }
+
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SettingsScreenCubit, SettingsScreenState>(
+      builder: _buildState,
+    );
+  }
+
+  Widget _buildState(BuildContext context, SettingsScreenState state) {
     return CupertinoPageScaffold(
-      backgroundColor: kBackgroundColor,
+      backgroundColor: AppColors.greyBackground,
       child: NestedScrollView(
-        headerSliverBuilder: (context, _) => [
+        headerSliverBuilder: (ctx, inner) => [
           CupertinoSliverNavigationBar(
             largeTitle: Text('Settings'),
-          ),
+          )
         ],
-        body: BlocBuilder<UserCubit, UserState>(
-          builder: (_, state) {
-            if (state is UserLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is UserReadyState) {
-              return Column(
-                children: [
-                  ListTile(
-                    title: Text('Profile'),
-                    leading: Icon(Icons.person),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                    autofocus: true,
-                    enableFeedback: true,
-                    onTap: () => Navigator.pushNamed(context, Routes.profile),
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text('Categories'),
-                    leading: Icon(Icons.folder),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                    onTap: () => Navigator.pushNamed(context, Routes.profile),
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text('Accounts'),
-                    leading: Icon(Icons.comment_bank),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                    onTap: () => Navigator.pushNamed(context, Routes.profile),
-                  ),
-                  Divider(),
-                  SizedBox(
-                    height: 60,
-                  ),
-                  Divider(),
-                  ListTile(
-                    title: Text(
-                      'LogOut',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    leading: Icon(Icons.logout, color: Colors.red),
-                    onTap: () => context.read<AuthCubit>().signOut(),
-                  ),
-                  Divider(),
-                ],
-              );
-            }
-            throw Exception();
-          },
+        body: Column(
+          children: [
+            ListTile(
+              title: Text('Profile'),
+              leading: Icon(Icons.person),
+              trailing: Icon(Icons.arrow_forward_ios),
+              autofocus: true,
+              enableFeedback: true,
+              onTap: () {
+                AppNavigator.navigateToProfilePage(context);
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: Text('Categories'),
+              leading: Icon(Icons.folder),
+              trailing: Icon(Icons.arrow_forward_ios),
+              onTap: () => AppNavigator.navigateToCategoriesPage(context),
+            ),
+            Divider(),
+            ListTile(
+              title: Text('Accounts'),
+              leading: Icon(Icons.comment_bank),
+              trailing: Icon(Icons.arrow_forward_ios),
+              onTap: () => AppNavigator.navigateToAccountsPage(context),
+            ),
+            Divider(),
+            ListTile(
+              title: Text(
+                'LogOut',
+                style: TextStyle(color: Colors.red),
+              ),
+              leading: Icon(Icons.logout, color: Colors.red),
+              onTap: () {
+                context.read<AuthCubit>().onLogOut();
+                AppNavigator.navigateToAuthPage(context);
+              },
+            ),
+            Divider(),
+          ],
         ),
       ),
     );

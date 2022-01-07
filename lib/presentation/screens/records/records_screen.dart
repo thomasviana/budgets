@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../application/records.dart';
-import '../../../constants.dart';
+import '../../../core/records/application.dart';
+import '../../resources/colors.dart';
 import '../../widgets/transaction_listtile.dart';
 
 class RecordsScreen extends StatefulWidget {
@@ -52,6 +52,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
                           date: DateFormat.MMMd()
                               .add_jm()
                               .format(recordList[index].date.toDate())
+                              // ignore: noop_primitive_operations
                               .toString(),
                         ),
                         childCount: recordList.length,

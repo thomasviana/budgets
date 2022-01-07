@@ -4,42 +4,42 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
-import 'package:cloud_firestore/cloud_firestore.dart' as _i15;
-import 'package:firebase_auth/firebase_auth.dart' as _i14;
-import 'package:firebase_storage/firebase_storage.dart' as _i16;
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as _i13;
+import 'package:cloud_firestore/cloud_firestore.dart' as _i19;
+import 'package:firebase_auth/firebase_auth.dart' as _i18;
+import 'package:firebase_storage/firebase_storage.dart' as _i20;
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as _i17;
 import 'package:get_it/get_it.dart' as _i1;
-import 'package:google_sign_in/google_sign_in.dart' as _i17;
-import 'package:image_picker/image_picker.dart' as _i19;
+import 'package:google_sign_in/google_sign_in.dart' as _i22;
+import 'package:image_picker/image_picker.dart' as _i24;
 import 'package:injectable/injectable.dart' as _i2;
 
 import '../core/account/application.dart' as _i4;
-import '../core/account/domain.dart' as _i32;
-import '../core/account/src/application/check_auth_status.dart' as _i35;
-import '../core/account/src/application/create_account.dart' as _i36;
-import '../core/account/src/application/get_profile_info.dart' as _i42;
-import '../core/account/src/application/log_out.dart' as _i44;
-import '../core/account/src/application/pick_user_image.dart' as _i21;
-import '../core/account/src/application/sign_in.dart' as _i47;
+import '../core/account/domain.dart' as _i38;
+import '../core/account/src/application/check_auth_status.dart' as _i40;
+import '../core/account/src/application/create_account.dart' as _i41;
+import '../core/account/src/application/get_profile_info.dart' as _i44;
+import '../core/account/src/application/log_out.dart' as _i46;
+import '../core/account/src/application/pick_user_image.dart' as _i26;
+import '../core/account/src/application/sign_in.dart' as _i48;
 import '../core/account/src/application/update_user_info.dart' as _i49;
-import '../core/account/src/infrastructure/auth/auth_service_impl.dart' as _i33;
+import '../core/account/src/infrastructure/auth/auth_service_impl.dart' as _i39;
 import '../core/account/src/infrastructure/auth/user_firebase_prov.dart'
-    as _i31;
+    as _i37;
 import '../core/categories/application.dart' as _i5;
-import '../core/categories/domain.dart' as _i28;
+import '../core/categories/domain.dart' as _i12;
 import '../core/categories/infrastructure.dart' as _i7;
-import '../core/categories/src/application/create_category.dart' as _i37;
-import '../core/categories/src/application/create_sub_category.dart' as _i38;
-import '../core/categories/src/application/delete_category.dart' as _i39;
-import '../core/categories/src/application/delete_sub_category.dart' as _i40;
-import '../core/categories/src/application/get_categories.dart' as _i41;
-import '../core/categories/src/application/get_sub_categories.dart' as _i43;
-import '../core/categories/src/application/save_categories.dart' as _i45;
-import '../core/categories/src/application/save_sub_categories.dart' as _i46;
-import '../core/categories/src/application/update_category.dart' as _i48;
-import '../core/categories/src/application/update_sub_category.dart' as _i30;
+import '../core/categories/src/application/create_category.dart' as _i14;
+import '../core/categories/src/application/create_sub_category.dart' as _i42;
+import '../core/categories/src/application/delete_category.dart' as _i15;
+import '../core/categories/src/application/delete_sub_category.dart' as _i43;
+import '../core/categories/src/application/get_categories.dart' as _i21;
+import '../core/categories/src/application/get_sub_categories.dart' as _i45;
+import '../core/categories/src/application/save_categories.dart' as _i30;
+import '../core/categories/src/application/save_sub_categories.dart' as _i47;
+import '../core/categories/src/application/update_category.dart' as _i35;
+import '../core/categories/src/application/update_sub_category.dart' as _i36;
 import '../core/categories/src/infrastructure/category_repository_impl.dart'
-    as _i34;
+    as _i13;
 import '../core/categories/src/infrastructure/datasources/local/categories_db.dart'
     as _i10;
 import '../core/categories/src/infrastructure/datasources/local/categories_table.dart'
@@ -47,13 +47,13 @@ import '../core/categories/src/infrastructure/datasources/local/categories_table
 import '../core/categories/src/infrastructure/datasources/local/category_mapper.dart'
     as _i11;
 import '../core/categories/src/infrastructure/datasources/local/local_data_source.dart'
-    as _i20;
+    as _i25;
 import '../core/categories/src/infrastructure/datasources/local/sub_category_mapper.dart'
-    as _i27;
+    as _i33;
 import '../core/categories/src/infrastructure/sub_category_repository_impl.dart'
-    as _i29;
-import '../core/records/domain.dart' as _i24;
-import '../core/records/src/application/record_cubit.dart' as _i23;
+    as _i34;
+import '../core/records/domain.dart' as _i29;
+import '../core/records/src/application/record_cubit.dart' as _i28;
 import '../presentation/core/auth/auth_cubit.dart' as _i3;
 import '../presentation/screens/auth/cubit/auth_screen_cubit.dart' as _i6;
 import '../presentation/screens/categories/categories_cubit/categories_screen_cubit.dart'
@@ -61,14 +61,14 @@ import '../presentation/screens/categories/categories_cubit/categories_screen_cu
 import '../presentation/screens/categories/edit_category_cubit/edit_category_screen_cubit.dart'
     as _i50;
 import '../presentation/screens/categories/edit_sub_category_cubit/edit_sub_category_screen_cubit.dart'
-    as _i12;
+    as _i16;
 import '../presentation/screens/categories/sub_categories_cubit/sub_categories_screen_cubit.dart'
-    as _i26;
-import '../presentation/screens/home/cubit/home_screen_cubit.dart' as _i18;
+    as _i32;
+import '../presentation/screens/home/cubit/home_screen_cubit.dart' as _i23;
 import '../presentation/screens/profile/cubit/profile_screen_cubit.dart'
-    as _i22;
+    as _i27;
 import '../presentation/screens/settings/cubit/settings_screen_cubit.dart'
-    as _i25;
+    as _i31;
 import 'db_injectable_module.dart' as _i51;
 import 'facebook_injectable_module.dart' as _i52;
 import 'firebase_injectable_module.dart' as _i53;
@@ -98,91 +98,93 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i9.CategoryDao>(
       () => _i9.CategoryDao(get<_i10.CategoriesDatabase>()));
   gh.lazySingleton<_i11.CategoryMapper>(() => _i11.CategoryMapper());
-  gh.factory<_i12.EditSubCategoryScreenCubit>(() =>
-      _i12.EditSubCategoryScreenCubit(
+  gh.lazySingleton<_i12.CategoryRepository>(
+      () => _i13.CategoryRepositoryImpl(get<_i7.LocalDataSource>()));
+  gh.factory<_i14.CreateCategory>(
+      () => _i14.CreateCategory(get<_i12.CategoryRepository>()));
+  gh.factory<_i15.DeleteCategory>(
+      () => _i15.DeleteCategory(get<_i12.CategoryRepository>()));
+  gh.factory<_i16.EditSubCategoryScreenCubit>(() =>
+      _i16.EditSubCategoryScreenCubit(
           get<_i5.UpdateSubCategory>(), get<_i5.DeleteSubCategory>()));
-  gh.lazySingleton<_i13.FacebookAuth>(
+  gh.lazySingleton<_i17.FacebookAuth>(
       () => facebookInjectableModule.facebookAuth);
-  gh.lazySingleton<_i14.FirebaseAuth>(
+  gh.lazySingleton<_i18.FirebaseAuth>(
       () => firebaseInjectableModule.firebaseAuth);
-  gh.lazySingleton<_i15.FirebaseFirestore>(
+  gh.lazySingleton<_i19.FirebaseFirestore>(
       () => firebaseInjectableModule.firebaseFirestore);
-  gh.lazySingleton<_i16.FirebaseStorage>(
+  gh.lazySingleton<_i20.FirebaseStorage>(
       () => firebaseInjectableModule.firebaseStorage);
-  gh.lazySingleton<_i17.GoogleSignIn>(
+  gh.factory<_i21.GetCategories>(
+      () => _i21.GetCategories(get<_i12.CategoryRepository>()));
+  gh.lazySingleton<_i22.GoogleSignIn>(
       () => firebaseInjectableModule.googleSignIn);
-  gh.factory<_i18.HomeScreenCubit>(
-      () => _i18.HomeScreenCubit(get<_i4.GetProfileInfo>()));
-  gh.lazySingleton<_i19.ImagePicker>(
+  gh.factory<_i23.HomeScreenCubit>(
+      () => _i23.HomeScreenCubit(get<_i4.GetProfileInfo>()));
+  gh.lazySingleton<_i24.ImagePicker>(
       () => imagePickerInjectableModule.imagePicker);
-  gh.lazySingleton<_i20.LocalDataSource>(() => _i20.LocalDataSourceImpl(
+  gh.lazySingleton<_i25.LocalDataSource>(() => _i25.LocalDataSourceImpl(
       get<_i7.CategoryDao>(),
       get<_i7.SubCategoryDao>(),
       get<_i7.CategoryMapper>(),
       get<_i7.SubCategoryMapper>()));
-  gh.factory<_i21.PickUserImage>(
-      () => _i21.PickUserImage(get<_i19.ImagePicker>()));
-  gh.factory<_i22.ProfileScreenCubit>(() => _i22.ProfileScreenCubit(
+  gh.factory<_i26.PickUserImage>(
+      () => _i26.PickUserImage(get<_i24.ImagePicker>()));
+  gh.factory<_i27.ProfileScreenCubit>(() => _i27.ProfileScreenCubit(
       get<_i4.CheckAuthStatus>(),
       get<_i4.GetProfileInfo>(),
       get<_i4.UpdateUserInfo>(),
       get<_i4.PickUserImage>()));
-  gh.factory<_i23.RecordCubit>(
-      () => _i23.RecordCubit(get<_i24.RecordRepositoryBase>()));
-  gh.factory<_i25.SettingsScreenCubit>(() => _i25.SettingsScreenCubit(
+  gh.factory<_i28.RecordCubit>(
+      () => _i28.RecordCubit(get<_i29.RecordRepositoryBase>()));
+  gh.factory<_i30.SaveCategories>(
+      () => _i30.SaveCategories(get<_i12.CategoryRepository>()));
+  gh.factory<_i31.SettingsScreenCubit>(() => _i31.SettingsScreenCubit(
       get<_i4.CheckAuthStatus>(), get<_i4.GetProfileInfo>()));
-  gh.factory<_i26.SubCategoriesScreenCubit>(() => _i26.SubCategoriesScreenCubit(
+  gh.factory<_i32.SubCategoriesScreenCubit>(() => _i32.SubCategoriesScreenCubit(
       get<_i5.GetSubCategories>(), get<_i5.SaveSubCategories>()));
   gh.lazySingleton<_i9.SubCategoryDao>(
       () => _i9.SubCategoryDao(get<_i10.CategoriesDatabase>()));
-  gh.lazySingleton<_i27.SubCategoryMapper>(() => _i27.SubCategoryMapper());
-  gh.lazySingleton<_i28.SubCategoryRepository>(
-      () => _i29.SubCategoryRepositoryImpl(get<_i20.LocalDataSource>()));
-  gh.factory<_i30.UpdateSubCategory>(() => _i30.UpdateSubCategory(
-      get<_i28.SubCategoryRepository>(), get<_i5.GetSubCategories>()));
-  gh.lazySingleton<_i31.UserFirebaseProv>(() => _i31.UserFirebaseProv(
-      get<_i16.FirebaseStorage>(), get<_i15.FirebaseFirestore>()));
-  gh.lazySingleton<_i32.AuthService>(() => _i33.AuthServiceImpl(
-      get<_i14.FirebaseAuth>(),
-      get<_i17.GoogleSignIn>(),
-      get<_i13.FacebookAuth>(),
-      get<_i31.UserFirebaseProv>()));
-  gh.lazySingleton<_i28.CategoryRepository>(
-      () => _i34.CategoryRepositoryImpl(get<_i20.LocalDataSource>()));
-  gh.factory<_i35.CheckAuthStatus>(
-      () => _i35.CheckAuthStatus(get<_i32.AuthService>()));
-  gh.factory<_i36.CreateAccount>(
-      () => _i36.CreateAccount(get<_i32.AuthService>()));
-  gh.factory<_i37.CreateCategory>(
-      () => _i37.CreateCategory(get<_i28.CategoryRepository>()));
-  gh.factory<_i38.CreateSubCategory>(
-      () => _i38.CreateSubCategory(get<_i28.SubCategoryRepository>()));
-  gh.factory<_i39.DeleteCategory>(
-      () => _i39.DeleteCategory(get<_i28.CategoryRepository>()));
-  gh.factory<_i40.DeleteSubCategory>(
-      () => _i40.DeleteSubCategory(get<_i28.SubCategoryRepository>()));
-  gh.factory<_i41.GetCategories>(
-      () => _i41.GetCategories(get<_i28.CategoryRepository>()));
-  gh.factory<_i42.GetProfileInfo>(
-      () => _i42.GetProfileInfo(get<_i32.AuthService>()));
-  gh.factory<_i43.GetSubCategories>(
-      () => _i43.GetSubCategories(get<_i28.SubCategoryRepository>()));
-  gh.factory<_i44.LogOut>(() => _i44.LogOut(get<_i32.AuthService>()));
-  gh.factory<_i45.SaveCategories>(
-      () => _i45.SaveCategories(get<_i28.CategoryRepository>()));
-  gh.factory<_i46.SaveSubCategories>(
-      () => _i46.SaveSubCategories(get<_i28.SubCategoryRepository>()));
-  gh.factory<_i47.SignIn>(() => _i47.SignIn(get<_i32.AuthService>()));
-  gh.factory<_i48.UpdateCategory>(() => _i48.UpdateCategory(
-      get<_i28.CategoryRepository>(), get<_i5.GetCategories>()));
+  gh.lazySingleton<_i33.SubCategoryMapper>(() => _i33.SubCategoryMapper());
+  gh.lazySingleton<_i12.SubCategoryRepository>(
+      () => _i34.SubCategoryRepositoryImpl(get<_i7.LocalDataSource>()));
+  gh.factory<_i35.UpdateCategory>(() => _i35.UpdateCategory(
+      get<_i12.CategoryRepository>(), get<_i5.GetCategories>()));
+  gh.factory<_i36.UpdateSubCategory>(() => _i36.UpdateSubCategory(
+      get<_i12.SubCategoryRepository>(), get<_i5.GetSubCategories>()));
+  gh.lazySingleton<_i37.UserFirebaseProv>(() => _i37.UserFirebaseProv(
+      get<_i20.FirebaseStorage>(), get<_i19.FirebaseFirestore>()));
+  gh.lazySingleton<_i38.AuthService>(() => _i39.AuthServiceImpl(
+      get<_i18.FirebaseAuth>(),
+      get<_i22.GoogleSignIn>(),
+      get<_i17.FacebookAuth>(),
+      get<_i37.UserFirebaseProv>()));
+  gh.factory<_i40.CheckAuthStatus>(
+      () => _i40.CheckAuthStatus(get<_i38.AuthService>()));
+  gh.factory<_i41.CreateAccount>(
+      () => _i41.CreateAccount(get<_i38.AuthService>()));
+  gh.factory<_i42.CreateSubCategory>(
+      () => _i42.CreateSubCategory(get<_i12.SubCategoryRepository>()));
+  gh.factory<_i43.DeleteSubCategory>(
+      () => _i43.DeleteSubCategory(get<_i12.SubCategoryRepository>()));
+  gh.factory<_i44.GetProfileInfo>(
+      () => _i44.GetProfileInfo(get<_i38.AuthService>()));
+  gh.factory<_i45.GetSubCategories>(
+      () => _i45.GetSubCategories(get<_i12.SubCategoryRepository>()));
+  gh.factory<_i46.LogOut>(() => _i46.LogOut(get<_i38.AuthService>()));
+  gh.factory<_i47.SaveSubCategories>(
+      () => _i47.SaveSubCategories(get<_i12.SubCategoryRepository>()));
+  gh.factory<_i48.SignIn>(() => _i48.SignIn(get<_i38.AuthService>()));
   gh.factory<_i49.UpdateUserInfo>(
-      () => _i49.UpdateUserInfo(get<_i32.AuthService>()));
+      () => _i49.UpdateUserInfo(get<_i38.AuthService>()));
   gh.factory<_i50.EditCategoryScreenCubit>(() => _i50.EditCategoryScreenCubit(
       get<_i5.UpdateCategory>(),
       get<_i5.DeleteCategory>(),
-      get<_i42.GetProfileInfo>(),
+      get<_i44.GetProfileInfo>(),
       get<_i5.GetSubCategories>(),
-      get<_i5.SaveSubCategories>()));
+      get<_i5.SaveSubCategories>(),
+      get<_i5.CreateSubCategory>(),
+      get<_i5.CreateCategory>()));
   return get;
 }
 

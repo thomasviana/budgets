@@ -46,7 +46,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       color: AppColors.primaryColor,
                     ),
                     onPressed: () {
-                      cubit.addUserCategory();
+                      // cubit.addUserCategory();
+                      AppNavigator.navigateToEditCategoryPage(
+                        context,
+                        (_) => cubit.getUserCategories(),
+                      );
                     },
                   ),
                 ],
@@ -92,8 +96,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 ),
                 onTap: () => AppNavigator.navigateToEditCategoryPage(
                   context,
-                  state.categories[index],
                   (_) => cubit.getUserCategories(),
+                  category: state.categories[index],
                 ),
               );
             },

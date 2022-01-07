@@ -29,6 +29,14 @@ class Category extends CategoryModel {
   // ignore: use_setters_to_change_properties
   void setUserId(String userId) => categoryUserId = CategoryUserId(userId);
 
+  factory Category.empty() => Category(
+        id: CategoryId.auto(),
+        name: '',
+        icon: 0xe5f9,
+        color: AppColors.primaryColor.value,
+        type: CategoryType.expense,
+      );
+
   factory Category.housing() => Category(
         id: CategoryId('housing'),
         name: 'Vivienda',
@@ -115,12 +123,13 @@ class Category extends CategoryModel {
     CategoryType? type,
   }) {
     return Category(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        icon: icon ?? this.icon,
-        color: color ?? this.color,
-        amount: amount ?? this.amount,
-        type: type ?? this.type);
+      id: id ?? this.id,
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
+      amount: amount ?? this.amount,
+      type: type ?? this.type,
+    );
   }
 }
 

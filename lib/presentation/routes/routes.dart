@@ -72,12 +72,12 @@ class Routes {
           ),
         );
       case AppNavigator.ROUTE_EDIT_CATEGORY_PAGE:
-        final category = settings.arguments! as Category;
+        final category = settings.arguments;
         return _buildRoute(
           settings,
           BlocProvider(
             create: (context) => sl<EditCategoryScreenCubit>(),
-            child: EditCategoryScreen(category: category),
+            child: EditCategoryScreen(category: category as Category?),
           ),
         );
       case AppNavigator.ROUTE_EDIT_SUB_CATEGORY_PAGE:

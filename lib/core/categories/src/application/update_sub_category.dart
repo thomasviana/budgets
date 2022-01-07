@@ -15,6 +15,7 @@ class UpdateSubCategory {
 
   Future<void> call({
     required CategoryId categoryId,
+    required CategoryId subCategorId,
     String? name,
     int? icon,
     int? color,
@@ -23,7 +24,7 @@ class UpdateSubCategory {
       (subCategories) => subCategories.fold(
         () => null,
         (subCategories) => subCategories.firstWhere(
-          (subCategory) => subCategory.categoryId == categoryId,
+          (subCategory) => subCategory.id == subCategorId,
           orElse: () => throw Exception("Category doesn't exist."),
         ),
       ),

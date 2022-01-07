@@ -34,6 +34,7 @@ class EditSubCategoryScreenCubit extends Cubit<EditSubCategoryScreenState> {
   Future<void> onSubCategorySaved() async {
     await updateSubCategory(
       categoryId: state.subCategory!.categoryId,
+      subCategorId: state.subCategory!.id,
       name: state.subCategory!.name,
       color: state.subCategory!.color,
       icon: state.subCategory!.icon,

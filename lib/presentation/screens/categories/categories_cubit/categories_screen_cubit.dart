@@ -27,7 +27,12 @@ class CategoriesScreenCubit extends Cubit<CategoriesScreenState> {
     userOption.fold(
       () => null,
       (user) {
-        emit(state.copyWith(user: user, isLoading: false));
+        emit(
+          state.copyWith(
+            user: user,
+            isLoading: false,
+          ),
+        );
       },
     );
     getUserCategories();
@@ -52,10 +57,11 @@ class CategoriesScreenCubit extends Cubit<CategoriesScreenState> {
 
   Future<void> addUserCategory() async {
     await createCategory(
-        categoryUserId: CategoryUserId(state.user!.id.value),
-        color: 0xFFF44336,
-        icon: 0xe318,
-        name: 'Testing Category',
-        type: CategoryType.expense);
+      categoryUserId: CategoryUserId(state.user!.id.value),
+      color: 0xFFF44336,
+      icon: 0xe318,
+      name: 'Testing Category',
+      type: CategoryType.expense,
+    );
   }
 }

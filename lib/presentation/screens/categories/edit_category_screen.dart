@@ -11,7 +11,7 @@ import '../../routes/app_navigator.dart';
 import 'edit_category_cubit/edit_category_screen_cubit.dart';
 
 class EditCategoryScreen extends StatefulWidget {
-  final Category category;
+  final Category? category;
   const EditCategoryScreen({
     Key? key,
     required this.category,
@@ -22,12 +22,19 @@ class EditCategoryScreen extends StatefulWidget {
 
 class _EditCategoryScreenState extends State<EditCategoryScreen> {
   late EditCategoryScreenCubit cubit;
+  // late TextEditingController textEditingController;
 
   @override
   void initState() {
     super.initState();
     cubit = context.read<EditCategoryScreenCubit>();
     cubit.init(widget.category);
+  }
+
+  @override
+  void dispose() {
+    // textEditingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,18 +51,37 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
-              largeTitle: Text('Edit category'),
+              largeTitle:
+                  Text(state.isEditMode ? 'Edit category' : 'Add category'),
               previousPageTitle: 'Back',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  if (state.category?.id.value != 'housing' &&
+                      state.category?.id.value != 'food' &&
+                      state.category?.id.value != 'transportation' &&
+                      state.category?.id.value != 'healthCare' &&
+                      state.category?.id.value != 'services' &&
+                      state.category?.id.value != 'recreation' &&
+                      state.category?.id.value != 'shopping' &&
+                      state.category?.id.value != 'financial')
+                    IconButton(
+                      icon: Icon(
+                        Icons.delete_outline,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        cubit.onCategoryDeleted();
+                        AppNavigator.navigateBack(context);
+                      },
+                    ),
                   IconButton(
                     icon: Icon(
                       Icons.check,
                       color: AppColors.primaryColor,
                     ),
                     onPressed: () {
-                      cubit.onCategorySaved();
+                      cubit.onCategorySaved(isNewCategory: !state.isEditMode);
                       AppNavigator.navigateBack(context);
                     },
                   ),
@@ -119,9 +145,11 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
-                    initialValue: state.category!.name,
+                    // controller: textEditingController,
+                    initialValue: state.isEditMode ? state.category!.name : '',
                     decoration: InputDecoration(labelText: 'Name'),
                     keyboardType: TextInputType.name,
+                    autofocus: !state.isEditMode,
                     onChanged: (name) => cubit.onNameChanged(name),
                   ),
                 ],
@@ -199,7 +227,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 trailing: Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () {},
+                onTap: () => cubit.onAddSubCategory(),
               ),
             ),
             SizedBox(height: 80),
@@ -210,8 +238,11 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
   }
 }
 
-Future<void> _showEditOptions(BuildContext context,
-    EditCategoryScreenCubit cubit, EditCategoryScreenState state) async {
+Future<void> _showEditOptions(
+  BuildContext context,
+  EditCategoryScreenCubit cubit,
+  EditCategoryScreenState state,
+) async {
   await showCupertinoModalPopup<void>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
@@ -220,14 +251,14 @@ Future<void> _showEditOptions(BuildContext context,
           child: const Text('Edit icon'),
           onPressed: () {
             Navigator.pop(context);
-            _pickIcon(context, cubit, state.category!.icon);
+            _pickIcon(context, cubit);
           },
         ),
         CupertinoActionSheetAction(
           child: const Text('Edit color'),
           onPressed: () {
             Navigator.pop(context);
-            _pickColor(context, cubit, state.category!.color);
+            _pickColor(context, cubit, state);
           },
         )
       ],
@@ -247,7 +278,7 @@ Future<void> _showEditOptions(BuildContext context,
 Future _pickColor(
   BuildContext context,
   EditCategoryScreenCubit cubit,
-  int categoryColor,
+  EditCategoryScreenState state,
 ) {
   return showDialog(
     context: context,
@@ -263,7 +294,9 @@ Future _pickColor(
       ),
       content: MaterialColorPicker(
         allowShades: false,
-        selectedColor: Color(categoryColor),
+        selectedColor: state.isEditMode
+            ? Color(state.category!.color)
+            : AppColors.primaryColor,
         onMainColorChange: (colorSwatch) {
           cubit.onColorUpdated(colorSwatch!.value).then(
                 (_) => Navigator.of(context).pop(),
@@ -277,7 +310,6 @@ Future _pickColor(
 Future<void> _pickIcon(
   BuildContext context,
   EditCategoryScreenCubit cubit,
-  int categoryIcon,
 ) async {
   final materialIcons = AppIcons.materialIcons();
   final icon = await FlutterIconPicker.showIconPicker(
@@ -286,13 +318,19 @@ Future<void> _pickIcon(
       'Selecionar icono',
       textAlign: TextAlign.center,
     ),
-    adaptiveDialog: true,
+    iconPickerShape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(16),
+      ),
+    ),
+    searchHintText: 'Buscar',
     closeChild: Text('Cerrar'),
     iconSize: 30,
     customIconPack: materialIcons,
     iconColor: AppColors.black,
     iconPackModes: [IconPack.custom],
   );
+
   if (icon != null) {
     cubit.onIconUpdated(icon.codePoint);
   }

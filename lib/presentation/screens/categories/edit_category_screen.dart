@@ -215,7 +215,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
             Container(
               color: AppColors.white,
               child: ListTile(
-                title: Text('Add subcategory'),
+                title: Text('Añadir subcategoria'),
                 leading: CircleAvatar(
                   maxRadius: 20,
                   child: Icon(

@@ -1,3 +1,4 @@
+import 'package:budgets/core/accounts/domain.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/categories/domain.dart';
@@ -16,6 +17,9 @@ class AppNavigator {
   static const ROUTE_SUB_CATEGORIES_PAGE = '/sub-categories';
   static const ROUTE_EDIT_CATEGORY_PAGE = '/edit-category';
   static const ROUTE_EDIT_SUB_CATEGORY_PAGE = '/edit-sub-category';
+
+  static const ROUTE_ACCOUNTS_PAGE = '/accounts';
+  static const ROUTE_EDIT_ACCOUNT_PAGE = '/edit-account';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
@@ -98,5 +102,28 @@ class AppNavigator {
       ROUTE_EDIT_SUB_CATEGORY_PAGE,
       arguments: subCategory,
     ).then(function);
+  }
+
+  static void navigateToAccountsPage(BuildContext context) {
+    Navigator.pushNamed(context, ROUTE_ACCOUNTS_PAGE);
+  }
+
+  static void navigateToEditAccountPage(
+    BuildContext context,
+    Function(Object?) function, {
+    Account? account,
+  }) {
+    if (account == null) {
+      Navigator.pushNamed(
+        context,
+        ROUTE_EDIT_ACCOUNT_PAGE,
+      ).then(function);
+    } else {
+      Navigator.pushNamed(
+        context,
+        ROUTE_EDIT_ACCOUNT_PAGE,
+        arguments: account,
+      ).then(function);
+    }
   }
 }

@@ -12,12 +12,12 @@ part 'auth_screen_state.dart';
 @injectable
 class AuthScreenCubit extends Cubit<AuthScreenState> {
   SignIn signIn;
-  CreateAccount createAccount;
+  CreateUser createUser;
   CheckAuthStatus checkAuthStatus;
 
   AuthScreenCubit(
     this.signIn,
-    this.createAccount,
+    this.createUser,
     this.checkAuthStatus,
   ) : super(AuthScreenState.initial());
 
@@ -106,7 +106,7 @@ class AuthScreenCubit extends Cubit<AuthScreenState> {
         ),
       );
       final failureOrSuccess =
-          await createAccount(state.emailAddress, state.password);
+          await createUser(state.emailAddress, state.password);
 
       emit(
         state.copyWith(

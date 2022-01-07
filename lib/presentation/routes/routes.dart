@@ -1,3 +1,8 @@
+import 'package:budgets/core/accounts/domain.dart';
+import 'package:budgets/presentation/screens/accounts/accounts_cubit/accounts_screen_cubit.dart';
+import 'package:budgets/presentation/screens/accounts/accounts_screen.dart';
+import 'package:budgets/presentation/screens/accounts/edit_account_cubit/edit_account_screen_cubit.dart';
+import 'package:budgets/presentation/screens/accounts/edit_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -87,6 +92,23 @@ class Routes {
           BlocProvider(
             create: (context) => sl<EditSubCategoryScreenCubit>(),
             child: EditSubCategoryScreen(subCategory: subCategory),
+          ),
+        );
+      case AppNavigator.ROUTE_ACCOUNTS_PAGE:
+        return _buildRoute(
+          settings,
+          BlocProvider(
+            create: (context) => sl<AccountsScreenCubit>(),
+            child: AccountsScreen(),
+          ),
+        );
+      case AppNavigator.ROUTE_EDIT_ACCOUNT_PAGE:
+        final account = settings.arguments;
+        return _buildRoute(
+          settings,
+          BlocProvider(
+            create: (context) => sl<EditAccountScreenCubit>(),
+            child: EditAccountScreen(account: account as Account?),
           ),
         );
       default:

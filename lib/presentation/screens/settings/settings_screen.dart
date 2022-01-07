@@ -48,8 +48,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               autofocus: true,
               enableFeedback: true,
               onTap: () {
-                // TODO: Another ger profile nod needed
-                // cubit.getProfileInfo();
                 AppNavigator.navigateToProfilePage(context);
               },
             ),
@@ -65,7 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: Text('Accounts'),
               leading: Icon(Icons.comment_bank),
               trailing: Icon(Icons.arrow_forward_ios),
-              onTap: () => AppNavigator.navigateToProfilePage(context),
+              onTap: () => AppNavigator.navigateToAccountsPage(context),
             ),
             Divider(),
             ListTile(

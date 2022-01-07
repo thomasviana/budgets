@@ -35,6 +35,14 @@ class Account extends Entity<AccountId> {
   // ignore: use_setters_to_change_properties
   void updateAmount(double newAmount) => amount = newAmount;
 
+  factory Account.empty() => Account(
+        id: AccountId.auto(),
+        name: '',
+        icon: 0xe5f9,
+        color: AppColors.primaryColor.value,
+        imageUrl: AccountDefaultLogos.bancolombia,
+      );
+
   factory Account.bancolombia() => Account(
         id: AccountId('bancolombia'),
         name: 'Bancolombia',

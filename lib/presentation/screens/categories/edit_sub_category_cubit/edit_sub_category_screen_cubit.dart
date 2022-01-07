@@ -23,7 +23,6 @@ class EditSubCategoryScreenCubit extends Cubit<EditSubCategoryScreenState> {
   void onNameChanged(String? name) => emit(
         state.copyWith(
           subCategory: state.subCategory!..updateName(name!),
-          isSaveButtonEnabled: true,
         ),
       );
 

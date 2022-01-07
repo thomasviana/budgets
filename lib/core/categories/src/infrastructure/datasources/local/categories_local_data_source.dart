@@ -4,7 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../domain.dart';
 import '../../../../infrastructure.dart';
 
-abstract class LocalDataSource {
+abstract class CategoriesLocalDataSource {
   Future<void> cacheCategory(Category category);
   Future<void> cacheCategories(List<Category> categories);
   Future<Option<List<Category>>> getCachedCategories(CategoryUserId userId);
@@ -17,14 +17,14 @@ abstract class LocalDataSource {
   Future<void> deleteSubCategory(CategoryId subCategoryId);
 }
 
-@LazySingleton(as: LocalDataSource)
-class LocalDataSourceImpl implements LocalDataSource {
+@LazySingleton(as: CategoriesLocalDataSource)
+class CategoriesLocalDataSourceImpl implements CategoriesLocalDataSource {
   final CategoryDao _categoryDao;
   final SubCategoryDao _subCategoryDao;
   final CategoryMapper _categoryMapper;
   final SubCategoryMapper _subCategoryMapper;
 
-  LocalDataSourceImpl(
+  CategoriesLocalDataSourceImpl(
     this._categoryDao,
     this._subCategoryDao,
     this._categoryMapper,

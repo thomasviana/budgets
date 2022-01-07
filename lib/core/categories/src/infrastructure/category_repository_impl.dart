@@ -6,7 +6,7 @@ import '../../infrastructure.dart';
 
 @LazySingleton(as: CategoryRepository)
 class CategoryRepositoryImpl implements CategoryRepository {
-  final LocalDataSource _localDataSource;
+  final CategoriesLocalDataSource _localDataSource;
 
   CategoryRepositoryImpl(
     this._localDataSource,

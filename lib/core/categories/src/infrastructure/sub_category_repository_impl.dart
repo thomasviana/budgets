@@ -6,29 +6,29 @@ import '../../infrastructure.dart';
 
 @LazySingleton(as: SubCategoryRepository)
 class SubCategoryRepositoryImpl implements SubCategoryRepository {
-  final LocalDataSource _localDataSource;
+  final CategoriesLocalDataSource _categoriesLocalDataSource;
 
   SubCategoryRepositoryImpl(
-    this._localDataSource,
+    this._categoriesLocalDataSource,
   );
 
   @override
   Future<void> delete(CategoryId subCategoryId) {
-    return _localDataSource.deleteSubCategory(subCategoryId);
+    return _categoriesLocalDataSource.deleteSubCategory(subCategoryId);
   }
 
   @override
   Future<void> save(SubCategory subCategory) {
-    return _localDataSource.cacheSubCategory(subCategory);
+    return _categoriesLocalDataSource.cacheSubCategory(subCategory);
   }
 
   @override
   Future<void> saveList(List<SubCategory> subCategories) {
-    return _localDataSource.cacheSubCategories(subCategories);
+    return _categoriesLocalDataSource.cacheSubCategories(subCategories);
   }
 
   @override
   Future<Option<List<SubCategory>>> fetchSubCategories(CategoryId categoryId) {
-    return _localDataSource.getCachedSubCategories(categoryId);
+    return _categoriesLocalDataSource.getCachedSubCategories(categoryId);
   }
 }

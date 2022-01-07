@@ -6,7 +6,6 @@ class EditCategoryScreenState {
   final UserEntity? user;
   final bool isLoading;
   final bool isSaving;
-  final bool isSaveButtonEnabled;
   final bool isEditMode;
 
   EditCategoryScreenState({
@@ -15,14 +14,12 @@ class EditCategoryScreenState {
     this.user,
     required this.isLoading,
     required this.isSaving,
-    required this.isSaveButtonEnabled,
     required this.isEditMode,
   });
 
   factory EditCategoryScreenState.initial() => EditCategoryScreenState(
         isLoading: false,
         isSaving: false,
-        isSaveButtonEnabled: false,
         isEditMode: true,
       );
 
@@ -32,7 +29,6 @@ class EditCategoryScreenState {
     UserEntity? user,
     bool? isLoading,
     bool? isSaving,
-    bool? isSaveButtonEnabled,
     bool? isEditMode,
   }) {
     return EditCategoryScreenState(
@@ -41,7 +37,6 @@ class EditCategoryScreenState {
       user: user ?? this.user,
       isLoading: isLoading ?? this.isLoading,
       isSaving: isSaving ?? this.isSaving,
-      isSaveButtonEnabled: isSaveButtonEnabled ?? this.isSaveButtonEnabled,
       isEditMode: isEditMode ?? this.isEditMode,
     );
   }

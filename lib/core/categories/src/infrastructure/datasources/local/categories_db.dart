@@ -10,7 +10,7 @@ part 'categories_db.g.dart';
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    const dbName = 'collaboration_db.sqlite';
+    const dbName = 'categories_db.sqlite';
     final dbPath = await getApplicationDocumentsDirectory()
         .then((dir) => '${dir.path}/$dbName');
     final file = File(dbPath);

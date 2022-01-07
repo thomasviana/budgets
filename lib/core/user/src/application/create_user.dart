@@ -4,9 +4,9 @@ import 'package:injectable/injectable.dart';
 import '../../domain.dart';
 
 @injectable
-class CreateAccount {
+class CreateUser {
   final AuthService _authService;
-  CreateAccount(
+  CreateUser(
     this._authService,
   );
 

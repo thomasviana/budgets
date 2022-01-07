@@ -98,7 +98,6 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
     emit(
       state.copyWith(
         category: state.category!..updateName(name!),
-        isSaveButtonEnabled: true,
       ),
     );
   }

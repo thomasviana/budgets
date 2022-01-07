@@ -40,15 +40,6 @@ class SubCategoriesTable extends Table {
   String get tableName => 'subcategories';
 }
 
-class CategoryWithSubCategory {
-  final CategoryDbDto category;
-  final SubCategoryDbDto? subCategory;
-  CategoryWithSubCategory({
-    required this.category,
-    this.subCategory,
-  });
-}
-
 @lazySingleton
 @DriftAccessor(tables: [CategoriesTable])
 class CategoryDao extends DatabaseAccessor<CategoriesDatabase>

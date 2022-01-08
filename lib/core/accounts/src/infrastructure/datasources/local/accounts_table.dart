@@ -5,14 +5,16 @@ import 'accounts_db.dart';
 
 part 'accounts_table.g.dart';
 
+enum AccountTypeTable { bank, cash, wallet }
+
 @DataClassName('AccountDbDto')
 class AccountsTable extends Table {
   TextColumn get id => text().customConstraint('UNIQUE')();
   TextColumn get name => text()();
-  IntColumn get icon => integer()();
+  IntColumn get type => intEnum<AccountTypeTable>()();
   IntColumn get color => integer()();
-  TextColumn get imageUrl => text()();
-  RealColumn get amount => real().withDefault(const Constant(0.0))();
+  TextColumn get imageUrl => text().nullable()();
+  RealColumn get balance => real().withDefault(const Constant(0.0))();
   TextColumn get userId => text().nullable()();
 
   @override

@@ -4,21 +4,23 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../common/value_objects.dart';
 
+enum AccountType { bank, cash, wallet }
+
 class Account extends Entity<AccountId> {
   String name;
-  int icon;
+  AccountType type;
   int color;
-  String imageUrl;
-  double amount;
+  String? imageUrl;
+  double balance;
   AccountUserId? accountUserId;
 
   Account({
     required AccountId id,
     required this.name,
-    required this.icon,
+    required this.type,
     required this.color,
-    this.imageUrl = 'https://www.csvtasaciones.com/images/cash-icon.png',
-    this.amount = 0,
+    this.imageUrl,
+    this.balance = 0,
     this.accountUserId,
   }) : super(id);
 
@@ -27,26 +29,32 @@ class Account extends Entity<AccountId> {
   // ignore: use_setters_to_change_properties
   void updateName(String newName) => name = newName;
   // ignore: use_setters_to_change_properties
-  void updateIcon(int newIcon) => icon = newIcon;
+  void updateType(AccountType newType) => type = newType;
   // ignore: use_setters_to_change_properties
   void updateColor(int newColor) => color = newColor;
   // ignore: use_setters_to_change_properties
-  void updateImageUrl(String newImageUrl) => imageUrl = newImageUrl;
+  void updateImageUrl(String? newImageUrl) => imageUrl = newImageUrl;
   // ignore: use_setters_to_change_properties
-  void updateAmount(double newAmount) => amount = newAmount;
+  void updateBalance(double newBalance) => balance = newBalance;
+
+  int get icon {
+    if (type == AccountType.bank) return 0xe041;
+    if (type == AccountType.cash) return 0xe041;
+    if (type == AccountType.wallet) return 0xe041;
+    return 0xe041;
+  }
 
   factory Account.empty() => Account(
         id: AccountId.auto(),
         name: '',
-        icon: 0xe5f9,
+        type: AccountType.bank,
         color: AppColors.primaryColor.value,
-        imageUrl: AccountDefaultLogos.bancolombia,
       );
 
   factory Account.bancolombia() => Account(
         id: AccountId('bancolombia'),
         name: 'Bancolombia',
-        icon: 0xe5f9,
+        type: AccountType.bank,
         color: AppColors.primaryColor.value,
         imageUrl: AccountDefaultLogos.bancolombia,
       );
@@ -54,7 +62,7 @@ class Account extends Entity<AccountId> {
   factory Account.davivienda() => Account(
         id: AccountId('davivienda'),
         name: 'Davivienda',
-        icon: 0xe5f9,
+        type: AccountType.bank,
         color: AppColors.primaryColor.value,
         imageUrl: AccountDefaultLogos.davivienda,
       );
@@ -62,7 +70,7 @@ class Account extends Entity<AccountId> {
   factory Account.cash() => Account(
         id: AccountId('cash'),
         name: 'Efectivo',
-        icon: 0xe5f9,
+        type: AccountType.cash,
         color: AppColors.primaryColor.value,
         imageUrl: AccountDefaultLogos.cash,
       );
@@ -70,7 +78,7 @@ class Account extends Entity<AccountId> {
   factory Account.wallet() => Account(
         id: AccountId('wallet'),
         name: 'Billetera',
-        icon: 0xe5f9,
+        type: AccountType.wallet,
         color: AppColors.primaryColor.value,
         imageUrl: AccountDefaultLogos.wallet,
       );

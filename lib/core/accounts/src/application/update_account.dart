@@ -17,7 +17,7 @@ class UpdateAccount {
     required AccountUserId userId,
     required AccountId accountId,
     String? name,
-    int? icon,
+    AccountType? type,
     int? color,
     String? imageUrl,
   }) async {
@@ -34,9 +34,9 @@ class UpdateAccount {
       _accountRepository.save(
         account
           ..updateName(name ?? account.name)
-          ..updateIcon(icon ?? account.icon)
+          ..updateType(type ?? account.type)
           ..updateColor(color ?? account.color)
-          ..updateImageUrl(imageUrl ?? account.imageUrl),
+          ..updateImageUrl(imageUrl),
       );
     }
   }

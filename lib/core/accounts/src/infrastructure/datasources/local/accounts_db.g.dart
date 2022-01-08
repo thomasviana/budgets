@@ -10,18 +10,18 @@ part of 'accounts_db.dart';
 class AccountDbDto extends DataClass implements Insertable<AccountDbDto> {
   final String id;
   final String name;
-  final int icon;
+  final AccountTypeTable type;
   final int color;
-  final String imageUrl;
-  final double amount;
+  final String? imageUrl;
+  final double balance;
   final String? userId;
   AccountDbDto(
       {required this.id,
       required this.name,
-      required this.icon,
+      required this.type,
       required this.color,
-      required this.imageUrl,
-      required this.amount,
+      this.imageUrl,
+      required this.balance,
       this.userId});
   factory AccountDbDto.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -30,14 +30,14 @@ class AccountDbDto extends DataClass implements Insertable<AccountDbDto> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      icon: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}icon'])!,
+      type: $AccountsTableTable.$converter0.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
       color: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
       imageUrl: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}image_url'])!,
-      amount: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}image_url']),
+      balance: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}balance'])!,
       userId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
     );
@@ -47,10 +47,15 @@ class AccountDbDto extends DataClass implements Insertable<AccountDbDto> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
-    map['icon'] = Variable<int>(icon);
+    {
+      final converter = $AccountsTableTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type)!);
+    }
     map['color'] = Variable<int>(color);
-    map['image_url'] = Variable<String>(imageUrl);
-    map['amount'] = Variable<double>(amount);
+    if (!nullToAbsent || imageUrl != null) {
+      map['image_url'] = Variable<String?>(imageUrl);
+    }
+    map['balance'] = Variable<double>(balance);
     if (!nullToAbsent || userId != null) {
       map['user_id'] = Variable<String?>(userId);
     }
@@ -61,10 +66,12 @@ class AccountDbDto extends DataClass implements Insertable<AccountDbDto> {
     return AccountsTableCompanion(
       id: Value(id),
       name: Value(name),
-      icon: Value(icon),
+      type: Value(type),
       color: Value(color),
-      imageUrl: Value(imageUrl),
-      amount: Value(amount),
+      imageUrl: imageUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageUrl),
+      balance: Value(balance),
       userId:
           userId == null && nullToAbsent ? const Value.absent() : Value(userId),
     );
@@ -76,10 +83,10 @@ class AccountDbDto extends DataClass implements Insertable<AccountDbDto> {
     return AccountDbDto(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      icon: serializer.fromJson<int>(json['icon']),
+      type: serializer.fromJson<AccountTypeTable>(json['type']),
       color: serializer.fromJson<int>(json['color']),
-      imageUrl: serializer.fromJson<String>(json['imageUrl']),
-      amount: serializer.fromJson<double>(json['amount']),
+      imageUrl: serializer.fromJson<String?>(json['imageUrl']),
+      balance: serializer.fromJson<double>(json['balance']),
       userId: serializer.fromJson<String?>(json['userId']),
     );
   }
@@ -89,10 +96,10 @@ class AccountDbDto extends DataClass implements Insertable<AccountDbDto> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
-      'icon': serializer.toJson<int>(icon),
+      'type': serializer.toJson<AccountTypeTable>(type),
       'color': serializer.toJson<int>(color),
-      'imageUrl': serializer.toJson<String>(imageUrl),
-      'amount': serializer.toJson<double>(amount),
+      'imageUrl': serializer.toJson<String?>(imageUrl),
+      'balance': serializer.toJson<double>(balance),
       'userId': serializer.toJson<String?>(userId),
     };
   }
@@ -100,18 +107,18 @@ class AccountDbDto extends DataClass implements Insertable<AccountDbDto> {
   AccountDbDto copyWith(
           {String? id,
           String? name,
-          int? icon,
+          AccountTypeTable? type,
           int? color,
           String? imageUrl,
-          double? amount,
+          double? balance,
           String? userId}) =>
       AccountDbDto(
         id: id ?? this.id,
         name: name ?? this.name,
-        icon: icon ?? this.icon,
+        type: type ?? this.type,
         color: color ?? this.color,
         imageUrl: imageUrl ?? this.imageUrl,
-        amount: amount ?? this.amount,
+        balance: balance ?? this.balance,
         userId: userId ?? this.userId,
       );
   @override
@@ -119,10 +126,10 @@ class AccountDbDto extends DataClass implements Insertable<AccountDbDto> {
     return (StringBuffer('AccountDbDto(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('icon: $icon, ')
+          ..write('type: $type, ')
           ..write('color: $color, ')
           ..write('imageUrl: $imageUrl, ')
-          ..write('amount: $amount, ')
+          ..write('balance: $balance, ')
           ..write('userId: $userId')
           ..write(')'))
         .toString();
@@ -130,66 +137,65 @@ class AccountDbDto extends DataClass implements Insertable<AccountDbDto> {
 
   @override
   int get hashCode =>
-      Object.hash(id, name, icon, color, imageUrl, amount, userId);
+      Object.hash(id, name, type, color, imageUrl, balance, userId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AccountDbDto &&
           other.id == this.id &&
           other.name == this.name &&
-          other.icon == this.icon &&
+          other.type == this.type &&
           other.color == this.color &&
           other.imageUrl == this.imageUrl &&
-          other.amount == this.amount &&
+          other.balance == this.balance &&
           other.userId == this.userId);
 }
 
 class AccountsTableCompanion extends UpdateCompanion<AccountDbDto> {
   final Value<String> id;
   final Value<String> name;
-  final Value<int> icon;
+  final Value<AccountTypeTable> type;
   final Value<int> color;
-  final Value<String> imageUrl;
-  final Value<double> amount;
+  final Value<String?> imageUrl;
+  final Value<double> balance;
   final Value<String?> userId;
   const AccountsTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
-    this.icon = const Value.absent(),
+    this.type = const Value.absent(),
     this.color = const Value.absent(),
     this.imageUrl = const Value.absent(),
-    this.amount = const Value.absent(),
+    this.balance = const Value.absent(),
     this.userId = const Value.absent(),
   });
   AccountsTableCompanion.insert({
     required String id,
     required String name,
-    required int icon,
+    required AccountTypeTable type,
     required int color,
-    required String imageUrl,
-    this.amount = const Value.absent(),
+    this.imageUrl = const Value.absent(),
+    this.balance = const Value.absent(),
     this.userId = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
-        icon = Value(icon),
-        color = Value(color),
-        imageUrl = Value(imageUrl);
+        type = Value(type),
+        color = Value(color);
   static Insertable<AccountDbDto> custom({
     Expression<String>? id,
     Expression<String>? name,
-    Expression<int>? icon,
+    Expression<AccountTypeTable>? type,
     Expression<int>? color,
-    Expression<String>? imageUrl,
-    Expression<double>? amount,
+    Expression<String?>? imageUrl,
+    Expression<double>? balance,
     Expression<String?>? userId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
-      if (icon != null) 'icon': icon,
+      if (type != null) 'type': type,
       if (color != null) 'color': color,
       if (imageUrl != null) 'image_url': imageUrl,
-      if (amount != null) 'amount': amount,
+      if (balance != null) 'balance': balance,
       if (userId != null) 'user_id': userId,
     });
   }
@@ -197,18 +203,18 @@ class AccountsTableCompanion extends UpdateCompanion<AccountDbDto> {
   AccountsTableCompanion copyWith(
       {Value<String>? id,
       Value<String>? name,
-      Value<int>? icon,
+      Value<AccountTypeTable>? type,
       Value<int>? color,
-      Value<String>? imageUrl,
-      Value<double>? amount,
+      Value<String?>? imageUrl,
+      Value<double>? balance,
       Value<String?>? userId}) {
     return AccountsTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
-      icon: icon ?? this.icon,
+      type: type ?? this.type,
       color: color ?? this.color,
       imageUrl: imageUrl ?? this.imageUrl,
-      amount: amount ?? this.amount,
+      balance: balance ?? this.balance,
       userId: userId ?? this.userId,
     );
   }
@@ -222,17 +228,18 @@ class AccountsTableCompanion extends UpdateCompanion<AccountDbDto> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (icon.present) {
-      map['icon'] = Variable<int>(icon.value);
+    if (type.present) {
+      final converter = $AccountsTableTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type.value)!);
     }
     if (color.present) {
       map['color'] = Variable<int>(color.value);
     }
     if (imageUrl.present) {
-      map['image_url'] = Variable<String>(imageUrl.value);
+      map['image_url'] = Variable<String?>(imageUrl.value);
     }
-    if (amount.present) {
-      map['amount'] = Variable<double>(amount.value);
+    if (balance.present) {
+      map['balance'] = Variable<double>(balance.value);
     }
     if (userId.present) {
       map['user_id'] = Variable<String?>(userId.value);
@@ -245,10 +252,10 @@ class AccountsTableCompanion extends UpdateCompanion<AccountDbDto> {
     return (StringBuffer('AccountsTableCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('icon: $icon, ')
+          ..write('type: $type, ')
           ..write('color: $color, ')
           ..write('imageUrl: $imageUrl, ')
-          ..write('amount: $amount, ')
+          ..write('balance: $balance, ')
           ..write('userId: $userId')
           ..write(')'))
         .toString();
@@ -272,11 +279,12 @@ class $AccountsTableTable extends AccountsTable
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
       type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _iconMeta = const VerificationMeta('icon');
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  late final GeneratedColumn<int?> icon = GeneratedColumn<int?>(
-      'icon', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+  late final GeneratedColumnWithTypeConverter<AccountTypeTable, int?> type =
+      GeneratedColumn<int?>('type', aliasedName, false,
+              type: const IntType(), requiredDuringInsert: true)
+          .withConverter<AccountTypeTable>($AccountsTableTable.$converter0);
   final VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
   late final GeneratedColumn<int?> color = GeneratedColumn<int?>(
@@ -285,12 +293,12 @@ class $AccountsTableTable extends AccountsTable
   final VerificationMeta _imageUrlMeta = const VerificationMeta('imageUrl');
   @override
   late final GeneratedColumn<String?> imageUrl = GeneratedColumn<String?>(
-      'image_url', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+      'image_url', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _balanceMeta = const VerificationMeta('balance');
   @override
-  late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
-      'amount', aliasedName, false,
+  late final GeneratedColumn<double?> balance = GeneratedColumn<double?>(
+      'balance', aliasedName, false,
       type: const RealType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(0.0));
@@ -301,7 +309,7 @@ class $AccountsTableTable extends AccountsTable
       type: const StringType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, icon, color, imageUrl, amount, userId];
+      [id, name, type, color, imageUrl, balance, userId];
   @override
   String get aliasedName => _alias ?? 'accounts';
   @override
@@ -322,12 +330,7 @@ class $AccountsTableTable extends AccountsTable
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('icon')) {
-      context.handle(
-          _iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
-    } else if (isInserting) {
-      context.missing(_iconMeta);
-    }
+    context.handle(_typeMeta, const VerificationResult.success());
     if (data.containsKey('color')) {
       context.handle(
           _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
@@ -337,12 +340,10 @@ class $AccountsTableTable extends AccountsTable
     if (data.containsKey('image_url')) {
       context.handle(_imageUrlMeta,
           imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta));
-    } else if (isInserting) {
-      context.missing(_imageUrlMeta);
     }
-    if (data.containsKey('amount')) {
-      context.handle(_amountMeta,
-          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    if (data.containsKey('balance')) {
+      context.handle(_balanceMeta,
+          balance.isAcceptableOrUnknown(data['balance']!, _balanceMeta));
     }
     if (data.containsKey('user_id')) {
       context.handle(_userIdMeta,
@@ -363,6 +364,9 @@ class $AccountsTableTable extends AccountsTable
   $AccountsTableTable createAlias(String alias) {
     return $AccountsTableTable(_db, alias);
   }
+
+  static TypeConverter<AccountTypeTable, int> $converter0 =
+      const EnumIndexConverter<AccountTypeTable>(AccountTypeTable.values);
 }
 
 abstract class _$AccountsDatabase extends GeneratedDatabase {

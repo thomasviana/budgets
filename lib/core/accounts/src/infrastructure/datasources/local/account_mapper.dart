@@ -11,13 +11,14 @@ class AccountMapper {
   Account fromDbDto(AccountDbDto dto) {
     final id = AccountId(dto.id);
     final userId = AccountUserId(dto.userId!);
+    final accountType = AccountType.values[dto.type.index];
 
     return Account(
       id: id,
       name: dto.name,
-      icon: dto.icon,
+      type: accountType,
       color: dto.color,
-      amount: dto.amount,
+      balance: dto.balance,
       imageUrl: dto.imageUrl,
       accountUserId: userId,
     );
@@ -27,12 +28,13 @@ class AccountMapper {
       dtos.map((dto) => fromDbDto(dto)).toList();
 
   AccountsTableCompanion toDbDto(Account account) {
+    final accountType = AccountTypeTable.values[account.type.index];
     return AccountsTableCompanion(
       id: Value(account.id.value),
       name: Value(account.name),
-      icon: Value(account.icon),
+      type: Value(accountType),
       color: Value(account.color),
-      amount: Value(account.amount),
+      balance: Value(account.balance),
       imageUrl: Value(account.imageUrl),
       userId: Value(account.accountUserId!.value),
     );

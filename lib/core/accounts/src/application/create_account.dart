@@ -10,7 +10,7 @@ class CreateAccount {
 
   Future<void> call({
     required String name,
-    required int icon,
+    required AccountType type,
     required int color,
     String? imageUrl,
     required AccountUserId accountUserId,
@@ -19,10 +19,9 @@ class CreateAccount {
       Account(
         id: AccountId.auto(),
         name: name,
-        icon: icon,
+        type: type,
         color: color,
-        imageUrl:
-            imageUrl ?? 'https://www.csvtasaciones.com/images/cash-icon.png',
+        imageUrl: imageUrl,
         accountUserId: accountUserId,
       ),
     );

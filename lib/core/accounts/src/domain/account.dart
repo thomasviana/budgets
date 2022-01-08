@@ -44,6 +44,13 @@ class Account extends Entity<AccountId> {
     return 0xe041;
   }
 
+  String get typeAsString {
+    if (type == AccountType.bank) return 'Cuenta bancaria';
+    if (type == AccountType.cash) return 'Efectivo';
+    if (type == AccountType.wallet) return 'Billetera';
+    return 'Cuenta bancaria';
+  }
+
   factory Account.empty() => Account(
         id: AccountId.auto(),
         name: '',

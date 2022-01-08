@@ -77,14 +77,33 @@ class _AccountssScreenState extends State<AccountsScreen> {
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(),
             itemBuilder: (BuildContext context, int index) {
+              NetworkImage? image;
+              Icon? accountIcon;
+              bool isImageAvailable;
+              final account = state.accounts[index];
+
+              if (account.imageUrl != null) {
+                isImageAvailable = true;
+                image = NetworkImage(account.imageUrl!);
+              } else {
+                isImageAvailable = false;
+                accountIcon = Icon(
+                  IconData(
+                    account.icon,
+                    fontFamily: 'MaterialIcons',
+                  ),
+                  color: AppColors.white,
+                );
+              }
               return ListTile(
                 leading: CircleAvatar(
                   maxRadius: 20,
-                  backgroundColor: Colors.amber,
-                  backgroundImage: NetworkImage(state.accounts[index].imageUrl),
+                  backgroundColor: Color(account.color),
+                  backgroundImage: image,
+                  child: isImageAvailable ? null : accountIcon,
                 ),
                 title: Text(
-                  state.accounts[index].name,
+                  account.name,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 trailing: Icon(
@@ -93,7 +112,7 @@ class _AccountssScreenState extends State<AccountsScreen> {
                 onTap: () => AppNavigator.navigateToEditAccountPage(
                   context,
                   (_) => cubit.getUserAccounts(),
-                  account: state.accounts[index],
+                  account: account,
                 ),
               );
             },

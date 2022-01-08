@@ -75,7 +75,7 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
         accountUserId: AccountUserId(state.user!.id.value),
         name: state.account!.name,
         color: state.account!.color,
-        icon: state.account!.icon,
+        type: state.account!.type,
         imageUrl: state.account!.imageUrl,
       );
     } else {
@@ -84,7 +84,7 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
         accountId: state.account!.id,
         name: state.account!.name,
         color: state.account!.color,
-        icon: state.account!.icon,
+        type: state.account!.type,
         imageUrl: state.account!.imageUrl,
       );
     }
@@ -98,10 +98,37 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     );
   }
 
-  Future<void> onIconUpdated(int newIcon) async {
+  Future<void> onTypeUpdated(AccountType newType) async {
     emit(
       state.copyWith(
-        account: state.account!..updateIcon(newIcon),
+        account: state.account!..updateType(newType),
+      ),
+    );
+  }
+
+  Future<void> onTypeChanged(String? newType) async {
+    final AccountType type;
+    if (newType == 'Cuenta bancaria') {
+      type = AccountType.bank;
+    } else if (newType == 'Efectivo') {
+      type = AccountType.cash;
+    } else if (newType == 'Billetera') {
+      type = AccountType.wallet;
+    } else {
+      type = AccountType.bank;
+    }
+    emit(
+      state.copyWith(
+        account: state.account!..updateType(type),
+      ),
+    );
+  }
+
+  void onBalanceChanged(String? newBalance) {
+    if (state.account == null) return;
+    emit(
+      state.copyWith(
+        account: state.account!..updateBalance(double.parse(newBalance!)),
       ),
     );
   }

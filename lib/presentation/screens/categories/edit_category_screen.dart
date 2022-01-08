@@ -143,7 +143,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextFormField(
                     // controller: textEditingController,
                     initialValue: state.isEditMode ? state.category!.name : '',
@@ -248,14 +248,14 @@ Future<void> _showEditOptions(
     builder: (BuildContext context) => CupertinoActionSheet(
       actions: <CupertinoActionSheetAction>[
         CupertinoActionSheetAction(
-          child: const Text('Edit icon'),
+          child: const Text('Cambiar icono'),
           onPressed: () {
             Navigator.pop(context);
             _pickIcon(context, cubit);
           },
         ),
         CupertinoActionSheetAction(
-          child: const Text('Edit color'),
+          child: const Text('Cambiar color'),
           onPressed: () {
             Navigator.pop(context);
             _pickColor(context, cubit, state);
@@ -264,7 +264,7 @@ Future<void> _showEditOptions(
       ],
       cancelButton: CupertinoActionSheetAction(
         child: const Text(
-          'Canelar',
+          'Cancelar',
           style: TextStyle(color: Colors.red),
         ),
         onPressed: () {
@@ -294,9 +294,7 @@ Future _pickColor(
       ),
       content: MaterialColorPicker(
         allowShades: false,
-        selectedColor: state.isEditMode
-            ? Color(state.category!.color)
-            : AppColors.primaryColor,
+        selectedColor: Color(state.category!.color),
         onMainColorChange: (colorSwatch) {
           cubit.onColorUpdated(colorSwatch!.value).then(
                 (_) => Navigator.of(context).pop(),

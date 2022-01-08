@@ -52,14 +52,4 @@ class AccountsScreenCubit extends Cubit<AccountsScreenState> {
     }
     await saveAccounts(accounts: accounts);
   }
-
-  Future<void> addUserAccount() async {
-    await createAccount(
-      accountUserId: AccountUserId(state.user!.id.value),
-      color: 0xFFF44336,
-      icon: 0xe318,
-      name: 'Testing Category',
-      imageUrl: 'https://www.csvtasaciones.com/images/cash-icon.png',
-    );
-  }
 }

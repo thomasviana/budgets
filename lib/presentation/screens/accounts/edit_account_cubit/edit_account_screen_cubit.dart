@@ -124,6 +124,22 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     );
   }
 
+  Future<void> onLogoSelected(String imageUrl) async {
+    emit(
+      state.copyWith(
+        account: state.account!..updateImageUrl(imageUrl),
+      ),
+    );
+  }
+
+  Future<void> onLogoDeleted() async {
+    emit(
+      state.copyWith(
+        account: state.account!..updateImageUrl(null),
+      ),
+    );
+  }
+
   void onBalanceChanged(String? newBalance) {
     if (state.account == null) return;
     emit(

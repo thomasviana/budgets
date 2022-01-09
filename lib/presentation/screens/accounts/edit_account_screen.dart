@@ -1,8 +1,8 @@
 import 'package:budgets/core/accounts/domain.dart';
+import 'package:budgets/presentation/resources/logos.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../resources/colors.dart';
@@ -103,81 +103,115 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           color: AppColors.white,
         );
       }
-      String? dropdownValue = 'Cuenta bancaria';
-      return Card(
-        child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(kDefaultPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: 20),
-              Center(
-                child: InkWell(
-                  onTap: () {
-                    // _showEditOptions(context, cubit, state);
-                  },
-                  child: Stack(
-                    alignment: Alignment(1, 1.2),
-                    children: [
-                      CircleAvatar(
-                        maxRadius: 40,
-                        backgroundColor: Color(account.color),
-                        backgroundImage: image,
-                        child: isImageAvailable ? null : accountIcon,
+      return Container(
+        alignment: Alignment.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: 20),
+            Center(
+              child: InkWell(
+                onTap: () {
+                  _showEditOptions(context, cubit, state);
+                },
+                child: Stack(
+                  alignment: Alignment(1, 1.2),
+                  children: [
+                    CircleAvatar(
+                      maxRadius: 40,
+                      backgroundColor: Color(account.color),
+                      backgroundImage: image,
+                      child: isImageAvailable ? null : accountIcon,
+                    ),
+                    CircleAvatar(
+                      maxRadius: 15,
+                      child: Icon(
+                        Icons.edit,
+                        color: AppColors.white,
+                        size: 15,
                       ),
-                      CircleAvatar(
-                        maxRadius: 15,
-                        child: Icon(
-                          Icons.edit,
-                          color: AppColors.white,
-                          size: 15,
+                      backgroundColor: AppColors.greySecondary,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: kDefaultPadding,
+                left: kDefaultPadding,
+                right: kDefaultPadding,
+                bottom: 8,
+              ),
+              child: Text(
+                'GENERAL',
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Container(
+              color: AppColors.white,
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.account_balance_wallet_rounded),
+                    title: Text('Nombre'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          state.account!.name,
+                          style: TextStyle(color: AppColors.greySecondary),
                         ),
-                        backgroundColor: AppColors.greySecondary,
-                      ),
-                    ],
+                        SizedBox(width: 10),
+                        Icon(Icons.arrow_forward_ios_rounded)
+                      ],
+                    ),
+                    minLeadingWidth: 2,
                   ),
-                ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(
+                      IconData(
+                        state.account!.icon,
+                        fontFamily: 'MaterialIcons',
+                      ),
+                    ),
+                    title: Text('Tipo'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          state.account!.typeAsString,
+                          style: TextStyle(color: AppColors.greySecondary),
+                        ),
+                        SizedBox(width: 10),
+                        Icon(Icons.arrow_forward_ios_rounded)
+                      ],
+                    ),
+                    minLeadingWidth: 2,
+                  ),
+                  Divider(),
+                  ListTile(
+                    leading: Icon(Icons.attach_money_rounded),
+                    title: Text('Balance'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          '\$${currency.format(state.account!.balance)}',
+                          style: TextStyle(color: AppColors.greySecondary),
+                        ),
+                        SizedBox(width: 10),
+                        Icon(Icons.arrow_forward_ios_rounded)
+                      ],
+                    ),
+                    minLeadingWidth: 2,
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-              TextFormField(
-                initialValue: state.account!.name,
-                decoration: InputDecoration(labelText: 'Name'),
-                keyboardType: TextInputType.name,
-                onChanged: (name) => cubit.onNameChanged(name),
-              ),
-              const SizedBox(height: 20),
-              DropdownButton<String>(
-                hint: Text('Tipe de cuenta'),
-                isExpanded: true,
-                value: state.account!.typeAsString,
-                icon: const Icon(Icons.arrow_drop_down),
-                underline: Container(
-                  height: 2,
-                  color: Colors.grey[400],
-                ),
-                onChanged: (type) => cubit.onTypeChanged(type),
-                items: <String>[
-                  'Cuenta bancaria',
-                  'Efectivo',
-                  'Billetera',
-                ].map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                initialValue: '\$${currency.format(state.account!.balance)}',
-                decoration: InputDecoration(labelText: 'Balance'),
-                keyboardType: TextInputType.number,
-                onChanged: (balance) => cubit.onBalanceChanged(balance),
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -194,19 +228,32 @@ Future<void> _showEditOptions(
     builder: (BuildContext context) => CupertinoActionSheet(
       actions: <CupertinoActionSheetAction>[
         CupertinoActionSheetAction(
-          child: const Text('Cambiar imagen'),
-          onPressed: () {
-            Navigator.pop(context);
-            _pickImage(context, cubit);
-          },
-        ),
-        CupertinoActionSheetAction(
-          child: const Text('Edit color'),
+          child: const Text('Cambiar color'),
           onPressed: () {
             Navigator.pop(context);
             _pickColor(context, cubit, state);
           },
-        )
+        ),
+        CupertinoActionSheetAction(
+          child: const Text('Seleccionar logo'),
+          onPressed: () {
+            Navigator.pop(context);
+            _pickImage(context, cubit, state);
+          },
+        ),
+        if (state.account!.imageUrl != null)
+          CupertinoActionSheetAction(
+            child: Text(
+              'Eliminar logo',
+              style: TextStyle(
+                color: Colors.red,
+              ),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+              cubit.onLogoDeleted();
+            },
+          )
       ],
       cancelButton: CupertinoActionSheetAction(
         child: const Text(
@@ -238,6 +285,12 @@ Future _pickColor(
         'Seleccionar color',
         textAlign: TextAlign.center,
       ),
+      actions: [
+        TextButton(
+          onPressed: Navigator.of(context).pop,
+          child: Text('Cerrar'),
+        )
+      ],
       content: MaterialColorPicker(
         allowShades: false,
         selectedColor: Color(state.account!.color),
@@ -251,29 +304,71 @@ Future _pickColor(
   );
 }
 
-Future<void> _pickImage(
+Future _pickImage(
   BuildContext context,
   EditAccountScreenCubit cubit,
-) async {
-  final icon = await FlutterIconPicker.showIconPicker(
-    context,
-    title: Text(
-      'Selecionar imagen',
-      textAlign: TextAlign.center,
-    ),
-    iconPickerShape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(16),
+  EditAccountScreenState state,
+) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(16),
+        ),
+      ),
+      title: Text(
+        'Seleccionar logo',
+        textAlign: TextAlign.center,
+      ),
+      actions: [
+        TextButton(
+          onPressed: Navigator.of(context).pop,
+          child: Text('Cerrar'),
+        )
+      ],
+      content: SizedBox(
+        height: 300,
+        width: MediaQuery.of(context).size.width * .66,
+        child: GridView.count(
+          crossAxisCount: 4,
+          padding: const EdgeInsets.all(6.0),
+          mainAxisSpacing: 20.0,
+          crossAxisSpacing: 20.0,
+          children: <String>[
+            AccountDefaultLogos.bancolombia,
+            AccountDefaultLogos.davivienda,
+            AccountDefaultLogos.nuBank,
+            AccountDefaultLogos.bbva,
+            AccountDefaultLogos.falabella,
+            AccountDefaultLogos.bancoDeBogota,
+            AccountDefaultLogos.bancoDeOccidente,
+            AccountDefaultLogos.avvillas,
+            AccountDefaultLogos.scotiabank,
+            AccountDefaultLogos.cajaSocial,
+            AccountDefaultLogos.bankOfAmerica,
+            AccountDefaultLogos.chase,
+            AccountDefaultLogos.wellsFargo,
+            AccountDefaultLogos.cash,
+            AccountDefaultLogos.binance,
+            AccountDefaultLogos.metamask,
+          ]
+              .map(
+                (url) => InkWell(
+                  onTap: () {
+                    cubit.onLogoSelected(url);
+                    Navigator.of(context).pop();
+                  },
+                  child: GridTile(
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(url),
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
       ),
     ),
-    searchHintText: 'Buscar',
-    closeChild: Text('Cerrar'),
-    iconSize: 30,
-    iconColor: AppColors.black,
-    iconPackModes: [IconPack.cupertino],
   );
-
-  // if (icon != null) {
-  //   cubit.onTypeUpdated(icon.codePoint);
-  // }
 }

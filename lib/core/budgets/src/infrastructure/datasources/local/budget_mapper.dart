@@ -15,7 +15,7 @@ class BudgetMapper {
     return Budget(
       id: id,
       name: dto.name,
-      icon: dto.icon,
+      abbreviation: dto.abbreviation,
       color: dto.color,
       balance: dto.balance,
       budgetUserId: userId,
@@ -29,7 +29,7 @@ class BudgetMapper {
     return BudgetsTableCompanion(
       id: Value(budget.id.value),
       name: Value(budget.name),
-      icon: Value(budget.icon),
+      abbreviation: Value(budget.abbreviation),
       color: Value(budget.color),
       balance: Value(budget.balance),
       userId: Value(budget.budgetUserId!.value),

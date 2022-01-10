@@ -9,7 +9,7 @@ part 'budgets_table.g.dart';
 class BudgetsTable extends Table {
   TextColumn get id => text().customConstraint('UNIQUE')();
   TextColumn get name => text()();
-  IntColumn get icon => integer()();
+  TextColumn get abbreviation => text().nullable()();
   IntColumn get color => integer()();
   RealColumn get balance => real().withDefault(const Constant(0.0))();
   TextColumn get userId => text().nullable()();

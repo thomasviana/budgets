@@ -10,7 +10,7 @@ class CreateBudget {
 
   Future<void> call({
     required String name,
-    required int icon,
+    required String? abbreviation,
     required int color,
     required double balance,
     required BudgetUserId budgetUserId,
@@ -19,7 +19,7 @@ class CreateBudget {
       Budget(
         id: BudgetId.auto(),
         name: name,
-        icon: icon,
+        abbreviation: abbreviation,
         color: color,
         balance: balance,
         budgetUserId: budgetUserId,

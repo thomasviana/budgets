@@ -10,14 +10,14 @@ part of 'budgets_db.dart';
 class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
   final String id;
   final String name;
-  final int icon;
+  final String? abbreviation;
   final int color;
   final double balance;
   final String? userId;
   BudgetDbDto(
       {required this.id,
       required this.name,
-      required this.icon,
+      this.abbreviation,
       required this.color,
       required this.balance,
       this.userId});
@@ -28,8 +28,8 @@ class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      icon: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}icon'])!,
+      abbreviation: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}abbreviation']),
       color: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
       balance: const RealType()
@@ -43,7 +43,9 @@ class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['name'] = Variable<String>(name);
-    map['icon'] = Variable<int>(icon);
+    if (!nullToAbsent || abbreviation != null) {
+      map['abbreviation'] = Variable<String?>(abbreviation);
+    }
     map['color'] = Variable<int>(color);
     map['balance'] = Variable<double>(balance);
     if (!nullToAbsent || userId != null) {
@@ -56,7 +58,9 @@ class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
     return BudgetsTableCompanion(
       id: Value(id),
       name: Value(name),
-      icon: Value(icon),
+      abbreviation: abbreviation == null && nullToAbsent
+          ? const Value.absent()
+          : Value(abbreviation),
       color: Value(color),
       balance: Value(balance),
       userId:
@@ -70,7 +74,7 @@ class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
     return BudgetDbDto(
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
-      icon: serializer.fromJson<int>(json['icon']),
+      abbreviation: serializer.fromJson<String?>(json['abbreviation']),
       color: serializer.fromJson<int>(json['color']),
       balance: serializer.fromJson<double>(json['balance']),
       userId: serializer.fromJson<String?>(json['userId']),
@@ -82,7 +86,7 @@ class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
-      'icon': serializer.toJson<int>(icon),
+      'abbreviation': serializer.toJson<String?>(abbreviation),
       'color': serializer.toJson<int>(color),
       'balance': serializer.toJson<double>(balance),
       'userId': serializer.toJson<String?>(userId),
@@ -92,14 +96,14 @@ class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
   BudgetDbDto copyWith(
           {String? id,
           String? name,
-          int? icon,
+          String? abbreviation,
           int? color,
           double? balance,
           String? userId}) =>
       BudgetDbDto(
         id: id ?? this.id,
         name: name ?? this.name,
-        icon: icon ?? this.icon,
+        abbreviation: abbreviation ?? this.abbreviation,
         color: color ?? this.color,
         balance: balance ?? this.balance,
         userId: userId ?? this.userId,
@@ -109,7 +113,7 @@ class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
     return (StringBuffer('BudgetDbDto(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('icon: $icon, ')
+          ..write('abbreviation: $abbreviation, ')
           ..write('color: $color, ')
           ..write('balance: $balance, ')
           ..write('userId: $userId')
@@ -118,14 +122,15 @@ class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
   }
 
   @override
-  int get hashCode => Object.hash(id, name, icon, color, balance, userId);
+  int get hashCode =>
+      Object.hash(id, name, abbreviation, color, balance, userId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is BudgetDbDto &&
           other.id == this.id &&
           other.name == this.name &&
-          other.icon == this.icon &&
+          other.abbreviation == this.abbreviation &&
           other.color == this.color &&
           other.balance == this.balance &&
           other.userId == this.userId);
@@ -134,14 +139,14 @@ class BudgetDbDto extends DataClass implements Insertable<BudgetDbDto> {
 class BudgetsTableCompanion extends UpdateCompanion<BudgetDbDto> {
   final Value<String> id;
   final Value<String> name;
-  final Value<int> icon;
+  final Value<String?> abbreviation;
   final Value<int> color;
   final Value<double> balance;
   final Value<String?> userId;
   const BudgetsTableCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
-    this.icon = const Value.absent(),
+    this.abbreviation = const Value.absent(),
     this.color = const Value.absent(),
     this.balance = const Value.absent(),
     this.userId = const Value.absent(),
@@ -149,18 +154,17 @@ class BudgetsTableCompanion extends UpdateCompanion<BudgetDbDto> {
   BudgetsTableCompanion.insert({
     required String id,
     required String name,
-    required int icon,
+    this.abbreviation = const Value.absent(),
     required int color,
     this.balance = const Value.absent(),
     this.userId = const Value.absent(),
   })  : id = Value(id),
         name = Value(name),
-        icon = Value(icon),
         color = Value(color);
   static Insertable<BudgetDbDto> custom({
     Expression<String>? id,
     Expression<String>? name,
-    Expression<int>? icon,
+    Expression<String?>? abbreviation,
     Expression<int>? color,
     Expression<double>? balance,
     Expression<String?>? userId,
@@ -168,7 +172,7 @@ class BudgetsTableCompanion extends UpdateCompanion<BudgetDbDto> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
-      if (icon != null) 'icon': icon,
+      if (abbreviation != null) 'abbreviation': abbreviation,
       if (color != null) 'color': color,
       if (balance != null) 'balance': balance,
       if (userId != null) 'user_id': userId,
@@ -178,14 +182,14 @@ class BudgetsTableCompanion extends UpdateCompanion<BudgetDbDto> {
   BudgetsTableCompanion copyWith(
       {Value<String>? id,
       Value<String>? name,
-      Value<int>? icon,
+      Value<String?>? abbreviation,
       Value<int>? color,
       Value<double>? balance,
       Value<String?>? userId}) {
     return BudgetsTableCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
-      icon: icon ?? this.icon,
+      abbreviation: abbreviation ?? this.abbreviation,
       color: color ?? this.color,
       balance: balance ?? this.balance,
       userId: userId ?? this.userId,
@@ -201,8 +205,8 @@ class BudgetsTableCompanion extends UpdateCompanion<BudgetDbDto> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (icon.present) {
-      map['icon'] = Variable<int>(icon.value);
+    if (abbreviation.present) {
+      map['abbreviation'] = Variable<String?>(abbreviation.value);
     }
     if (color.present) {
       map['color'] = Variable<int>(color.value);
@@ -221,7 +225,7 @@ class BudgetsTableCompanion extends UpdateCompanion<BudgetDbDto> {
     return (StringBuffer('BudgetsTableCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('icon: $icon, ')
+          ..write('abbreviation: $abbreviation, ')
           ..write('color: $color, ')
           ..write('balance: $balance, ')
           ..write('userId: $userId')
@@ -247,11 +251,12 @@ class $BudgetsTableTable extends BudgetsTable
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
       type: const StringType(), requiredDuringInsert: true);
-  final VerificationMeta _iconMeta = const VerificationMeta('icon');
+  final VerificationMeta _abbreviationMeta =
+      const VerificationMeta('abbreviation');
   @override
-  late final GeneratedColumn<int?> icon = GeneratedColumn<int?>(
-      'icon', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+  late final GeneratedColumn<String?> abbreviation = GeneratedColumn<String?>(
+      'abbreviation', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
   late final GeneratedColumn<int?> color = GeneratedColumn<int?>(
@@ -271,7 +276,7 @@ class $BudgetsTableTable extends BudgetsTable
       type: const StringType(), requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, icon, color, balance, userId];
+      [id, name, abbreviation, color, balance, userId];
   @override
   String get aliasedName => _alias ?? 'budgets';
   @override
@@ -292,11 +297,11 @@ class $BudgetsTableTable extends BudgetsTable
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('icon')) {
+    if (data.containsKey('abbreviation')) {
       context.handle(
-          _iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
-    } else if (isInserting) {
-      context.missing(_iconMeta);
+          _abbreviationMeta,
+          abbreviation.isAcceptableOrUnknown(
+              data['abbreviation']!, _abbreviationMeta));
     }
     if (data.containsKey('color')) {
       context.handle(

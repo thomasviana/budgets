@@ -17,7 +17,7 @@ class UpdateBudget {
     required BudgetUserId userId,
     required BudgetId budgetId,
     String? name,
-    int? icon,
+    String? abbreviation,
     int? color,
     double? balance,
   }) async {
@@ -34,7 +34,7 @@ class UpdateBudget {
       _budgetRepository.save(
         budget
           ..updateName(name ?? budget.name)
-          ..updateIcon(icon ?? budget.icon)
+          ..updateAbbreviation(abbreviation ?? budget.abbreviation)
           ..updateColor(color ?? budget.color)
           ..updateBalance(balance ?? budget.balance),
       );

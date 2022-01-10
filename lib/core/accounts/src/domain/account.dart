@@ -1,5 +1,4 @@
 import 'package:budgets/presentation/resources/colors.dart';
-import 'package:budgets/presentation/resources/logos.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../common/value_objects.dart';
@@ -38,8 +37,8 @@ class Account extends Entity<AccountId> {
   void updateBalance(double newBalance) => balance = newBalance;
 
   int get icon {
-    if (type == AccountType.bank) return 0xe041;
-    if (type == AccountType.cash) return 0xe041;
+    if (type == AccountType.bank) return 0xe040;
+    if (type == AccountType.cash) return 0xf8cf;
     if (type == AccountType.wallet) return 0xe041;
     return 0xe041;
   }
@@ -58,20 +57,12 @@ class Account extends Entity<AccountId> {
         color: AppColors.primaryColor.value,
       );
 
-  factory Account.bancolombia() => Account(
-        id: AccountId('bancolombia'),
-        name: 'Bancolombia',
+  factory Account.bank() => Account(
+        id: AccountId('bank'),
+        name: 'Cuenta bancaria',
         type: AccountType.bank,
         color: AppColors.primaryColor.value,
-        imageUrl: AccountDefaultLogos.bancolombia,
-      );
-
-  factory Account.davivienda() => Account(
-        id: AccountId('davivienda'),
-        name: 'Davivienda',
-        type: AccountType.bank,
-        color: AppColors.primaryColor.value,
-        imageUrl: AccountDefaultLogos.davivienda,
+        // imageUrl: AccountDefaultLogos.bancolombia,
       );
 
   factory Account.cash() => Account(
@@ -79,7 +70,7 @@ class Account extends Entity<AccountId> {
         name: 'Efectivo',
         type: AccountType.cash,
         color: AppColors.primaryColor.value,
-        imageUrl: AccountDefaultLogos.cash,
+        // imageUrl: AccountDefaultLogos.cash,
       );
 
   factory Account.wallet() => Account(
@@ -87,13 +78,12 @@ class Account extends Entity<AccountId> {
         name: 'Billetera',
         type: AccountType.wallet,
         color: AppColors.primaryColor.value,
-        imageUrl: AccountDefaultLogos.wallet,
+        // imageUrl: AccountDefaultLogos.wallet,
       );
 
   static List<Account> get defaultAccounts {
     return [
-      Account.bancolombia(),
-      Account.davivienda(),
+      Account.bank(),
       Account.cash(),
       Account.wallet(),
     ];

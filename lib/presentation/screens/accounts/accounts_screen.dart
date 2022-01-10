@@ -46,10 +46,10 @@ class _AccountssScreenState extends State<AccountsScreen> {
                       color: AppColors.primaryColor,
                     ),
                     onPressed: () {
-                      // AppNavigator.navigateToEditCategoryPage(
-                      //   context,
-                      //   (_) => cubit.getUserCategories(),
-                      // );
+                      AppNavigator.navigateToEditAccountPage(
+                        context,
+                        (_) => cubit.getUserAccounts(),
+                      );
                     },
                   ),
                 ],

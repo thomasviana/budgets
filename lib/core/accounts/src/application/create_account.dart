@@ -13,6 +13,7 @@ class CreateAccount {
     required AccountType type,
     required int color,
     String? imageUrl,
+    required double balance,
     required AccountUserId accountUserId,
   }) {
     return _accountRepository.save(
@@ -22,6 +23,7 @@ class CreateAccount {
         type: type,
         color: color,
         imageUrl: imageUrl,
+        balance: balance,
         accountUserId: accountUserId,
       ),
     );

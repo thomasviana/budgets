@@ -20,6 +20,7 @@ class UpdateAccount {
     AccountType? type,
     int? color,
     String? imageUrl,
+    double? balance,
   }) async {
     final account = await _getAccounts(userId).then(
       (accounts) => accounts.fold(
@@ -36,7 +37,8 @@ class UpdateAccount {
           ..updateName(name ?? account.name)
           ..updateType(type ?? account.type)
           ..updateColor(color ?? account.color)
-          ..updateImageUrl(imageUrl),
+          ..updateImageUrl(imageUrl)
+          ..updateBalance(balance ?? account.balance),
       );
     }
   }

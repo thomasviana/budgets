@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 class AppIcons {
   AppIcons._();
 
+  static const IconData bank = IconData(0xe040, fontFamily: 'MaterialIcons');
+  static const IconData cash = IconData(0xe041, fontFamily: 'MaterialIcons');
+  static const IconData wallet = IconData(0xf8cf, fontFamily: 'MaterialIcons');
+
   static const List<IconData> icons = [
     Icons.threesixty,
     Icons.threed_rotation,
@@ -1986,4 +1990,6 @@ class AppIcons {
     }
     return map;
   }
+
+  static const List<String> accountIcons = [];
 }

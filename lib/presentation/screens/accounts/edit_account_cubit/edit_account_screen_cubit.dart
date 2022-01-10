@@ -12,7 +12,6 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
   UpdateAccount updateAccount;
   DeleteAccount deleteAccount;
   GetProfileInfo getProfileInfo;
-
   CreateAccount createAccount;
 
   EditAccountScreenCubit(
@@ -77,6 +76,7 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
         color: state.account!.color,
         type: state.account!.type,
         imageUrl: state.account!.imageUrl,
+        balance: state.account!.balance,
       );
     } else {
       await updateAccount(
@@ -86,6 +86,7 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
         color: state.account!.color,
         type: state.account!.type,
         imageUrl: state.account!.imageUrl,
+        balance: state.account!.balance,
       );
     }
   }
@@ -106,24 +107,6 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     );
   }
 
-  Future<void> onTypeChanged(String? newType) async {
-    final AccountType type;
-    if (newType == 'Cuenta bancaria') {
-      type = AccountType.bank;
-    } else if (newType == 'Efectivo') {
-      type = AccountType.cash;
-    } else if (newType == 'Billetera') {
-      type = AccountType.wallet;
-    } else {
-      type = AccountType.bank;
-    }
-    emit(
-      state.copyWith(
-        account: state.account!..updateType(type),
-      ),
-    );
-  }
-
   Future<void> onLogoSelected(String imageUrl) async {
     emit(
       state.copyWith(
@@ -140,11 +123,19 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     );
   }
 
-  void onBalanceChanged(String? newBalance) {
+  void onBalanceChanged(double newBalance) {
     if (state.account == null) return;
     emit(
       state.copyWith(
-        account: state.account!..updateBalance(double.parse(newBalance!)),
+        account: state.account!..updateBalance(newBalance),
+      ),
+    );
+  }
+
+  Future<void> onTypeChanged(AccountType newType) async {
+    emit(
+      state.copyWith(
+        account: state.account!..updateType(newType),
       ),
     );
   }

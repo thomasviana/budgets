@@ -1,12 +1,13 @@
-import 'package:budgets/presentation/resources/icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../../core/categories/domain.dart';
 import '../../resources/colors.dart';
+import '../../resources/icons.dart';
 import '../../routes/app_navigator.dart';
 import 'edit_category_cubit/edit_category_screen_cubit.dart';
 
@@ -103,16 +104,13 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
     } else {
       return SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              color: AppColors.white,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(kDefaultPadding),
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  InkWell(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                Center(
+                  child: InkWell(
                     onTap: () {
                       _showEditOptions(context, cubit, state);
                     },
@@ -143,94 +141,144 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    // controller: textEditingController,
-                    initialValue: state.isEditMode ? state.category!.name : '',
-                    decoration: InputDecoration(labelText: 'Name'),
-                    keyboardType: TextInputType.name,
-                    autofocus: !state.isEditMode,
-                    onChanged: (name) => cubit.onNameChanged(name),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: kDefaultPadding,
+                    left: kDefaultPadding,
+                    right: kDefaultPadding,
+                    bottom: 8,
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: kDefaultPadding,
-                left: kDefaultPadding,
-                right: kDefaultPadding,
-                bottom: 8,
-              ),
-              child: Text(
-                'SUBCATEGORIES',
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
-                textAlign: TextAlign.start,
-              ),
-            ),
-            Container(
-              color: AppColors.white,
-              child: FutureBuilder(
-                future: cubit.getUserSubCategories(),
-                builder: (context, snapshot) {
-                  final subCategories = state.subCategories ?? [];
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.only(top: 8, bottom: 8),
-                    itemCount: subCategories.length,
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Text(subCategories[index].name),
-                        leading: CircleAvatar(
-                          maxRadius: 20,
-                          child: Icon(
-                            IconData(
-                              subCategories[index].icon,
-                              fontFamily: 'MaterialIcons',
-                            ),
-                            color: AppColors.white,
-                          ),
-                          backgroundColor: Color(subCategories[index].color),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
+                  child: Text(
+                    'GENERAL',
+                    style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                Container(
+                  color: AppColors.white,
+                  child: Column(
+                    children: [
+                      Divider(height: 2),
+                      ListTile(
+                        leading: Icon(Icons.drive_file_rename_outline_outlined),
+                        minLeadingWidth: 2,
+                        title: Text('Nombre'),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (state.category!.name.isNotEmpty)
+                              Text(
+                                state.category!.name,
+                                style:
+                                    TextStyle(color: AppColors.greySecondary),
+                              ),
+                            if (state.category!.name.isEmpty)
+                              Text(
+                                'Requerido',
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            SizedBox(width: 10),
+                            Icon(Icons.arrow_forward_ios_rounded)
+                          ],
                         ),
                         onTap: () {
-                          AppNavigator.navigateToEditSubCategoryPage(
-                            context,
-                            subCategories[index],
-                            (_) => cubit.getUserSubCategories(),
+                          showModalBottomSheet(
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (context) => _EditNameBottomSheet(
+                              state: state,
+                              onCancelPressed: () {},
+                              onSavePressed: (name) {
+                                cubit.onNameChanged(name);
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: kDefaultPadding,
+                    left: kDefaultPadding,
+                    right: kDefaultPadding,
+                    bottom: 8,
+                  ),
+                  child: Text(
+                    'SUBCATEGORIES',
+                    style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                Container(
+                  color: AppColors.white,
+                  child: FutureBuilder(
+                    future: cubit.getUserSubCategories(),
+                    builder: (context, snapshot) {
+                      final subCategories = state.subCategories ?? [];
+                      return ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.only(top: 4, bottom: 4),
+                        itemCount: subCategories.length,
+                        separatorBuilder: (BuildContext context, int index) =>
+                            Divider(height: 2),
+                        itemBuilder: (BuildContext context, int index) {
+                          return ListTile(
+                            title: Text(subCategories[index].name),
+                            leading: CircleAvatar(
+                              maxRadius: 20,
+                              child: Icon(
+                                IconData(
+                                  subCategories[index].icon,
+                                  fontFamily: 'MaterialIcons',
+                                ),
+                                color: AppColors.white,
+                              ),
+                              backgroundColor:
+                                  Color(subCategories[index].color),
+                            ),
+                            trailing: Icon(
+                              Icons.arrow_forward_ios,
+                            ),
+                            onTap: () {
+                              AppNavigator.navigateToEditSubCategoryPage(
+                                context,
+                                subCategories[index],
+                                (_) => cubit.getUserSubCategories(),
+                              );
+                            },
                           );
                         },
                       );
                     },
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 40),
-            Container(
-              color: AppColors.white,
-              child: ListTile(
-                title: Text('Añadir subcategoria'),
-                leading: CircleAvatar(
-                  maxRadius: 20,
-                  child: Icon(
-                    Icons.add,
-                    color: AppColors.white,
                   ),
-                  backgroundColor: AppColors.greyDisabled,
                 ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios,
+                SizedBox(height: 40),
+                Container(
+                  color: AppColors.white,
+                  child: ListTile(
+                    title: Text('Añadir subcategoria'),
+                    leading: CircleAvatar(
+                      maxRadius: 20,
+                      child: Icon(
+                        Icons.add,
+                        color: AppColors.white,
+                      ),
+                      backgroundColor: AppColors.greyDisabled,
+                    ),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                    ),
+                    onTap: () => cubit.onAddSubCategory(),
+                  ),
                 ),
-                onTap: () => cubit.onAddSubCategory(),
-              ),
-            ),
-            SizedBox(height: 80),
+                SizedBox(height: 80),
+              ],
+            )
           ],
         ),
       );
@@ -331,5 +379,94 @@ Future<void> _pickIcon(
 
   if (icon != null) {
     cubit.onIconUpdated(icon.codePoint);
+  }
+}
+
+class _EditNameBottomSheet extends HookWidget {
+  final Function(String) onSavePressed;
+  final VoidCallback onCancelPressed;
+  final EditCategoryScreenState state;
+
+  const _EditNameBottomSheet({
+    Key? key,
+    required this.onSavePressed,
+    required this.onCancelPressed,
+    required this.state,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textEditingController = useTextEditingController()
+      ..text = state.category!.name;
+    return DraggableScrollableSheet(
+      initialChildSize: 0.95,
+      maxChildSize: 0.95,
+      builder: (context, controller) => Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                    child: const Text('Cancelar'),
+                    onPressed: () {
+                      AppNavigator.navigateBack(context);
+                      onCancelPressed();
+                    }),
+                const Text(
+                  'Editar categoria',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                TextButton(
+                  child: const Text('Guardar'),
+                  onPressed: () {
+                    AppNavigator.navigateBack(context);
+                    onSavePressed(textEditingController.value.text.trim());
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 50),
+            TextField(
+              controller: textEditingController,
+              keyboardType: TextInputType.name,
+              autofocus: true,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              decoration: InputDecoration(
+                alignLabelWithHint: true,
+                label: Center(
+                  child: Text(
+                    'Nuevo nombre',
+                  ),
+                ),
+                labelStyle: TextStyle(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 14,
+                ),
+                hintStyle: TextStyle(fontSize: 18),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: '',
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

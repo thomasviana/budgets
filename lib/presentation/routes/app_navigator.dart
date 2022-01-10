@@ -1,7 +1,7 @@
-import 'package:budgets/core/accounts/domain.dart';
-import 'package:budgets/core/budgets/domain.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/accounts/domain.dart';
+import '../../core/budgets/domain.dart';
 import '../../core/categories/domain.dart';
 
 class AppNavigator {

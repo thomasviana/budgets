@@ -1,9 +1,9 @@
-import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../resources/colors.dart';
+import '../../routes/app_navigator.dart';
 import 'accounts_cubit/accounts_screen_cubit.dart';
 
 class AccountsScreen extends StatefulWidget {

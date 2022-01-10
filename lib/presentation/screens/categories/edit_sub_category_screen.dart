@@ -1,12 +1,13 @@
-import 'package:budgets/presentation/resources/icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../../core/categories/domain.dart';
 import '../../resources/colors.dart';
+import '../../resources/icons.dart';
 import '../../routes/app_navigator.dart';
 import 'edit_sub_category_cubit/edit_sub_category_screen_cubit.dart';
 
@@ -85,14 +86,14 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return Card(
-        child: Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(kDefaultPadding),
-          child: Column(
-            children: [
-              SizedBox(height: 20),
-              InkWell(
+      return Container(
+        alignment: Alignment.center,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 20),
+            Center(
+              child: InkWell(
                 onTap: () {
                   _showEditOptions(context, cubit, state);
                 },
@@ -123,16 +124,65 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              TextFormField(
-                initialValue: state.subCategory!.name,
-                decoration: InputDecoration(labelText: 'Name'),
-                keyboardType: TextInputType.name,
-                onChanged: (name) => cubit.onNameChanged(name),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: kDefaultPadding,
+                left: kDefaultPadding,
+                right: kDefaultPadding,
+                bottom: 8,
               ),
-              const SizedBox(height: 20),
-            ],
-          ),
+              child: Text(
+                'GENERAL',
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Container(
+              color: AppColors.white,
+              child: Column(
+                children: [
+                  Divider(height: 2),
+                  ListTile(
+                    leading: Icon(Icons.drive_file_rename_outline_outlined),
+                    minLeadingWidth: 2,
+                    title: Text('Nombre'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (state.subCategory!.name.isNotEmpty)
+                          Text(
+                            state.subCategory!.name,
+                            style: TextStyle(color: AppColors.greySecondary),
+                          ),
+                        if (state.subCategory!.name.isEmpty)
+                          Text(
+                            'Requerido',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        SizedBox(width: 10),
+                        Icon(Icons.arrow_forward_ios_rounded)
+                      ],
+                    ),
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (context) => _EditNameBottomSheet(
+                          state: state,
+                          onCancelPressed: () {},
+                          onSavePressed: (name) {
+                            cubit.onNameChanged(name);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       );
     }
@@ -232,5 +282,94 @@ Future<void> _pickIcon(
 
   if (icon != null) {
     cubit.onIconUpdated(icon.codePoint);
+  }
+}
+
+class _EditNameBottomSheet extends HookWidget {
+  final Function(String) onSavePressed;
+  final VoidCallback onCancelPressed;
+  final EditSubCategoryScreenState state;
+
+  const _EditNameBottomSheet({
+    Key? key,
+    required this.onSavePressed,
+    required this.onCancelPressed,
+    required this.state,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final textEditingController = useTextEditingController()
+      ..text = state.subCategory!.name;
+    return DraggableScrollableSheet(
+      initialChildSize: 0.95,
+      maxChildSize: 0.95,
+      builder: (context, controller) => Container(
+        decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                    child: const Text('Cancelar'),
+                    onPressed: () {
+                      AppNavigator.navigateBack(context);
+                      onCancelPressed();
+                    }),
+                const Text(
+                  'Editar subcategoria',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                TextButton(
+                  child: const Text('Guardar'),
+                  onPressed: () {
+                    AppNavigator.navigateBack(context);
+                    onSavePressed(textEditingController.value.text.trim());
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 50),
+            TextField(
+              controller: textEditingController,
+              keyboardType: TextInputType.name,
+              autofocus: true,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              decoration: InputDecoration(
+                alignLabelWithHint: true,
+                label: Center(
+                  child: Text(
+                    'Nuevo nombre',
+                  ),
+                ),
+                labelStyle: TextStyle(
+                  color: AppColors.black,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 14,
+                ),
+                hintStyle: TextStyle(fontSize: 18),
+                border: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: '',
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

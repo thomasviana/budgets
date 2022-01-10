@@ -1,7 +1,7 @@
-import 'package:budgets/core/accounts/src/application/get_accounts.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain.dart';
+import 'get_accounts.dart';
 
 @injectable
 class UpdateAccount {

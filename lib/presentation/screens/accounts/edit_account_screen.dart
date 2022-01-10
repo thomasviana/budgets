@@ -1,6 +1,3 @@
-import 'package:budgets/core/accounts/domain.dart';
-import 'package:budgets/presentation/resources/icons.dart';
-import 'package:budgets/presentation/resources/logos.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
+import '../../../core/accounts/domain.dart';
 import '../../resources/colors.dart';
+import '../../resources/icons.dart';
+import '../../resources/logos.dart';
 import '../../routes/app_navigator.dart';
 import 'edit_account_cubit/edit_account_screen_cubit.dart';
 

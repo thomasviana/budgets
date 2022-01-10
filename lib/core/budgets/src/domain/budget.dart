@@ -1,7 +1,7 @@
-import 'package:budgets/presentation/resources/colors.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../common/value_objects.dart';
+import '../../../../presentation/resources/colors.dart';
 
 enum BudgetAbbreviation { bank, cash, wallet }
 

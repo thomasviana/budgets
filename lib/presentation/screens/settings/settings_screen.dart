@@ -41,9 +41,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
         body: Column(
           children: [
+            Divider(
+              height: 3,
+            ),
             ListTile(
               title: Text('Profile'),
-              leading: Icon(Icons.person),
+              leading: Icon(Icons.person_outline),
               trailing: Icon(Icons.arrow_forward_ios),
               autofocus: true,
               enableFeedback: true,
@@ -51,21 +54,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 AppNavigator.navigateToProfilePage(context);
               },
             ),
-            Divider(),
+            Divider(
+              height: 3,
+            ),
             ListTile(
-              title: Text('Categories'),
-              leading: Icon(Icons.folder),
+              title: Text('Categorias'),
+              leading: Icon(Icons.folder_open),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () => AppNavigator.navigateToCategoriesPage(context),
             ),
-            Divider(),
+            Divider(
+              height: 3,
+            ),
             ListTile(
-              title: Text('Accounts'),
-              leading: Icon(Icons.comment_bank),
+              title: Text('Cuentas'),
+              leading: Icon(Icons.account_balance),
               trailing: Icon(Icons.arrow_forward_ios),
               onTap: () => AppNavigator.navigateToAccountsPage(context),
             ),
-            Divider(),
+            Divider(
+              height: 3,
+            ),
+            ListTile(
+              title: Text('Presupuestos'),
+              leading: Icon(Icons.all_inbox),
+              trailing: Icon(Icons.arrow_forward_ios),
+              onTap: () => AppNavigator.navigateToBudgetsPage(context),
+            ),
+            Divider(
+              height: 3,
+            ),
             ListTile(
               title: Text(
                 'LogOut',
@@ -77,7 +95,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 AppNavigator.navigateToAuthPage(context);
               },
             ),
-            Divider(),
+            Divider(
+              height: 3,
+            ),
           ],
         ),
       ),

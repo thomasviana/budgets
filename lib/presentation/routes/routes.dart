@@ -1,8 +1,13 @@
 import 'package:budgets/core/accounts/domain.dart';
+import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/presentation/screens/accounts/accounts_cubit/accounts_screen_cubit.dart';
 import 'package:budgets/presentation/screens/accounts/accounts_screen.dart';
 import 'package:budgets/presentation/screens/accounts/edit_account_cubit/edit_account_screen_cubit.dart';
 import 'package:budgets/presentation/screens/accounts/edit_account_screen.dart';
+import 'package:budgets/presentation/screens/budgets/budgets_cubit/butgets_screen_cubit.dart';
+import 'package:budgets/presentation/screens/budgets/budgets_screen.dart';
+import 'package:budgets/presentation/screens/budgets/edit_budget_cubit/edit_budget_screen_cubit.dart';
+import 'package:budgets/presentation/screens/budgets/edit_budget_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -109,6 +114,23 @@ class Routes {
           BlocProvider(
             create: (context) => sl<EditAccountScreenCubit>(),
             child: EditAccountScreen(account: account as Account?),
+          ),
+        );
+      case AppNavigator.ROUTE_BUDGETS_PAGE:
+        return _buildRoute(
+          settings,
+          BlocProvider(
+            create: (context) => sl<BudgetsScreenCubit>(),
+            child: BudgetsScreen(),
+          ),
+        );
+      case AppNavigator.ROUTE_EDIT_BUDGET_PAGE:
+        final budget = settings.arguments;
+        return _buildRoute(
+          settings,
+          BlocProvider(
+            create: (context) => sl<EditBudgetScreenCubit>(),
+            child: EditBudgetScreen(budget: budget as Budget?),
           ),
         );
       default:

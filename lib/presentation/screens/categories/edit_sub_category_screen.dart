@@ -1,6 +1,9 @@
+import 'package:budgets/presentation/resources/icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../../core/categories/domain.dart';
 import '../../resources/colors.dart';
@@ -90,18 +93,34 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
             children: [
               SizedBox(height: 20),
               InkWell(
-                // onTap: cubit.onPickNewIcon,
-                child: CircleAvatar(
-                  maxRadius: 40,
-                  child: Icon(
-                    IconData(
-                      state.subCategory!.icon,
-                      fontFamily: 'MaterialIcons',
+                onTap: () {
+                  _showEditOptions(context, cubit, state);
+                },
+                child: Stack(
+                  alignment: Alignment(1, 1.2),
+                  children: [
+                    CircleAvatar(
+                      maxRadius: 40,
+                      child: Icon(
+                        IconData(
+                          state.subCategory!.icon,
+                          fontFamily: 'MaterialIcons',
+                        ),
+                        color: AppColors.white,
+                        size: 40,
+                      ),
+                      backgroundColor: Color(state.subCategory!.color),
                     ),
-                    color: AppColors.white,
-                    size: 40,
-                  ),
-                  backgroundColor: Color(state.subCategory!.color),
+                    CircleAvatar(
+                      maxRadius: 15,
+                      child: Icon(
+                        Icons.edit,
+                        color: AppColors.white,
+                        size: 15,
+                      ),
+                      backgroundColor: AppColors.greySecondary,
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 20),
@@ -117,5 +136,101 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
         ),
       );
     }
+  }
+}
+
+Future<void> _showEditOptions(
+  BuildContext context,
+  EditSubCategoryScreenCubit cubit,
+  EditSubCategoryScreenState state,
+) async {
+  await showCupertinoModalPopup<void>(
+    context: context,
+    builder: (BuildContext context) => CupertinoActionSheet(
+      actions: <CupertinoActionSheetAction>[
+        CupertinoActionSheetAction(
+          child: const Text('Cambiar icono'),
+          onPressed: () {
+            Navigator.pop(context);
+            _pickIcon(context, cubit);
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: const Text('Cambiar color'),
+          onPressed: () {
+            Navigator.pop(context);
+            _pickColor(context, cubit, state);
+          },
+        )
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: const Text(
+          'Cancelar',
+          style: TextStyle(color: Colors.red),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    ),
+  );
+}
+
+Future _pickColor(
+  BuildContext context,
+  EditSubCategoryScreenCubit cubit,
+  EditSubCategoryScreenState state,
+) {
+  return showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(16),
+        ),
+      ),
+      title: Text(
+        'Seleccionar color',
+        textAlign: TextAlign.center,
+      ),
+      content: MaterialColorPicker(
+        allowShades: false,
+        selectedColor: Color(state.subCategory!.color),
+        onMainColorChange: (colorSwatch) {
+          cubit.onColorUpdated(colorSwatch!.value).then(
+                (_) => Navigator.of(context).pop(),
+              );
+        },
+      ),
+    ),
+  );
+}
+
+Future<void> _pickIcon(
+  BuildContext context,
+  EditSubCategoryScreenCubit cubit,
+) async {
+  final materialIcons = AppIcons.materialIcons();
+  final icon = await FlutterIconPicker.showIconPicker(
+    context,
+    title: Text(
+      'Selecionar icono',
+      textAlign: TextAlign.center,
+    ),
+    iconPickerShape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(16),
+      ),
+    ),
+    searchHintText: 'Buscar',
+    closeChild: Text('Cerrar'),
+    iconSize: 30,
+    customIconPack: materialIcons,
+    iconColor: AppColors.black,
+    iconPackModes: [IconPack.custom],
+  );
+
+  if (icon != null) {
+    cubit.onIconUpdated(icon.codePoint);
   }
 }

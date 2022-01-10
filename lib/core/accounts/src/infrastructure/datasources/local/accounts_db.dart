@@ -26,5 +26,5 @@ class AccountsDatabase extends _$AccountsDatabase {
   AccountsDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 1;
 }

@@ -27,7 +27,7 @@ class UpdateAccount {
         () => null,
         (accounts) => accounts.firstWhere(
           (account) => account.id == accountId,
-          orElse: () => throw Exception("Category doesn't exist."),
+          orElse: () => throw Exception("Account doesn't exist."),
         ),
       ),
     );

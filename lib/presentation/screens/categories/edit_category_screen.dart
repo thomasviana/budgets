@@ -53,7 +53,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
               largeTitle: Text(
-                  state.isEditMode ? 'Editar categoria' : 'Crear categoria'),
+                  state.isEditMode ? 'Editar categoria' : 'Crear categoría'),
               previousPageTitle: 'Atras',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,

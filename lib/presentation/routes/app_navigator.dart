@@ -14,6 +14,7 @@ class AppNavigator {
 
   // Settings
   static const ROUTE_PROFILE_PAGE = '/profile';
+
   static const ROUTE_CATEGORIES_PAGE = '/categories';
   static const ROUTE_SUB_CATEGORIES_PAGE = '/sub-categories';
   static const ROUTE_EDIT_CATEGORY_PAGE = '/edit-category';
@@ -70,30 +71,15 @@ class AppNavigator {
     BuildContext context,
     Category category,
   ) {
-    Navigator.pushNamed(
-      context,
-      ROUTE_SUB_CATEGORIES_PAGE,
-      arguments: category,
-    );
+    Navigator.pushNamed(context, ROUTE_SUB_CATEGORIES_PAGE,
+        arguments: category);
   }
 
   static void navigateToEditCategoryPage(
-    BuildContext context,
-    Function(Object?) function, {
-    Category? category,
-  }) {
-    if (category == null) {
-      Navigator.pushNamed(
-        context,
-        ROUTE_EDIT_CATEGORY_PAGE,
-      ).then(function);
-    } else {
-      Navigator.pushNamed(
-        context,
-        ROUTE_EDIT_CATEGORY_PAGE,
-        arguments: category,
-      ).then(function);
-    }
+      BuildContext context, Function(Object?) function,
+      {Category? category}) {
+    Navigator.pushNamed(context, ROUTE_EDIT_CATEGORY_PAGE, arguments: category)
+        .then(function);
   }
 
   static void navigateToEditSubCategoryPage(
@@ -101,11 +87,9 @@ class AppNavigator {
     SubCategory subCategory,
     Function(Object?) function,
   ) {
-    Navigator.pushNamed(
-      context,
-      ROUTE_EDIT_SUB_CATEGORY_PAGE,
-      arguments: subCategory,
-    ).then(function);
+    Navigator.pushNamed(context, ROUTE_EDIT_SUB_CATEGORY_PAGE,
+            arguments: subCategory)
+        .then(function);
   }
 
   static void navigateToAccountsPage(BuildContext context) {
@@ -117,11 +101,8 @@ class AppNavigator {
     Function(Object?) function, {
     Account? account,
   }) {
-    Navigator.pushNamed(
-      context,
-      ROUTE_EDIT_ACCOUNT_PAGE,
-      arguments: account,
-    ).then(function);
+    Navigator.pushNamed(context, ROUTE_EDIT_ACCOUNT_PAGE, arguments: account)
+        .then(function);
   }
 
   static void navigateToBudgetsPage(BuildContext context) {
@@ -133,10 +114,7 @@ class AppNavigator {
     Function(Object?) function, {
     Budget? budget,
   }) {
-    Navigator.pushNamed(
-      context,
-      ROUTE_EDIT_BUDGET_PAGE,
-      arguments: budget,
-    ).then(function);
+    Navigator.pushNamed(context, ROUTE_EDIT_BUDGET_PAGE, arguments: budget)
+        .then(function);
   }
 }

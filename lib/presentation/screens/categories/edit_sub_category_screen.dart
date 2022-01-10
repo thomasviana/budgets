@@ -45,8 +45,8 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
-              largeTitle: Text('Edit subcategory'),
-              previousPageTitle: 'Back',
+              largeTitle: Text('Subcategoría'),
+              previousPageTitle: 'Atras',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

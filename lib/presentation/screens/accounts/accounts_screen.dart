@@ -35,8 +35,8 @@ class _AccountssScreenState extends State<AccountsScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
-              largeTitle: Text('Accounts'),
-              previousPageTitle: 'Settings',
+              largeTitle: Text('Cuentas'),
+              previousPageTitle: 'Ajustes',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -75,7 +75,7 @@ class _AccountssScreenState extends State<AccountsScreen> {
             padding: EdgeInsets.only(top: 8),
             itemCount: state.accounts.length,
             separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
+                const Divider(height: 2),
             itemBuilder: (BuildContext context, int index) {
               NetworkImage? image;
               Icon? accountIcon;

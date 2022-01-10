@@ -26,14 +26,7 @@ class BudgetsScreenCubit extends Cubit<BudgetsScreenState> {
     final userOption = await getProfileInfo();
     userOption.fold(
       () => null,
-      (user) {
-        emit(
-          state.copyWith(
-            user: user,
-            isLoading: false,
-          ),
-        );
-      },
+      (user) => emit(state.copyWith(user: user, isLoading: false)),
     );
     getUserBudgets();
   }

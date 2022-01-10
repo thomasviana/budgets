@@ -27,51 +27,17 @@ class EditBudgetScreenCubit extends Cubit<EditBudgetScreenState> {
       emit(state.copyWith(budget: budget));
       final userOption = await getProfileInfo();
       userOption.fold(
-        () => emit(
-          state.copyWith(
-            user: UserEntity.empty(),
-          ),
-        ),
-        (user) => emit(
-          state.copyWith(
-            user: user,
-          ),
-        ),
+        () => emit(state.copyWith(user: UserEntity.empty())),
+        (user) => emit(state.copyWith(user: user)),
       );
     } else {
       emit(state.copyWith(isEditMode: false, budget: Budget.empty()));
       final userOption = await getProfileInfo();
       userOption.fold(
-        () => emit(
-          state.copyWith(
-            user: UserEntity.empty(),
-          ),
-        ),
-        (user) => emit(
-          state.copyWith(
-            user: user,
-          ),
-        ),
+        () => emit(state.copyWith(user: UserEntity.empty())),
+        (user) => emit(state.copyWith(user: user)),
       );
     }
-  }
-
-  void onNameChanged(String? name) {
-    if (state.budget == null) return;
-    emit(
-      state.copyWith(
-        budget: state.budget!..updateName(name!),
-      ),
-    );
-  }
-
-  void onAbbreviationChanged(String? abbreviation) {
-    if (state.budget == null) return;
-    emit(
-      state.copyWith(
-        budget: state.budget!..updateAbbreviation(abbreviation),
-      ),
-    );
   }
 
   Future<void> onBudgetDeleted() async {
@@ -107,8 +73,23 @@ class EditBudgetScreenCubit extends Cubit<EditBudgetScreenState> {
     );
   }
 
+  void onNameChanged(String? name) {
+    emit(
+      state.copyWith(
+        budget: state.budget!..updateName(name!),
+      ),
+    );
+  }
+
+  void onAbbreviationChanged(String? abbreviation) {
+    emit(
+      state.copyWith(
+        budget: state.budget!..updateAbbreviation(abbreviation),
+      ),
+    );
+  }
+
   void onBalanceChanged(double newBalance) {
-    if (state.budget == null) return;
     emit(
       state.copyWith(
         budget: state.budget!..updateBalance(newBalance),

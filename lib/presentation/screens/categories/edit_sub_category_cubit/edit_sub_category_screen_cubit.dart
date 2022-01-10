@@ -20,12 +20,6 @@ class EditSubCategoryScreenCubit extends Cubit<EditSubCategoryScreenState> {
     emit(state.copyWith(subCategory: subCategory));
   }
 
-  void onNameChanged(String? name) => emit(
-        state.copyWith(
-          subCategory: state.subCategory!..updateName(name!),
-        ),
-      );
-
   Future<void> onSubCategoryDeleted() async {
     await deleteSubCategory(state.subCategory!.id);
   }
@@ -55,4 +49,10 @@ class EditSubCategoryScreenCubit extends Cubit<EditSubCategoryScreenState> {
       ),
     );
   }
+
+  void onNameChanged(String? name) => emit(
+        state.copyWith(
+          subCategory: state.subCategory!..updateName(name!),
+        ),
+      );
 }

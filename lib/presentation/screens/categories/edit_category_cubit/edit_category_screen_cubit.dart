@@ -33,34 +33,16 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
       emit(state.copyWith(category: category));
       final userOption = await getProfileInfo();
       userOption.fold(
-        () => emit(
-          state.copyWith(
-            user: UserEntity.empty(),
-          ),
-        ),
-        (user) => emit(
-          state.copyWith(
-            user: user,
-          ),
-        ),
+        () => emit(state.copyWith(user: UserEntity.empty())),
+        (user) => emit(state.copyWith(user: user)),
       );
       getUserSubCategories();
     } else {
       emit(state.copyWith(isEditMode: false, category: Category.empty()));
       final userOption = await getProfileInfo();
       userOption.fold(
-        () => emit(
-          state.copyWith(
-            user: UserEntity.empty(),
-            subCategories: [],
-          ),
-        ),
-        (user) => emit(
-          state.copyWith(
-            user: user,
-            subCategories: [],
-          ),
-        ),
+        () => emit(state.copyWith(user: UserEntity.empty(), subCategories: [])),
+        (user) => emit(state.copyWith(user: user, subCategories: [])),
       );
     }
   }
@@ -91,15 +73,6 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
   Future<void> _setDefaultSubCategories() async {
     final subCategories = SubCategory.allSubCategories;
     await saveSubCategories(subCategories: subCategories);
-  }
-
-  void onNameChanged(String? name) {
-    if (state.category == null) return;
-    emit(
-      state.copyWith(
-        category: state.category!..updateName(name!),
-      ),
-    );
   }
 
   Future<void> onCategoryDeleted() async {
@@ -138,6 +111,14 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
     emit(
       state.copyWith(
         category: state.category!..updateIcon(newIcon),
+      ),
+    );
+  }
+
+  void onNameChanged(String? name) {
+    emit(
+      state.copyWith(
+        category: state.category!..updateName(name!),
       ),
     );
   }

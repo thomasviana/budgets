@@ -36,7 +36,7 @@ class _BudgetssScreenState extends State<BudgetsScreen> {
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
               largeTitle: Text('Presupuestos'),
-              previousPageTitle: 'Configuración',
+              previousPageTitle: 'Ajustes',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -75,11 +75,11 @@ class _BudgetssScreenState extends State<BudgetsScreen> {
             padding: EdgeInsets.only(top: 8),
             itemCount: state.budgets.length,
             separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
+                const Divider(height: 2),
             itemBuilder: (BuildContext context, int index) {
               final budget = state.budgets[index];
               bool hasAbbreviation = true;
-              if (budget.abbreviation == null) {
+              if (budget.abbreviation == null || budget.abbreviation!.isEmpty) {
                 hasAbbreviation = false;
               }
               return ListTile(

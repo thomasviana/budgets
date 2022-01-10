@@ -27,42 +27,17 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
       emit(state.copyWith(account: account));
       final userOption = await getProfileInfo();
       userOption.fold(
-        () => emit(
-          state.copyWith(
-            user: UserEntity.empty(),
-          ),
-        ),
-        (user) => emit(
-          state.copyWith(
-            user: user,
-          ),
-        ),
+        () => emit(state.copyWith(user: UserEntity.empty())),
+        (user) => emit(state.copyWith(user: user)),
       );
     } else {
       emit(state.copyWith(isEditMode: false, account: Account.empty()));
       final userOption = await getProfileInfo();
       userOption.fold(
-        () => emit(
-          state.copyWith(
-            user: UserEntity.empty(),
-          ),
-        ),
-        (user) => emit(
-          state.copyWith(
-            user: user,
-          ),
-        ),
+        () => emit(state.copyWith(user: UserEntity.empty())),
+        (user) => emit(state.copyWith(user: user)),
       );
     }
-  }
-
-  void onNameChanged(String? name) {
-    if (state.account == null) return;
-    emit(
-      state.copyWith(
-        account: state.account!..updateName(name!),
-      ),
-    );
   }
 
   Future<void> onAccountDeleted() async {
@@ -100,14 +75,6 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     );
   }
 
-  Future<void> onTypeUpdated(AccountType newType) async {
-    emit(
-      state.copyWith(
-        account: state.account!..updateType(newType),
-      ),
-    );
-  }
-
   Future<void> onLogoSelected(String imageUrl) async {
     emit(
       state.copyWith(
@@ -124,11 +91,10 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     );
   }
 
-  void onBalanceChanged(double newBalance) {
-    if (state.account == null) return;
+  void onNameChanged(String? name) {
     emit(
       state.copyWith(
-        account: state.account!..updateBalance(newBalance),
+        account: state.account!..updateName(name!),
       ),
     );
   }
@@ -137,6 +103,14 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     emit(
       state.copyWith(
         account: state.account!..updateType(newType),
+      ),
+    );
+  }
+
+  void onBalanceChanged(double newBalance) {
+    emit(
+      state.copyWith(
+        account: state.account!..updateBalance(newBalance),
       ),
     );
   }

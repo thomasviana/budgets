@@ -35,8 +35,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
-              largeTitle: Text('Categories'),
-              previousPageTitle: 'Settings',
+              largeTitle: Text('Categorías'),
+              previousPageTitle: 'Ajustes',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -75,7 +75,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             padding: EdgeInsets.only(top: 8),
             itemCount: state.categories.length,
             separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
+                const Divider(height: 2),
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 title: Text(state.categories[index].name),

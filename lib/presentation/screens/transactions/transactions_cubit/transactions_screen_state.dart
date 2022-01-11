@@ -1,29 +1,29 @@
 part of 'transactions_screen_cubit.dart';
 
-class BudgetsScreenState {
+class TransactionsScreenState {
   final bool isLoading;
-  List<Budget> budgets;
+  List<Transaction> transactions;
   UserEntity? user;
 
-  BudgetsScreenState({
+  TransactionsScreenState({
     required this.isLoading,
-    required this.budgets,
+    required this.transactions,
     this.user,
   });
 
-  factory BudgetsScreenState.initial() => BudgetsScreenState(
+  factory TransactionsScreenState.initial() => TransactionsScreenState(
         isLoading: false,
-        budgets: Budget.defaultBudgets,
+        transactions: [],
       );
 
-  BudgetsScreenState copyWith({
+  TransactionsScreenState copyWith({
     bool? isLoading,
-    List<Budget>? budgets,
+    List<Transaction>? transactions,
     UserEntity? user,
   }) {
-    return BudgetsScreenState(
+    return TransactionsScreenState(
       isLoading: isLoading ?? this.isLoading,
-      budgets: budgets ?? this.budgets,
+      transactions: transactions ?? this.transactions,
       user: user ?? this.user,
     );
   }

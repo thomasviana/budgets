@@ -8,6 +8,8 @@ import '../home/home_screen.dart';
 import '../settings/cubit/settings_screen_cubit.dart';
 import '../settings/settings_screen.dart';
 import '../stats/stats_screen.dart';
+import '../transactions/transactions_cubit/transactions_screen_cubit.dart';
+import '../transactions/transactions_screen.dart';
 
 class MainAppScreen extends StatefulWidget {
   @override
@@ -49,11 +51,11 @@ class _MainAppScreenState extends State<MainAppScreen> {
         );
       case 1:
         return StatsScreen();
-      // case 2:
-      //   return BlocProvider(
-      //     create: (context) => sl<TransactionsScreenCubit>(),
-      //     child: TransactionsScreen(),
-      //   );
+      case 2:
+        return BlocProvider(
+          create: (context) => sl<TransactionsScreenCubit>(),
+          child: TransactionsScreen(),
+        );
       case 3:
         return BlocProvider(
           create: (context) => sl<SettingsScreenCubit>(),

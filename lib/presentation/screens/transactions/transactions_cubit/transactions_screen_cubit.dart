@@ -1,26 +1,24 @@
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/budgets/application.dart';
-import '../../../../core/budgets/domain.dart';
+import '../../../../core/transactions/application.dart';
+import '../../../../core/transactions/domain.dart';
 import '../../../../core/user/application.dart';
 import '../../../../core/user/domain.dart';
 
 part 'transactions_screen_state.dart';
 
 @injectable
-class BudgetsScreenCubit extends Cubit<BudgetsScreenState> {
-  GetBudgets getBudgets;
+class TransactionsScreenCubit extends Cubit<TransactionsScreenState> {
+  GetTransactions getTransactions;
   GetProfileInfo getProfileInfo;
-  SaveBudgets saveBudgets;
-  CreateBudget createBudget;
+  AddTransaction createTransaction;
 
-  BudgetsScreenCubit(
-    this.getBudgets,
+  TransactionsScreenCubit(
+    this.getTransactions,
     this.getProfileInfo,
-    this.createBudget,
-    this.saveBudgets,
-  ) : super(BudgetsScreenState.initial());
+    this.createTransaction,
+  ) : super(TransactionsScreenState.initial());
 
   Future<void> init() async {
     final userOption = await getProfileInfo();
@@ -28,22 +26,15 @@ class BudgetsScreenCubit extends Cubit<BudgetsScreenState> {
       () => null,
       (user) => emit(state.copyWith(user: user, isLoading: false)),
     );
-    getUserBudgets();
+    getUserTransactions();
   }
 
-  Future<void> getUserBudgets() async {
-    final userBudgets = await getBudgets(BudgetUserId(state.user!.id.value));
-    userBudgets.fold(
-      () => _setDefaultBudgets(),
-      (budgets) => emit(state.copyWith(budgets: budgets)),
+  Future<void> getUserTransactions() async {
+    final userTransactions =
+        await getTransactions(TransactionUserId(state.user!.id.value));
+    userTransactions.fold(
+      () => null,
+      (transactions) => emit(state.copyWith(transactions: transactions)),
     );
-  }
-
-  Future<void> _setDefaultBudgets() async {
-    final budgets = Budget.defaultBudgets;
-    for (final budget in budgets) {
-      budget.setUserId(state.user!.id.value);
-    }
-    await saveBudgets(budgets: budgets);
   }
 }

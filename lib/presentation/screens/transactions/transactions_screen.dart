@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../resources/colors.dart';
-import '../../routes/app_navigator.dart';
-import 'budgets_cubit/transactions_screen_cubit.dart';
+import 'transactions_cubit/transactions_screen_cubit.dart';
 
 class TransactionsScreen extends StatefulWidget {
   @override
@@ -30,26 +29,53 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
 
   Widget _buildState(BuildContext context, TransactionsScreenState state) {
     return Scaffold(
+      // body: CupertinoPageScaffold(
+      //   backgroundColor: AppColors.greyBackground,
+      //   child: NestedScrollView(
+      //     headerSliverBuilder: (ctx, inner) => [
+      //       CupertinoSliverNavigationBar(
+      //         largeTitle: Text('Transacciones'),
+      //         previousPageTitle: 'Ajustes',
+      // trailing: Row(
+      //   mainAxisAlignment: MainAxisAlignment.end,
+      //   children: [
+      //     IconButton(
+      //       icon: Icon(
+      //         Icons.add,
+      //         color: AppColors.primaryColor,
+      //       ),
+      //       onPressed: () {
+      //         AppNavigator.navigateToEditTransactionPage(
+      //           context,
+      //           (_) => cubit.getUserTransactions(),
+      //         );
+      //       },
+      //     ),
+      //   ],
+      // ),
+      //       )
+      //     ],
       body: CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
         child: NestedScrollView(
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
-              largeTitle: Text('Presupuestos'),
-              previousPageTitle: 'Ajustes',
+              largeTitle: Text('Transacciones'),
+              middle: Text('Transacciones'),
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
                     icon: Icon(
-                      Icons.add,
+                      Icons.add_circle,
                       color: AppColors.primaryColor,
+                      size: 34,
                     ),
                     onPressed: () {
-                      AppNavigator.navigateToEditTransactionPage(
-                        context,
-                        (_) => cubit.getUserTransactions(),
-                      );
+                      // AppNavigator.navigateToEditTransactionPage(
+                      //   context,
+                      //   (_) => cubit.getUserTransactions(),
+                      // );
                     },
                   ),
                 ],
@@ -73,45 +99,33 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
         builder: (context, snapshot) {
           return ListView.separated(
             padding: EdgeInsets.only(top: 8),
-            itemCount: state.budgets.length,
+            itemCount: state.transactions.length,
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(height: 2),
             itemBuilder: (BuildContext context, int index) {
-              final budget = state.budgets[index];
-              bool hasAbbreviation = true;
-              if (budget.abbreviation == null || budget.abbreviation!.isEmpty) {
-                hasAbbreviation = false;
-              }
+              final transaction = state.transactions[index];
+
               return ListTile(
                 leading: CircleAvatar(
                   maxRadius: 20,
-                  backgroundColor: Color(budget.color),
-                  child: hasAbbreviation
-                      ? Text(
-                          budget.abbreviation!,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white,
-                          ),
-                        )
-                      : Icon(
-                          Icons.inbox,
-                          color: AppColors.white,
-                        ),
+                  backgroundColor: AppColors.primaryColor,
+                  child: Icon(
+                    Icons.track_changes_rounded,
+                    color: AppColors.white,
+                  ),
                 ),
                 title: Text(
-                  budget.name,
+                  transaction.note,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 trailing: Icon(
                   Icons.arrow_forward_ios,
                 ),
-                onTap: () => AppNavigator.navigateToEditTransactionPage(
-                  context,
-                  (_) => cubit.getUserTransactions(),
-                  budget: budget,
-                ),
+                // onTap: () => AppNavigator.navigateToEditTransactionPage(
+                //   context,
+                //   (_) => cubit.getUserTransactions(),
+                //   transaction: transaction,
+                // ),
               );
             },
           );

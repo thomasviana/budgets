@@ -18,8 +18,8 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late HomeScreenCubit cubit;
   final List<Tuple2> tabs = [
-    Tuple2('Accounts', AccountsTab()),
-    Tuple2('Budgets', BudgetsTab()),
+    Tuple2('Cuentas', AccountsTab()),
+    Tuple2('Presupuestos', BudgetsTab()),
   ];
 
   late TabController _tabController;

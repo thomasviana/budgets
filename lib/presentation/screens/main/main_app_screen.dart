@@ -32,7 +32,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
     if (selectedIcon == 'stats') {
       statsSelected = true;
     }
-    if (selectedIcon == 'records') {
+    if (selectedIcon == 'transactions') {
       recordsSelected = true;
     }
     if (selectedIcon == 'settings') {
@@ -49,8 +49,11 @@ class _MainAppScreenState extends State<MainAppScreen> {
         );
       case 1:
         return StatsScreen();
-      case 2:
-        return StatsScreen();
+      // case 2:
+      //   return BlocProvider(
+      //     create: (context) => sl<TransactionsScreenCubit>(),
+      //     child: TransactionsScreen(),
+      //   );
       case 3:
         return BlocProvider(
           create: (context) => sl<SettingsScreenCubit>(),
@@ -100,7 +103,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                 },
                 icon: Icons.home_outlined,
                 iconSelected: Icons.home,
-                label: 'Home',
+                label: 'Inicio',
               ),
               buildNavButton(
                 isSelected: statsSelected,
@@ -112,19 +115,19 @@ class _MainAppScreenState extends State<MainAppScreen> {
                 },
                 icon: Icons.pie_chart_outline,
                 iconSelected: Icons.pie_chart,
-                label: 'Stats',
+                label: 'Estado',
               ),
               buildNavButton(
                 isSelected: recordsSelected,
                 onPressed: () {
                   setState(() {
                     selectedPageIndex = 2;
-                    selectIcon('records');
+                    selectIcon('transactions');
                   });
                 },
                 icon: Icons.format_list_bulleted_rounded,
                 iconSelected: Icons.format_list_bulleted_rounded,
-                label: 'Records',
+                label: 'Transacciones',
               ),
               buildNavButton(
                 isSelected: settingSelected,
@@ -136,7 +139,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
                 },
                 icon: Icons.settings_outlined,
                 iconSelected: Icons.settings,
-                label: 'Settings',
+                label: 'Ajustes',
               ),
             ],
           ),

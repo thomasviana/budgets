@@ -7,7 +7,8 @@ part of 'transactions_db.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-class TxDbDto extends DataClass implements Insertable<TxDbDto> {
+class TransactionDbDto extends DataClass
+    implements Insertable<TransactionDbDto> {
   final String id;
   final double amount;
   final DateTime date;
@@ -17,7 +18,7 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
   final String? accountId;
   final String? budgetId;
   final IncomeTypeTable? incomeType;
-  TxDbDto(
+  TransactionDbDto(
       {required this.id,
       required this.amount,
       required this.date,
@@ -27,9 +28,10 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
       this.accountId,
       this.budgetId,
       this.incomeType});
-  factory TxDbDto.fromData(Map<String, dynamic> data, {String? prefix}) {
+  factory TransactionDbDto.fromData(Map<String, dynamic> data,
+      {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return TxDbDto(
+    return TransactionDbDto(
       id: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       amount: const RealType()
@@ -46,7 +48,7 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
           .mapFromDatabaseResponse(data['${effectivePrefix}account_id']),
       budgetId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}budget_id']),
-      incomeType: $TxsTableTable.$converter0.mapToDart(const IntType()
+      incomeType: $TransactionsTableTable.$converter0.mapToDart(const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}income_type'])),
     );
   }
@@ -70,14 +72,14 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
       map['budget_id'] = Variable<String?>(budgetId);
     }
     if (!nullToAbsent || incomeType != null) {
-      final converter = $TxsTableTable.$converter0;
+      final converter = $TransactionsTableTable.$converter0;
       map['income_type'] = Variable<int?>(converter.mapToSql(incomeType));
     }
     return map;
   }
 
-  TxsTableCompanion toCompanion(bool nullToAbsent) {
-    return TxsTableCompanion(
+  TransactionsTableCompanion toCompanion(bool nullToAbsent) {
+    return TransactionsTableCompanion(
       id: Value(id),
       amount: Value(amount),
       date: Value(date),
@@ -99,10 +101,10 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
     );
   }
 
-  factory TxDbDto.fromJson(Map<String, dynamic> json,
+  factory TransactionDbDto.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TxDbDto(
+    return TransactionDbDto(
       id: serializer.fromJson<String>(json['id']),
       amount: serializer.fromJson<double>(json['amount']),
       date: serializer.fromJson<DateTime>(json['date']),
@@ -130,7 +132,7 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
     };
   }
 
-  TxDbDto copyWith(
+  TransactionDbDto copyWith(
           {String? id,
           double? amount,
           DateTime? date,
@@ -140,7 +142,7 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
           String? accountId,
           String? budgetId,
           IncomeTypeTable? incomeType}) =>
-      TxDbDto(
+      TransactionDbDto(
         id: id ?? this.id,
         amount: amount ?? this.amount,
         date: date ?? this.date,
@@ -153,7 +155,7 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
       );
   @override
   String toString() {
-    return (StringBuffer('TxDbDto(')
+    return (StringBuffer('TransactionDbDto(')
           ..write('id: $id, ')
           ..write('amount: $amount, ')
           ..write('date: $date, ')
@@ -173,7 +175,7 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is TxDbDto &&
+      (other is TransactionDbDto &&
           other.id == this.id &&
           other.amount == this.amount &&
           other.date == this.date &&
@@ -185,7 +187,7 @@ class TxDbDto extends DataClass implements Insertable<TxDbDto> {
           other.incomeType == this.incomeType);
 }
 
-class TxsTableCompanion extends UpdateCompanion<TxDbDto> {
+class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   final Value<String> id;
   final Value<double> amount;
   final Value<DateTime> date;
@@ -195,7 +197,7 @@ class TxsTableCompanion extends UpdateCompanion<TxDbDto> {
   final Value<String?> accountId;
   final Value<String?> budgetId;
   final Value<IncomeTypeTable?> incomeType;
-  const TxsTableCompanion({
+  const TransactionsTableCompanion({
     this.id = const Value.absent(),
     this.amount = const Value.absent(),
     this.date = const Value.absent(),
@@ -206,7 +208,7 @@ class TxsTableCompanion extends UpdateCompanion<TxDbDto> {
     this.budgetId = const Value.absent(),
     this.incomeType = const Value.absent(),
   });
-  TxsTableCompanion.insert({
+  TransactionsTableCompanion.insert({
     required String id,
     this.amount = const Value.absent(),
     required DateTime date,
@@ -218,7 +220,7 @@ class TxsTableCompanion extends UpdateCompanion<TxDbDto> {
     this.incomeType = const Value.absent(),
   })  : id = Value(id),
         date = Value(date);
-  static Insertable<TxDbDto> custom({
+  static Insertable<TransactionDbDto> custom({
     Expression<String>? id,
     Expression<double>? amount,
     Expression<DateTime>? date,
@@ -242,7 +244,7 @@ class TxsTableCompanion extends UpdateCompanion<TxDbDto> {
     });
   }
 
-  TxsTableCompanion copyWith(
+  TransactionsTableCompanion copyWith(
       {Value<String>? id,
       Value<double>? amount,
       Value<DateTime>? date,
@@ -252,7 +254,7 @@ class TxsTableCompanion extends UpdateCompanion<TxDbDto> {
       Value<String?>? accountId,
       Value<String?>? budgetId,
       Value<IncomeTypeTable?>? incomeType}) {
-    return TxsTableCompanion(
+    return TransactionsTableCompanion(
       id: id ?? this.id,
       amount: amount ?? this.amount,
       date: date ?? this.date,
@@ -293,7 +295,7 @@ class TxsTableCompanion extends UpdateCompanion<TxDbDto> {
       map['budget_id'] = Variable<String?>(budgetId.value);
     }
     if (incomeType.present) {
-      final converter = $TxsTableTable.$converter0;
+      final converter = $TransactionsTableTable.$converter0;
       map['income_type'] = Variable<int?>(converter.mapToSql(incomeType.value));
     }
     return map;
@@ -301,7 +303,7 @@ class TxsTableCompanion extends UpdateCompanion<TxDbDto> {
 
   @override
   String toString() {
-    return (StringBuffer('TxsTableCompanion(')
+    return (StringBuffer('TransactionsTableCompanion(')
           ..write('id: $id, ')
           ..write('amount: $amount, ')
           ..write('date: $date, ')
@@ -316,10 +318,11 @@ class TxsTableCompanion extends UpdateCompanion<TxDbDto> {
   }
 }
 
-class $TxsTableTable extends TxsTable with TableInfo<$TxsTableTable, TxDbDto> {
+class $TransactionsTableTable extends TransactionsTable
+    with TableInfo<$TransactionsTableTable, TransactionDbDto> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $TxsTableTable(this._db, [this._alias]);
+  $TransactionsTableTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -371,7 +374,7 @@ class $TxsTableTable extends TxsTable with TableInfo<$TxsTableTable, TxDbDto> {
   late final GeneratedColumnWithTypeConverter<IncomeTypeTable?, int?>
       incomeType = GeneratedColumn<int?>('income_type', aliasedName, true,
               type: const IntType(), requiredDuringInsert: false)
-          .withConverter<IncomeTypeTable?>($TxsTableTable.$converter0);
+          .withConverter<IncomeTypeTable?>($TransactionsTableTable.$converter0);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -389,7 +392,7 @@ class $TxsTableTable extends TxsTable with TableInfo<$TxsTableTable, TxDbDto> {
   @override
   String get actualTableName => 'transactions';
   @override
-  VerificationContext validateIntegrity(Insertable<TxDbDto> instance,
+  VerificationContext validateIntegrity(Insertable<TransactionDbDto> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -437,26 +440,29 @@ class $TxsTableTable extends TxsTable with TableInfo<$TxsTableTable, TxDbDto> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  TxDbDto map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return TxDbDto.fromData(data,
+  TransactionDbDto map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return TransactionDbDto.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $TxsTableTable createAlias(String alias) {
-    return $TxsTableTable(_db, alias);
+  $TransactionsTableTable createAlias(String alias) {
+    return $TransactionsTableTable(_db, alias);
   }
 
   static TypeConverter<IncomeTypeTable?, int> $converter0 =
       const EnumIndexConverter<IncomeTypeTable>(IncomeTypeTable.values);
 }
 
-abstract class _$TxsDatabase extends GeneratedDatabase {
-  _$TxsDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  late final $TxsTableTable txsTable = $TxsTableTable(this);
-  late final TxDao txDao = TxDao(this as TxsDatabase);
+abstract class _$TransactionsDatabase extends GeneratedDatabase {
+  _$TransactionsDatabase(QueryExecutor e)
+      : super(SqlTypeSystem.defaultInstance, e);
+  late final $TransactionsTableTable transactionsTable =
+      $TransactionsTableTable(this);
+  late final TransactionDao transactionDao =
+      TransactionDao(this as TransactionsDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [txsTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [transactionsTable];
 }

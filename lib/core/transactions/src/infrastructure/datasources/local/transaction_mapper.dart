@@ -5,14 +5,14 @@ import '../../../../domain.dart';
 import '../../../../infrastructure.dart';
 
 @lazySingleton
-class TxMapper {
-  const TxMapper();
+class TransactionMapper {
+  const TransactionMapper();
 
-  Tx fromDbDto(TxDbDto dto) {
-    final id = TxId(dto.id);
-    final userId = TxUserId(dto.userId!);
-    final accountId = TxAccountId(dto.accountId!);
-    final categoryId = TxCategoryId(dto.categoryId!);
+  Transaction fromDbDto(TransactionDbDto dto) {
+    final id = TransactionId(dto.id);
+    final userId = TransactionUserId(dto.userId!);
+    final accountId = TransactionAccountId(dto.accountId!);
+    final categoryId = TransactionCategoryId(dto.categoryId!);
 
     if (dto.incomeType != null) {
       final incomeType = IncomeType.values[dto.incomeType!.index];
@@ -27,7 +27,7 @@ class TxMapper {
         txCategoryId: categoryId,
       );
     } else {
-      final budgetId = TxBudgetId(dto.budgetId!);
+      final budgetId = TransactionBudgetId(dto.budgetId!);
       return Expense(
         id: id,
         amount: dto.amount,
@@ -41,25 +41,26 @@ class TxMapper {
     }
   }
 
-  List<Tx> fromDbDtoList(List<TxDbDto> dtos) =>
+  List<Transaction> fromDbDtoList(List<TransactionDbDto> dtos) =>
       dtos.map((dto) => fromDbDto(dto)).toList();
 
-  TxsTableCompanion toDbDto(Tx tx) {
-    final incomeType = IncomeTypeTable.values[(tx as Income).type!.index];
-    return TxsTableCompanion(
-      id: Value(tx.id.value),
-      amount: Value(tx.amount),
-      date: Value(tx.date),
-      note: Value(tx.note),
-      userId: Value(tx.txUserId!.value),
-      accountId: Value(tx.txAccountId!.value),
-      categoryId: Value(tx.txCategoryId!.value),
-      budgetId: Value((tx as Expense).txBudgetId!.value),
+  TransactionsTableCompanion toDbDto(Transaction transaction) {
+    final incomeType =
+        IncomeTypeTable.values[(transaction as Income).type!.index];
+    return TransactionsTableCompanion(
+      id: Value(transaction.id.value),
+      amount: Value(transaction.amount),
+      date: Value(transaction.date),
+      note: Value(transaction.note),
+      userId: Value(transaction.txUserId!.value),
+      accountId: Value(transaction.txAccountId!.value),
+      categoryId: Value(transaction.txCategoryId!.value),
+      budgetId: Value((transaction as Expense).txBudgetId!.value),
       incomeType: Value(incomeType),
     );
   }
 
-  List<TxsTableCompanion> toDbDtoList(List<Tx> txs) {
-    return txs.map((tx) => toDbDto(tx)).toList();
+  List<TransactionsTableCompanion> toDbDtoList(List<Transaction> transactions) {
+    return transactions.map((transaction) => toDbDto(transaction)).toList();
   }
 }

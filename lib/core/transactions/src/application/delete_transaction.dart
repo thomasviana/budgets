@@ -3,12 +3,12 @@ import 'package:injectable/injectable.dart';
 import '../../domain.dart';
 
 @injectable
-class DeleteTx {
-  final TxRepository _txRepository;
+class DeleteTransaction {
+  final TransactionRepository _transactionRepository;
 
-  const DeleteTx(this._txRepository);
+  const DeleteTransaction(this._transactionRepository);
 
-  Future<void> call(TxId txId) {
-    return _txRepository.delete(txId);
+  Future<void> call(TransactionId transactionId) {
+    return _transactionRepository.delete(transactionId);
   }
 }

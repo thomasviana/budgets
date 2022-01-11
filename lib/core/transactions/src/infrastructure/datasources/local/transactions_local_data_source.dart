@@ -4,31 +4,32 @@ import 'package:injectable/injectable.dart';
 import '../../../../domain.dart';
 import '../../../../infrastructure.dart';
 
-abstract class TxsLocalDataSource {
-  Future<void> cacheTx(Tx transaction);
-  Future<void> cacheTxs(List<Tx> transactions);
-  Future<Option<List<Tx>>> getCachedTxs(TxUserId userId);
-  Future<void> deleteTx(TxId transactionId);
+abstract class TransactionsLocalDataSource {
+  Future<void> cacheTransaction(Transaction transaction);
+  Future<void> cacheTransactions(List<Transaction> transactions);
+  Future<Option<List<Transaction>>> getCachedTransactions(
+      TransactionUserId userId);
+  Future<void> deleteTransaction(TransactionId transactionId);
 }
 
-@LazySingleton(as: TxsLocalDataSource)
-class TxsLocalDataSourceImpl implements TxsLocalDataSource {
-  final TxDao _transactionDao;
-  final TxMapper _transactionMapper;
+@LazySingleton(as: TransactionsLocalDataSource)
+class TransactionsLocalDataSourceImpl implements TransactionsLocalDataSource {
+  final TransactionDao _transactionDao;
+  final TransactionMapper _transactionMapper;
 
-  TxsLocalDataSourceImpl(
+  TransactionsLocalDataSourceImpl(
     this._transactionDao,
     this._transactionMapper,
   );
 
   @override
-  Future<void> cacheTx(Tx transaction) {
+  Future<void> cacheTransaction(Transaction transaction) {
     return Future.value(_transactionMapper.toDbDto(transaction))
         .then((campanion) => _transactionDao.createOrUpdate(campanion));
   }
 
   @override
-  Future<void> cacheTxs(List<Tx> transactions) {
+  Future<void> cacheTransactions(List<Transaction> transactions) {
     return Future.value(_transactionMapper.toDbDtoList(transactions)).then(
       (campanions) => {
         for (var campanion in campanions)
@@ -38,16 +39,16 @@ class TxsLocalDataSourceImpl implements TxsLocalDataSource {
   }
 
   @override
-  Future<void> deleteTx(TxId transactionId) {
-    return _transactionDao.deleteTx(transactionId.value);
+  Future<void> deleteTransaction(TransactionId transactionId) {
+    return _transactionDao.deleteTransaction(transactionId.value);
   }
 
   @override
-  Future<Option<List<Tx>>> getCachedTxs(
-    TxUserId userId,
+  Future<Option<List<Transaction>>> getCachedTransactions(
+    TransactionUserId userId,
   ) async {
     final transactions = await _transactionDao
-        .getTxs(userId.value)
+        .getTransactions(userId.value)
         .map((dtos) => _transactionMapper.fromDbDtoList(dtos))
         .first;
     if (transactions.isNotEmpty) {

@@ -5,12 +5,12 @@ import '../../domain.dart';
 
 @injectable
 class GetTransactions {
-  final TxRepository _budgetRepository;
+  final TransactionRepository _transactionRepository;
 
   const GetTransactions(
-    this._budgetRepository,
+    this._transactionRepository,
   );
 
-  Future<Option<List<Tx>>> call(TxUserId userId) =>
-      _budgetRepository.fetchTransactions(userId);
+  Future<Option<List<Transaction>>> call(TransactionUserId userId) =>
+      _transactionRepository.fetchTransactions(userId);
 }

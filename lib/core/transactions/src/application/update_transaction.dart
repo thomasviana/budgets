@@ -4,54 +4,54 @@ import '../../application.dart';
 import '../../domain.dart';
 
 @injectable
-class UpdateTx {
-  final TxRepository _txRepository;
+class UpdateTransaction {
+  final TransactionRepository _transactionRepository;
   final GetTransactions _getTransactions;
 
-  const UpdateTx(
-    this._txRepository,
+  const UpdateTransaction(
+    this._transactionRepository,
     this._getTransactions,
   );
 
   Future<void> call({
-    required TxUserId userId,
-    required TxId txId,
+    required TransactionUserId userId,
+    required TransactionId transactionId,
     double? amount,
     DateTime? date,
     String? note,
-    TxAccountId? txAccountId,
-    TxCategoryId? txCategoryId,
-    TxBudgetId? txBudgetId,
+    TransactionAccountId? txAccountId,
+    TransactionCategoryId? txCategoryId,
+    TransactionBudgetId? txBudgetId,
     IncomeType? incomeType,
   }) async {
-    final tx = await _getTransactions(userId).then(
+    final transaction = await _getTransactions(userId).then(
       (txs) => txs.fold(
         () => null,
         (txs) => txs.firstWhere(
-          (tx) => tx.id == txId,
-          orElse: () => throw Exception("Tx doesn't exist."),
+          (transaction) => transaction.id == transactionId,
+          orElse: () => throw Exception("Transaction doesn't exist."),
         ),
       ),
     );
-    if (tx != null && tx is Income) {
-      _txRepository.save(
-        tx
-          ..updateAmount(amount ?? tx.amount)
-          ..updateDate(date ?? tx.date)
-          ..updateNote(note ?? tx.note)
-          ..updateType(incomeType ?? tx.type)
-          ..updateAccountId(txAccountId ?? tx.txAccountId)
-          ..updateCategoryId(txCategoryId ?? tx.txCategoryId),
+    if (transaction != null && transaction is Income) {
+      _transactionRepository.save(
+        transaction
+          ..updateAmount(amount ?? transaction.amount)
+          ..updateDate(date ?? transaction.date)
+          ..updateNote(note ?? transaction.note)
+          ..updateType(incomeType ?? transaction.type)
+          ..updateAccountId(txAccountId ?? transaction.txAccountId)
+          ..updateCategoryId(txCategoryId ?? transaction.txCategoryId),
       );
-    } else if (tx != null && tx is Expense) {
-      _txRepository.save(
-        tx
-          ..updateAmount(amount ?? tx.amount)
-          ..updateDate(date ?? tx.date)
-          ..updateNote(note ?? tx.note)
-          ..updateBudgetId(txBudgetId ?? tx.txBudgetId)
-          ..updateAccountId(txAccountId ?? tx.txAccountId)
-          ..updateCategoryId(txCategoryId ?? tx.txCategoryId),
+    } else if (transaction != null && transaction is Expense) {
+      _transactionRepository.save(
+        transaction
+          ..updateAmount(amount ?? transaction.amount)
+          ..updateDate(date ?? transaction.date)
+          ..updateNote(note ?? transaction.note)
+          ..updateBudgetId(txBudgetId ?? transaction.txBudgetId)
+          ..updateAccountId(txAccountId ?? transaction.txAccountId)
+          ..updateCategoryId(txCategoryId ?? transaction.txCategoryId),
       );
     }
   }

@@ -5,18 +5,18 @@ import '../../domain.dart';
 
 enum IncomeType { active, pasive }
 
-class Income extends Tx {
+class Income extends Transaction {
   IncomeType? type;
 
   Income({
-    required TxId id,
+    required TransactionId id,
     this.type,
     double amount = 0,
     required DateTime date,
     String note = '',
-    TxUserId? txUserId,
-    TxAccountId? txAccountId,
-    TxCategoryId? txCategoryId,
+    TransactionUserId? txUserId,
+    TransactionAccountId? txAccountId,
+    TransactionCategoryId? txCategoryId,
   }) : super(
           id: id,
           amount: amount,
@@ -31,19 +31,19 @@ class Income extends Tx {
   void updateType(IncomeType? newType) => type = newType;
 
   factory Income.empty() => Income(
-        id: TxId.auto(),
+        id: TransactionId.auto(),
         type: IncomeType.active,
         date: DateTime.now(),
       );
 
   factory Income.salary() => Income(
-        id: TxId.auto(),
+        id: TransactionId.auto(),
         type: IncomeType.active,
         date: DateTime.now(),
       );
 
   factory Income.investment() => Income(
-        id: TxId.auto(),
+        id: TransactionId.auto(),
         type: IncomeType.pasive,
         date: DateTime.now(),
       );

@@ -4,26 +4,27 @@ import 'package:injectable/injectable.dart';
 import '../../domain.dart';
 import '../../infrastructure.dart';
 
-@LazySingleton(as: TxRepository)
-class TxRepositoryImpl implements TxRepository {
-  final TxsLocalDataSource _budgetslocalDataSource;
+@LazySingleton(as: TransactionRepository)
+class TransactionRepositoryImpl implements TransactionRepository {
+  final TransactionsLocalDataSource _budgetslocalDataSource;
 
-  TxRepositoryImpl(
+  TransactionRepositoryImpl(
     this._budgetslocalDataSource,
   );
 
   @override
-  Future<void> delete(TxId budgetId) {
-    return _budgetslocalDataSource.deleteTx(budgetId);
+  Future<void> delete(TransactionId budgetId) {
+    return _budgetslocalDataSource.deleteTransaction(budgetId);
   }
 
   @override
-  Future<Option<List<Tx>>> fetchTransactions(TxUserId userId) {
-    return _budgetslocalDataSource.getCachedTxs(userId);
+  Future<Option<List<Transaction>>> fetchTransactions(
+      TransactionUserId userId) {
+    return _budgetslocalDataSource.getCachedTransactions(userId);
   }
 
   @override
-  Future<void> save(Tx budget) {
-    return _budgetslocalDataSource.cacheTx(budget);
+  Future<void> save(Transaction budget) {
+    return _budgetslocalDataSource.cacheTransaction(budget);
   }
 }

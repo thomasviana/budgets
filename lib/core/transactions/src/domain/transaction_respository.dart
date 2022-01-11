@@ -2,12 +2,12 @@ import 'package:dartz/dartz.dart';
 
 import '../../domain.dart';
 
-abstract class TxRepository {
-  Future<Option<List<Tx>>> fetchTransactions(
-    TxUserId userId,
+abstract class TransactionRepository {
+  Future<Option<List<Transaction>>> fetchTransactions(
+    TransactionUserId userId,
   );
 
-  Future<void> save(Tx transaction);
+  Future<void> save(Transaction transaction);
 
-  Future<void> delete(TxId txId);
+  Future<void> delete(TransactionId txId);
 }

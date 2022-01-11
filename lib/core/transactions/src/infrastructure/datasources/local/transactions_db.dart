@@ -10,7 +10,7 @@ part 'transactions_db.g.dart';
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
-    const dbName = 'categories_db.sqlite';
+    const dbName = 'transactions_db.sqlite';
     final dbPath = await getApplicationDocumentsDirectory()
         .then((dir) => '${dir.path}/$dbName');
     final file = File(dbPath);
@@ -19,11 +19,11 @@ LazyDatabase _openConnection() {
 }
 
 @DriftDatabase(
-  tables: [TxsTable],
-  daos: [TxDao],
+  tables: [TransactionsTable],
+  daos: [TransactionDao],
 )
-class TxsDatabase extends _$TxsDatabase {
-  TxsDatabase() : super(_openConnection());
+class TransactionsDatabase extends _$TransactionsDatabase {
+  TransactionsDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 1;

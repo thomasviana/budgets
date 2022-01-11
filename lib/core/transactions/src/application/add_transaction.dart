@@ -2,29 +2,29 @@ import 'package:injectable/injectable.dart';
 
 import '../../domain.dart';
 
-enum TxType { income, expense }
+enum TransactionType { income, expense }
 
 @injectable
 class AddTransaction {
-  final TxRepository _txRepository;
+  final TransactionRepository _transactionRepository;
 
-  const AddTransaction(this._txRepository);
+  const AddTransaction(this._transactionRepository);
 
   Future<void>? call({
-    required TxType txType,
+    required TransactionType txType,
     required double amount,
     required DateTime date,
     required String note,
-    required TxUserId txUserId,
-    required TxCategoryId txCategoryId,
-    required TxAccountId txAccountId,
-    required TxBudgetId txBudgetId,
+    required TransactionUserId txUserId,
+    required TransactionCategoryId txCategoryId,
+    required TransactionAccountId txAccountId,
+    required TransactionBudgetId txBudgetId,
     IncomeType? incomeType,
   }) {
-    if (txType == TxType.income) {
-      return _txRepository.save(
+    if (txType == TransactionType.income) {
+      return _transactionRepository.save(
         Income(
-          id: TxId.auto(),
+          id: TransactionId.auto(),
           type: incomeType,
           amount: amount,
           date: date,
@@ -34,10 +34,10 @@ class AddTransaction {
           txCategoryId: txCategoryId,
         ),
       );
-    } else if (txType == TxType.expense) {
-      return _txRepository.save(
+    } else if (txType == TransactionType.expense) {
+      return _transactionRepository.save(
         Expense(
-          id: TxId.auto(),
+          id: TransactionId.auto(),
           amount: amount,
           date: date,
           note: note,

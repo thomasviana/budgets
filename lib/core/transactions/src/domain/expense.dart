@@ -3,18 +3,18 @@ import 'package:uuid/uuid.dart';
 import '../../../../common/value_objects.dart';
 import '../../domain.dart';
 
-class Expense extends Tx {
-  TxBudgetId? txBudgetId;
+class Expense extends Transaction {
+  TransactionBudgetId? txBudgetId;
 
   Expense({
-    required TxId id,
+    required TransactionId id,
     double amount = 0,
     required DateTime date,
     String note = '',
     this.txBudgetId,
-    TxUserId? txUserId,
-    TxAccountId? txAccountId,
-    TxCategoryId? txCategoryId,
+    TransactionUserId? txUserId,
+    TransactionAccountId? txAccountId,
+    TransactionCategoryId? txCategoryId,
   }) : super(
           id: id,
           amount: amount,
@@ -26,20 +26,21 @@ class Expense extends Tx {
         );
 
   // ignore: use_setters_to_change_properties
-  void updateBudgetId(TxBudgetId? newBudgetId) => txBudgetId = newBudgetId;
+  void updateBudgetId(TransactionBudgetId? newBudgetId) =>
+      txBudgetId = newBudgetId;
 
   factory Expense.empty() => Expense(
-        id: TxId.auto(),
+        id: TransactionId.auto(),
         date: DateTime.now(),
       );
 
   factory Expense.rent() => Expense(
-        id: TxId.auto(),
+        id: TransactionId.auto(),
         date: DateTime.now(),
       );
 
   factory Expense.gas() => Expense(
-        id: TxId.auto(),
+        id: TransactionId.auto(),
         date: DateTime.now(),
       );
 
@@ -51,8 +52,8 @@ class Expense extends Tx {
   }
 }
 
-class TxBudgetId extends AlphanumericId {
-  const TxBudgetId(String value) : super(value);
+class TransactionBudgetId extends AlphanumericId {
+  const TransactionBudgetId(String value) : super(value);
 
-  TxBudgetId.auto() : this(const Uuid().v1());
+  TransactionBudgetId.auto() : this(const Uuid().v1());
 }

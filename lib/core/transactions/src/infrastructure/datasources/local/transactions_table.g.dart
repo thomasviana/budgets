@@ -6,6 +6,7 @@ part of 'transactions_table.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$TxDaoMixin on DatabaseAccessor<TxsDatabase> {
-  $TxsTableTable get txsTable => attachedDatabase.txsTable;
+mixin _$TransactionDaoMixin on DatabaseAccessor<TransactionsDatabase> {
+  $TransactionsTableTable get transactionsTable =>
+      attachedDatabase.transactionsTable;
 }

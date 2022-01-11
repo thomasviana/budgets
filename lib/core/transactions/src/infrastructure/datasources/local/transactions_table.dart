@@ -7,8 +7,8 @@ part 'transactions_table.g.dart';
 
 enum IncomeTypeTable { active, pasive }
 
-@DataClassName('TxDbDto')
-class TxsTable extends Table {
+@DataClassName('TransactionDbDto')
+class TransactionsTable extends Table {
   TextColumn get id => text().customConstraint('UNIQUE')();
   RealColumn get amount => real().withDefault(const Constant(0.0))();
   DateTimeColumn get date => dateTime()();
@@ -27,18 +27,21 @@ class TxsTable extends Table {
 }
 
 @lazySingleton
-@DriftAccessor(tables: [TxsTable])
-class TxDao extends DatabaseAccessor<TxsDatabase> with _$TxDaoMixin {
-  TxDao(TxsDatabase db) : super(db);
+@DriftAccessor(tables: [TransactionsTable])
+class TransactionDao extends DatabaseAccessor<TransactionsDatabase>
+    with _$TransactionDaoMixin {
+  TransactionDao(TransactionsDatabase db) : super(db);
 
-  Stream<List<TxDbDto>> getTxs(String? userId) {
-    final query = select(txsTable)..where((tbl) => tbl.userId.equals(userId));
+  Stream<List<TransactionDbDto>> getTransactions(String? userId) {
+    final query = select(transactionsTable)
+      ..where((tbl) => tbl.userId.equals(userId));
     return query.watch();
   }
 
-  Future<void> createOrUpdate(Insertable<TxDbDto> transaction) =>
-      into(txsTable).insertOnConflictUpdate(transaction);
+  Future<void> createOrUpdate(Insertable<TransactionDbDto> transaction) =>
+      into(transactionsTable).insertOnConflictUpdate(transaction);
 
-  Future<void> deleteTx(String txId) =>
-      (delete(txsTable)..where((tbl) => tbl.id.equals(txId))).go();
+  Future<void> deleteTransaction(String transactionId) =>
+      (delete(transactionsTable)..where((tbl) => tbl.id.equals(transactionId)))
+          .go();
 }

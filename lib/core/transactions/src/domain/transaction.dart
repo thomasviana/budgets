@@ -2,16 +2,16 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../common/value_objects.dart';
 
-class Tx extends Entity<TxId> {
+class Transaction extends Entity<TransactionId> {
   double amount = 0;
   DateTime date;
   String note;
-  TxUserId? txUserId;
-  TxCategoryId? txCategoryId;
-  TxAccountId? txAccountId;
+  TransactionUserId? txUserId;
+  TransactionCategoryId? txCategoryId;
+  TransactionAccountId? txAccountId;
 
-  Tx({
-    required TxId id,
+  Transaction({
+    required TransactionId id,
     required this.amount,
     required this.date,
     required this.note,
@@ -27,33 +27,35 @@ class Tx extends Entity<TxId> {
   // ignore: use_setters_to_change_properties
   void updateNote(String newNote) => note = newNote;
   // ignore: use_setters_to_change_properties
-  void setUserId(TxUserId? userId) => txUserId = userId;
+  void setUserId(TransactionUserId? userId) => txUserId = userId;
   // ignore: use_setters_to_change_properties
-  void updateCategoryId(TxCategoryId? categoryId) => txCategoryId = categoryId;
+  void updateCategoryId(TransactionCategoryId? categoryId) =>
+      txCategoryId = categoryId;
   // ignore: use_setters_to_change_properties
-  void updateAccountId(TxAccountId? accountId) => txAccountId = accountId;
+  void updateAccountId(TransactionAccountId? accountId) =>
+      txAccountId = accountId;
 }
 
-class TxId extends AlphanumericId {
-  const TxId(String value) : super(value);
+class TransactionId extends AlphanumericId {
+  const TransactionId(String value) : super(value);
 
-  TxId.auto() : this(const Uuid().v1());
+  TransactionId.auto() : this(const Uuid().v1());
 }
 
-class TxUserId extends AlphanumericId {
-  const TxUserId(String value) : super(value);
+class TransactionUserId extends AlphanumericId {
+  const TransactionUserId(String value) : super(value);
 
-  TxUserId.auto() : this(const Uuid().v1());
+  TransactionUserId.auto() : this(const Uuid().v1());
 }
 
-class TxCategoryId extends AlphanumericId {
-  const TxCategoryId(String value) : super(value);
+class TransactionCategoryId extends AlphanumericId {
+  const TransactionCategoryId(String value) : super(value);
 
-  TxCategoryId.auto() : this(const Uuid().v1());
+  TransactionCategoryId.auto() : this(const Uuid().v1());
 }
 
-class TxAccountId extends AlphanumericId {
-  const TxAccountId(String value) : super(value);
+class TransactionAccountId extends AlphanumericId {
+  const TransactionAccountId(String value) : super(value);
 
-  TxAccountId.auto() : this(const Uuid().v1());
+  TransactionAccountId.auto() : this(const Uuid().v1());
 }

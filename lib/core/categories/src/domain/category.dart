@@ -113,24 +113,6 @@ class Category extends CategoryModel {
       Category.financial(),
     ];
   }
-
-  Category copyWith({
-    CategoryId? id,
-    String? name,
-    int? icon,
-    int? color,
-    double? amount,
-    CategoryType? type,
-  }) {
-    return Category(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      icon: icon ?? this.icon,
-      color: color ?? this.color,
-      amount: amount ?? this.amount,
-      type: type ?? this.type,
-    );
-  }
 }
 
 class CategoryUserId extends AlphanumericId {

@@ -5,11 +5,13 @@ import 'transactions_db.dart';
 
 part 'transactions_table.g.dart';
 
+enum TransactionTypeTable { expense, income }
 enum IncomeTypeTable { active, pasive }
 
 @DataClassName('TransactionDbDto')
 class TransactionsTable extends Table {
   TextColumn get id => text().customConstraint('UNIQUE')();
+  IntColumn get transactionType => intEnum<TransactionTypeTable>()();
   RealColumn get amount => real().withDefault(const Constant(0.0))();
   DateTimeColumn get date => dateTime()();
   TextColumn get note => text().withDefault(const Constant(''))();

@@ -23,6 +23,7 @@ class UpdateTransaction {
     TransactionCategoryId? txCategoryId,
     TransactionBudgetId? txBudgetId,
     IncomeType? incomeType,
+    TransactionType? txType,
   }) async {
     final transaction = await _getTransactions(userId).then(
       (transactions) => transactions.fold(
@@ -41,7 +42,8 @@ class UpdateTransaction {
           ..updateNote(note ?? transaction.note)
           ..updateType(incomeType ?? transaction.type)
           ..updateAccountId(txAccountId ?? transaction.txAccountId)
-          ..updateCategoryId(txCategoryId ?? transaction.txCategoryId),
+          ..updateCategoryId(txCategoryId ?? transaction.txCategoryId)
+          ..changeType(txType ?? transaction.transactionType),
       );
     } else if (transaction != null && transaction is Expense) {
       _transactionRepository.save(
@@ -51,7 +53,8 @@ class UpdateTransaction {
           ..updateNote(note ?? transaction.note)
           ..updateBudgetId(txBudgetId ?? transaction.txBudgetId)
           ..updateAccountId(txAccountId ?? transaction.txAccountId)
-          ..updateCategoryId(txCategoryId ?? transaction.txCategoryId),
+          ..updateCategoryId(txCategoryId ?? transaction.txCategoryId)
+          ..changeType(txType ?? transaction.transactionType),
       );
     }
   }

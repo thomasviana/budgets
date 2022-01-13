@@ -2,7 +2,10 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../common/value_objects.dart';
 
+enum TransactionType { expense, income }
+
 class Transaction extends Entity<TransactionId> {
+  TransactionType transactionType;
   double amount = 0;
   DateTime date;
   String note;
@@ -12,6 +15,7 @@ class Transaction extends Entity<TransactionId> {
 
   Transaction({
     required TransactionId id,
+    required this.transactionType,
     required this.amount,
     required this.date,
     required this.note,
@@ -20,6 +24,8 @@ class Transaction extends Entity<TransactionId> {
     this.txAccountId,
   }) : super(id);
 
+  // ignore: use_setters_to_change_properties
+  void changeType(TransactionType newType) => transactionType = newType;
   // ignore: use_setters_to_change_properties
   void updateAmount(double newAmount) => amount = newAmount;
   // ignore: use_setters_to_change_properties

@@ -18,6 +18,7 @@ class Expense extends Transaction {
   }) : super(
           id: id,
           amount: amount,
+          transactionType: TransactionType.expense,
           date: date,
           note: note,
           txUserId: txUserId,
@@ -31,6 +32,8 @@ class Expense extends Transaction {
 
   factory Expense.empty() => Expense(
         id: TransactionId.auto(),
+        txAccountId: TransactionAccountId('bank'),
+        txBudgetId: TransactionBudgetId('seg'),
         date: DateTime.now(),
       );
 

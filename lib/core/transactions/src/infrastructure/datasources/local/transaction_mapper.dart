@@ -14,7 +14,7 @@ class TransactionMapper {
     final accountId = TransactionAccountId(dto.accountId!);
     final categoryId = TransactionCategoryId(dto.categoryId!);
 
-    if (dto.incomeType != null) {
+    if (dto.transactionType == TransactionTypeTable.income) {
       final incomeType = IncomeType.values[dto.incomeType!.index];
       return Income(
         id: id,
@@ -46,9 +46,12 @@ class TransactionMapper {
 
   TransactionsTableCompanion toDbDto(Transaction transaction) {
     final incomeType =
-        IncomeTypeTable.values[(transaction as Income).type!.index];
+        IncomeTypeTable.values[(transaction as Income).type.index];
+    final transactionType =
+        TransactionTypeTable.values[transaction.transactionType.index];
     return TransactionsTableCompanion(
       id: Value(transaction.id.value),
+      transactionType: Value(transactionType),
       amount: Value(transaction.amount),
       date: Value(transaction.date),
       note: Value(transaction.note),

@@ -2,8 +2,6 @@ import 'package:injectable/injectable.dart';
 
 import '../../domain.dart';
 
-enum TransactionType { income, expense }
-
 @injectable
 class AddTransaction {
   final TransactionRepository _transactionRepository;
@@ -25,7 +23,7 @@ class AddTransaction {
       return _transactionRepository.save(
         Income(
           id: TransactionId.auto(),
-          type: incomeType,
+          type: incomeType!,
           amount: amount,
           date: date,
           note: note,

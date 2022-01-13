@@ -6,11 +6,11 @@ import '../../domain.dart';
 enum IncomeType { active, pasive }
 
 class Income extends Transaction {
-  IncomeType? type;
+  IncomeType type;
 
   Income({
     required TransactionId id,
-    this.type,
+    required this.type,
     double amount = 0,
     required DateTime date,
     String note = '',
@@ -19,6 +19,7 @@ class Income extends Transaction {
     TransactionCategoryId? txCategoryId,
   }) : super(
           id: id,
+          transactionType: TransactionType.income,
           amount: amount,
           date: date,
           note: note,
@@ -28,7 +29,7 @@ class Income extends Transaction {
         );
 
   // ignore: use_setters_to_change_properties
-  void updateType(IncomeType? newType) => type = newType;
+  void updateType(IncomeType newType) => type = newType;
 
   factory Income.empty() => Income(
         id: TransactionId.auto(),

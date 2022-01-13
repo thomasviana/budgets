@@ -10,6 +10,7 @@ part of 'transactions_db.dart';
 class TransactionDbDto extends DataClass
     implements Insertable<TransactionDbDto> {
   final String id;
+  final TransactionTypeTable transactionType;
   final double amount;
   final DateTime date;
   final String note;
@@ -20,6 +21,7 @@ class TransactionDbDto extends DataClass
   final IncomeTypeTable? incomeType;
   TransactionDbDto(
       {required this.id,
+      required this.transactionType,
       required this.amount,
       required this.date,
       required this.note,
@@ -34,6 +36,9 @@ class TransactionDbDto extends DataClass
     return TransactionDbDto(
       id: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      transactionType: $TransactionsTableTable.$converter0.mapToDart(
+          const IntType().mapFromDatabaseResponse(
+              data['${effectivePrefix}transaction_type']))!,
       amount: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       date: const DateTimeType()
@@ -48,7 +53,7 @@ class TransactionDbDto extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}account_id']),
       budgetId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}budget_id']),
-      incomeType: $TransactionsTableTable.$converter0.mapToDart(const IntType()
+      incomeType: $TransactionsTableTable.$converter1.mapToDart(const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}income_type'])),
     );
   }
@@ -56,6 +61,11 @@ class TransactionDbDto extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
+    {
+      final converter = $TransactionsTableTable.$converter0;
+      map['transaction_type'] =
+          Variable<int>(converter.mapToSql(transactionType)!);
+    }
     map['amount'] = Variable<double>(amount);
     map['date'] = Variable<DateTime>(date);
     map['note'] = Variable<String>(note);
@@ -72,7 +82,7 @@ class TransactionDbDto extends DataClass
       map['budget_id'] = Variable<String?>(budgetId);
     }
     if (!nullToAbsent || incomeType != null) {
-      final converter = $TransactionsTableTable.$converter0;
+      final converter = $TransactionsTableTable.$converter1;
       map['income_type'] = Variable<int?>(converter.mapToSql(incomeType));
     }
     return map;
@@ -81,6 +91,7 @@ class TransactionDbDto extends DataClass
   TransactionsTableCompanion toCompanion(bool nullToAbsent) {
     return TransactionsTableCompanion(
       id: Value(id),
+      transactionType: Value(transactionType),
       amount: Value(amount),
       date: Value(date),
       note: Value(note),
@@ -106,6 +117,8 @@ class TransactionDbDto extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return TransactionDbDto(
       id: serializer.fromJson<String>(json['id']),
+      transactionType:
+          serializer.fromJson<TransactionTypeTable>(json['transactionType']),
       amount: serializer.fromJson<double>(json['amount']),
       date: serializer.fromJson<DateTime>(json['date']),
       note: serializer.fromJson<String>(json['note']),
@@ -121,6 +134,8 @@ class TransactionDbDto extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
+      'transactionType':
+          serializer.toJson<TransactionTypeTable>(transactionType),
       'amount': serializer.toJson<double>(amount),
       'date': serializer.toJson<DateTime>(date),
       'note': serializer.toJson<String>(note),
@@ -134,6 +149,7 @@ class TransactionDbDto extends DataClass
 
   TransactionDbDto copyWith(
           {String? id,
+          TransactionTypeTable? transactionType,
           double? amount,
           DateTime? date,
           String? note,
@@ -144,6 +160,7 @@ class TransactionDbDto extends DataClass
           IncomeTypeTable? incomeType}) =>
       TransactionDbDto(
         id: id ?? this.id,
+        transactionType: transactionType ?? this.transactionType,
         amount: amount ?? this.amount,
         date: date ?? this.date,
         note: note ?? this.note,
@@ -157,6 +174,7 @@ class TransactionDbDto extends DataClass
   String toString() {
     return (StringBuffer('TransactionDbDto(')
           ..write('id: $id, ')
+          ..write('transactionType: $transactionType, ')
           ..write('amount: $amount, ')
           ..write('date: $date, ')
           ..write('note: $note, ')
@@ -170,13 +188,14 @@ class TransactionDbDto extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, amount, date, note, userId, categoryId,
-      accountId, budgetId, incomeType);
+  int get hashCode => Object.hash(id, transactionType, amount, date, note,
+      userId, categoryId, accountId, budgetId, incomeType);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TransactionDbDto &&
           other.id == this.id &&
+          other.transactionType == this.transactionType &&
           other.amount == this.amount &&
           other.date == this.date &&
           other.note == this.note &&
@@ -189,6 +208,7 @@ class TransactionDbDto extends DataClass
 
 class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   final Value<String> id;
+  final Value<TransactionTypeTable> transactionType;
   final Value<double> amount;
   final Value<DateTime> date;
   final Value<String> note;
@@ -199,6 +219,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   final Value<IncomeTypeTable?> incomeType;
   const TransactionsTableCompanion({
     this.id = const Value.absent(),
+    this.transactionType = const Value.absent(),
     this.amount = const Value.absent(),
     this.date = const Value.absent(),
     this.note = const Value.absent(),
@@ -210,6 +231,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   });
   TransactionsTableCompanion.insert({
     required String id,
+    required TransactionTypeTable transactionType,
     this.amount = const Value.absent(),
     required DateTime date,
     this.note = const Value.absent(),
@@ -219,9 +241,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     this.budgetId = const Value.absent(),
     this.incomeType = const Value.absent(),
   })  : id = Value(id),
+        transactionType = Value(transactionType),
         date = Value(date);
   static Insertable<TransactionDbDto> custom({
     Expression<String>? id,
+    Expression<TransactionTypeTable>? transactionType,
     Expression<double>? amount,
     Expression<DateTime>? date,
     Expression<String>? note,
@@ -233,6 +257,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (transactionType != null) 'transaction_type': transactionType,
       if (amount != null) 'amount': amount,
       if (date != null) 'date': date,
       if (note != null) 'note': note,
@@ -246,6 +271,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
 
   TransactionsTableCompanion copyWith(
       {Value<String>? id,
+      Value<TransactionTypeTable>? transactionType,
       Value<double>? amount,
       Value<DateTime>? date,
       Value<String>? note,
@@ -256,6 +282,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       Value<IncomeTypeTable?>? incomeType}) {
     return TransactionsTableCompanion(
       id: id ?? this.id,
+      transactionType: transactionType ?? this.transactionType,
       amount: amount ?? this.amount,
       date: date ?? this.date,
       note: note ?? this.note,
@@ -272,6 +299,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<String>(id.value);
+    }
+    if (transactionType.present) {
+      final converter = $TransactionsTableTable.$converter0;
+      map['transaction_type'] =
+          Variable<int>(converter.mapToSql(transactionType.value)!);
     }
     if (amount.present) {
       map['amount'] = Variable<double>(amount.value);
@@ -295,7 +327,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       map['budget_id'] = Variable<String?>(budgetId.value);
     }
     if (incomeType.present) {
-      final converter = $TransactionsTableTable.$converter0;
+      final converter = $TransactionsTableTable.$converter1;
       map['income_type'] = Variable<int?>(converter.mapToSql(incomeType.value));
     }
     return map;
@@ -305,6 +337,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   String toString() {
     return (StringBuffer('TransactionsTableCompanion(')
           ..write('id: $id, ')
+          ..write('transactionType: $transactionType, ')
           ..write('amount: $amount, ')
           ..write('date: $date, ')
           ..write('note: $note, ')
@@ -330,6 +363,15 @@ class $TransactionsTableTable extends TransactionsTable
       type: const StringType(),
       requiredDuringInsert: true,
       $customConstraints: 'UNIQUE');
+  final VerificationMeta _transactionTypeMeta =
+      const VerificationMeta('transactionType');
+  @override
+  late final GeneratedColumnWithTypeConverter<TransactionTypeTable, int?>
+      transactionType = GeneratedColumn<int?>(
+              'transaction_type', aliasedName, false,
+              type: const IntType(), requiredDuringInsert: true)
+          .withConverter<TransactionTypeTable>(
+              $TransactionsTableTable.$converter0);
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
@@ -374,10 +416,11 @@ class $TransactionsTableTable extends TransactionsTable
   late final GeneratedColumnWithTypeConverter<IncomeTypeTable?, int?>
       incomeType = GeneratedColumn<int?>('income_type', aliasedName, true,
               type: const IntType(), requiredDuringInsert: false)
-          .withConverter<IncomeTypeTable?>($TransactionsTableTable.$converter0);
+          .withConverter<IncomeTypeTable?>($TransactionsTableTable.$converter1);
   @override
   List<GeneratedColumn> get $columns => [
         id,
+        transactionType,
         amount,
         date,
         note,
@@ -401,6 +444,7 @@ class $TransactionsTableTable extends TransactionsTable
     } else if (isInserting) {
       context.missing(_idMeta);
     }
+    context.handle(_transactionTypeMeta, const VerificationResult.success());
     if (data.containsKey('amount')) {
       context.handle(_amountMeta,
           amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
@@ -450,7 +494,10 @@ class $TransactionsTableTable extends TransactionsTable
     return $TransactionsTableTable(_db, alias);
   }
 
-  static TypeConverter<IncomeTypeTable?, int> $converter0 =
+  static TypeConverter<TransactionTypeTable, int> $converter0 =
+      const EnumIndexConverter<TransactionTypeTable>(
+          TransactionTypeTable.values);
+  static TypeConverter<IncomeTypeTable?, int> $converter1 =
       const EnumIndexConverter<IncomeTypeTable>(IncomeTypeTable.values);
 }
 

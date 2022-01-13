@@ -240,7 +240,10 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
           get<_i44.UpdateTransaction>(),
           get<_i44.DeleteTransaction>(),
           get<_i12.GetProfileInfo>(),
-          get<_i44.AddTransaction>()));
+          get<_i44.AddTransaction>(),
+          get<_i11.GetAccounts>(),
+          get<_i24.GetBudgets>(),
+          get<_i14.GetCategories>()));
   gh.lazySingleton<_i45.FacebookAuth>(
       () => facebookInjectableModule.facebookAuth);
   gh.lazySingleton<_i46.FirebaseAuth>(

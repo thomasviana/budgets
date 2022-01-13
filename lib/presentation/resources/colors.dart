@@ -50,5 +50,5 @@ class AccountColors {
   static const int blue_grey = 0xFF607D8B;
 }
 
-final currency = NumberFormat('#,##0.00', 'en_US');
+final currency = NumberFormat('#,##0', 'en_US');
 const kDefaultPadding = 20.0;

@@ -29,29 +29,18 @@ class _EditTransactionBottomSheetState
   @override
   void initState() {
     super.initState();
-    formatter = CurrencyTextInputFormatter(symbol: '\$', decimalDigits: 0);
-    textEditingController = TextEditingController()
-      ..text = formatter.format(
-        widget.transaction != null
-            ? widget.transaction!.amount.toString()
-            : '0',
-      );
-    ;
     cubit = context.read<EditTransactionBottomSheetCubit>();
     cubit.init(widget.transaction);
+    formatter = CurrencyTextInputFormatter(symbol: '\$', decimalDigits: 0);
+    textEditingController = TextEditingController()
+      ..text = formatter.format(cubit.state.transaction!.amount.toString());
   }
 
-  final Map<int, Widget> transactionType = const <int, Widget>{
-    0: Text('Expense'),
-    1: Text('Income'),
-  };
-
-  final Map<int, Widget> incomeType = const <int, Widget>{
-    0: Text('Active Income'),
-    1: Text('Pasive Income'),
-  };
-
-  int? currentValue = 0;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +61,32 @@ class _EditTransactionBottomSheetState
           child: child,
         ),
       );
+    }
+
+    // Account leading
+    final account = state.account!;
+    NetworkImage? image;
+    Icon? accountIcon;
+    bool isImageAvailable;
+    if (account.imageUrl != null) {
+      isImageAvailable = true;
+      image = NetworkImage(account.imageUrl!);
+    } else {
+      isImageAvailable = false;
+      accountIcon = Icon(
+        IconData(
+          account.icon,
+          fontFamily: 'MaterialIcons',
+        ),
+        color: AppColors.white,
+      );
+    }
+
+    // Budget leading
+    final budget = state.budget!;
+    bool hasAbbreviation = true;
+    if (budget.abbreviation == null || budget.abbreviation!.isEmpty) {
+      hasAbbreviation = false;
     }
 
     return makeDismissible(
@@ -100,7 +115,7 @@ class _EditTransactionBottomSheetState
                       },
                     ),
                     const Text(
-                      'Transación',
+                      'Transacción',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -120,20 +135,20 @@ class _EditTransactionBottomSheetState
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: CupertinoSlidingSegmentedControl(
-                  children: transactionType,
-                  onValueChanged: (int? value) {
-                    setState(() {
-                      currentValue = value;
-                    });
+                  children: const {
+                    0: Text('Egreso'),
+                    1: Text('Ingreso'),
                   },
-                  groupValue: currentValue,
+                  onValueChanged: (int? index) =>
+                      cubit.onTransactionTypeChanged(index),
+                  groupValue: state.transaction!.transactionType.index,
                 ),
               ),
               const SizedBox(height: 25),
               TextField(
                 controller: textEditingController,
                 inputFormatters: [formatter],
-                keyboardType: TextInputType.name,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
                 autofocus: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -141,13 +156,16 @@ class _EditTransactionBottomSheetState
                   fontWeight: FontWeight.bold,
                 ),
                 decoration: InputDecoration(
-                  hintStyle: TextStyle(fontSize: 18),
+                  hintStyle: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   errorBorder: InputBorder.none,
                   disabledBorder: InputBorder.none,
-                  hintText: '\$${currency.format(0)}',
+                  hintText: '\$${currency.format(state.transaction!.amount)}',
                 ),
               ),
               SizedBox(
@@ -155,14 +173,19 @@ class _EditTransactionBottomSheetState
               ),
               Divider(height: 2),
               ListTile(
-                  leading: Icon(Icons.account_balance),
+                  leading: CircleAvatar(
+                    maxRadius: 20,
+                    backgroundColor: Color(account.color),
+                    backgroundImage: image,
+                    child: isImageAvailable ? null : accountIcon,
+                  ),
                   minLeadingWidth: 2,
                   title: Text('Cuenta'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
-                        'Bancolombia',
+                        account.name,
                         style: TextStyle(color: AppColors.greySecondary),
                       ),
                       SizedBox(width: 10),
@@ -187,14 +210,30 @@ class _EditTransactionBottomSheetState
                   ),
               Divider(height: 2),
               ListTile(
-                  leading: Icon(Icons.all_inbox),
+                  leading: CircleAvatar(
+                    maxRadius: 20,
+                    backgroundColor: Color(budget.color),
+                    child: hasAbbreviation
+                        ? Text(
+                            budget.abbreviation!,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.white,
+                            ),
+                          )
+                        : Icon(
+                            Icons.inbox,
+                            color: AppColors.white,
+                          ),
+                  ),
                   minLeadingWidth: 2,
                   title: Text('Presupuesto'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Text(
-                        'SEG',
+                        budget.name,
                         style: TextStyle(color: AppColors.greySecondary),
                       ),
                       SizedBox(width: 10),
@@ -219,7 +258,17 @@ class _EditTransactionBottomSheetState
                   ),
               Divider(height: 2),
               ListTile(
-                  leading: Icon(Icons.folder_open),
+                  leading: CircleAvatar(
+                    maxRadius: 20,
+                    child: Icon(
+                      IconData(
+                        state.category!.icon,
+                        fontFamily: 'MaterialIcons',
+                      ),
+                      color: AppColors.white,
+                    ),
+                    backgroundColor: Color(state.category!.color),
+                  ),
                   minLeadingWidth: 2,
                   title: Text('Categoría'),
                   trailing: Row(

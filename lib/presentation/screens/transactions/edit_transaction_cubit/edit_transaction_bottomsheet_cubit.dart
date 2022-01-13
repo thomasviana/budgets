@@ -1,4 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:budgets/core/accounts/application.dart';
+import 'package:budgets/core/accounts/domain.dart';
+import 'package:budgets/core/budgets/application.dart';
+import 'package:budgets/core/budgets/domain.dart';
+import 'package:budgets/core/categories/application.dart';
+import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/core/transactions/domain.dart';
 import 'package:injectable/injectable.dart';
 
@@ -16,12 +22,18 @@ class EditTransactionBottomSheetCubit
   DeleteTransaction deleteTransaction;
   GetProfileInfo getProfileInfo;
   AddTransaction addTransaction;
+  GetAccounts getAccounts;
+  GetBudgets getBudgets;
+  GetCategories getCategories;
 
   EditTransactionBottomSheetCubit(
     this.updateTransaction,
     this.deleteTransaction,
     this.getProfileInfo,
     this.addTransaction,
+    this.getAccounts,
+    this.getBudgets,
+    this.getCategories,
   ) : super(EditTransactionBottomSheetState.initial());
 
   Future<void> init(Transaction? transaction) async {
@@ -40,6 +52,53 @@ class EditTransactionBottomSheetCubit
         (user) => emit(state.copyWith(user: user)),
       );
     }
+    getUserAccount();
+    getUserBudgets();
+    getUserCategories();
+  }
+
+  Future<void> getUserAccount() async {
+    final userAccounts = await getAccounts(AccountUserId(state.user!.id.value));
+    userAccounts.fold(
+      () {},
+      (accounts) {
+        final account = accounts.firstWhere(
+          (account) =>
+              account.id.value == state.transaction!.txAccountId!.value,
+        );
+        emit(state.copyWith(account: account));
+      },
+    );
+  }
+
+  Future<void> getUserBudgets() async {
+    final userBudgets = await getBudgets(BudgetUserId(state.user!.id.value));
+    userBudgets.fold(
+      () {},
+      (budgets) {
+        final budget = budgets.firstWhere(
+          (budget) =>
+              budget.id.value ==
+              (state.transaction! as Expense).txBudgetId!.value,
+        );
+        emit(state.copyWith(budget: budget));
+      },
+    );
+  }
+
+  Future<void> getUserCategories() async {
+    final userCategories =
+        await getCategories(CategoryUserId(state.user!.id.value));
+    userCategories.fold(
+      () {},
+      (categories) {
+        final category = categories.firstWhere(
+          (category) =>
+              category.id.value == state.transaction!.txCategoryId!.value,
+        );
+        emit(state.copyWith(category: category));
+      },
+    );
   }
 
   Future<void> onTransactionDeleted() async {
@@ -72,6 +131,15 @@ class EditTransactionBottomSheetCubit
         incomeType: IncomeType.values[1],
       );
     }
+  }
+
+  void onTransactionTypeChanged(int? index) {
+    emit(
+      state.copyWith(
+        transaction: state.transaction!
+          ..changeType(TransactionType.values[index!]),
+      ),
+    );
   }
 
   Future<void> onAmountUpdated(double newAmount) async {

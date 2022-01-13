@@ -25,9 +25,9 @@ class UpdateTransaction {
     IncomeType? incomeType,
   }) async {
     final transaction = await _getTransactions(userId).then(
-      (txs) => txs.fold(
+      (transactions) => transactions.fold(
         () => null,
-        (txs) => txs.firstWhere(
+        (transactions) => transactions.firstWhere(
           (transaction) => transaction.id == transactionId,
           orElse: () => throw Exception("Transaction doesn't exist."),
         ),

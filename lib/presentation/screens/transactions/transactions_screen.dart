@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/screens/transactions/edit_transaction_bottomsheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,32 +30,6 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
 
   Widget _buildState(BuildContext context, TransactionsScreenState state) {
     return Scaffold(
-      // body: CupertinoPageScaffold(
-      //   backgroundColor: AppColors.greyBackground,
-      //   child: NestedScrollView(
-      //     headerSliverBuilder: (ctx, inner) => [
-      //       CupertinoSliverNavigationBar(
-      //         largeTitle: Text('Transacciones'),
-      //         previousPageTitle: 'Ajustes',
-      // trailing: Row(
-      //   mainAxisAlignment: MainAxisAlignment.end,
-      //   children: [
-      //     IconButton(
-      //       icon: Icon(
-      //         Icons.add,
-      //         color: AppColors.primaryColor,
-      //       ),
-      //       onPressed: () {
-      //         AppNavigator.navigateToEditTransactionPage(
-      //           context,
-      //           (_) => cubit.getUserTransactions(),
-      //         );
-      //       },
-      //     ),
-      //   ],
-      // ),
-      //       )
-      //     ],
       body: CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
         child: NestedScrollView(
@@ -72,10 +47,12 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                       size: 34,
                     ),
                     onPressed: () {
-                      // AppNavigator.navigateToEditTransactionPage(
-                      //   context,
-                      //   (_) => cubit.getUserTransactions(),
-                      // );
+                      showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (context) => EditTransactionBottomSheet(),
+                      );
                     },
                   ),
                 ],

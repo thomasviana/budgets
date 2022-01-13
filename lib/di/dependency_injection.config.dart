@@ -4,13 +4,13 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
-import 'package:cloud_firestore/cloud_firestore.dart' as _i45;
-import 'package:firebase_auth/firebase_auth.dart' as _i44;
-import 'package:firebase_storage/firebase_storage.dart' as _i46;
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as _i43;
+import 'package:cloud_firestore/cloud_firestore.dart' as _i47;
+import 'package:firebase_auth/firebase_auth.dart' as _i46;
+import 'package:firebase_storage/firebase_storage.dart' as _i48;
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart' as _i45;
 import 'package:get_it/get_it.dart' as _i1;
-import 'package:google_sign_in/google_sign_in.dart' as _i50;
-import 'package:image_picker/image_picker.dart' as _i52;
+import 'package:google_sign_in/google_sign_in.dart' as _i52;
+import 'package:image_picker/image_picker.dart' as _i54;
 import 'package:injectable/injectable.dart' as _i2;
 
 import '../core/accounts/application.dart' as _i11;
@@ -18,9 +18,9 @@ import '../core/accounts/domain.dart' as _i6;
 import '../core/accounts/infrastructure.dart' as _i8;
 import '../core/accounts/src/application/create_account.dart' as _i33;
 import '../core/accounts/src/application/delete_account.dart' as _i36;
-import '../core/accounts/src/application/get_accounts.dart' as _i47;
-import '../core/accounts/src/application/save_accounts.dart' as _i57;
-import '../core/accounts/src/application/update_account.dart' as _i73;
+import '../core/accounts/src/application/get_accounts.dart' as _i49;
+import '../core/accounts/src/application/save_accounts.dart' as _i59;
+import '../core/accounts/src/application/update_account.dart' as _i74;
 import '../core/accounts/src/infrastructure/account_repository_impl.dart'
     as _i7;
 import '../core/accounts/src/infrastructure/datasources/local/account_mapper.dart'
@@ -36,9 +36,9 @@ import '../core/budgets/domain.dart' as _i19;
 import '../core/budgets/infrastructure.dart' as _i21;
 import '../core/budgets/src/application/create_budget.dart' as _i34;
 import '../core/budgets/src/application/delete_budget.dart' as _i37;
-import '../core/budgets/src/application/get_budgets.dart' as _i48;
-import '../core/budgets/src/application/save_budgets.dart' as _i58;
-import '../core/budgets/src/application/update_budget.dart' as _i74;
+import '../core/budgets/src/application/get_budgets.dart' as _i50;
+import '../core/budgets/src/application/save_budgets.dart' as _i60;
+import '../core/budgets/src/application/update_budget.dart' as _i75;
 import '../core/budgets/src/infrastructure/budget_repository_impl.dart' as _i20;
 import '../core/budgets/src/infrastructure/datasources/local/budget_mapper.dart'
     as _i18;
@@ -52,15 +52,15 @@ import '../core/categories/application.dart' as _i14;
 import '../core/categories/domain.dart' as _i31;
 import '../core/categories/infrastructure.dart' as _i25;
 import '../core/categories/src/application/create_category.dart' as _i35;
-import '../core/categories/src/application/create_sub_category.dart' as _i83;
+import '../core/categories/src/application/create_sub_category.dart' as _i84;
 import '../core/categories/src/application/delete_category.dart' as _i38;
-import '../core/categories/src/application/delete_sub_category.dart' as _i85;
-import '../core/categories/src/application/get_categories.dart' as _i49;
-import '../core/categories/src/application/get_sub_categories.dart' as _i88;
-import '../core/categories/src/application/save_categories.dart' as _i59;
-import '../core/categories/src/application/save_sub_categories.dart' as _i91;
-import '../core/categories/src/application/update_category.dart' as _i75;
-import '../core/categories/src/application/update_sub_category.dart' as _i76;
+import '../core/categories/src/application/delete_sub_category.dart' as _i86;
+import '../core/categories/src/application/get_categories.dart' as _i51;
+import '../core/categories/src/application/get_sub_categories.dart' as _i89;
+import '../core/categories/src/application/save_categories.dart' as _i61;
+import '../core/categories/src/application/save_sub_categories.dart' as _i92;
+import '../core/categories/src/application/update_category.dart' as _i76;
+import '../core/categories/src/application/update_sub_category.dart' as _i77;
 import '../core/categories/src/infrastructure/category_repository_impl.dart'
     as _i32;
 import '../core/categories/src/infrastructure/datasources/local/categories_db.dart'
@@ -72,39 +72,39 @@ import '../core/categories/src/infrastructure/datasources/local/categories_table
 import '../core/categories/src/infrastructure/datasources/local/category_mapper.dart'
     as _i30;
 import '../core/categories/src/infrastructure/datasources/local/sub_category_mapper.dart'
-    as _i62;
-import '../core/categories/src/infrastructure/sub_category_repository_impl.dart'
-    as _i63;
-import '../core/records/domain.dart' as _i56;
-import '../core/records/src/application/record_cubit.dart' as _i55;
-import '../core/transactions/application.dart' as _i72;
-import '../core/transactions/domain.dart' as _i67;
-import '../core/transactions/infrastructure.dart' as _i69;
-import '../core/transactions/src/application/add_transaction.dart' as _i79;
-import '../core/transactions/src/application/delete_transaction.dart' as _i86;
-import '../core/transactions/src/application/get_transactions.dart' as _i89;
-import '../core/transactions/src/application/update_transaction.dart' as _i77;
-import '../core/transactions/src/infrastructure/datasources/local/transaction_mapper.dart'
-    as _i66;
-import '../core/transactions/src/infrastructure/datasources/local/transactions_db.dart'
-    as _i65;
-import '../core/transactions/src/infrastructure/datasources/local/transactions_local_data_source.dart'
-    as _i70;
-import '../core/transactions/src/infrastructure/datasources/local/transactions_table.dart'
     as _i64;
-import '../core/transactions/src/infrastructure/transaction_repository_impl.dart'
+import '../core/categories/src/infrastructure/sub_category_repository_impl.dart'
+    as _i65;
+import '../core/records/domain.dart' as _i58;
+import '../core/records/src/application/record_cubit.dart' as _i57;
+import '../core/transactions/application.dart' as _i44;
+import '../core/transactions/domain.dart' as _i69;
+import '../core/transactions/infrastructure.dart' as _i71;
+import '../core/transactions/src/application/add_transaction.dart' as _i80;
+import '../core/transactions/src/application/delete_transaction.dart' as _i87;
+import '../core/transactions/src/application/get_transactions.dart' as _i90;
+import '../core/transactions/src/application/update_transaction.dart' as _i78;
+import '../core/transactions/src/infrastructure/datasources/local/transaction_mapper.dart'
     as _i68;
+import '../core/transactions/src/infrastructure/datasources/local/transactions_db.dart'
+    as _i67;
+import '../core/transactions/src/infrastructure/datasources/local/transactions_local_data_source.dart'
+    as _i72;
+import '../core/transactions/src/infrastructure/datasources/local/transactions_table.dart'
+    as _i66;
+import '../core/transactions/src/infrastructure/transaction_repository_impl.dart'
+    as _i70;
 import '../core/user/application.dart' as _i12;
-import '../core/user/domain.dart' as _i80;
-import '../core/user/src/application/check_auth_status.dart' as _i82;
-import '../core/user/src/application/create_user.dart' as _i84;
-import '../core/user/src/application/get_profile_info.dart' as _i87;
-import '../core/user/src/application/log_out.dart' as _i90;
-import '../core/user/src/application/pick_user_image.dart' as _i53;
-import '../core/user/src/application/sign_in.dart' as _i92;
-import '../core/user/src/application/update_user_info.dart' as _i93;
-import '../core/user/src/infrastructure/auth/auth_service_impl.dart' as _i81;
-import '../core/user/src/infrastructure/auth/user_firebase_prov.dart' as _i78;
+import '../core/user/domain.dart' as _i81;
+import '../core/user/src/application/check_auth_status.dart' as _i83;
+import '../core/user/src/application/create_user.dart' as _i85;
+import '../core/user/src/application/get_profile_info.dart' as _i88;
+import '../core/user/src/application/log_out.dart' as _i91;
+import '../core/user/src/application/pick_user_image.dart' as _i55;
+import '../core/user/src/application/sign_in.dart' as _i93;
+import '../core/user/src/application/update_user_info.dart' as _i94;
+import '../core/user/src/infrastructure/auth/auth_service_impl.dart' as _i82;
+import '../core/user/src/infrastructure/auth/user_firebase_prov.dart' as _i79;
 import '../presentation/core/auth/auth_cubit.dart' as _i13;
 import '../presentation/screens/accounts/accounts_cubit/accounts_screen_cubit.dart'
     as _i10;
@@ -122,19 +122,21 @@ import '../presentation/screens/categories/edit_category_cubit/edit_category_scr
 import '../presentation/screens/categories/edit_sub_category_cubit/edit_sub_category_screen_cubit.dart'
     as _i42;
 import '../presentation/screens/categories/sub_categories_cubit/sub_categories_screen_cubit.dart'
-    as _i61;
-import '../presentation/screens/home/cubit/home_screen_cubit.dart' as _i51;
+    as _i63;
+import '../presentation/screens/home/cubit/home_screen_cubit.dart' as _i53;
 import '../presentation/screens/profile/cubit/profile_screen_cubit.dart'
-    as _i54;
+    as _i56;
 import '../presentation/screens/settings/cubit/settings_screen_cubit.dart'
-    as _i60;
+    as _i62;
+import '../presentation/screens/transactions/edit_transaction_cubit/edit_transaction_bottomsheet_cubit.dart'
+    as _i43;
 import '../presentation/screens/transactions/transactions_cubit/transactions_screen_cubit.dart'
-    as _i71;
-import 'db_injectable_module.dart' as _i94;
-import 'facebook_injectable_module.dart' as _i95;
-import 'firebase_injectable_module.dart' as _i96;
+    as _i73;
+import 'db_injectable_module.dart' as _i95;
+import 'facebook_injectable_module.dart' as _i96;
+import 'firebase_injectable_module.dart' as _i97;
 import 'image_picker_injectable_module.dart'
-    as _i97; // ignore_for_file: unnecessary_lambdas
+    as _i98; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -233,111 +235,117 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i42.EditSubCategoryScreenCubit>(() =>
       _i42.EditSubCategoryScreenCubit(
           get<_i14.UpdateSubCategory>(), get<_i14.DeleteSubCategory>()));
-  gh.lazySingleton<_i43.FacebookAuth>(
+  gh.factory<_i43.EditTransactionBottomSheetCubit>(() =>
+      _i43.EditTransactionBottomSheetCubit(
+          get<_i44.UpdateTransaction>(),
+          get<_i44.DeleteTransaction>(),
+          get<_i12.GetProfileInfo>(),
+          get<_i44.AddTransaction>()));
+  gh.lazySingleton<_i45.FacebookAuth>(
       () => facebookInjectableModule.facebookAuth);
-  gh.lazySingleton<_i44.FirebaseAuth>(
+  gh.lazySingleton<_i46.FirebaseAuth>(
       () => firebaseInjectableModule.firebaseAuth);
-  gh.lazySingleton<_i45.FirebaseFirestore>(
+  gh.lazySingleton<_i47.FirebaseFirestore>(
       () => firebaseInjectableModule.firebaseFirestore);
-  gh.lazySingleton<_i46.FirebaseStorage>(
+  gh.lazySingleton<_i48.FirebaseStorage>(
       () => firebaseInjectableModule.firebaseStorage);
-  gh.factory<_i47.GetAccounts>(
-      () => _i47.GetAccounts(get<_i6.AccountRepository>()));
-  gh.factory<_i48.GetBudgets>(
-      () => _i48.GetBudgets(get<_i19.BudgetRepository>()));
-  gh.factory<_i49.GetCategories>(
-      () => _i49.GetCategories(get<_i31.CategoryRepository>()));
-  gh.lazySingleton<_i50.GoogleSignIn>(
+  gh.factory<_i49.GetAccounts>(
+      () => _i49.GetAccounts(get<_i6.AccountRepository>()));
+  gh.factory<_i50.GetBudgets>(
+      () => _i50.GetBudgets(get<_i19.BudgetRepository>()));
+  gh.factory<_i51.GetCategories>(
+      () => _i51.GetCategories(get<_i31.CategoryRepository>()));
+  gh.lazySingleton<_i52.GoogleSignIn>(
       () => firebaseInjectableModule.googleSignIn);
-  gh.factory<_i51.HomeScreenCubit>(
-      () => _i51.HomeScreenCubit(get<_i12.GetProfileInfo>()));
-  gh.lazySingleton<_i52.ImagePicker>(
+  gh.factory<_i53.HomeScreenCubit>(
+      () => _i53.HomeScreenCubit(get<_i12.GetProfileInfo>()));
+  gh.lazySingleton<_i54.ImagePicker>(
       () => imagePickerInjectableModule.imagePicker);
-  gh.factory<_i53.PickUserImage>(
-      () => _i53.PickUserImage(get<_i52.ImagePicker>()));
-  gh.factory<_i54.ProfileScreenCubit>(() => _i54.ProfileScreenCubit(
+  gh.factory<_i55.PickUserImage>(
+      () => _i55.PickUserImage(get<_i54.ImagePicker>()));
+  gh.factory<_i56.ProfileScreenCubit>(() => _i56.ProfileScreenCubit(
       get<_i12.CheckAuthStatus>(),
       get<_i12.GetProfileInfo>(),
       get<_i12.UpdateUserInfo>(),
       get<_i12.PickUserImage>()));
-  gh.factory<_i55.RecordCubit>(
-      () => _i55.RecordCubit(get<_i56.RecordRepositoryBase>()));
-  gh.factory<_i57.SaveAccounts>(
-      () => _i57.SaveAccounts(get<_i6.AccountRepository>()));
-  gh.factory<_i58.SaveBudgets>(
-      () => _i58.SaveBudgets(get<_i19.BudgetRepository>()));
-  gh.factory<_i59.SaveCategories>(
-      () => _i59.SaveCategories(get<_i31.CategoryRepository>()));
-  gh.factory<_i60.SettingsScreenCubit>(() => _i60.SettingsScreenCubit(
+  gh.factory<_i57.RecordCubit>(
+      () => _i57.RecordCubit(get<_i58.RecordRepositoryBase>()));
+  gh.factory<_i59.SaveAccounts>(
+      () => _i59.SaveAccounts(get<_i6.AccountRepository>()));
+  gh.factory<_i60.SaveBudgets>(
+      () => _i60.SaveBudgets(get<_i19.BudgetRepository>()));
+  gh.factory<_i61.SaveCategories>(
+      () => _i61.SaveCategories(get<_i31.CategoryRepository>()));
+  gh.factory<_i62.SettingsScreenCubit>(() => _i62.SettingsScreenCubit(
       get<_i12.CheckAuthStatus>(), get<_i12.GetProfileInfo>()));
-  gh.factory<_i61.SubCategoriesScreenCubit>(() => _i61.SubCategoriesScreenCubit(
+  gh.factory<_i63.SubCategoriesScreenCubit>(() => _i63.SubCategoriesScreenCubit(
       get<_i14.GetSubCategories>(), get<_i14.SaveSubCategories>()));
   gh.lazySingleton<_i28.SubCategoryDao>(
       () => _i28.SubCategoryDao(get<_i29.CategoriesDatabase>()));
-  gh.lazySingleton<_i62.SubCategoryMapper>(() => _i62.SubCategoryMapper());
+  gh.lazySingleton<_i64.SubCategoryMapper>(() => _i64.SubCategoryMapper());
   gh.lazySingleton<_i31.SubCategoryRepository>(() =>
-      _i63.SubCategoryRepositoryImpl(get<_i25.CategoriesLocalDataSource>()));
-  gh.lazySingleton<_i64.TransactionDao>(
-      () => _i64.TransactionDao(get<_i65.TransactionsDatabase>()));
-  gh.lazySingleton<_i66.TransactionMapper>(() => _i66.TransactionMapper());
-  gh.lazySingleton<_i67.TransactionRepository>(() =>
-      _i68.TransactionRepositoryImpl(get<_i69.TransactionsLocalDataSource>()));
-  gh.lazySingleton<_i69.TransactionsDatabase>(
+      _i65.SubCategoryRepositoryImpl(get<_i25.CategoriesLocalDataSource>()));
+  gh.lazySingleton<_i66.TransactionDao>(
+      () => _i66.TransactionDao(get<_i67.TransactionsDatabase>()));
+  gh.lazySingleton<_i68.TransactionMapper>(() => _i68.TransactionMapper());
+  gh.lazySingleton<_i69.TransactionRepository>(() =>
+      _i70.TransactionRepositoryImpl(get<_i71.TransactionsLocalDataSource>()));
+  gh.lazySingleton<_i71.TransactionsDatabase>(
       () => dbInjectableModule.transctionsDatabase);
-  gh.lazySingleton<_i70.TransactionsLocalDataSource>(() =>
-      _i70.TransactionsLocalDataSourceImpl(
-          get<_i69.TransactionDao>(), get<_i69.TransactionMapper>()));
-  gh.factory<_i71.TransactionsScreenCubit>(() => _i71.TransactionsScreenCubit(
-      get<_i72.GetTransactions>(),
+  gh.lazySingleton<_i72.TransactionsLocalDataSource>(() =>
+      _i72.TransactionsLocalDataSourceImpl(
+          get<_i71.TransactionDao>(), get<_i71.TransactionMapper>()));
+  gh.factory<_i73.TransactionsScreenCubit>(() => _i73.TransactionsScreenCubit(
+      get<_i44.GetTransactions>(),
       get<_i12.GetProfileInfo>(),
-      get<_i72.AddTransaction>()));
-  gh.factory<_i73.UpdateAccount>(() => _i73.UpdateAccount(
-      get<_i6.AccountRepository>(), get<_i47.GetAccounts>()));
-  gh.factory<_i74.UpdateBudget>(() =>
-      _i74.UpdateBudget(get<_i19.BudgetRepository>(), get<_i24.GetBudgets>()));
-  gh.factory<_i75.UpdateCategory>(() => _i75.UpdateCategory(
+      get<_i44.AddTransaction>()));
+  gh.factory<_i74.UpdateAccount>(() => _i74.UpdateAccount(
+      get<_i6.AccountRepository>(), get<_i49.GetAccounts>()));
+  gh.factory<_i75.UpdateBudget>(() =>
+      _i75.UpdateBudget(get<_i19.BudgetRepository>(), get<_i24.GetBudgets>()));
+  gh.factory<_i76.UpdateCategory>(() => _i76.UpdateCategory(
       get<_i31.CategoryRepository>(), get<_i14.GetCategories>()));
-  gh.factory<_i76.UpdateSubCategory>(() => _i76.UpdateSubCategory(
+  gh.factory<_i77.UpdateSubCategory>(() => _i77.UpdateSubCategory(
       get<_i31.SubCategoryRepository>(), get<_i14.GetSubCategories>()));
-  gh.factory<_i77.UpdateTransaction>(() => _i77.UpdateTransaction(
-      get<_i67.TransactionRepository>(), get<_i72.GetTransactions>()));
-  gh.lazySingleton<_i78.UserFirebaseProv>(() => _i78.UserFirebaseProv(
-      get<_i46.FirebaseStorage>(), get<_i45.FirebaseFirestore>()));
-  gh.factory<_i79.AddTransaction>(
-      () => _i79.AddTransaction(get<_i67.TransactionRepository>()));
-  gh.lazySingleton<_i80.AuthService>(() => _i81.AuthServiceImpl(
-      get<_i44.FirebaseAuth>(),
-      get<_i50.GoogleSignIn>(),
-      get<_i43.FacebookAuth>(),
-      get<_i78.UserFirebaseProv>()));
-  gh.factory<_i82.CheckAuthStatus>(
-      () => _i82.CheckAuthStatus(get<_i80.AuthService>()));
-  gh.factory<_i83.CreateSubCategory>(
-      () => _i83.CreateSubCategory(get<_i31.SubCategoryRepository>()));
-  gh.factory<_i84.CreateUser>(() => _i84.CreateUser(get<_i80.AuthService>()));
-  gh.factory<_i85.DeleteSubCategory>(
-      () => _i85.DeleteSubCategory(get<_i31.SubCategoryRepository>()));
-  gh.factory<_i86.DeleteTransaction>(
-      () => _i86.DeleteTransaction(get<_i67.TransactionRepository>()));
-  gh.factory<_i87.GetProfileInfo>(
-      () => _i87.GetProfileInfo(get<_i80.AuthService>()));
-  gh.factory<_i88.GetSubCategories>(
-      () => _i88.GetSubCategories(get<_i31.SubCategoryRepository>()));
-  gh.factory<_i89.GetTransactions>(
-      () => _i89.GetTransactions(get<_i67.TransactionRepository>()));
-  gh.factory<_i90.LogOut>(() => _i90.LogOut(get<_i80.AuthService>()));
-  gh.factory<_i91.SaveSubCategories>(
-      () => _i91.SaveSubCategories(get<_i31.SubCategoryRepository>()));
-  gh.factory<_i92.SignIn>(() => _i92.SignIn(get<_i80.AuthService>()));
-  gh.factory<_i93.UpdateUserInfo>(
-      () => _i93.UpdateUserInfo(get<_i80.AuthService>()));
+  gh.factory<_i78.UpdateTransaction>(() => _i78.UpdateTransaction(
+      get<_i69.TransactionRepository>(), get<_i44.GetTransactions>()));
+  gh.lazySingleton<_i79.UserFirebaseProv>(() => _i79.UserFirebaseProv(
+      get<_i48.FirebaseStorage>(), get<_i47.FirebaseFirestore>()));
+  gh.factory<_i80.AddTransaction>(
+      () => _i80.AddTransaction(get<_i69.TransactionRepository>()));
+  gh.lazySingleton<_i81.AuthService>(() => _i82.AuthServiceImpl(
+      get<_i46.FirebaseAuth>(),
+      get<_i52.GoogleSignIn>(),
+      get<_i45.FacebookAuth>(),
+      get<_i79.UserFirebaseProv>()));
+  gh.factory<_i83.CheckAuthStatus>(
+      () => _i83.CheckAuthStatus(get<_i81.AuthService>()));
+  gh.factory<_i84.CreateSubCategory>(
+      () => _i84.CreateSubCategory(get<_i31.SubCategoryRepository>()));
+  gh.factory<_i85.CreateUser>(() => _i85.CreateUser(get<_i81.AuthService>()));
+  gh.factory<_i86.DeleteSubCategory>(
+      () => _i86.DeleteSubCategory(get<_i31.SubCategoryRepository>()));
+  gh.factory<_i87.DeleteTransaction>(
+      () => _i87.DeleteTransaction(get<_i69.TransactionRepository>()));
+  gh.factory<_i88.GetProfileInfo>(
+      () => _i88.GetProfileInfo(get<_i81.AuthService>()));
+  gh.factory<_i89.GetSubCategories>(
+      () => _i89.GetSubCategories(get<_i31.SubCategoryRepository>()));
+  gh.factory<_i90.GetTransactions>(
+      () => _i90.GetTransactions(get<_i69.TransactionRepository>()));
+  gh.factory<_i91.LogOut>(() => _i91.LogOut(get<_i81.AuthService>()));
+  gh.factory<_i92.SaveSubCategories>(
+      () => _i92.SaveSubCategories(get<_i31.SubCategoryRepository>()));
+  gh.factory<_i93.SignIn>(() => _i93.SignIn(get<_i81.AuthService>()));
+  gh.factory<_i94.UpdateUserInfo>(
+      () => _i94.UpdateUserInfo(get<_i81.AuthService>()));
   return get;
 }
 
-class _$DbInjectableModule extends _i94.DbInjectableModule {}
+class _$DbInjectableModule extends _i95.DbInjectableModule {}
 
-class _$FacebookInjectableModule extends _i95.FacebookInjectableModule {}
+class _$FacebookInjectableModule extends _i96.FacebookInjectableModule {}
 
-class _$FirebaseInjectableModule extends _i96.FirebaseInjectableModule {}
+class _$FirebaseInjectableModule extends _i97.FirebaseInjectableModule {}
 
-class _$ImagePickerInjectableModule extends _i97.ImagePickerInjectableModule {}
+class _$ImagePickerInjectableModule extends _i98.ImagePickerInjectableModule {}

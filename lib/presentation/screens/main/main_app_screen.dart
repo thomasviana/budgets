@@ -1,3 +1,5 @@
+import 'package:budgets/presentation/screens/transactions/edit_transaction_bottomsheet.dart';
+import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_bottomsheet_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,8 +54,16 @@ class _MainAppScreenState extends State<MainAppScreen> {
       case 1:
         return StatsScreen();
       case 2:
-        return BlocProvider(
-          create: (context) => sl<TransactionsScreenCubit>(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<TransactionsScreenCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => sl<EditTransactionBottomSheetCubit>(),
+              child: EditTransactionBottomSheet(),
+            ),
+          ],
           child: TransactionsScreen(),
         );
       case 3:

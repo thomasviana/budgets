@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_bottomsheet_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +22,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<AuthCubit>()..onAuthCheckRequested(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<AuthCubit>()..onAuthCheckRequested(),
+        ),
+        BlocProvider(
+          create: (context) => sl<EditTransactionBottomSheetCubit>(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Budgets App',
         debugShowCheckedModeBanner: false,

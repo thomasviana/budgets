@@ -26,6 +26,8 @@ class AppNavigator {
   static const ROUTE_BUDGETS_PAGE = '/budgets';
   static const ROUTE_EDIT_BUDGET_PAGE = '/edit-budget';
 
+  static const ROUTE_EDIT_TRANSACTION_PAGE = '/edit-transaction';
+
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
   static void closeFlow(BuildContext context) {

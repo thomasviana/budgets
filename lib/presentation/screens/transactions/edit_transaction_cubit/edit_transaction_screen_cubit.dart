@@ -13,11 +13,10 @@ import '../../../../core/transactions/domain.dart';
 import '../../../../core/user/application.dart';
 import '../../../../core/user/domain.dart';
 
-part 'edit_transaction_bottomsheet_state.dart';
+part 'edit_transaction_screen_state.dart';
 
 @injectable
-class EditTransactionBottomSheetCubit
-    extends Cubit<EditTransactionBottomSheetState> {
+class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
   UpdateTransaction updateTransaction;
   DeleteTransaction deleteTransaction;
   GetProfileInfo getProfileInfo;
@@ -26,7 +25,7 @@ class EditTransactionBottomSheetCubit
   GetBudgets getBudgets;
   GetCategories getCategories;
 
-  EditTransactionBottomSheetCubit(
+  EditTransactionScreenCubit(
     this.updateTransaction,
     this.deleteTransaction,
     this.getProfileInfo,
@@ -34,7 +33,7 @@ class EditTransactionBottomSheetCubit
     this.getAccounts,
     this.getBudgets,
     this.getCategories,
-  ) : super(EditTransactionBottomSheetState.initial());
+  ) : super(EditTransactionScreenState.initial());
 
   Future<void> init(Transaction? transaction) async {
     if (transaction != null) {
@@ -52,12 +51,12 @@ class EditTransactionBottomSheetCubit
         (user) => emit(state.copyWith(user: user)),
       );
     }
-    getUserAccount();
+    getUserAccounts();
     getUserBudgets();
     getUserCategories();
   }
 
-  Future<void> getUserAccount() async {
+  Future<void> getUserAccounts() async {
     final userAccounts = await getAccounts(AccountUserId(state.user!.id.value));
     userAccounts.fold(
       () {},
@@ -66,7 +65,7 @@ class EditTransactionBottomSheetCubit
           (account) =>
               account.id.value == state.transaction!.txAccountId!.value,
         );
-        emit(state.copyWith(account: account));
+        emit(state.copyWith(account: account, accounts: accounts));
       },
     );
   }
@@ -147,6 +146,13 @@ class EditTransactionBottomSheetCubit
       state.copyWith(
         transaction: state.transaction!..updateAmount(newAmount),
       ),
+    );
+  }
+
+  void onAccountSelected(Account account) {
+    print(account.name);
+    emit(
+      state.copyWith(account: account),
     );
   }
 

@@ -81,7 +81,9 @@ class _AccountssScreenState extends State<AccountsScreen> {
               Icon? accountIcon;
               bool isImageAvailable;
               final account = state.accounts[index];
-
+              state.accounts.sort(
+                (a, b) => (a.type.toString()).compareTo(b.type.toString()),
+              );
               if (account.imageUrl != null) {
                 isImageAvailable = true;
                 image = NetworkImage(account.imageUrl!);

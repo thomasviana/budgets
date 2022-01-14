@@ -1,4 +1,4 @@
-import 'package:budgets/presentation/screens/transactions/edit_transaction_bottomsheet.dart';
+import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,12 +47,14 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                       size: 34,
                     ),
                     onPressed: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) => EditTransactionBottomSheet(),
-                      );
+                      AppNavigator.navigateToEditTransactionPage(
+                          context, (_) => cubit.getUserTransactions());
+                      // showModalBottomSheet(
+                      //   backgroundColor: Colors.transparent,
+                      //   isScrollControlled: true,
+                      //   context: context,
+                      //   builder: (context) => EditTransactionScreen(),
+                      // );
                     },
                   ),
                 ],
@@ -98,11 +100,11 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                 trailing: Icon(
                   Icons.arrow_forward_ios,
                 ),
-                // onTap: () => AppNavigator.navigateToEditTransactionPage(
-                //   context,
-                //   (_) => cubit.getUserTransactions(),
-                //   transaction: transaction,
-                // ),
+                onTap: () => AppNavigator.navigateToEditTransactionPage(
+                  context,
+                  (_) => cubit.getUserTransactions(),
+                  transaction: transaction,
+                ),
               );
             },
           );

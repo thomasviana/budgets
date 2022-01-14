@@ -1,3 +1,6 @@
+import 'package:budgets/core/transactions/domain.dart';
+import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
+import 'package:budgets/presentation/screens/transactions/edit_transaction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -133,8 +136,28 @@ class Routes {
             child: EditBudgetScreen(budget: budget as Budget?),
           ),
         );
+      case AppNavigator.ROUTE_EDIT_TRANSACTION_PAGE:
+        final transaction = settings.arguments;
+        return MaterialPageRoute(
+          fullscreenDialog: true,
+          settings: settings,
+          builder: (context) => BlocProvider(
+            create: (context) => sl<EditTransactionScreenCubit>(),
+            child:
+                EditTransactionScreen(transaction: transaction as Transaction?),
+          ),
+        );
+      // return _buildRoute(
+      //   settings,
+      // BlocProvider(
+      //   create: (context) => sl<EditTransactionScreenCubit>(),
+      //   child:
+      //       EditTransactionScreen(transaction: transaction as Transaction?),
+      // ),
+      // );
       default:
         return MaterialPageRoute(
+          fullscreenDialog: true,
           settings: settings,
           builder: (context) => Scaffold(
             body: Center(

@@ -128,7 +128,7 @@ import '../presentation/screens/profile/cubit/profile_screen_cubit.dart'
     as _i56;
 import '../presentation/screens/settings/cubit/settings_screen_cubit.dart'
     as _i62;
-import '../presentation/screens/transactions/edit_transaction_cubit/edit_transaction_bottomsheet_cubit.dart'
+import '../presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart'
     as _i43;
 import '../presentation/screens/transactions/transactions_cubit/transactions_screen_cubit.dart'
     as _i73;
@@ -235,8 +235,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i42.EditSubCategoryScreenCubit>(() =>
       _i42.EditSubCategoryScreenCubit(
           get<_i14.UpdateSubCategory>(), get<_i14.DeleteSubCategory>()));
-  gh.factory<_i43.EditTransactionBottomSheetCubit>(() =>
-      _i43.EditTransactionBottomSheetCubit(
+  gh.factory<_i43.EditTransactionScreenCubit>(() =>
+      _i43.EditTransactionScreenCubit(
           get<_i44.UpdateTransaction>(),
           get<_i44.DeleteTransaction>(),
           get<_i12.GetProfileInfo>(),

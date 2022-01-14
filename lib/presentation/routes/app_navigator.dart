@@ -1,3 +1,4 @@
+import 'package:budgets/core/transactions/domain.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/accounts/domain.dart';
@@ -117,6 +118,16 @@ class AppNavigator {
     Budget? budget,
   }) {
     Navigator.pushNamed(context, ROUTE_EDIT_BUDGET_PAGE, arguments: budget)
+        .then(function);
+  }
+
+  static void navigateToEditTransactionPage(
+    BuildContext context,
+    Function(Object?) function, {
+    Transaction? transaction,
+  }) {
+    Navigator.pushNamed(context, ROUTE_EDIT_TRANSACTION_PAGE,
+            arguments: transaction)
         .then(function);
   }
 }

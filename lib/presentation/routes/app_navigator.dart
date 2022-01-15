@@ -28,6 +28,8 @@ class AppNavigator {
   static const ROUTE_EDIT_BUDGET_PAGE = '/edit-budget';
 
   static const ROUTE_EDIT_TRANSACTION_PAGE = '/edit-transaction';
+  static const ROUTE_SELECT_ACCOUNT_PAGE = '/select-ccount';
+  static const ROUTE_SELECT_CATEGORY_PAGE = '/select-category';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
@@ -128,6 +130,25 @@ class AppNavigator {
   }) {
     Navigator.pushNamed(context, ROUTE_EDIT_TRANSACTION_PAGE,
             arguments: transaction)
+        .then(function);
+  }
+
+  static void navigateToSelectCategoryPage(
+    BuildContext context,
+    Function(Object?) function, {
+    List<Category>? categories,
+  }) {
+    Navigator.pushNamed(context, ROUTE_SELECT_CATEGORY_PAGE,
+            arguments: categories)
+        .then(function);
+  }
+
+  static void navigateToSelectAccountPage(
+    BuildContext context,
+    Function(Object?) function, {
+    List<Account>? account,
+  }) {
+    Navigator.pushNamed(context, ROUTE_SELECT_ACCOUNT_PAGE, arguments: account)
         .then(function);
   }
 }

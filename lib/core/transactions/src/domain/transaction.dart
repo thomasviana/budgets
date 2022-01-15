@@ -24,6 +24,9 @@ class Transaction extends Entity<TransactionId> {
     this.txAccountId,
   }) : super(id);
 
+  bool get isIncome => transactionType == TransactionType.income;
+  bool get isExpense => transactionType == TransactionType.expense;
+
   // ignore: use_setters_to_change_properties
   void changeType(TransactionType newType) => transactionType = newType;
   // ignore: use_setters_to_change_properties

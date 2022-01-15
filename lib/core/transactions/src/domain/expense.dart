@@ -34,6 +34,7 @@ class Expense extends Transaction {
         id: TransactionId.auto(),
         txAccountId: TransactionAccountId('bank'),
         txBudgetId: TransactionBudgetId('seg'),
+        txCategoryId: TransactionCategoryId('housing'),
         date: DateTime.now(),
       );
 

@@ -71,24 +71,26 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       return FutureBuilder(
         future: cubit.getUserCategories(),
         builder: (context, snapshot) {
+          final categories = state.categories;
           return ListView.separated(
             padding: EdgeInsets.only(top: 8),
             itemCount: state.categories.length,
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(height: 2),
             itemBuilder: (BuildContext context, int index) {
+              final category = categories[index];
               return ListTile(
-                title: Text(state.categories[index].name),
+                title: Text(categories[index].name),
                 leading: CircleAvatar(
                   maxRadius: 20,
                   child: Icon(
                     IconData(
-                      state.categories[index].icon,
+                      category.icon,
                       fontFamily: 'MaterialIcons',
                     ),
                     color: AppColors.white,
                   ),
-                  backgroundColor: Color(state.categories[index].color),
+                  backgroundColor: Color(category.color),
                 ),
                 trailing: Icon(
                   Icons.arrow_forward_ios,
@@ -96,7 +98,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 onTap: () => AppNavigator.navigateToEditCategoryPage(
                   context,
                   (_) => cubit.getUserCategories(),
-                  category: state.categories[index],
+                  category: category,
                 ),
               );
             },

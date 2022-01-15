@@ -1,6 +1,8 @@
 import 'package:budgets/core/transactions/domain.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_screen.dart';
+import 'package:budgets/presentation/screens/transactions/select_account_screen.dart';
+import 'package:budgets/presentation/screens/transactions/select_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -147,17 +149,30 @@ class Routes {
                 EditTransactionScreen(transaction: transaction as Transaction?),
           ),
         );
-      // return _buildRoute(
-      //   settings,
-      // BlocProvider(
-      //   create: (context) => sl<EditTransactionScreenCubit>(),
-      //   child:
-      //       EditTransactionScreen(transaction: transaction as Transaction?),
-      // ),
-      // );
+      case AppNavigator.ROUTE_SELECT_CATEGORY_PAGE:
+        final categories = settings.arguments;
+        return _buildRoute(
+          settings,
+          BlocProvider(
+            create: (context) => sl<EditTransactionScreenCubit>(),
+            child: SelectCategoryScreen(
+              categories: categories as List<Category>?,
+            ),
+          ),
+        );
+      case AppNavigator.ROUTE_SELECT_ACCOUNT_PAGE:
+        final accounts = settings.arguments;
+        return _buildRoute(
+          settings,
+          BlocProvider(
+            create: (context) => sl<EditTransactionScreenCubit>(),
+            child: SelectAccountScreen(
+              accounts: accounts as List<Account>?,
+            ),
+          ),
+        );
       default:
         return MaterialPageRoute(
-          fullscreenDialog: true,
           settings: settings,
           builder: (context) => Scaffold(
             body: Center(

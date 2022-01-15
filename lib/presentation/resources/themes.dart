@@ -18,9 +18,18 @@ class AppTheme {
       .apply(fontFamily: 'Quicksand', bodyColor: AppColors.textColor);
 
   final iconTheme = IconThemeData(color: AppColors.white);
-  final listTileTheme = ListTileTheme(
-    child: Text(''),
-    iconColor: _colorSchemeLight.surface,
+  final listTileTheme =
+      ListTileTheme(child: Text(''), iconColor: _colorSchemeLight.surface);
+
+  static final appBarTheme = AppBarTheme(
+    color: AppColors.white,
+    titleTextStyle: TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    ),
+    iconTheme: IconThemeData(color: AppColors.primaryColor),
+    elevation: 0,
   );
 
   static ThemeData get light {
@@ -28,8 +37,9 @@ class AppTheme {
       colorScheme: _colorSchemeLight,
       textTheme: _textThemeBlack,
     ).copyWith(
-      visualDensity: VisualDensity.adaptivePlatformDensity,
-      iconTheme: IconThemeData(color: Colors.white, size: 20),
-    );
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        iconTheme: IconThemeData(color: Colors.white, size: 20),
+        appBarTheme: appBarTheme,
+        listTileTheme: ListTileThemeData(tileColor: AppColors.white));
   }
 }

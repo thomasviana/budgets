@@ -1,4 +1,3 @@
-import 'package:budgets/core/accounts/domain.dart';
 import 'package:budgets/core/transactions/domain.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,17 +27,12 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
   @override
   void initState() {
     super.initState();
+    print('init');
     cubit = context.read<EditTransactionScreenCubit>();
     cubit.init(widget.transaction);
     formatter = CurrencyTextInputFormatter(symbol: '\$', decimalDigits: 0);
     textEditingController = TextEditingController()
       ..text = formatter.format(cubit.state.transaction!.amount.toString());
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
   }
 
   @override
@@ -77,10 +71,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+        color: Colors.white,
         child: ListView(
           children: [
             Padding(
@@ -133,6 +124,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               autofocus: true,
               textAlign: TextAlign.center,
               style: TextStyle(
+                color: state.transaction!.isExpense ? Colors.red : Colors.green,
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
               ),
@@ -174,112 +166,98 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                 ],
               ),
               onTap: () {
-                showModalBottomSheet(
-                  backgroundColor: Colors.transparent,
-                  isScrollControlled: true,
-                  context: context,
-                  builder: (context) => _SelectAccountBottomSheet(
-                    cubit: cubit,
-                    state: state,
-                    onCancelPressed: () {},
-                    onAccountSelected: (selectedAccount) {
-                      cubit.onAccountSelected(selectedAccount);
-                      AppNavigator.navigateBack(context);
-                    },
-                  ),
+                AppNavigator.navigateToSelectAccountPage(
+                  context,
+                  (_) => null,
+                  account: state.accounts,
                 );
               },
             ),
             Divider(height: 2),
             ListTile(
-                leading: CircleAvatar(
-                  maxRadius: 20,
-                  backgroundColor: Color(budget.color),
-                  child: hasAbbreviation
-                      ? Text(
-                          budget.abbreviation!,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white,
-                          ),
-                        )
-                      : Icon(
-                          Icons.inbox,
-                          color: AppColors.white,
-                        ),
+              leading: CircleAvatar(
+                maxRadius: 20,
+                child: Icon(
+                  IconData(
+                    state.category!.icon,
+                    fontFamily: 'MaterialIcons',
+                  ),
+                  color: AppColors.white,
                 ),
-                minLeadingWidth: 2,
-                title: Text('Presupuesto'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      budget.name,
-                      style: TextStyle(color: AppColors.greySecondary),
-                    ),
-                    SizedBox(width: 10),
-                    Icon(Icons.arrow_forward_ios_rounded)
-                  ],
-                ),
-                onTap: () {}
-                //   showModalBottomSheet(
-                //     backgroundColor: Colors.transparent,
-                //     isScrollControlled: true,
-                //     context: context,
-                //     builder: (context) => _SelectAccountBottomSheet(
-                //       state: state,
-                //       onCancelPressed: () {},
-                //       onAccountSelected: (accountType) {
-                //         cubit.onTypeChanged(accountType);
-                //         AppNavigator.navigateBack(context);
-                //       },
-                //     ),
-                //   );
-                // },
-                ),
+                backgroundColor: Color(state.category!.color),
+              ),
+              minLeadingWidth: 2,
+              title: Text('Categoría'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    state.category!.name,
+                    style: TextStyle(color: AppColors.greySecondary),
+                  ),
+                  SizedBox(width: 10),
+                  Icon(Icons.arrow_forward_ios_rounded)
+                ],
+              ),
+              onTap: () {
+                AppNavigator.navigateToSelectCategoryPage(
+                  context,
+                  (p0) {
+                    cubit.getUserSubCategories();
+                  },
+                  categories: state.categories,
+                );
+              },
+            ),
             Divider(height: 2),
             ListTile(
-                leading: CircleAvatar(
-                  maxRadius: 20,
-                  child: Icon(
-                    IconData(
-                      state.category!.icon,
-                      fontFamily: 'MaterialIcons',
-                    ),
-                    color: AppColors.white,
+              leading: CircleAvatar(
+                maxRadius: 20,
+                backgroundColor: Color(budget.color),
+                child: hasAbbreviation
+                    ? Text(
+                        budget.abbreviation!,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
+                        ),
+                      )
+                    : Icon(
+                        Icons.inbox,
+                        color: AppColors.white,
+                      ),
+              ),
+              minLeadingWidth: 2,
+              title: Text('Presupuesto'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    budget.name,
+                    style: TextStyle(color: AppColors.greySecondary),
                   ),
-                  backgroundColor: Color(state.category!.color),
-                ),
-                minLeadingWidth: 2,
-                title: Text('Categoría'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Text(
-                      'Arriendo',
-                      style: TextStyle(color: AppColors.greySecondary),
-                    ),
-                    SizedBox(width: 10),
-                    Icon(Icons.arrow_forward_ios_rounded)
-                  ],
-                ),
-                onTap: () {}
-                //   showModalBottomSheet(
-                //     backgroundColor: Colors.transparent,
-                //     isScrollControlled: true,
-                //     context: context,
-                //     builder: (context) => _SelectAccountBottomSheet(
-                //       state: state,
-                //       onCancelPressed: () {},
-                //       onAccountSelected: (accountType) {
-                //         cubit.onTypeChanged(accountType);
-                //         AppNavigator.navigateBack(context);
-                //       },
-                //     ),
-                //   );
-                // },
-                ),
+                  SizedBox(width: 10),
+                  Icon(Icons.arrow_forward_ios_rounded)
+                ],
+              ),
+              onTap: () {
+                // showModalBottomSheet(
+                //   backgroundColor: Colors.transparent,
+                //   isScrollControlled: true,
+                //   context: context,
+                //   builder: (context) => _SelectCategoryBottomSheet(
+                //     cubit: cubit,
+                //     state: state,
+                //     onCancelPressed: () {},
+                //     onCategorySelected: (selectedCategory) {
+                //       cubit.onCategorySelected(selectedCategory);
+                //       AppNavigator.navigateBack(context);
+                //     },
+                //   ),
+                // );
+              },
+            ),
             Divider(height: 2),
             ListTile(
                 leading: Icon(Icons.drive_file_rename_outline_outlined),
@@ -466,144 +444,6 @@ class _EditNameBottomSheet extends HookWidget {
                 hintText: '',
               ),
             )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SelectAccountBottomSheet extends StatelessWidget {
-  final Function(Account) onAccountSelected;
-  final VoidCallback onCancelPressed;
-  final EditTransactionScreenCubit cubit;
-  final EditTransactionScreenState state;
-
-  const _SelectAccountBottomSheet({
-    Key? key,
-    required this.onAccountSelected,
-    required this.onCancelPressed,
-    required this.cubit,
-    required this.state,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return DraggableScrollableSheet(
-      initialChildSize: 0.95,
-      maxChildSize: 0.95,
-      builder: (context, controller) => Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Stack(
-                alignment: FractionalOffset.center,
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      child: const Text('Atras'),
-                      onPressed: () {
-                        onCancelPressed();
-                        AppNavigator.navigateBack(context);
-                      },
-                    ),
-                  ),
-                  const Text(
-                    'Cuenta',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      child: const Text('Editar'),
-                      onPressed: () {
-                        onCancelPressed();
-                        AppNavigator.navigateToAccountsPage(context);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: kDefaultPadding,
-                left: kDefaultPadding,
-                right: kDefaultPadding,
-                bottom: 8,
-              ),
-              child: Text(
-                'MIS CUENTAS',
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
-                textAlign: TextAlign.start,
-              ),
-            ),
-            Divider(height: 2),
-            Expanded(
-              child: FutureBuilder(
-                future: cubit.getUserAccounts(),
-                builder: (context, snapshot) {
-                  final accounts = state.accounts!
-                    ..sort(
-                      (a, b) =>
-                          (a.type.toString()).compareTo(b.type.toString()),
-                    );
-                  return ListView.separated(
-                    padding: EdgeInsets.only(top: 8),
-                    itemCount: accounts.length,
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(height: 2),
-                    itemBuilder: (BuildContext context, int index) {
-                      NetworkImage? image;
-                      Icon? accountIcon;
-                      bool isImageAvailable;
-                      final account = accounts[index];
-                      if (account.imageUrl != null) {
-                        isImageAvailable = true;
-                        image = NetworkImage(account.imageUrl!);
-                      } else {
-                        isImageAvailable = false;
-                        accountIcon = Icon(
-                          IconData(
-                            account.icon,
-                            fontFamily: 'MaterialIcons',
-                          ),
-                          color: AppColors.white,
-                        );
-                      }
-                      return ListTile(
-                        leading: CircleAvatar(
-                          maxRadius: 20,
-                          backgroundColor: Color(account.color),
-                          backgroundImage: image,
-                          child: isImageAvailable ? null : accountIcon,
-                        ),
-                        title: Text(
-                          account.name,
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                        trailing: state.account!.id == account.id
-                            ? Icon(Icons.check, color: AppColors.primaryColor)
-                            : null,
-                        onTap: () => onAccountSelected(account),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            Divider(height: 2),
           ],
         ),
       ),

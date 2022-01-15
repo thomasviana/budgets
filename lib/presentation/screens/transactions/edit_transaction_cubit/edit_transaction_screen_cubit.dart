@@ -24,6 +24,9 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
   GetAccounts getAccounts;
   GetBudgets getBudgets;
   GetCategories getCategories;
+  SaveCategories saveCategories;
+  GetSubCategories getSubCategories;
+  SaveSubCategories saveSubCategories;
 
   EditTransactionScreenCubit(
     this.updateTransaction,
@@ -33,6 +36,9 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
     this.getAccounts,
     this.getBudgets,
     this.getCategories,
+    this.saveCategories,
+    this.getSubCategories,
+    this.saveSubCategories,
   ) : super(EditTransactionScreenState.initial());
 
   Future<void> init(Transaction? transaction) async {
@@ -52,8 +58,9 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
       );
     }
     getUserAccounts();
-    getUserBudgets();
     getUserCategories();
+    getUserSubCategories();
+    getUserBudgets();
   }
 
   Future<void> getUserAccounts() async {
@@ -70,6 +77,62 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
     );
   }
 
+  Future<void> getUserCategories() async {
+    final userCategories =
+        await getCategories(CategoryUserId(state.user!.id.value));
+    userCategories.fold(
+      () => _setDefaultCategories(),
+      (categories) {
+        final category = categories.firstWhere(
+          (category) =>
+              category.id.value == state.transaction!.txCategoryId!.value,
+        );
+        emit(state.copyWith(category: category, categories: categories));
+      },
+    );
+  }
+
+  Future<void> _setDefaultCategories() async {
+    final categories = Category.defaultCategories;
+    for (final category in categories) {
+      category.setUserId(state.user!.id.value);
+    }
+    await saveCategories(categories: categories);
+  }
+
+  Future<void> getUserSubCategories() async {
+    emit(state.copyWith(isLoading: true));
+    if (state.category!.id.value == 'housing' ||
+        state.category!.id.value == 'food' ||
+        state.category!.id.value == 'transportation' ||
+        state.category!.id.value == 'healthCare' ||
+        state.category!.id.value == 'services' ||
+        state.category!.id.value == 'recreation' ||
+        state.category!.id.value == 'shopping' ||
+        state.category!.id.value == 'financial') {
+      final userSubCategories = await getSubCategories(state.category!.id);
+      userSubCategories.fold(
+        () => _setDefaultSubCategories(),
+        (subCategories) {
+          emit(state.copyWith(subCategories: subCategories, isLoading: false));
+        },
+      );
+    } else {
+      final userSubCategories = await getSubCategories(state.category!.id);
+      userSubCategories.fold(
+        () => emit(state.copyWith(subCategories: [])),
+        (subCategories) {
+          emit(state.copyWith(subCategories: subCategories, isLoading: false));
+        },
+      );
+    }
+  }
+
+  Future<void> _setDefaultSubCategories() async {
+    final subCategories = SubCategory.allSubCategories;
+    await saveSubCategories(subCategories: subCategories);
+  }
+
   Future<void> getUserBudgets() async {
     final userBudgets = await getBudgets(BudgetUserId(state.user!.id.value));
     userBudgets.fold(
@@ -81,21 +144,6 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
               (state.transaction! as Expense).txBudgetId!.value,
         );
         emit(state.copyWith(budget: budget));
-      },
-    );
-  }
-
-  Future<void> getUserCategories() async {
-    final userCategories =
-        await getCategories(CategoryUserId(state.user!.id.value));
-    userCategories.fold(
-      () {},
-      (categories) {
-        final category = categories.firstWhere(
-          (category) =>
-              category.id.value == state.transaction!.txCategoryId!.value,
-        );
-        emit(state.copyWith(category: category));
       },
     );
   }
@@ -150,10 +198,15 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
   }
 
   void onAccountSelected(Account account) {
-    print(account.name);
-    emit(
-      state.copyWith(account: account),
-    );
+    emit(state.copyWith(account: account));
+  }
+
+  void onCategorySelected(Category newCategory) {
+    emit(state.copyWith(category: newCategory));
+  }
+
+  void onSubCategorySelected(SubCategory subCategory) {
+    emit(state.copyWith(subCategory: subCategory));
   }
 
   void onDateUpdated(DateTime? newDate) {

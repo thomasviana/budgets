@@ -2,6 +2,7 @@ import 'package:budgets/core/transactions/domain.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_screen.dart';
 import 'package:budgets/presentation/screens/transactions/select_account_screen.dart';
+import 'package:budgets/presentation/screens/transactions/select_budget_screen.dart';
 import 'package:budgets/presentation/screens/transactions/select_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,17 +11,14 @@ import '../../core/accounts/domain.dart';
 import '../../core/budgets/domain.dart';
 import '../../core/categories/domain.dart';
 import '../../di/dependency_injection.dart';
-import '../screens/accounts/accounts_cubit/accounts_screen_cubit.dart';
 import '../screens/accounts/accounts_screen.dart';
 import '../screens/accounts/edit_account_cubit/edit_account_screen_cubit.dart';
 import '../screens/accounts/edit_account_screen.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/auth/cubit/auth_screen_cubit.dart';
-import '../screens/budgets/budgets_cubit/butgets_screen_cubit.dart';
 import '../screens/budgets/budgets_screen.dart';
 import '../screens/budgets/edit_budget_cubit/edit_budget_screen_cubit.dart';
 import '../screens/budgets/edit_budget_screen.dart';
-import '../screens/categories/categories_cubit/categories_screen_cubit.dart';
 import '../screens/categories/categories_screen.dart';
 import '../screens/categories/edit_category_cubit/edit_category_screen_cubit.dart';
 import '../screens/categories/edit_category_screen.dart';
@@ -36,7 +34,10 @@ import '../screens/splash/splash_screen.dart';
 import 'app_navigator.dart';
 
 class Routes {
-  static Route routes(RouteSettings settings) {
+  final EditTransactionScreenCubit _editTransactionScreenCubit =
+      sl<EditTransactionScreenCubit>();
+
+  Route routes(RouteSettings settings) {
     switch (settings.name) {
       case AppNavigator.ROUTE_SPLASH_PAGE:
         return _buildRoute(
@@ -72,10 +73,7 @@ class Routes {
       case AppNavigator.ROUTE_CATEGORIES_PAGE:
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<CategoriesScreenCubit>(),
-            child: CategoriesScreen(),
-          ),
+          CategoriesScreen(),
         );
       case AppNavigator.ROUTE_SUB_CATEGORIES_PAGE:
         final category = settings.arguments! as Category;
@@ -107,10 +105,7 @@ class Routes {
       case AppNavigator.ROUTE_ACCOUNTS_PAGE:
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<AccountsScreenCubit>(),
-            child: AccountsScreen(),
-          ),
+          AccountsScreen(),
         );
       case AppNavigator.ROUTE_EDIT_ACCOUNT_PAGE:
         final account = settings.arguments;
@@ -124,10 +119,7 @@ class Routes {
       case AppNavigator.ROUTE_BUDGETS_PAGE:
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<BudgetsScreenCubit>(),
-            child: BudgetsScreen(),
-          ),
+          BudgetsScreen(),
         );
       case AppNavigator.ROUTE_EDIT_BUDGET_PAGE:
         final budget = settings.arguments;
@@ -143,8 +135,8 @@ class Routes {
         return MaterialPageRoute(
           fullscreenDialog: true,
           settings: settings,
-          builder: (context) => BlocProvider(
-            create: (context) => sl<EditTransactionScreenCubit>(),
+          builder: (context) => BlocProvider.value(
+            value: _editTransactionScreenCubit,
             child:
                 EditTransactionScreen(transaction: transaction as Transaction?),
           ),
@@ -153,21 +145,32 @@ class Routes {
         final categories = settings.arguments;
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<EditTransactionScreenCubit>(),
+          BlocProvider.value(
+            value: _editTransactionScreenCubit,
             child: SelectCategoryScreen(
               categories: categories as List<Category>?,
             ),
           ),
         );
       case AppNavigator.ROUTE_SELECT_ACCOUNT_PAGE:
-        final accounts = settings.arguments;
+        final accounts = settings.arguments!;
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<EditTransactionScreenCubit>(),
+          BlocProvider.value(
+            value: _editTransactionScreenCubit,
             child: SelectAccountScreen(
-              accounts: accounts as List<Account>?,
+              accounts: accounts as List<Account>,
+            ),
+          ),
+        );
+      case AppNavigator.ROUTE_SELECT_BUDGET_PAGE:
+        final budgets = settings.arguments!;
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _editTransactionScreenCubit,
+            child: SelectBudgetScreen(
+              budgets: budgets as List<Budget>,
             ),
           ),
         );

@@ -30,6 +30,7 @@ class AppNavigator {
   static const ROUTE_EDIT_TRANSACTION_PAGE = '/edit-transaction';
   static const ROUTE_SELECT_ACCOUNT_PAGE = '/select-ccount';
   static const ROUTE_SELECT_CATEGORY_PAGE = '/select-category';
+  static const ROUTE_SELECT_BUDGET_PAGE = '/select-budget';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
@@ -146,9 +147,18 @@ class AppNavigator {
   static void navigateToSelectAccountPage(
     BuildContext context,
     Function(Object?) function, {
-    List<Account>? account,
+    List<Account>? accounts,
   }) {
-    Navigator.pushNamed(context, ROUTE_SELECT_ACCOUNT_PAGE, arguments: account)
+    Navigator.pushNamed(context, ROUTE_SELECT_ACCOUNT_PAGE, arguments: accounts)
+        .then(function);
+  }
+
+  static void navigateToSelectBudgetPage(
+    BuildContext context,
+    Function(Object?) function, {
+    List<Budget>? budgets,
+  }) {
+    Navigator.pushNamed(context, ROUTE_SELECT_BUDGET_PAGE, arguments: budgets)
         .then(function);
   }
 }

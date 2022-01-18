@@ -1,4 +1,5 @@
 import 'package:budgets/core/transactions/domain.dart';
+import 'package:budgets/presentation/core/settings/settings_cubit.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,15 +22,18 @@ class EditTransactionScreen extends StatefulWidget {
 
 class _EditTransactionScreenState extends State<EditTransactionScreen> {
   late EditTransactionScreenCubit cubit;
+  late SettingsCubit settingsCubit;
   late CurrencyTextInputFormatter formatter;
   late TextEditingController textEditingController;
 
   @override
   void initState() {
     super.initState();
-    print('init');
-    cubit = context.read<EditTransactionScreenCubit>();
-    cubit.init(widget.transaction);
+
+    settingsCubit = context.read<SettingsCubit>()..getSettings();
+    cubit = context.read<EditTransactionScreenCubit>()
+      ..init(widget.transaction);
+
     formatter = CurrencyTextInputFormatter(symbol: '\$', decimalDigits: 0);
     textEditingController = TextEditingController()
       ..text = formatter.format(cubit.state.transaction!.amount.toString());
@@ -44,7 +48,10 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
   Widget _buildState(BuildContext context, EditTransactionScreenState state) {
     // Account leading
-    final account = state.account!;
+    final account = state.account.fold(
+      () => settingsCubit.state.accounts.first,
+      (account) => account,
+    );
     NetworkImage? image;
     Icon? accountIcon;
     bool isImageAvailable;
@@ -63,7 +70,10 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     }
 
     // Budget leading
-    final budget = state.budget!;
+    final budget = state.budget.fold(
+      () => settingsCubit.state.budgets.first,
+      (budget) => budget,
+    );
     bool hasAbbreviation = true;
     if (budget.abbreviation == null || budget.abbreviation!.isEmpty) {
       hasAbbreviation = false;
@@ -82,8 +92,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   TextButton(
                     child: const Text('Cancelar'),
                     onPressed: () {
-                      AppNavigator.navigateBack(context);
-                      // onCancelPressed();
+                      Navigator.pop(context);
                     },
                   ),
                   const Text(
@@ -169,31 +178,49 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                 AppNavigator.navigateToSelectAccountPage(
                   context,
                   (_) => null,
-                  account: state.accounts,
+                  accounts: settingsCubit.state.accounts,
                 );
               },
             ),
             Divider(height: 2),
             ListTile(
-              leading: CircleAvatar(
-                maxRadius: 20,
-                child: Icon(
-                  IconData(
-                    state.category!.icon,
-                    fontFamily: 'MaterialIcons',
+              leading: state.subCategory.fold(
+                () => CircleAvatar(
+                  maxRadius: 20,
+                  child: Text(
+                    '?',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        color: AppColors.white),
                   ),
-                  color: AppColors.white,
+                  backgroundColor: AppColors.greyDisabled,
                 ),
-                backgroundColor: Color(state.category!.color),
+                (subcategory) => CircleAvatar(
+                  maxRadius: 20,
+                  child: Icon(
+                    IconData(
+                      subcategory.icon,
+                      fontFamily: 'MaterialIcons',
+                    ),
+                    color: AppColors.white,
+                  ),
+                  backgroundColor: Color(subcategory.color),
+                ),
               ),
-              minLeadingWidth: 2,
               title: Text('Categoría'),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    state.category!.name,
-                    style: TextStyle(color: AppColors.greySecondary),
+                  state.subCategory.fold(
+                    () => Text(
+                      'Requerido',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    (subCategory) => Text(
+                      subCategory.name,
+                      style: TextStyle(color: AppColors.greySecondary),
+                    ),
                   ),
                   SizedBox(width: 10),
                   Icon(Icons.arrow_forward_ios_rounded)
@@ -202,10 +229,10 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               onTap: () {
                 AppNavigator.navigateToSelectCategoryPage(
                   context,
-                  (p0) {
-                    cubit.getUserSubCategories();
+                  (_) {
+                    // cubit.getUserSubCategories();
                   },
-                  categories: state.categories,
+                  categories: settingsCubit.state.categories,
                 );
               },
             ),
@@ -242,20 +269,11 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                 ],
               ),
               onTap: () {
-                // showModalBottomSheet(
-                //   backgroundColor: Colors.transparent,
-                //   isScrollControlled: true,
-                //   context: context,
-                //   builder: (context) => _SelectCategoryBottomSheet(
-                //     cubit: cubit,
-                //     state: state,
-                //     onCancelPressed: () {},
-                //     onCategorySelected: (selectedCategory) {
-                //       cubit.onCategorySelected(selectedCategory);
-                //       AppNavigator.navigateBack(context);
-                //     },
-                //   ),
-                // );
+                AppNavigator.navigateToSelectBudgetPage(
+                  context,
+                  (_) => null,
+                  budgets: settingsCubit.state.budgets,
+                );
               },
             ),
             Divider(height: 2),

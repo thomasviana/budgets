@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/core/settings/settings_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,13 +17,26 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
+  final Routes _routes = Routes();
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<AuthCubit>()..onAuthCheckRequested(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<AuthCubit>()..onAuthCheckRequested(),
+        ),
+        BlocProvider(
+          create: (context) => sl<SettingsCubit>()..getSettings(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Budgets App',
         debugShowCheckedModeBanner: false,
@@ -47,7 +61,7 @@ class MyApp extends StatelessWidget {
         home: WillPopScope(
           child: Navigator(
             key: navigatorKey,
-            onGenerateRoute: Routes.routes,
+            onGenerateRoute: _routes.routes,
             //observers: [appRouteObserver], review this later
           ),
           onWillPop: () async => !(await navigatorKey.currentState!.maybePop()),
@@ -56,4 +70,10 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+  // @override
+  // void dispose() {
+  //   _routes.dispose();
+  //   super.dispose();
+  // }
 }

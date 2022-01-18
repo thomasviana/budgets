@@ -36,14 +36,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: NestedScrollView(
         headerSliverBuilder: (ctx, inner) => [
           CupertinoSliverNavigationBar(
-            largeTitle: Text('Settings'),
+            largeTitle: Text('Ajustes'),
           )
         ],
         body: Column(
           children: [
             Divider(height: 2),
             ListTile(
-              title: Text('Profile'),
+              title: Text('Perfil'),
               leading: Icon(Icons.person_outline),
               trailing: Icon(Icons.arrow_forward_ios),
               autofocus: true,

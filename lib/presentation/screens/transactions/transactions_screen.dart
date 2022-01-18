@@ -48,13 +48,9 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                     ),
                     onPressed: () {
                       AppNavigator.navigateToEditTransactionPage(
-                          context, (_) => cubit.getUserTransactions());
-                      // showModalBottomSheet(
-                      //   backgroundColor: Colors.transparent,
-                      //   isScrollControlled: true,
-                      //   context: context,
-                      //   builder: (context) => EditTransactionScreen(),
-                      // );
+                        context,
+                        (_) => cubit.getUserTransactions(),
+                      );
                     },
                   ),
                 ],

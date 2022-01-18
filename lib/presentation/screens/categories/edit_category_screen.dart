@@ -33,12 +33,6 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
   }
 
   @override
-  void dispose() {
-    // textEditingController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<EditCategoryScreenCubit, EditCategoryScreenState>(
       builder: _buildState,

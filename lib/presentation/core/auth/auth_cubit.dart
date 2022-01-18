@@ -40,6 +40,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
       },
     );
+    print('auth');
   }
 
   // Future<void> _saveCategoriesOnDb() async {

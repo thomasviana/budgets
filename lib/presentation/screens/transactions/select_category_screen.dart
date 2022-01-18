@@ -1,7 +1,6 @@
 import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -70,13 +69,10 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
         controller: _controller,
         children: [
           _CategoriesList(
-            cubit: cubit,
             categories: widget.categories!,
             controller: _controller,
           ),
-          _SubCategoriesList(
-            cubit: cubit,
-          )
+          _SubCategoriesList()
         ],
       ),
     );
@@ -87,12 +83,10 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
 }
 
 class _CategoriesList extends StatelessWidget {
-  final EditTransactionScreenCubit cubit;
   final List<Category> categories;
   final TabController controller;
   const _CategoriesList({
     Key? key,
-    required this.cubit,
     required this.categories,
     required this.controller,
   }) : super(key: key);
@@ -137,12 +131,21 @@ class _CategoriesList extends StatelessWidget {
                     ),
                     backgroundColor: Color(category.color),
                   ),
-                  trailing: state.category!.id == category.id
-                      ? Icon(Icons.check, color: AppColors.primaryColor)
-                      : null,
+                  trailing: state.category.fold(
+                    () => null,
+                    (stateCategoryt) {
+                      if (stateCategoryt.id == category.id) {
+                        return Icon(Icons.check, color: AppColors.primaryColor);
+                      }
+                    },
+                  ),
                   onTap: () {
-                    cubit.onCategorySelected(category);
-                    controller.animateTo(1);
+                    context
+                        .read<EditTransactionScreenCubit>()
+                        .onCategorySelected(category)
+                        .then(
+                          (value) => controller.animateTo(1),
+                        );
                   },
                 );
               },
@@ -156,12 +159,6 @@ class _CategoriesList extends StatelessWidget {
 }
 
 class _SubCategoriesList extends StatelessWidget {
-  final EditTransactionScreenCubit cubit;
-  const _SubCategoriesList({
-    Key? key,
-    required this.cubit,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EditTransactionScreenCubit, EditTransactionScreenState>(
@@ -183,37 +180,35 @@ class _SubCategoriesList extends StatelessWidget {
               ),
             ),
             Divider(height: 0),
-            FutureBuilder(
-                future: cubit.getUserSubCategories(),
-                builder: (context, snapshot) {
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: state.subCategories!.length,
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(height: 0),
-                    itemBuilder: (BuildContext context, int index) {
-                      final subCategory = state.subCategories![index];
-                      return ListTile(
-                        title: Text(subCategory.name),
-                        leading: CircleAvatar(
-                          maxRadius: 20,
-                          child: Icon(
-                            IconData(
-                              subCategory.icon,
-                              fontFamily: 'MaterialIcons',
-                            ),
-                            color: AppColors.white,
-                          ),
-                          backgroundColor: Color(subCategory.color),
-                        ),
-                        onTap: () {
-                          cubit.onSubCategorySelected(subCategory);
-                          AppNavigator.navigateBack(context);
-                        },
-                      );
-                    },
-                  );
-                }),
+            ListView.separated(
+              shrinkWrap: true,
+              itemCount: state.subCategories!.length,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(height: 0),
+              itemBuilder: (BuildContext context, int index) {
+                final subCategory = state.subCategories![index];
+                return ListTile(
+                  title: Text(subCategory.name),
+                  leading: CircleAvatar(
+                    maxRadius: 20,
+                    child: Icon(
+                      IconData(
+                        subCategory.icon,
+                        fontFamily: 'MaterialIcons',
+                      ),
+                      color: AppColors.white,
+                    ),
+                    backgroundColor: Color(subCategory.color),
+                  ),
+                  onTap: () {
+                    context
+                        .read<EditTransactionScreenCubit>()
+                        .onSubCategorySelected(subCategory);
+                    AppNavigator.navigateBack(context);
+                  },
+                );
+              },
+            ),
             const Divider(height: 0),
           ],
         );

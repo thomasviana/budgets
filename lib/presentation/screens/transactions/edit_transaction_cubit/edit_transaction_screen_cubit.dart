@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/accounts/application.dart';
 import 'package:budgets/core/accounts/domain.dart';
-import 'package:budgets/core/budgets/application.dart';
 import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/core/categories/application.dart';
 import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/core/transactions/domain.dart';
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/transactions/application.dart';
@@ -21,9 +20,6 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
   DeleteTransaction deleteTransaction;
   GetProfileInfo getProfileInfo;
   AddTransaction addTransaction;
-  GetAccounts getAccounts;
-  GetBudgets getBudgets;
-  GetCategories getCategories;
   SaveCategories saveCategories;
   GetSubCategories getSubCategories;
   SaveSubCategories saveSubCategories;
@@ -33,9 +29,6 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
     this.deleteTransaction,
     this.getProfileInfo,
     this.addTransaction,
-    this.getAccounts,
-    this.getBudgets,
-    this.getCategories,
     this.saveCategories,
     this.getSubCategories,
     this.saveSubCategories,
@@ -57,95 +50,43 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
         (user) => emit(state.copyWith(user: user)),
       );
     }
-    getUserAccounts();
-    getUserCategories();
-    getUserSubCategories();
-    getUserBudgets();
-  }
-
-  Future<void> getUserAccounts() async {
-    final userAccounts = await getAccounts(AccountUserId(state.user!.id.value));
-    userAccounts.fold(
-      () {},
-      (accounts) {
-        final account = accounts.firstWhere(
-          (account) =>
-              account.id.value == state.transaction!.txAccountId!.value,
-        );
-        emit(state.copyWith(account: account, accounts: accounts));
-      },
-    );
-  }
-
-  Future<void> getUserCategories() async {
-    final userCategories =
-        await getCategories(CategoryUserId(state.user!.id.value));
-    userCategories.fold(
-      () => _setDefaultCategories(),
-      (categories) {
-        final category = categories.firstWhere(
-          (category) =>
-              category.id.value == state.transaction!.txCategoryId!.value,
-        );
-        emit(state.copyWith(category: category, categories: categories));
-      },
-    );
-  }
-
-  Future<void> _setDefaultCategories() async {
-    final categories = Category.defaultCategories;
-    for (final category in categories) {
-      category.setUserId(state.user!.id.value);
-    }
-    await saveCategories(categories: categories);
   }
 
   Future<void> getUserSubCategories() async {
     emit(state.copyWith(isLoading: true));
-    if (state.category!.id.value == 'housing' ||
-        state.category!.id.value == 'food' ||
-        state.category!.id.value == 'transportation' ||
-        state.category!.id.value == 'healthCare' ||
-        state.category!.id.value == 'services' ||
-        state.category!.id.value == 'recreation' ||
-        state.category!.id.value == 'shopping' ||
-        state.category!.id.value == 'financial') {
-      final userSubCategories = await getSubCategories(state.category!.id);
-      userSubCategories.fold(
-        () => _setDefaultSubCategories(),
-        (subCategories) {
-          emit(state.copyWith(subCategories: subCategories, isLoading: false));
-        },
-      );
-    } else {
-      final userSubCategories = await getSubCategories(state.category!.id);
-      userSubCategories.fold(
-        () => emit(state.copyWith(subCategories: [])),
-        (subCategories) {
-          emit(state.copyWith(subCategories: subCategories, isLoading: false));
-        },
-      );
-    }
+    state.category.fold(() => null, (category) async {
+      if (category.id.value == 'housing' ||
+          category.id.value == 'food' ||
+          category.id.value == 'transportation' ||
+          category.id.value == 'healthCare' ||
+          category.id.value == 'services' ||
+          category.id.value == 'recreation' ||
+          category.id.value == 'shopping' ||
+          category.id.value == 'financial') {
+        final userSubCategories = await getSubCategories(category.id);
+        userSubCategories.fold(
+          () => _setDefaultSubCategories(),
+          (subCategories) {
+            emit(
+                state.copyWith(subCategories: subCategories, isLoading: false));
+          },
+        );
+      } else {
+        final userSubCategories = await getSubCategories(category.id);
+        userSubCategories.fold(
+          () => emit(state.copyWith(subCategories: [])),
+          (subCategories) {
+            emit(
+                state.copyWith(subCategories: subCategories, isLoading: false));
+          },
+        );
+      }
+    });
   }
 
   Future<void> _setDefaultSubCategories() async {
     final subCategories = SubCategory.allSubCategories;
     await saveSubCategories(subCategories: subCategories);
-  }
-
-  Future<void> getUserBudgets() async {
-    final userBudgets = await getBudgets(BudgetUserId(state.user!.id.value));
-    userBudgets.fold(
-      () {},
-      (budgets) {
-        final budget = budgets.firstWhere(
-          (budget) =>
-              budget.id.value ==
-              (state.transaction! as Expense).txBudgetId!.value,
-        );
-        emit(state.copyWith(budget: budget));
-      },
-    );
   }
 
   Future<void> onTransactionDeleted() async {
@@ -198,15 +139,24 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
   }
 
   void onAccountSelected(Account account) {
-    emit(state.copyWith(account: account));
+    emit(state.copyWith(account: some(account)));
   }
 
-  void onCategorySelected(Category newCategory) {
-    emit(state.copyWith(category: newCategory));
+  Future<void> onCategorySelected(Category category) async {
+    await getSubCategories(category.id).then(
+      (option) => option.fold(
+        () {},
+        (subCategories) => emit(state.copyWith(subCategories: subCategories)),
+      ),
+    );
   }
 
   void onSubCategorySelected(SubCategory subCategory) {
-    emit(state.copyWith(subCategory: subCategory));
+    emit(state.copyWith(subCategory: some(subCategory)));
+  }
+
+  void onBudgetSelected(Budget budget) {
+    emit(state.copyWith(budget: some(budget)));
   }
 
   void onDateUpdated(DateTime? newDate) {

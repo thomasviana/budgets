@@ -32,9 +32,6 @@ class Expense extends Transaction {
 
   factory Expense.empty() => Expense(
         id: TransactionId.auto(),
-        txAccountId: TransactionAccountId('bank'),
-        txBudgetId: TransactionBudgetId('seg'),
-        txCategoryId: TransactionCategoryId('housing'),
         date: DateTime.now(),
       );
 

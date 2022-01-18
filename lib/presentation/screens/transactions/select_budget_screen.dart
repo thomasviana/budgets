@@ -1,4 +1,4 @@
-import 'package:budgets/core/accounts/domain.dart';
+import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../resources/colors.dart';
 
-class SelectAccountScreen extends StatelessWidget {
-  final List<Account> accounts;
-  const SelectAccountScreen({
+class SelectBudgetScreen extends StatelessWidget {
+  final List<Budget> budgets;
+  const SelectBudgetScreen({
     Key? key,
-    required this.accounts,
+    required this.budgets,
   }) : super(key: key);
 
   @override
@@ -56,56 +56,49 @@ class SelectAccountScreen extends StatelessWidget {
           ),
           ListView.separated(
             shrinkWrap: true,
-            itemCount: accounts.length,
+            itemCount: budgets.length,
             separatorBuilder: (BuildContext context, int index) =>
                 const Divider(height: 0),
             itemBuilder: (BuildContext context, int index) {
-              NetworkImage? image;
-              Icon? accountIcon;
-              bool isImageAvailable;
-              final account = accounts[index];
-              if (account.imageUrl != null) {
-                isImageAvailable = true;
-                image = NetworkImage(account.imageUrl!);
-              } else {
-                isImageAvailable = false;
-                accountIcon = Icon(
-                  IconData(
-                    account.icon,
-                    fontFamily: 'MaterialIcons',
-                  ),
-                  color: AppColors.white,
-                );
+              final budget = budgets[index];
+              bool hasAbbreviation = true;
+              if (budget.abbreviation == null || budget.abbreviation!.isEmpty) {
+                hasAbbreviation = false;
               }
               return ListTile(
                 leading: CircleAvatar(
                   maxRadius: 20,
-                  backgroundColor: Color(account.color),
-                  backgroundImage: image,
-                  child: isImageAvailable ? null : accountIcon,
+                  backgroundColor: Color(budget.color),
+                  child: hasAbbreviation
+                      ? Text(
+                          budget.abbreviation!,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.white,
+                          ),
+                        )
+                      : Icon(
+                          Icons.inbox,
+                          color: AppColors.white,
+                        ),
                 ),
                 title: Text(
-                  account.name,
+                  budget.name,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                trailing: state.account.fold(
-                  () => null,
-                  (stateAccount) {
-                    if (stateAccount.id == account.id) {
-                      return Icon(Icons.check, color: AppColors.primaryColor);
-                    }
-                  },
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
                 ),
                 onTap: () {
                   context
                       .read<EditTransactionScreenCubit>()
-                      .onAccountSelected(account);
+                      .onBudgetSelected(budget);
                   Navigator.pop(context);
                 },
               );
             },
-          ),
-          const Divider(height: 0),
+          )
         ],
       ),
     );

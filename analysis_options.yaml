@@ -43,6 +43,6 @@ linter:
     always_specify_types: false
   
     # Back to the 80s
-    lines_longer_than_80_chars: true
+    lines_longer_than_80_chars: false
     always_use_package_imports: false
     constant_identifier_names: false

@@ -33,8 +33,8 @@ class _ProfileSreenState extends State<ProfileSreen> {
       child: NestedScrollView(
         headerSliverBuilder: (ctx, inner) => [
           CupertinoSliverNavigationBar(
-            largeTitle: Text('Profile'),
-            previousPageTitle: 'Settings',
+            largeTitle: Text('Perfil'),
+            previousPageTitle: 'Ajustes',
           )
         ],
         body: _buildBody(context, state),

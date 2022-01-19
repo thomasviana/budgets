@@ -72,7 +72,7 @@ class _UserProfileState extends State<UserProfile> {
                   children: [
                     TextFormField(
                       initialValue: widget.user.name!.value,
-                      decoration: InputDecoration(labelText: 'Name'),
+                      decoration: InputDecoration(labelText: 'Nombre'),
                       keyboardType: TextInputType.name,
                       onChanged: (name) => context
                           .read<ProfileScreenCubit>()
@@ -85,7 +85,7 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                     TextFormField(
                       initialValue: widget.user.phoneNumber!.value,
-                      decoration: InputDecoration(labelText: 'Phone'),
+                      decoration: InputDecoration(labelText: 'Celular'),
                       keyboardType: TextInputType.phone,
                       onChanged: (phone) => context
                           .read<ProfileScreenCubit>()

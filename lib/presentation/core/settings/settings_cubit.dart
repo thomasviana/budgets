@@ -57,6 +57,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         );
       },
     );
+    print('settings');
   }
 
   Future<void> _setDefaultAccounts(UserEntity user) async {

@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/accounts/application.dart';
 import '../../../../core/accounts/domain.dart';
 import '../../../../core/user/application.dart';
-import '../../../../core/user/domain.dart';
 
 part 'edit_account_screen_state.dart';
 
@@ -22,22 +21,8 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     this.createAccount,
   ) : super(EditAccountScreenState.initial());
 
-  Future<void> init(Account? account) async {
-    if (account != null) {
-      emit(state.copyWith(account: account));
-      final userOption = await getProfileInfo();
-      userOption.fold(
-        () => emit(state.copyWith(user: UserEntity.empty())),
-        (user) => emit(state.copyWith(user: user)),
-      );
-    } else {
-      emit(state.copyWith(isEditMode: false, account: Account.empty()));
-      final userOption = await getProfileInfo();
-      userOption.fold(
-        () => emit(state.copyWith(user: UserEntity.empty())),
-        (user) => emit(state.copyWith(user: user)),
-      );
-    }
+  void init(Account? account) {
+    emit(state.copyWith(account: account ?? Account.empty()));
   }
 
   Future<void> onAccountDeleted() async {
@@ -45,26 +30,33 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
   }
 
   Future<void> onAccountSaved({bool isNewAccount = false}) async {
-    if (isNewAccount) {
-      await createAccount(
-        accountUserId: AccountUserId(state.user!.id.value),
-        name: state.account!.name,
-        color: state.account!.color,
-        type: state.account!.type,
-        imageUrl: state.account!.imageUrl,
-        balance: state.account!.balance,
-      );
-    } else {
-      await updateAccount(
-        userId: AccountUserId(state.user!.id.value),
-        accountId: state.account!.id,
-        name: state.account!.name,
-        color: state.account!.color,
-        type: state.account!.type,
-        imageUrl: state.account!.imageUrl,
-        balance: state.account!.balance,
-      );
-    }
+    getProfileInfo().then(
+      (userOption) => userOption.fold(
+        () {},
+        (user) async {
+          if (isNewAccount) {
+            await createAccount(
+              accountUserId: AccountUserId(user.id.value),
+              name: state.account!.name,
+              color: state.account!.color,
+              type: state.account!.type,
+              imageUrl: state.account!.imageUrl,
+              balance: state.account!.balance,
+            );
+          } else {
+            await updateAccount(
+              userId: AccountUserId(user.id.value),
+              accountId: state.account!.id,
+              name: state.account!.name,
+              color: state.account!.color,
+              type: state.account!.type,
+              imageUrl: state.account!.imageUrl,
+              balance: state.account!.balance,
+            );
+          }
+        },
+      ),
+    );
   }
 
   Future<void> onColorUpdated(int newColor) async {

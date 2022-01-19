@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/budgets/application.dart';
 import '../../../../core/budgets/domain.dart';
 import '../../../../core/user/application.dart';
-import '../../../../core/user/domain.dart';
 
 part 'edit_budget_screen_state.dart';
 
@@ -22,22 +21,8 @@ class EditBudgetScreenCubit extends Cubit<EditBudgetScreenState> {
     this.createBudget,
   ) : super(EditBudgetScreenState.initial());
 
-  Future<void> init(Budget? budget) async {
-    if (budget != null) {
-      emit(state.copyWith(budget: budget));
-      final userOption = await getProfileInfo();
-      userOption.fold(
-        () => emit(state.copyWith(user: UserEntity.empty())),
-        (user) => emit(state.copyWith(user: user)),
-      );
-    } else {
-      emit(state.copyWith(isEditMode: false, budget: Budget.empty()));
-      final userOption = await getProfileInfo();
-      userOption.fold(
-        () => emit(state.copyWith(user: UserEntity.empty())),
-        (user) => emit(state.copyWith(user: user)),
-      );
-    }
+  void init(Budget? budget) {
+    emit(state.copyWith(budget: budget ?? Budget.empty()));
   }
 
   Future<void> onBudgetDeleted() async {
@@ -45,24 +30,31 @@ class EditBudgetScreenCubit extends Cubit<EditBudgetScreenState> {
   }
 
   Future<void> onBudgetSaved({bool isNewBudget = false}) async {
-    if (isNewBudget) {
-      await createBudget(
-        budgetUserId: BudgetUserId(state.user!.id.value),
-        name: state.budget!.name,
-        color: state.budget!.color,
-        abbreviation: state.budget!.abbreviation,
-        balance: state.budget!.balance,
-      );
-    } else {
-      await updateBudget(
-        userId: BudgetUserId(state.user!.id.value),
-        budgetId: state.budget!.id,
-        name: state.budget!.name,
-        color: state.budget!.color,
-        abbreviation: state.budget!.abbreviation,
-        balance: state.budget!.balance,
-      );
-    }
+    getProfileInfo().then(
+      (userOption) => userOption.fold(
+        () {},
+        (user) async {
+          if (isNewBudget) {
+            await createBudget(
+              budgetUserId: BudgetUserId(user.id.value),
+              name: state.budget!.name,
+              color: state.budget!.color,
+              abbreviation: state.budget!.abbreviation,
+              balance: state.budget!.balance,
+            );
+          } else {
+            await updateBudget(
+              userId: BudgetUserId(user.id.value),
+              budgetId: state.budget!.id,
+              name: state.budget!.name,
+              color: state.budget!.color,
+              abbreviation: state.budget!.abbreviation,
+              balance: state.budget!.balance,
+            );
+          }
+        },
+      ),
+    );
   }
 
   Future<void> onColorUpdated(int newColor) async {

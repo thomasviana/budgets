@@ -21,20 +21,16 @@ class TransactionsScreenCubit extends Cubit<TransactionsScreenState> {
   ) : super(TransactionsScreenState.initial());
 
   Future<void> init() async {
-    final userOption = await getProfileInfo();
-    userOption.fold(
-      () => null,
-      (user) => emit(state.copyWith(user: user, isLoading: false)),
-    );
-    getUserTransactions();
-  }
-
-  Future<void> getUserTransactions() async {
-    final userTransactions =
-        await getTransactions(TransactionUserId(state.user!.id.value));
-    userTransactions.fold(
-      () => null,
-      (transactions) => emit(state.copyWith(transactions: transactions)),
+    getProfileInfo().then(
+      (optionUser) => optionUser.fold(
+        () {},
+        (user) => getTransactions(TransactionUserId(user.id.value)).then(
+          (optionTransactions) => optionTransactions.fold(
+            () {},
+            (transactions) => emit(state.copyWith(transactions: transactions)),
+          ),
+        ),
+      ),
     );
   }
 }

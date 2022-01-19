@@ -23,13 +23,13 @@ class EditCategoryScreen extends StatefulWidget {
 
 class _EditCategoryScreenState extends State<EditCategoryScreen> {
   late EditCategoryScreenCubit cubit;
-  // late TextEditingController textEditingController;
 
   @override
   void initState() {
     super.initState();
-    cubit = context.read<EditCategoryScreenCubit>();
-    cubit.init(widget.category);
+    cubit = context.read<EditCategoryScreenCubit>()
+      ..init(widget.category)
+      ..getUserSubCategories();
   }
 
   @override
@@ -47,7 +47,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
               largeTitle: Text(
-                  state.isEditMode ? 'Editar categoria' : 'Crear categoría'),
+                state.isEditMode ? 'Editar categoria' : 'Crear categoría',
+              ),
               previousPageTitle: 'Atras',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,

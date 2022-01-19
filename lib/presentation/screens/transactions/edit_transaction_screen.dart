@@ -28,15 +28,14 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
   @override
   void initState() {
-    super.initState();
-
-    settingsCubit = context.read<SettingsCubit>()..getSettings();
+    settingsCubit = context.read<SettingsCubit>();
     cubit = context.read<EditTransactionScreenCubit>()
-      ..init(widget.transaction);
-
+      ..init(widget.transaction)
+      ..getUserSubCategories();
     formatter = CurrencyTextInputFormatter(symbol: '\$', decimalDigits: 0);
     textEditingController = TextEditingController()
       ..text = formatter.format(cubit.state.transaction!.amount.toString());
+    super.initState();
   }
 
   @override
@@ -92,7 +91,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   TextButton(
                     child: const Text('Cancelar'),
                     onPressed: () {
-                      Navigator.pop(context);
+                      AppNavigator.navigateBack(context);
                     },
                   ),
                   const Text(
@@ -177,8 +176,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               onTap: () {
                 AppNavigator.navigateToSelectAccountPage(
                   context,
-                  (_) => null,
-                  accounts: settingsCubit.state.accounts,
+                  settingsCubit.state.accounts,
                 );
               },
             ),
@@ -229,10 +227,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               onTap: () {
                 AppNavigator.navigateToSelectCategoryPage(
                   context,
-                  (_) {
-                    // cubit.getUserSubCategories();
-                  },
-                  categories: settingsCubit.state.categories,
+                  settingsCubit.state.categories,
                 );
               },
             ),
@@ -271,7 +266,6 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               onTap: () {
                 AppNavigator.navigateToSelectBudgetPage(
                   context,
-                  (_) => null,
                   budgets: settingsCubit.state.budgets,
                 );
               },
@@ -293,20 +287,9 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   ],
                 ),
                 onTap: () {}
-                //   showModalBottomSheet(
-                //     backgroundColor: Colors.transparent,
-                //     isScrollControlled: true,
-                //     context: context,
-                //     builder: (context) => _SelectAccountBottomSheet(
-                //       state: state,
-                //       onCancelPressed: () {},
-                //       onAccountSelected: (accountType) {
-                //         cubit.onTypeChanged(accountType);
-                //         AppNavigator.navigateBack(context);
-                //       },
-                //     ),
+                //  AppNavigator.navigateToNotePage(
+                //     context,
                 //   );
-                // },
                 ),
             Divider(height: 2),
             ListTile(
@@ -346,46 +329,46 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
       ),
     );
   }
+}
 
-  Future<void> _showOptions(
-    BuildContext context,
-    EditTransactionScreenCubit cubit,
-    EditTransactionScreenState state,
-  ) async {
-    await showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        actions: <CupertinoActionSheetAction>[
-          CupertinoActionSheetAction(
-            child: const Text(
-              'Descartar cambios',
-              style: TextStyle(color: Colors.red),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-              // _pickColor(context, cubit, state);
-            },
-          ),
-        ],
-        cancelButton: CupertinoActionSheetAction(
+Future<void> _showOptions(
+  BuildContext context,
+  EditTransactionScreenCubit cubit,
+  EditTransactionScreenState state,
+) async {
+  await showCupertinoModalPopup<void>(
+    context: context,
+    builder: (BuildContext context) => CupertinoActionSheet(
+      actions: <CupertinoActionSheetAction>[
+        CupertinoActionSheetAction(
           child: const Text(
-            'Continuar',
+            'Descartar cambios',
+            style: TextStyle(color: Colors.red),
           ),
           onPressed: () {
             Navigator.pop(context);
+            // _pickColor(context, cubit, state);
           },
         ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        child: const Text(
+          'Continuar',
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
-    );
-  }
+    ),
+  );
 }
 
-class _EditNameBottomSheet extends HookWidget {
+class _EditNoteBottomSheet extends HookWidget {
   final Function(String) onSavePressed;
   final VoidCallback onCancelPressed;
   final EditTransactionScreenState state;
 
-  const _EditNameBottomSheet({
+  const _EditNoteBottomSheet({
     Key? key,
     required this.onSavePressed,
     required this.onCancelPressed,

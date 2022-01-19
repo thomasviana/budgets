@@ -25,16 +25,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
   final Routes _routes = Routes();
+  final _authCubit = sl<AuthCubit>()..onAuthCheckRequested();
+  final _settingsCubit = sl<SettingsCubit>()..getSettings();
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => sl<AuthCubit>()..onAuthCheckRequested(),
+        BlocProvider.value(
+          value: _authCubit,
         ),
-        BlocProvider(
-          create: (context) => sl<SettingsCubit>()..getSettings(),
+        BlocProvider.value(
+          value: _settingsCubit,
         ),
       ],
       child: MaterialApp(

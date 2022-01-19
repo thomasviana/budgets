@@ -4,7 +4,6 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/categories/application.dart';
 import '../../../../core/categories/domain.dart';
 import '../../../../core/user/application.dart';
-import '../../../../core/user/domain.dart';
 
 part 'edit_category_screen_state.dart';
 
@@ -28,51 +27,27 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
     this.createCategory,
   ) : super(EditCategoryScreenState.initial());
 
-  Future<void> init(Category? category) async {
-    if (category != null) {
-      emit(state.copyWith(category: category));
-      final userOption = await getProfileInfo();
-      userOption.fold(
-        () => emit(state.copyWith(user: UserEntity.empty())),
-        (user) => emit(state.copyWith(user: user)),
-      );
-      getUserSubCategories();
-    } else {
-      emit(state.copyWith(isEditMode: false, category: Category.empty()));
-      final userOption = await getProfileInfo();
-      userOption.fold(
-        () => emit(state.copyWith(user: UserEntity.empty(), subCategories: [])),
-        (user) => emit(state.copyWith(user: user, subCategories: [])),
-      );
-    }
+  void init(Category? category) {
+    emit(state.copyWith(category: category ?? Category.empty()));
   }
 
   Future<void> getUserSubCategories() async {
-    if (state.category!.id.value == 'housing' ||
-        state.category!.id.value == 'food' ||
-        state.category!.id.value == 'transportation' ||
-        state.category!.id.value == 'healthCare' ||
-        state.category!.id.value == 'services' ||
-        state.category!.id.value == 'recreation' ||
-        state.category!.id.value == 'shopping' ||
-        state.category!.id.value == 'financial') {
-      final userSubCategories = await getSubCategories(state.category!.id);
-      userSubCategories.fold(
-        () => _setDefaultSubCategories().then((_) => getUserSubCategories()),
+    final isDefaultCategory = Category.defaultCategories
+        .any((category) => category.id.value == state.category!.id.value);
+    getSubCategories(state.category!.id).then(
+      (optionSubCategories) => optionSubCategories.fold(
+        () => isDefaultCategory
+            ? _setDefaultSubCategories()
+            : emit(state.copyWith(subCategories: [])),
         (subCategories) => emit(state.copyWith(subCategories: subCategories)),
-      );
-    } else {
-      final userSubCategories = await getSubCategories(state.category!.id);
-      userSubCategories.fold(
-        () => emit(state.copyWith(subCategories: [])),
-        (subCategories) => emit(state.copyWith(subCategories: subCategories)),
-      );
-    }
+      ),
+    );
   }
 
   Future<void> _setDefaultSubCategories() async {
     final subCategories = SubCategory.allSubCategories;
     await saveSubCategories(subCategories: subCategories);
+    emit(state.copyWith(subCategories: subCategories));
   }
 
   Future<void> onCategoryDeleted() async {
@@ -80,23 +55,30 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
   }
 
   Future<void> onCategorySaved({bool isNewCategory = false}) async {
-    if (isNewCategory) {
-      await createCategory(
-        categoryUserId: CategoryUserId(state.user!.id.value),
-        name: state.category!.name,
-        color: state.category!.color,
-        icon: state.category!.icon,
-        type: CategoryType.expense,
-      );
-    } else {
-      await updateCategory(
-        userId: CategoryUserId(state.user!.id.value),
-        categoryId: state.category!.id,
-        name: state.category!.name,
-        color: state.category!.color,
-        icon: state.category!.icon,
-      );
-    }
+    getProfileInfo().then(
+      (userOption) => userOption.fold(
+        () {},
+        (user) async {
+          if (isNewCategory) {
+            await createCategory(
+              categoryUserId: CategoryUserId(user.id.value),
+              name: state.category!.name,
+              color: state.category!.color,
+              icon: state.category!.icon,
+              type: CategoryType.expense,
+            );
+          } else {
+            await updateCategory(
+              userId: CategoryUserId(user.id.value),
+              categoryId: state.category!.id,
+              name: state.category!.name,
+              color: state.category!.color,
+              icon: state.category!.icon,
+            );
+          }
+        },
+      ),
+    );
   }
 
   Future<void> onColorUpdated(int newColor) async {

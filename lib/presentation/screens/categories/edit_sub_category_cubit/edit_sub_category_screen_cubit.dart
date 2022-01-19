@@ -16,7 +16,7 @@ class EditSubCategoryScreenCubit extends Cubit<EditSubCategoryScreenState> {
     this.deleteSubCategory,
   ) : super(EditSubCategoryScreenState.initial());
 
-  Future<void> init(SubCategory subCategory) async {
+  void init(SubCategory subCategory) {
     emit(state.copyWith(subCategory: subCategory));
   }
 

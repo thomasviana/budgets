@@ -17,7 +17,6 @@ class AppNavigator {
   static const ROUTE_PROFILE_PAGE = '/profile';
 
   static const ROUTE_CATEGORIES_PAGE = '/categories';
-  static const ROUTE_SUB_CATEGORIES_PAGE = '/sub-categories';
   static const ROUTE_EDIT_CATEGORY_PAGE = '/edit-category';
   static const ROUTE_EDIT_SUB_CATEGORY_PAGE = '/edit-sub-category';
 
@@ -28,7 +27,7 @@ class AppNavigator {
   static const ROUTE_EDIT_BUDGET_PAGE = '/edit-budget';
 
   static const ROUTE_EDIT_TRANSACTION_PAGE = '/edit-transaction';
-  static const ROUTE_SELECT_ACCOUNT_PAGE = '/select-ccount';
+  static const ROUTE_SELECT_ACCOUNT_PAGE = '/select-account';
   static const ROUTE_SELECT_CATEGORY_PAGE = '/select-category';
   static const ROUTE_SELECT_BUDGET_PAGE = '/select-budget';
 
@@ -71,14 +70,6 @@ class AppNavigator {
 
   static void navigateToCategoriesPage(BuildContext context) {
     Navigator.pushNamed(context, ROUTE_CATEGORIES_PAGE);
-  }
-
-  static void navigateToSubCategoriesPage(
-    BuildContext context,
-    Category category,
-  ) {
-    Navigator.pushNamed(context, ROUTE_SUB_CATEGORIES_PAGE,
-        arguments: category);
   }
 
   static void navigateToEditCategoryPage(
@@ -134,31 +125,26 @@ class AppNavigator {
         .then(function);
   }
 
-  static void navigateToSelectCategoryPage(
-    BuildContext context,
-    Function(Object?) function, {
-    List<Category>? categories,
-  }) {
-    Navigator.pushNamed(context, ROUTE_SELECT_CATEGORY_PAGE,
-            arguments: categories)
-        .then(function);
-  }
-
   static void navigateToSelectAccountPage(
     BuildContext context,
-    Function(Object?) function, {
     List<Account>? accounts,
-  }) {
-    Navigator.pushNamed(context, ROUTE_SELECT_ACCOUNT_PAGE, arguments: accounts)
-        .then(function);
+  ) {
+    Navigator.pushNamed(context, ROUTE_SELECT_ACCOUNT_PAGE,
+        arguments: accounts);
+  }
+
+  static void navigateToSelectCategoryPage(
+    BuildContext context,
+    List<Category>? categories,
+  ) {
+    Navigator.pushNamed(context, ROUTE_SELECT_CATEGORY_PAGE,
+        arguments: categories);
   }
 
   static void navigateToSelectBudgetPage(
-    BuildContext context,
-    Function(Object?) function, {
+    BuildContext context, {
     List<Budget>? budgets,
   }) {
-    Navigator.pushNamed(context, ROUTE_SELECT_BUDGET_PAGE, arguments: budgets)
-        .then(function);
+    Navigator.pushNamed(context, ROUTE_SELECT_BUDGET_PAGE, arguments: budgets);
   }
 }

@@ -7,7 +7,6 @@ class EditTransactionScreenState {
   final Option<SubCategory> subCategory;
   final List<SubCategory>? subCategories;
   final Option<Budget> budget;
-  final UserEntity? user;
   final bool isLoading;
   final bool isEditMode;
 
@@ -18,18 +17,18 @@ class EditTransactionScreenState {
     required this.subCategory,
     this.subCategories,
     required this.budget,
-    this.user,
     required this.isLoading,
     required this.isEditMode,
   });
 
   factory EditTransactionScreenState.initial() => EditTransactionScreenState(
-      isLoading: false,
-      isEditMode: true,
-      account: none(),
-      budget: none(),
-      category: none(),
-      subCategory: none());
+        isLoading: false,
+        isEditMode: true,
+        account: none(),
+        budget: none(),
+        category: none(),
+        subCategory: none(),
+      );
 
   EditTransactionScreenState copyWith({
     Transaction? transaction,
@@ -38,7 +37,6 @@ class EditTransactionScreenState {
     Option<SubCategory>? subCategory,
     List<SubCategory>? subCategories,
     Option<Budget>? budget,
-    UserEntity? user,
     bool? isLoading,
     bool? isEditMode,
   }) {
@@ -49,7 +47,6 @@ class EditTransactionScreenState {
       subCategory: subCategory ?? this.subCategory,
       subCategories: subCategories ?? this.subCategories,
       budget: budget ?? this.budget,
-      user: user ?? this.user,
       isLoading: isLoading ?? this.isLoading,
       isEditMode: isEditMode ?? this.isEditMode,
     );

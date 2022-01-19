@@ -17,8 +17,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
   @override
   void initState() {
     super.initState();
-    cubit = context.read<TransactionsScreenCubit>();
-    cubit.init();
+    cubit = context.read<TransactionsScreenCubit>()..init();
   }
 
   @override
@@ -49,7 +48,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                     onPressed: () {
                       AppNavigator.navigateToEditTransactionPage(
                         context,
-                        (_) => cubit.getUserTransactions(),
+                        (_) {},
                       );
                     },
                   ),
@@ -69,40 +68,34 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return FutureBuilder(
-        future: cubit.getUserTransactions(),
-        builder: (context, snapshot) {
-          return ListView.separated(
-            padding: EdgeInsets.only(top: 8),
-            itemCount: state.transactions.length,
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(height: 2),
-            itemBuilder: (BuildContext context, int index) {
-              final transaction = state.transactions[index];
+      return ListView.separated(
+        padding: EdgeInsets.only(top: 8),
+        itemCount: state.transactions.length,
+        separatorBuilder: (BuildContext context, int index) =>
+            const Divider(height: 2),
+        itemBuilder: (BuildContext context, int index) {
+          final transaction = state.transactions[index];
 
-              return ListTile(
-                leading: CircleAvatar(
-                  maxRadius: 20,
-                  backgroundColor: AppColors.primaryColor,
-                  child: Icon(
-                    Icons.track_changes_rounded,
-                    color: AppColors.white,
-                  ),
-                ),
-                title: Text(
-                  transaction.note,
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios,
-                ),
-                onTap: () => AppNavigator.navigateToEditTransactionPage(
-                  context,
-                  (_) => cubit.getUserTransactions(),
-                  transaction: transaction,
-                ),
-              );
-            },
+          return ListTile(
+            leading: CircleAvatar(
+              maxRadius: 20,
+              backgroundColor: AppColors.primaryColor,
+              child: Icon(
+                Icons.track_changes_rounded,
+                color: AppColors.white,
+              ),
+            ),
+            title: Text(
+              transaction.note,
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            trailing: Icon(
+              Icons.arrow_forward_ios,
+            ),
+            onTap: () => AppNavigator.navigateToEditTransactionPage(
+              context,
+              (_) {},
+            ),
           );
         },
       );

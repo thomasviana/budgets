@@ -87,6 +87,10 @@
 	<string>To take user profile image</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To allow recording audio</string>
-	
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>es</string>
+	</array>
 </dict>
 </plist>

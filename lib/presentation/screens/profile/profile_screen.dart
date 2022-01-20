@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'components/user_profile.dart';
 import 'cubit/profile_screen_cubit.dart';
@@ -33,8 +34,8 @@ class _ProfileSreenState extends State<ProfileSreen> {
       child: NestedScrollView(
         headerSliverBuilder: (ctx, inner) => [
           CupertinoSliverNavigationBar(
-            largeTitle: Text('Perfil'),
-            previousPageTitle: 'Ajustes',
+            largeTitle: Text(AppLocalizations.of(context)!.misc_profile),
+            previousPageTitle: AppLocalizations.of(context)!.misc_back,
           )
         ],
         body: _buildBody(context, state),

@@ -1,14 +1,15 @@
 import 'package:budgets/presentation/core/settings/settings_cubit.dart';
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:injectable/injectable.dart';
 
 import 'di/dependency_injection.dart';
 import 'presentation/core/auth/auth_cubit.dart';
-import 'presentation/resources/themes.dart';
 import 'presentation/routes/routes.dart';
-import 'presentation/widgets/view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +43,16 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Budgets App',
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''), // English, no country code
+          Locale('es', ''), // Spanish, no country code
+        ],
         navigatorObservers: [appRouteObserver],
         builder: (context, child) {
           // This custom MediaQuery forces the app to ignore any

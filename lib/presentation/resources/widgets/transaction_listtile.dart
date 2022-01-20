@@ -26,7 +26,7 @@ class TransactionListTile extends StatelessWidget {
             ? theme.colorScheme.primary
             : theme.colorScheme.primaryVariant,
         child: Icon(
-          isIncome ? Icons.arrow_forward : Icons.arrow_back,
+          isIncome ? Icons.chevron_right : Icons.chevron_left,
           color: Colors.white,
         ),
       ),

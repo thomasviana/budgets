@@ -1,10 +1,9 @@
 import 'package:budgets/core/budgets/domain.dart';
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../resources/colors.dart';
 
 class SelectBudgetScreen extends StatelessWidget {
   final List<Budget> budgets;
@@ -88,7 +87,7 @@ class SelectBudgetScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 trailing: Icon(
-                  Icons.arrow_forward_ios,
+                  Icons.chevron_right,
                 ),
                 onTap: () {
                   context

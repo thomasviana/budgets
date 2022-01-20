@@ -1,7 +1,7 @@
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../resources/colors.dart';
 import 'components/stat_card.dart';
 
 class StatsScreen extends StatelessWidget {

@@ -1,13 +1,13 @@
 import 'dart:io';
 
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/user/domain.dart';
-import '../../../resources/colors.dart';
 import '../../../routes/app_navigator.dart';
-import '../../../widgets/rounded_button.dart';
 import '../cubit/profile_screen_cubit.dart';
 
 class UserProfile extends StatefulWidget {
@@ -17,7 +17,6 @@ class UserProfile extends StatefulWidget {
 
   const UserProfile({
     Key? key,
-    // this.pickedImage,
     required this.user,
     required this.isSavingForm,
     required this.isSaveButtonEnabled,
@@ -62,17 +61,15 @@ class _UserProfileState extends State<UserProfile> {
                   child: Container(height: 150, width: 150, child: image),
                 ),
               ),
-              const SizedBox(height: 50),
-              Text(
-                'User ID: ${widget.user.id.value}',
-              ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 12),
               Form(
                 child: Column(
                   children: [
                     TextFormField(
                       initialValue: widget.user.name!.value,
-                      decoration: InputDecoration(labelText: 'Nombre'),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.misc_name,
+                      ),
                       keyboardType: TextInputType.name,
                       onChanged: (name) => context
                           .read<ProfileScreenCubit>()
@@ -81,11 +78,15 @@ class _UserProfileState extends State<UserProfile> {
                     TextFormField(
                       enabled: false,
                       initialValue: widget.user.emailAddress.value,
-                      decoration: InputDecoration(labelText: 'Email'),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.misc_email,
+                      ),
                     ),
                     TextFormField(
                       initialValue: widget.user.phoneNumber!.value,
-                      decoration: InputDecoration(labelText: 'Celular'),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.misc_phone,
+                      ),
                       keyboardType: TextInputType.phone,
                       onChanged: (phone) => context
                           .read<ProfileScreenCubit>()

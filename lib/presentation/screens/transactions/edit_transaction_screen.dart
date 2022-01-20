@@ -1,11 +1,13 @@
 import 'package:budgets/core/transactions/domain.dart';
 import 'package:budgets/presentation/core/settings/settings_cubit.dart';
+import 'package:budgets/presentation/resources/resources.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as f;
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
-import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
 import 'edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 
@@ -24,6 +26,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
   late SettingsCubit settingsCubit;
   late CurrencyTextInputFormatter formatter;
   late TextEditingController textEditingController;
+  late f.Timestamp dateTime;
 
   @override
   void initState() {
@@ -34,6 +37,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     formatter = CurrencyTextInputFormatter(symbol: '\$', decimalDigits: 0);
     textEditingController = TextEditingController()
       ..text = formatter.format(cubit.state.transaction!.amount.toString());
+    dateTime = f.Timestamp.now();
     super.initState();
   }
 
@@ -76,6 +80,21 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     if (budget.abbreviation == null || budget.abbreviation!.isEmpty) {
       hasAbbreviation = false;
     }
+
+    //Date Picker
+    Widget buildDatePicker() => SizedBox(
+          height: 150,
+          child: CupertinoDatePicker(
+            initialDateTime: DateTime.now(),
+            maximumDate: DateTime.now(),
+            onDateTimeChanged: (dateTime) {
+              final timeStamp = f.Timestamp.fromDate(dateTime);
+              setState(() {
+                this.dateTime = timeStamp;
+              });
+            },
+          ),
+        );
 
     return Scaffold(
       body: Container(
@@ -131,7 +150,8 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               autofocus: true,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: state.transaction!.isExpense ? Colors.red : Colors.green,
+                color:
+                    state.transaction!.isExpense ? AppColors.red : Colors.green,
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
               ),
@@ -169,7 +189,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     style: TextStyle(color: AppColors.greySecondary),
                   ),
                   SizedBox(width: 10),
-                  Icon(Icons.arrow_forward_ios_rounded)
+                  Icon(Icons.chevron_right)
                 ],
               ),
               onTap: () {
@@ -212,7 +232,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   state.subCategory.fold(
                     () => Text(
                       'Requerido',
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: AppColors.red),
                     ),
                     (subCategory) => Text(
                       subCategory.name,
@@ -220,7 +240,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     ),
                   ),
                   SizedBox(width: 10),
-                  Icon(Icons.arrow_forward_ios_rounded)
+                  Icon(Icons.chevron_right)
                 ],
               ),
               onTap: () {
@@ -259,7 +279,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     style: TextStyle(color: AppColors.greySecondary),
                   ),
                   SizedBox(width: 10),
-                  Icon(Icons.arrow_forward_ios_rounded)
+                  Icon(Icons.chevron_right)
                 ],
               ),
               onTap: () {
@@ -282,7 +302,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     style: TextStyle(color: AppColors.greySecondary),
                   ),
                   SizedBox(width: 10),
-                  Icon(Icons.arrow_forward_ios_rounded)
+                  Icon(Icons.chevron_right)
                 ],
               ),
               onTap: () {
@@ -293,37 +313,27 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               },
             ),
             Divider(height: 2),
-            ListTile(
-                leading: Icon(Icons.calendar_today_rounded),
-                minLeadingWidth: 2,
-                title: Text('Fecha'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Text(
-                      'Enero 13, 10:38 am',
-                      style: TextStyle(color: AppColors.greySecondary),
-                    ),
-                    SizedBox(width: 10),
-                    Icon(Icons.arrow_forward_ios_rounded)
-                  ],
-                ),
-                onTap: () {}
-                //   showModalBottomSheet(
-                //     backgroundColor: Colors.transparent,
-                //     isScrollControlled: true,
-                //     context: context,
-                //     builder: (context) => _SelectAccountBottomSheet(
-                //       state: state,
-                //       onCancelPressed: () {},
-                //       onAccountSelected: (accountType) {
-                //         cubit.onTypeChanged(accountType);
-                //         AppNavigator.navigateBack(context);
-                //       },
-                //     ),
-                //   );
-                // },
-                ),
+            ExpansionTile(
+              leading: Icon(Icons.calendar_today_rounded),
+              title: Text('Fecha'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    // DateFormat.MMMd().add_jm().format(dateTime.toDate()),
+                    DateFormat('EEE, MMM d,')
+                        .add_jm()
+                        .format(dateTime.toDate()),
+                    style: TextStyle(color: AppColors.greySecondary),
+                  ),
+                  SizedBox(width: 10),
+                  Icon(Icons.chevron_right)
+                ],
+              ),
+              children: [
+                buildDatePicker(),
+              ],
+            ),
             Divider(height: 2),
           ],
         ),
@@ -344,7 +354,7 @@ Future<void> _showOptions(
         CupertinoActionSheetAction(
           child: const Text(
             'Descartar cambios',
-            style: TextStyle(color: Colors.red),
+            style: TextStyle(color: AppColors.red),
           ),
           onPressed: () {
             Navigator.pop(context);

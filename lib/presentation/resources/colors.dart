@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class AppColors {
   static const Color primaryColor = Color(0xFF3F51B5);
@@ -12,6 +11,7 @@ class AppColors {
 
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color red = Color(0xFFFF0000);
 }
 
 class CategoryColors {
@@ -49,6 +49,3 @@ class AccountColors {
   static const int grey = 0xFF616161;
   static const int blue_grey = 0xFF607D8B;
 }
-
-final currency = NumberFormat('#,##0', 'en_US');
-const kDefaultPadding = 20.0;

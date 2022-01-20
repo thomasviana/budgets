@@ -22,7 +22,7 @@ class AccountsScreen extends StatelessWidget {
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
               largeTitle: Text('Cuentas'),
-              previousPageTitle: 'Ajustes',
+              previousPageTitle: 'Atras',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -87,7 +87,7 @@ class AccountsScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText1,
           ),
           trailing: Icon(
-            Icons.arrow_forward_ios,
+            Icons.chevron_right,
           ),
           onTap: () => AppNavigator.navigateToEditAccountPage(
             context,

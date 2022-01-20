@@ -1,0 +1,16 @@
+{
+    "misc_settings": "Settings",
+    "misc_profile": "Profile",
+    "misc_category": "Category",
+    "misc_categories": "Categories",
+    "misc_account": "Account",
+    "misc_accounts": "Accounts",
+    "misc_budget": "Budget",
+    "misc_budgets": "Budgets",
+    "misc_note": "Note",
+    "misc_logOut": "LogOut",
+    "misc_back": "Back",
+    "misc_name": "Name",
+    "misc_email": "Email",
+    "misc_phone": "Phone"
+}

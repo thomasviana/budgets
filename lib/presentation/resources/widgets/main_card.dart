@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../resources/colors.dart';
+import '../resources.dart';
 
 class MainCard extends StatelessWidget {
   final IconData icon;

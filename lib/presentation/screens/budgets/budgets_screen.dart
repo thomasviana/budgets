@@ -22,7 +22,7 @@ class BudgetsScreen extends StatelessWidget {
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
               largeTitle: Text('Presupuestos'),
-              previousPageTitle: 'Ajustes',
+              previousPageTitle: 'Atras',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -83,7 +83,7 @@ class BudgetsScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText1,
           ),
           trailing: Icon(
-            Icons.arrow_forward_ios,
+            Icons.chevron_right,
           ),
           onTap: () => AppNavigator.navigateToEditBudgetPage(
             context,

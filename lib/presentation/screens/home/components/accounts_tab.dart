@@ -1,8 +1,5 @@
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/material.dart';
-
-import '../../../resources/colors.dart';
-import '../../../widgets/account_tile.dart';
-import '../../../widgets/rounded_button.dart';
 
 class AccountsTab extends StatelessWidget {
   const AccountsTab({Key? key}) : super(key: key);

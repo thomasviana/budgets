@@ -1,0 +1,16 @@
+{
+    "misc_settings": "Ajustes",
+    "misc_profile": "Perfil",
+    "misc_category": "Categoría",
+    "misc_categories": "Categorías",
+    "misc_account": "Cuenta",
+    "misc_accounts": "Cuentas",
+    "misc_budget": "Presupuesto",
+    "misc_budgets": "Presupuestos",
+    "misc_note": "Nota",
+    "misc_logOut": "Cerrar sesión",
+    "misc_back": "Atras",
+    "misc_name": "Nombre",
+    "misc_email": "Email",
+    "misc_phone": "Celular"
+}

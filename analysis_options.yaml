@@ -44,5 +44,8 @@ linter:
   
     # Back to the 80s
     lines_longer_than_80_chars: false
+
+    # Custom
     always_use_package_imports: false
     constant_identifier_names: false
+    depend_on_referenced_packages: false

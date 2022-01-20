@@ -1,8 +1,5 @@
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/material.dart';
-
-import '../../../resources/colors.dart';
-import '../../../widgets/transaction_listtile.dart';
-import '../../../widgets/widget_card.dart';
 
 class LastRecordsWidget extends StatelessWidget {
   @override

@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +7,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../../core/accounts/domain.dart';
-import '../../resources/colors.dart';
-import '../../resources/icons.dart';
-import '../../resources/logos.dart';
 import '../../routes/app_navigator.dart';
 import 'edit_account_cubit/edit_account_screen_cubit.dart';
 
@@ -58,7 +56,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     IconButton(
                       icon: Icon(
                         Icons.delete_outline,
-                        color: Colors.red,
+                        color: AppColors.red,
                       ),
                       onPressed: () {
                         cubit.onAccountDeleted();
@@ -177,10 +175,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         if (state.account!.name.isEmpty)
                           Text(
                             'Requerido',
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(color: AppColors.red),
                           ),
                         SizedBox(width: 10),
-                        Icon(Icons.arrow_forward_ios_rounded)
+                        Icon(Icons.chevron_right)
                       ],
                     ),
                     onTap: () {
@@ -216,7 +214,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                           style: TextStyle(color: AppColors.greySecondary),
                         ),
                         SizedBox(width: 10),
-                        Icon(Icons.arrow_forward_ios_rounded)
+                        Icon(Icons.chevron_right)
                       ],
                     ),
                     onTap: () {
@@ -248,7 +246,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                           style: TextStyle(color: AppColors.greySecondary),
                         ),
                         SizedBox(width: 10),
-                        Icon(Icons.arrow_forward_ios_rounded)
+                        Icon(Icons.chevron_right)
                       ],
                     ),
                     onTap: () {
@@ -305,7 +303,7 @@ Future<void> _showEditOptions(
             child: Text(
               'Eliminar logo',
               style: TextStyle(
-                color: Colors.red,
+                color: AppColors.red,
               ),
             ),
             onPressed: () {
@@ -317,7 +315,7 @@ Future<void> _showEditOptions(
       cancelButton: CupertinoActionSheetAction(
         child: const Text(
           'Cancelar',
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: AppColors.red),
         ),
         onPressed: () {
           Navigator.pop(context);

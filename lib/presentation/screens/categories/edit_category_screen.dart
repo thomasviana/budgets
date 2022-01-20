@@ -1,13 +1,13 @@
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../../core/categories/domain.dart';
-import '../../resources/colors.dart';
-import '../../resources/icons.dart';
 import '../../routes/app_navigator.dart';
 import 'edit_category_cubit/edit_category_screen_cubit.dart';
 
@@ -49,22 +49,15 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
               largeTitle: Text(
                 state.isEditMode ? 'Editar categoria' : 'Crear categoría',
               ),
-              previousPageTitle: 'Atras',
+              previousPageTitle: AppLocalizations.of(context)!.misc_back,
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  if (state.category?.id.value != 'housing' &&
-                      state.category?.id.value != 'food' &&
-                      state.category?.id.value != 'transportation' &&
-                      state.category?.id.value != 'healthCare' &&
-                      state.category?.id.value != 'services' &&
-                      state.category?.id.value != 'recreation' &&
-                      state.category?.id.value != 'shopping' &&
-                      state.category?.id.value != 'financial')
+                  if (state.isDefaultCategory)
                     IconButton(
                       icon: Icon(
                         Icons.delete_outline,
-                        color: Colors.red,
+                        color: AppColors.red,
                       ),
                       onPressed: () {
                         cubit.onCategoryDeleted();
@@ -158,7 +151,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                       ListTile(
                         leading: Icon(Icons.drive_file_rename_outline_outlined),
                         minLeadingWidth: 2,
-                        title: Text('Nombre'),
+                        title: Text(AppLocalizations.of(context)!.misc_name),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -171,10 +164,10 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                             if (state.category!.name.isEmpty)
                               Text(
                                 'Requerido',
-                                style: TextStyle(color: Colors.red),
+                                style: TextStyle(color: AppColors.red),
                               ),
                             SizedBox(width: 10),
-                            Icon(Icons.arrow_forward_ios_rounded)
+                            Icon(Icons.chevron_right)
                           ],
                         ),
                         onTap: () {
@@ -237,7 +230,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                                   Color(subCategories[index].color),
                             ),
                             trailing: Icon(
-                              Icons.arrow_forward_ios,
+                              Icons.chevron_right,
                             ),
                             onTap: () {
                               AppNavigator.navigateToEditSubCategoryPage(
@@ -266,7 +259,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                       backgroundColor: AppColors.greyDisabled,
                     ),
                     trailing: Icon(
-                      Icons.arrow_forward_ios,
+                      Icons.chevron_right,
                     ),
                     onTap: () => cubit.onAddSubCategory(),
                   ),
@@ -308,7 +301,7 @@ Future<void> _showEditOptions(
       cancelButton: CupertinoActionSheetAction(
         child: const Text(
           'Cancelar',
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: AppColors.red),
         ),
         onPressed: () {
           Navigator.pop(context);

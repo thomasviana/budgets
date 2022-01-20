@@ -1,9 +1,10 @@
 import 'package:budgets/presentation/core/settings/settings_cubit.dart';
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
 
 class CategoriesScreen extends StatelessWidget {
@@ -21,8 +22,8 @@ class CategoriesScreen extends StatelessWidget {
         child: NestedScrollView(
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
-              largeTitle: Text('Categorías'),
-              previousPageTitle: 'Ajustes',
+              largeTitle: Text(AppLocalizations.of(context)!.misc_categories),
+              previousPageTitle: AppLocalizations.of(context)!.misc_back,
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -71,7 +72,7 @@ class CategoriesScreen extends StatelessWidget {
             backgroundColor: Color(category.color),
           ),
           trailing: Icon(
-            Icons.arrow_forward_ios,
+            Icons.chevron_right,
           ),
           onTap: () => AppNavigator.navigateToEditCategoryPage(
             context,

@@ -13,6 +13,9 @@ class EditCategoryScreenState {
     required this.isEditMode,
   });
 
+  bool get isDefaultCategory => Category.defaultCategories
+      .any((category) => category.id.value == this.category!.id.value);
+
   factory EditCategoryScreenState.initial() => EditCategoryScreenState(
         isLoading: false,
         isEditMode: true,

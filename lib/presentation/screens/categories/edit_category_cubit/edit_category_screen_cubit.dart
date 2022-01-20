@@ -32,11 +32,9 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
   }
 
   Future<void> getUserSubCategories() async {
-    final isDefaultCategory = Category.defaultCategories
-        .any((category) => category.id.value == state.category!.id.value);
     getSubCategories(state.category!.id).then(
       (optionSubCategories) => optionSubCategories.fold(
-        () => isDefaultCategory
+        () => state.isDefaultCategory
             ? _setDefaultSubCategories()
             : emit(state.copyWith(subCategories: [])),
         (subCategories) => emit(state.copyWith(subCategories: subCategories)),

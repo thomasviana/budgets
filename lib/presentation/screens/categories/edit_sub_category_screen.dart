@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,8 +7,6 @@ import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../../core/categories/domain.dart';
-import '../../resources/colors.dart';
-import '../../resources/icons.dart';
 import '../../routes/app_navigator.dart';
 import 'edit_sub_category_cubit/edit_sub_category_screen_cubit.dart';
 
@@ -53,7 +52,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                   IconButton(
                     icon: Icon(
                       Icons.delete_outline,
-                      color: Colors.red,
+                      color: AppColors.red,
                     ),
                     onPressed: () {
                       cubit.onSubCategoryDeleted();
@@ -158,10 +157,10 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                         if (state.subCategory!.name.isEmpty)
                           Text(
                             'Requerido',
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(color: AppColors.red),
                           ),
                         SizedBox(width: 10),
-                        Icon(Icons.arrow_forward_ios_rounded)
+                        Icon(Icons.chevron_right)
                       ],
                     ),
                     onTap: () {
@@ -216,7 +215,7 @@ Future<void> _showEditOptions(
       cancelButton: CupertinoActionSheetAction(
         child: const Text(
           'Cancelar',
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: AppColors.red),
         ),
         onPressed: () {
           Navigator.pop(context);

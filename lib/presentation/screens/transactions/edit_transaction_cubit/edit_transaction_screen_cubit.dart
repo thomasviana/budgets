@@ -34,7 +34,10 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
   ) : super(EditTransactionScreenState.initial());
 
   void init(Transaction? transaction) {
-    emit(state.copyWith(transaction: transaction ?? Expense.empty()));
+    transaction != null
+        ? emit(state.copyWith(transaction: transaction, isEditMode: true))
+        : emit(state.copyWith(
+            transaction: Transaction.empty(), isEditMode: false));
   }
 
   Future<void> getUserSubCategories() async {
@@ -66,33 +69,51 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
     await deleteTransaction(state.transaction!.id);
   }
 
-  Future<void> onTransactionSaved({bool isNewTransaction = false}) async {
+  Future<void> onTransactionSaved(double amount, DateTime date) async {
     getProfileInfo().then(
       (optionUser) => optionUser.fold(
         () => null,
         (user) async {
-          if (isNewTransaction) {
-            await addTransaction(
-              amount: state.transaction!.amount,
-              date: state.transaction!.date,
+          if (state.isEditMode) {
+            await updateTransaction(
+              transactionId: state.transaction!.id,
+              amount: amount,
+              date: date,
               note: state.transaction!.note,
-              txAccountId: state.transaction!.txAccountId!,
-              txBudgetId: (state.transaction! as Expense).txBudgetId!,
-              txCategoryId: state.transaction!.txCategoryId!,
-              txType: TransactionType.values[1],
+              txAccountId: state.account.fold(
+                () {},
+                (account) => TransactionAccountId(account.id.value),
+              ),
+              txBudgetId: state.budget.fold(
+                () {},
+                (budget) => TransactionBudgetId(budget.id.value),
+              ),
+              txCategoryId: state.category.fold(
+                () {},
+                (category) => TransactionCategoryId(category.id.value),
+              ),
               txUserId: TransactionUserId(user.id.value),
               incomeType: IncomeType.values[1],
             );
           } else {
-            await updateTransaction(
-              transactionId: state.transaction!.id,
-              amount: state.transaction!.amount,
-              date: state.transaction!.date,
+            await addTransaction(
+              amount: amount,
+              date: date,
               note: state.transaction!.note,
-              txAccountId: state.transaction!.txAccountId!,
-              txBudgetId: (state.transaction! as Expense).txBudgetId!,
-              txCategoryId: state.transaction!.txCategoryId!,
-              userId: TransactionUserId(user.id.value),
+              txAccountId: state.account.fold(
+                () => TransactionAccountId('bank'),
+                (account) => TransactionAccountId(account.id.value),
+              ),
+              txBudgetId: state.budget.fold(
+                () => TransactionBudgetId('seg'),
+                (budget) => TransactionBudgetId(budget.id.value),
+              ),
+              txCategoryId: state.category.fold(
+                () => TransactionCategoryId('housing'),
+                (category) => TransactionCategoryId(category.id.value),
+              ),
+              txType: TransactionType.values[1],
+              txUserId: TransactionUserId(user.id.value),
               incomeType: IncomeType.values[1],
             );
           }

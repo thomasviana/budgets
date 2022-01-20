@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 import '../../../../common/value_objects.dart';
 
 enum TransactionType { expense, income }
+enum IncomeType { active, pasive }
 
 class Transaction extends Entity<TransactionId> {
   TransactionType transactionType;
@@ -12,6 +13,8 @@ class Transaction extends Entity<TransactionId> {
   TransactionUserId? txUserId;
   TransactionCategoryId? txCategoryId;
   TransactionAccountId? txAccountId;
+  TransactionBudgetId? txBudgetId;
+  IncomeType? incomeType;
 
   Transaction({
     required TransactionId id,
@@ -22,6 +25,8 @@ class Transaction extends Entity<TransactionId> {
     this.txUserId,
     this.txCategoryId,
     this.txAccountId,
+    this.txBudgetId,
+    this.incomeType,
   }) : super(id);
 
   bool get isIncome => transactionType == TransactionType.income;
@@ -43,6 +48,19 @@ class Transaction extends Entity<TransactionId> {
   // ignore: use_setters_to_change_properties
   void updateAccountId(TransactionAccountId? accountId) =>
       txAccountId = accountId;
+  // ignore: use_setters_to_change_properties
+  void updateBudgetId(TransactionBudgetId? newBudgetId) =>
+      txBudgetId = newBudgetId;
+  // ignore: use_setters_to_change_properties
+  void updateIncomeType(IncomeType? newType) => incomeType = newType;
+
+  factory Transaction.empty() => Transaction(
+        id: TransactionId.auto(),
+        transactionType: TransactionType.expense,
+        amount: 0,
+        date: DateTime.now(),
+        note: '',
+      );
 }
 
 class TransactionId extends AlphanumericId {
@@ -67,4 +85,10 @@ class TransactionAccountId extends AlphanumericId {
   const TransactionAccountId(String value) : super(value);
 
   TransactionAccountId.auto() : this(const Uuid().v1());
+}
+
+class TransactionBudgetId extends AlphanumericId {
+  const TransactionBudgetId(String value) : super(value);
+
+  TransactionBudgetId.auto() : this(const Uuid().v1());
 }

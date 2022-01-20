@@ -12,5 +12,7 @@
     "misc_back": "Back",
     "misc_name": "Name",
     "misc_email": "Email",
-    "misc_phone": "Phone"
+    "misc_phone": "Phone",
+    "misc_today": "Today",
+    "misc_yesterday": "Yesterday"
 }

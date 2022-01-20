@@ -6,6 +6,8 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../../routes/app_navigator.dart';
@@ -38,6 +40,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     textEditingController = TextEditingController()
       ..text = formatter.format(cubit.state.transaction!.amount.toString());
     dateTime = f.Timestamp.now();
+    initializeDateFormatting();
     super.initState();
   }
 
@@ -96,6 +99,21 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
           ),
         );
 
+    //Date formatter
+    String getFormattedDate(DateTime date) {
+      if (date.day == DateTime.now().day) {
+        return AppLocalizations.of(context)!.misc_today +
+            DateFormat(',').add_jm().format(date);
+      } else if (date.day == DateTime.now().subtract(Duration(days: 1)).day) {
+        return AppLocalizations.of(context)!.misc_yesterday +
+            DateFormat(',').add_jm().format(date);
+      } else {
+        return DateFormat('MMM d,', AppLocalizations.of(context)!.localeName)
+            .add_jm()
+            .format(date);
+      }
+    }
+
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -109,7 +127,11 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   TextButton(
                     child: const Text('Cancelar'),
                     onPressed: () {
-                      AppNavigator.navigateBack(context);
+                      _showCancelOptions(
+                        context,
+                        onDiscardPressed: () =>
+                            AppNavigator.navigateBack(context),
+                      );
                     },
                   ),
                   const Text(
@@ -123,7 +145,12 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     child: const Text('Guardar'),
                     onPressed: () {
                       AppNavigator.navigateBack(context);
-                      // onSavePressed(textEditingController.value.text.trim());
+                      final amount = textEditingController.text
+                          .replaceAll(RegExp(r'[^\w\s]+'), '');
+                      cubit.onTransactionSaved(
+                        double.parse(amount),
+                        dateTime.toDate(),
+                      );
                     },
                   ),
                 ],
@@ -313,26 +340,27 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               },
             ),
             Divider(height: 2),
-            ExpansionTile(
-              leading: Icon(Icons.calendar_today_rounded),
-              title: Text('Fecha'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
+            Theme(
+              data:
+                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                leading: Icon(Icons.calendar_today_rounded),
+                title: Text('Fecha'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      getFormattedDate(dateTime.toDate()),
+                      style: TextStyle(color: AppColors.greySecondary),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.chevron_right)
+                  ],
+                ),
                 children: [
-                  Text(
-                    // DateFormat.MMMd().add_jm().format(dateTime.toDate()),
-                    DateFormat('EEE, MMM d,')
-                        .add_jm()
-                        .format(dateTime.toDate()),
-                    style: TextStyle(color: AppColors.greySecondary),
-                  ),
-                  SizedBox(width: 10),
-                  Icon(Icons.chevron_right)
+                  buildDatePicker(),
                 ],
               ),
-              children: [
-                buildDatePicker(),
-              ],
             ),
             Divider(height: 2),
           ],
@@ -342,11 +370,10 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
   }
 }
 
-Future<void> _showOptions(
-  BuildContext context,
-  EditTransactionScreenCubit cubit,
-  EditTransactionScreenState state,
-) async {
+Future<void> _showCancelOptions(
+  BuildContext context, {
+  required VoidCallback onDiscardPressed,
+}) async {
   await showCupertinoModalPopup<void>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
@@ -358,17 +385,15 @@ Future<void> _showOptions(
           ),
           onPressed: () {
             Navigator.pop(context);
-            // _pickColor(context, cubit, state);
+            onDiscardPressed();
           },
         ),
       ],
       cancelButton: CupertinoActionSheetAction(
         child: const Text(
-          'Continuar',
+          'Continuar editando',
         ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: () => Navigator.pop(context),
       ),
     ),
   );

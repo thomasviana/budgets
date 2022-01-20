@@ -12,5 +12,7 @@
     "misc_back": "Atras",
     "misc_name": "Nombre",
     "misc_email": "Email",
-    "misc_phone": "Celular"
+    "misc_phone": "Celular",
+    "misc_today": "Hoy",
+    "misc_yesterday": "Ayer"
 }

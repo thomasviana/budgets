@@ -24,7 +24,7 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
-    cubit = context.read<EditTransactionScreenCubit>();
+    cubit = context.read<EditTransactionScreenCubit>()..getUserSubCategories();
   }
 
   @override

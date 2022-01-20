@@ -14,7 +14,7 @@ class UpdateTransaction {
   );
 
   Future<void> call({
-    required TransactionUserId userId,
+    required TransactionUserId txUserId,
     required TransactionId transactionId,
     double? amount,
     DateTime? date,
@@ -25,7 +25,7 @@ class UpdateTransaction {
     IncomeType? incomeType,
     TransactionType? txType,
   }) async {
-    final transaction = await _getTransactions(userId).then(
+    final transaction = await _getTransactions(txUserId).then(
       (transactions) => transactions.fold(
         () => null,
         (transactions) => transactions.firstWhere(
@@ -34,27 +34,17 @@ class UpdateTransaction {
         ),
       ),
     );
-    if (transaction != null && transaction is Income) {
+    if (transaction != null) {
       _transactionRepository.save(
         transaction
+          ..changeType(txType ?? transaction.transactionType)
           ..updateAmount(amount ?? transaction.amount)
           ..updateDate(date ?? transaction.date)
           ..updateNote(note ?? transaction.note)
-          ..updateType(incomeType ?? transaction.type)
           ..updateAccountId(txAccountId ?? transaction.txAccountId)
           ..updateCategoryId(txCategoryId ?? transaction.txCategoryId)
-          ..changeType(txType ?? transaction.transactionType),
-      );
-    } else if (transaction != null && transaction is Expense) {
-      _transactionRepository.save(
-        transaction
-          ..updateAmount(amount ?? transaction.amount)
-          ..updateDate(date ?? transaction.date)
-          ..updateNote(note ?? transaction.note)
           ..updateBudgetId(txBudgetId ?? transaction.txBudgetId)
-          ..updateAccountId(txAccountId ?? transaction.txAccountId)
-          ..updateCategoryId(txCategoryId ?? transaction.txCategoryId)
-          ..changeType(txType ?? transaction.transactionType),
+          ..updateIncomeType(incomeType ?? transaction.incomeType),
       );
     }
   }

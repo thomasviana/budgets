@@ -23,7 +23,7 @@ class EditTransactionScreenState {
 
   factory EditTransactionScreenState.initial() => EditTransactionScreenState(
         isLoading: false,
-        isEditMode: true,
+        isEditMode: false,
         account: none(),
         budget: none(),
         category: none(),

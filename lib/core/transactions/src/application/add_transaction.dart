@@ -19,32 +19,19 @@ class AddTransaction {
     required TransactionBudgetId txBudgetId,
     IncomeType? incomeType,
   }) {
-    if (txType == TransactionType.income) {
-      return _transactionRepository.save(
-        Income(
-          id: TransactionId.auto(),
-          type: incomeType!,
-          amount: amount,
-          date: date,
-          note: note,
-          txUserId: txUserId,
-          txAccountId: txAccountId,
-          txCategoryId: txCategoryId,
-        ),
-      );
-    } else if (txType == TransactionType.expense) {
-      return _transactionRepository.save(
-        Expense(
-          id: TransactionId.auto(),
-          amount: amount,
-          date: date,
-          note: note,
-          txBudgetId: txBudgetId,
-          txUserId: txUserId,
-          txAccountId: txAccountId,
-          txCategoryId: txCategoryId,
-        ),
-      );
-    }
+    return _transactionRepository.save(
+      Transaction(
+        id: TransactionId.auto(),
+        transactionType: txType,
+        amount: amount,
+        date: date,
+        note: note,
+        txUserId: txUserId,
+        txAccountId: txAccountId,
+        txCategoryId: txCategoryId,
+        txBudgetId: txBudgetId,
+        incomeType: incomeType,
+      ),
+    );
   }
 }

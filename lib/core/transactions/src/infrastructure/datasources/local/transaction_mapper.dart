@@ -13,40 +13,29 @@ class TransactionMapper {
     final userId = TransactionUserId(dto.userId!);
     final accountId = TransactionAccountId(dto.accountId!);
     final categoryId = TransactionCategoryId(dto.categoryId!);
+    final budgetId = TransactionBudgetId(dto.budgetId!);
+    final txType = TransactionType.values[dto.transactionType.index];
+    final incomeType = IncomeType.values[dto.incomeType!.index];
 
-    if (dto.transactionType == TransactionTypeTable.income) {
-      final incomeType = IncomeType.values[dto.incomeType!.index];
-      return Income(
-        id: id,
-        type: incomeType,
-        amount: dto.amount,
-        date: dto.date,
-        note: dto.note,
-        txUserId: userId,
-        txAccountId: accountId,
-        txCategoryId: categoryId,
-      );
-    } else {
-      final budgetId = TransactionBudgetId(dto.budgetId!);
-      return Expense(
-        id: id,
-        amount: dto.amount,
-        date: dto.date,
-        note: dto.note,
-        txBudgetId: budgetId,
-        txUserId: userId,
-        txAccountId: accountId,
-        txCategoryId: categoryId,
-      );
-    }
+    return Transaction(
+      id: id,
+      transactionType: txType,
+      amount: dto.amount,
+      date: dto.date,
+      note: dto.note,
+      txUserId: userId,
+      txAccountId: accountId,
+      txCategoryId: categoryId,
+      txBudgetId: budgetId,
+      incomeType: incomeType,
+    );
   }
 
   List<Transaction> fromDbDtoList(List<TransactionDbDto> dtos) =>
       dtos.map((dto) => fromDbDto(dto)).toList();
 
   TransactionsTableCompanion toDbDto(Transaction transaction) {
-    final incomeType =
-        IncomeTypeTable.values[(transaction as Income).type.index];
+    final incomeType = IncomeTypeTable.values[transaction.incomeType!.index];
     final transactionType =
         TransactionTypeTable.values[transaction.transactionType.index];
     return TransactionsTableCompanion(
@@ -58,7 +47,7 @@ class TransactionMapper {
       userId: Value(transaction.txUserId!.value),
       accountId: Value(transaction.txAccountId!.value),
       categoryId: Value(transaction.txCategoryId!.value),
-      budgetId: Value((transaction as Expense).txBudgetId!.value),
+      budgetId: Value(transaction.txBudgetId!.value),
       incomeType: Value(incomeType),
     );
   }

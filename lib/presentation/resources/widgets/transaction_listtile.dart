@@ -1,23 +1,27 @@
+import 'package:budgets/core/transactions/domain.dart';
 import 'package:flutter/material.dart';
 
 class TransactionListTile extends StatelessWidget {
-  final String title;
-  final String tag;
+  final String note;
+  final String budget;
   final String amount;
   final String date;
-  final bool isIncome;
+  final TransactionType txType;
 
   const TransactionListTile({
-    required this.title,
-    required this.tag,
+    Key? key,
+    required this.note,
+    required this.budget,
     required this.amount,
     required this.date,
-    required this.isIncome,
-  });
+    required this.txType,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
+    final isIncome = txType == TransactionType.income;
 
     return ListTile(
       // minVerticalPadding: 20,
@@ -31,10 +35,10 @@ class TransactionListTile extends StatelessWidget {
         ),
       ),
       title: Text(
-        title,
+        note,
         style: Theme.of(context).textTheme.bodyText1,
       ),
-      subtitle: Text(tag),
+      subtitle: Text(budget),
       trailing: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,

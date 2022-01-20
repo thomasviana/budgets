@@ -30,6 +30,7 @@ class AppNavigator {
   static const ROUTE_SELECT_ACCOUNT_PAGE = '/select-account';
   static const ROUTE_SELECT_CATEGORY_PAGE = '/select-category';
   static const ROUTE_SELECT_BUDGET_PAGE = '/select-budget';
+  static const ROUTE_EDIT_NOTE_PAGE = '/edit-note';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
@@ -146,5 +147,12 @@ class AppNavigator {
     List<Budget>? budgets,
   }) {
     Navigator.pushNamed(context, ROUTE_SELECT_BUDGET_PAGE, arguments: budgets);
+  }
+
+  static void navigateToEditNotePage(
+    BuildContext context, {
+    String? content,
+  }) {
+    Navigator.pushNamed(context, ROUTE_EDIT_NOTE_PAGE, arguments: content);
   }
 }

@@ -24,7 +24,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
-  final Routes _routes = Routes();
+  final AppRouter _appRouter = AppRouter();
   final _authCubit = sl<AuthCubit>()..onAuthCheckRequested();
   final _settingsCubit = sl<SettingsCubit>()..getSettings();
 
@@ -63,19 +63,12 @@ class _MyAppState extends State<MyApp> {
         home: WillPopScope(
           child: Navigator(
             key: navigatorKey,
-            onGenerateRoute: _routes.routes,
+            onGenerateRoute: _appRouter.routes,
             //observers: [appRouteObserver], review this later
           ),
           onWillPop: () async => !(await navigatorKey.currentState!.maybePop()),
         ),
-        // onGenerateRoute: Routes.routes,
       ),
     );
   }
-
-  // @override
-  // void dispose() {
-  //   _routes.dispose();
-  //   super.dispose();
-  // }
 }

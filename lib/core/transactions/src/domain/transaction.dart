@@ -10,6 +10,8 @@ class Transaction extends Entity<TransactionId> {
   double amount = 0;
   DateTime date;
   String note;
+  int? icon;
+  int? color;
   TransactionUserId? txUserId;
   TransactionCategoryId? txCategoryId;
   TransactionAccountId? txAccountId;
@@ -22,6 +24,8 @@ class Transaction extends Entity<TransactionId> {
     required this.amount,
     required this.date,
     required this.note,
+    this.icon,
+    this.color,
     this.txUserId,
     this.txCategoryId,
     this.txAccountId,
@@ -40,6 +44,10 @@ class Transaction extends Entity<TransactionId> {
   void updateDate(DateTime newDate) => date = newDate;
   // ignore: use_setters_to_change_properties
   void updateNote(String newNote) => note = newNote;
+  // ignore: use_setters_to_change_properties
+  void updateIcon(int? newIcon) => icon = newIcon;
+  // ignore: use_setters_to_change_properties
+  void updateColor(int? newColor) => color = newColor;
   // ignore: use_setters_to_change_properties
   void setUserId(TransactionUserId? userId) => txUserId = userId;
   // ignore: use_setters_to_change_properties

@@ -4,6 +4,7 @@ import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/core/categories/application.dart';
 import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/core/transactions/domain.dart';
+import 'package:budgets/presentation/resources/resources.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -100,6 +101,10 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
               amount: amount,
               date: date,
               note: state.transaction!.note,
+              icon: state.subCategory
+                  .fold(() => 0xe532, (subCategory) => subCategory.icon),
+              color: state.subCategory.fold(() => AppColors.primaryColor.value,
+                  (subCategory) => subCategory.color),
               txAccountId: state.account.fold(
                 () => TransactionAccountId('bank'),
                 (account) => TransactionAccountId(account.id.value),
@@ -145,7 +150,14 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
     await getSubCategories(category.id).then(
       (option) => option.fold(
         () {},
-        (subCategories) => emit(state.copyWith(subCategories: subCategories)),
+        (subCategories) => emit(
+          state.copyWith(
+            subCategories: subCategories,
+            category: some(
+              category,
+            ),
+          ),
+        ),
       ),
     );
   }

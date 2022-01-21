@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
+import 'package:budgets/core/categories/application.dart';
+import 'package:budgets/core/categories/domain.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/transactions/application.dart';
 import '../../../../core/transactions/domain.dart';
 import '../../../../core/user/application.dart';
-import '../../../../core/user/domain.dart';
 
 part 'transactions_screen_state.dart';
 
@@ -13,11 +14,13 @@ class TransactionsScreenCubit extends Cubit<TransactionsScreenState> {
   GetTransactions getTransactions;
   GetProfileInfo getProfileInfo;
   AddTransaction createTransaction;
+  GetSubCategories getSubCategories;
 
   TransactionsScreenCubit(
     this.getTransactions,
     this.getProfileInfo,
     this.createTransaction,
+    this.getSubCategories,
   ) : super(TransactionsScreenState.initial());
 
   Future<void> init() async {
@@ -30,6 +33,15 @@ class TransactionsScreenCubit extends Cubit<TransactionsScreenState> {
             (transactions) => emit(state.copyWith(transactions: transactions)),
           ),
         ),
+      ),
+    );
+  }
+
+  Future<void> getSubCategory(TransactionCategoryId? id) async {
+    getSubCategories(CategoryId(id!.value)).then(
+      (optionSubCategories) => optionSubCategories.fold(
+        () => emit(state.copyWith(subCategories: [])),
+        (subCategories) => emit(state.copyWith(subCategories: subCategories)),
       ),
     );
   }

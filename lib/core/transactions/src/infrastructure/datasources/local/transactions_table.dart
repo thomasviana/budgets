@@ -15,6 +15,8 @@ class TransactionsTable extends Table {
   RealColumn get amount => real().withDefault(const Constant(0.0))();
   DateTimeColumn get date => dateTime()();
   TextColumn get note => text().withDefault(const Constant(''))();
+  IntColumn get icon => integer()();
+  IntColumn get color => integer()();
   TextColumn get userId => text().nullable()();
   TextColumn get categoryId => text().nullable()();
   TextColumn get accountId => text().nullable()();

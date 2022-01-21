@@ -1,3 +1,4 @@
+import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/core/transactions/domain.dart';
 import 'package:budgets/presentation/core/settings/settings_cubit.dart';
 import 'package:budgets/presentation/resources/resources.dart';
@@ -5,8 +6,8 @@ import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
-import '../../resources/colors.dart';
 import 'transactions_cubit/transactions_screen_cubit.dart';
 
 class TransactionsScreen extends StatefulWidget {
@@ -68,10 +69,16 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
   Widget _buildBody(BuildContext context, TransactionsScreenState state) {
     String _getBudgetAbreviation(TransactionBudgetId? id) {
       final budgets = context.read<SettingsCubit>().state.budgets;
-      final budget1 = budgets.firstWhere(
+      final budget = budgets.firstWhere(
         (budget) => budget.id.value == id!.value,
       );
-      return budget1.abbreviation!;
+      return budget.abbreviation!;
+    }
+
+    SubCategory _getSubCategoryById(TransactionCategoryId? id) {
+      return state.subCategories.firstWhere(
+        (subCategory) => subCategory.categoryId.value == id!.value,
+      );
     }
 
     if (state.isLoading) {
@@ -88,10 +95,12 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
           final transaction = state.transactions[index];
 
           return TransactionListTile(
+            icon: transaction.icon!,
+            color: transaction.color!,
             note: transaction.note,
             budget: _getBudgetAbreviation(transaction.txBudgetId),
-            amount: transaction.amount.toString(),
-            date: transaction.date.toString(),
+            amount: '\$${currency.format(transaction.amount)}',
+            date: DateFormat().add_jm().format(transaction.date),
             txType: transaction.transactionType,
           );
         },

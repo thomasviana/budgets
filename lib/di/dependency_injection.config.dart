@@ -285,7 +285,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i70.TransactionsScreenCubit>(() => _i70.TransactionsScreenCubit(
       get<_i41.GetTransactions>(),
       get<_i11.GetProfileInfo>(),
-      get<_i41.AddTransaction>()));
+      get<_i41.AddTransaction>(),
+      get<_i12.GetSubCategories>()));
   gh.factory<_i71.UpdateAccount>(() => _i71.UpdateAccount(
       get<_i6.AccountRepository>(), get<_i46.GetAccounts>()));
   gh.factory<_i72.UpdateBudget>(() =>

@@ -14,6 +14,8 @@ class TransactionDbDto extends DataClass
   final double amount;
   final DateTime date;
   final String note;
+  final int icon;
+  final int color;
   final String? userId;
   final String? categoryId;
   final String? accountId;
@@ -25,6 +27,8 @@ class TransactionDbDto extends DataClass
       required this.amount,
       required this.date,
       required this.note,
+      required this.icon,
+      required this.color,
       this.userId,
       this.categoryId,
       this.accountId,
@@ -45,6 +49,10 @@ class TransactionDbDto extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}date'])!,
       note: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}note'])!,
+      icon: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}icon'])!,
+      color: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}color'])!,
       userId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
       categoryId: const StringType()
@@ -69,6 +77,8 @@ class TransactionDbDto extends DataClass
     map['amount'] = Variable<double>(amount);
     map['date'] = Variable<DateTime>(date);
     map['note'] = Variable<String>(note);
+    map['icon'] = Variable<int>(icon);
+    map['color'] = Variable<int>(color);
     if (!nullToAbsent || userId != null) {
       map['user_id'] = Variable<String?>(userId);
     }
@@ -95,6 +105,8 @@ class TransactionDbDto extends DataClass
       amount: Value(amount),
       date: Value(date),
       note: Value(note),
+      icon: Value(icon),
+      color: Value(color),
       userId:
           userId == null && nullToAbsent ? const Value.absent() : Value(userId),
       categoryId: categoryId == null && nullToAbsent
@@ -122,6 +134,8 @@ class TransactionDbDto extends DataClass
       amount: serializer.fromJson<double>(json['amount']),
       date: serializer.fromJson<DateTime>(json['date']),
       note: serializer.fromJson<String>(json['note']),
+      icon: serializer.fromJson<int>(json['icon']),
+      color: serializer.fromJson<int>(json['color']),
       userId: serializer.fromJson<String?>(json['userId']),
       categoryId: serializer.fromJson<String?>(json['categoryId']),
       accountId: serializer.fromJson<String?>(json['accountId']),
@@ -139,6 +153,8 @@ class TransactionDbDto extends DataClass
       'amount': serializer.toJson<double>(amount),
       'date': serializer.toJson<DateTime>(date),
       'note': serializer.toJson<String>(note),
+      'icon': serializer.toJson<int>(icon),
+      'color': serializer.toJson<int>(color),
       'userId': serializer.toJson<String?>(userId),
       'categoryId': serializer.toJson<String?>(categoryId),
       'accountId': serializer.toJson<String?>(accountId),
@@ -153,6 +169,8 @@ class TransactionDbDto extends DataClass
           double? amount,
           DateTime? date,
           String? note,
+          int? icon,
+          int? color,
           String? userId,
           String? categoryId,
           String? accountId,
@@ -164,6 +182,8 @@ class TransactionDbDto extends DataClass
         amount: amount ?? this.amount,
         date: date ?? this.date,
         note: note ?? this.note,
+        icon: icon ?? this.icon,
+        color: color ?? this.color,
         userId: userId ?? this.userId,
         categoryId: categoryId ?? this.categoryId,
         accountId: accountId ?? this.accountId,
@@ -178,6 +198,8 @@ class TransactionDbDto extends DataClass
           ..write('amount: $amount, ')
           ..write('date: $date, ')
           ..write('note: $note, ')
+          ..write('icon: $icon, ')
+          ..write('color: $color, ')
           ..write('userId: $userId, ')
           ..write('categoryId: $categoryId, ')
           ..write('accountId: $accountId, ')
@@ -188,8 +210,8 @@ class TransactionDbDto extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, transactionType, amount, date, note,
-      userId, categoryId, accountId, budgetId, incomeType);
+  int get hashCode => Object.hash(id, transactionType, amount, date, note, icon,
+      color, userId, categoryId, accountId, budgetId, incomeType);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -199,6 +221,8 @@ class TransactionDbDto extends DataClass
           other.amount == this.amount &&
           other.date == this.date &&
           other.note == this.note &&
+          other.icon == this.icon &&
+          other.color == this.color &&
           other.userId == this.userId &&
           other.categoryId == this.categoryId &&
           other.accountId == this.accountId &&
@@ -212,6 +236,8 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   final Value<double> amount;
   final Value<DateTime> date;
   final Value<String> note;
+  final Value<int> icon;
+  final Value<int> color;
   final Value<String?> userId;
   final Value<String?> categoryId;
   final Value<String?> accountId;
@@ -223,6 +249,8 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     this.amount = const Value.absent(),
     this.date = const Value.absent(),
     this.note = const Value.absent(),
+    this.icon = const Value.absent(),
+    this.color = const Value.absent(),
     this.userId = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.accountId = const Value.absent(),
@@ -235,6 +263,8 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     this.amount = const Value.absent(),
     required DateTime date,
     this.note = const Value.absent(),
+    required int icon,
+    required int color,
     this.userId = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.accountId = const Value.absent(),
@@ -242,13 +272,17 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     this.incomeType = const Value.absent(),
   })  : id = Value(id),
         transactionType = Value(transactionType),
-        date = Value(date);
+        date = Value(date),
+        icon = Value(icon),
+        color = Value(color);
   static Insertable<TransactionDbDto> custom({
     Expression<String>? id,
     Expression<TransactionTypeTable>? transactionType,
     Expression<double>? amount,
     Expression<DateTime>? date,
     Expression<String>? note,
+    Expression<int>? icon,
+    Expression<int>? color,
     Expression<String?>? userId,
     Expression<String?>? categoryId,
     Expression<String?>? accountId,
@@ -261,6 +295,8 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       if (amount != null) 'amount': amount,
       if (date != null) 'date': date,
       if (note != null) 'note': note,
+      if (icon != null) 'icon': icon,
+      if (color != null) 'color': color,
       if (userId != null) 'user_id': userId,
       if (categoryId != null) 'category_id': categoryId,
       if (accountId != null) 'account_id': accountId,
@@ -275,6 +311,8 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       Value<double>? amount,
       Value<DateTime>? date,
       Value<String>? note,
+      Value<int>? icon,
+      Value<int>? color,
       Value<String?>? userId,
       Value<String?>? categoryId,
       Value<String?>? accountId,
@@ -286,6 +324,8 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       amount: amount ?? this.amount,
       date: date ?? this.date,
       note: note ?? this.note,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
       userId: userId ?? this.userId,
       categoryId: categoryId ?? this.categoryId,
       accountId: accountId ?? this.accountId,
@@ -314,6 +354,12 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     if (note.present) {
       map['note'] = Variable<String>(note.value);
     }
+    if (icon.present) {
+      map['icon'] = Variable<int>(icon.value);
+    }
+    if (color.present) {
+      map['color'] = Variable<int>(color.value);
+    }
     if (userId.present) {
       map['user_id'] = Variable<String?>(userId.value);
     }
@@ -341,6 +387,8 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
           ..write('amount: $amount, ')
           ..write('date: $date, ')
           ..write('note: $note, ')
+          ..write('icon: $icon, ')
+          ..write('color: $color, ')
           ..write('userId: $userId, ')
           ..write('categoryId: $categoryId, ')
           ..write('accountId: $accountId, ')
@@ -391,6 +439,16 @@ class $TransactionsTableTable extends TransactionsTable
       type: const StringType(),
       requiredDuringInsert: false,
       defaultValue: const Constant(''));
+  final VerificationMeta _iconMeta = const VerificationMeta('icon');
+  @override
+  late final GeneratedColumn<int?> icon = GeneratedColumn<int?>(
+      'icon', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _colorMeta = const VerificationMeta('color');
+  @override
+  late final GeneratedColumn<int?> color = GeneratedColumn<int?>(
+      'color', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
   late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
@@ -424,6 +482,8 @@ class $TransactionsTableTable extends TransactionsTable
         amount,
         date,
         note,
+        icon,
+        color,
         userId,
         categoryId,
         accountId,
@@ -458,6 +518,18 @@ class $TransactionsTableTable extends TransactionsTable
     if (data.containsKey('note')) {
       context.handle(
           _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+    }
+    if (data.containsKey('icon')) {
+      context.handle(
+          _iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
+    } else if (isInserting) {
+      context.missing(_iconMeta);
+    }
+    if (data.containsKey('color')) {
+      context.handle(
+          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
+    } else if (isInserting) {
+      context.missing(_colorMeta);
     }
     if (data.containsKey('user_id')) {
       context.handle(_userIdMeta,

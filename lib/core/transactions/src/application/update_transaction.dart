@@ -19,6 +19,8 @@ class UpdateTransaction {
     double? amount,
     DateTime? date,
     String? note,
+    int? icon,
+    int? color,
     TransactionAccountId? txAccountId,
     TransactionCategoryId? txCategoryId,
     TransactionBudgetId? txBudgetId,
@@ -41,6 +43,8 @@ class UpdateTransaction {
           ..updateAmount(amount ?? transaction.amount)
           ..updateDate(date ?? transaction.date)
           ..updateNote(note ?? transaction.note)
+          ..updateIcon(icon ?? transaction.icon)
+          ..updateColor(color ?? transaction.color)
           ..updateAccountId(txAccountId ?? transaction.txAccountId)
           ..updateCategoryId(txCategoryId ?? transaction.txCategoryId)
           ..updateBudgetId(txBudgetId ?? transaction.txBudgetId)

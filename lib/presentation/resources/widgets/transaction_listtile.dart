@@ -1,7 +1,11 @@
 import 'package:budgets/core/transactions/domain.dart';
 import 'package:flutter/material.dart';
 
+import '../resources.dart';
+
 class TransactionListTile extends StatelessWidget {
+  final int icon;
+  final int color;
   final String note;
   final String budget;
   final String amount;
@@ -10,6 +14,8 @@ class TransactionListTile extends StatelessWidget {
 
   const TransactionListTile({
     Key? key,
+    required this.icon,
+    required this.color,
     required this.note,
     required this.budget,
     required this.amount,
@@ -26,13 +32,15 @@ class TransactionListTile extends StatelessWidget {
     return ListTile(
       // minVerticalPadding: 20,
       leading: CircleAvatar(
-        backgroundColor: isIncome
-            ? theme.colorScheme.primary
-            : theme.colorScheme.primaryVariant,
+        maxRadius: 20,
         child: Icon(
-          isIncome ? Icons.chevron_right : Icons.chevron_left,
-          color: Colors.white,
+          IconData(
+            icon,
+            fontFamily: 'MaterialIcons',
+          ),
+          color: AppColors.white,
         ),
+        backgroundColor: Color(color),
       ),
       title: Text(
         note,

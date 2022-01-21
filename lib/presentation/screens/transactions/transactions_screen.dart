@@ -1,4 +1,3 @@
-import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/core/transactions/domain.dart';
 import 'package:budgets/presentation/core/settings/settings_cubit.dart';
 import 'package:budgets/presentation/resources/resources.dart';
@@ -75,12 +74,6 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
       return budget.abbreviation!;
     }
 
-    SubCategory _getSubCategoryById(TransactionCategoryId? id) {
-      return state.subCategories.firstWhere(
-        (subCategory) => subCategory.categoryId.value == id!.value,
-      );
-    }
-
     if (state.isLoading) {
       return Center(
         child: CircularProgressIndicator(),
@@ -95,8 +88,9 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
           final transaction = state.transactions[index];
 
           return TransactionListTile(
-            icon: transaction.icon!,
-            color: transaction.color!,
+            title: transaction.title,
+            icon: transaction.icon,
+            color: transaction.color,
             note: transaction.note,
             budget: _getBudgetAbreviation(transaction.txBudgetId),
             amount: '\$${currency.format(transaction.amount)}',

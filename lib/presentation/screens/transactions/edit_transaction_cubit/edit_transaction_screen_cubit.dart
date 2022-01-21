@@ -98,13 +98,17 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
             );
           } else {
             await addTransaction(
+              title: state.subCategory
+                  .fold(() => '', (subCategory) => subCategory.name),
               amount: amount,
               date: date,
               note: state.transaction!.note,
               icon: state.subCategory
                   .fold(() => 0xe532, (subCategory) => subCategory.icon),
-              color: state.subCategory.fold(() => AppColors.primaryColor.value,
-                  (subCategory) => subCategory.color),
+              color: state.subCategory.fold(
+                () => AppColors.primaryColor.value,
+                (subCategory) => subCategory.color,
+              ),
               txAccountId: state.account.fold(
                 () => TransactionAccountId('bank'),
                 (account) => TransactionAccountId(account.id.value),

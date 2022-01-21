@@ -11,6 +11,7 @@ class TransactionDbDto extends DataClass
     implements Insertable<TransactionDbDto> {
   final String id;
   final TransactionTypeTable transactionType;
+  final String title;
   final double amount;
   final DateTime date;
   final String note;
@@ -24,6 +25,7 @@ class TransactionDbDto extends DataClass
   TransactionDbDto(
       {required this.id,
       required this.transactionType,
+      required this.title,
       required this.amount,
       required this.date,
       required this.note,
@@ -43,6 +45,8 @@ class TransactionDbDto extends DataClass
       transactionType: $TransactionsTableTable.$converter0.mapToDart(
           const IntType().mapFromDatabaseResponse(
               data['${effectivePrefix}transaction_type']))!,
+      title: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
       amount: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
       date: const DateTimeType()
@@ -74,6 +78,7 @@ class TransactionDbDto extends DataClass
       map['transaction_type'] =
           Variable<int>(converter.mapToSql(transactionType)!);
     }
+    map['title'] = Variable<String>(title);
     map['amount'] = Variable<double>(amount);
     map['date'] = Variable<DateTime>(date);
     map['note'] = Variable<String>(note);
@@ -102,6 +107,7 @@ class TransactionDbDto extends DataClass
     return TransactionsTableCompanion(
       id: Value(id),
       transactionType: Value(transactionType),
+      title: Value(title),
       amount: Value(amount),
       date: Value(date),
       note: Value(note),
@@ -131,6 +137,7 @@ class TransactionDbDto extends DataClass
       id: serializer.fromJson<String>(json['id']),
       transactionType:
           serializer.fromJson<TransactionTypeTable>(json['transactionType']),
+      title: serializer.fromJson<String>(json['title']),
       amount: serializer.fromJson<double>(json['amount']),
       date: serializer.fromJson<DateTime>(json['date']),
       note: serializer.fromJson<String>(json['note']),
@@ -150,6 +157,7 @@ class TransactionDbDto extends DataClass
       'id': serializer.toJson<String>(id),
       'transactionType':
           serializer.toJson<TransactionTypeTable>(transactionType),
+      'title': serializer.toJson<String>(title),
       'amount': serializer.toJson<double>(amount),
       'date': serializer.toJson<DateTime>(date),
       'note': serializer.toJson<String>(note),
@@ -166,6 +174,7 @@ class TransactionDbDto extends DataClass
   TransactionDbDto copyWith(
           {String? id,
           TransactionTypeTable? transactionType,
+          String? title,
           double? amount,
           DateTime? date,
           String? note,
@@ -179,6 +188,7 @@ class TransactionDbDto extends DataClass
       TransactionDbDto(
         id: id ?? this.id,
         transactionType: transactionType ?? this.transactionType,
+        title: title ?? this.title,
         amount: amount ?? this.amount,
         date: date ?? this.date,
         note: note ?? this.note,
@@ -195,6 +205,7 @@ class TransactionDbDto extends DataClass
     return (StringBuffer('TransactionDbDto(')
           ..write('id: $id, ')
           ..write('transactionType: $transactionType, ')
+          ..write('title: $title, ')
           ..write('amount: $amount, ')
           ..write('date: $date, ')
           ..write('note: $note, ')
@@ -210,14 +221,15 @@ class TransactionDbDto extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(id, transactionType, amount, date, note, icon,
-      color, userId, categoryId, accountId, budgetId, incomeType);
+  int get hashCode => Object.hash(id, transactionType, title, amount, date,
+      note, icon, color, userId, categoryId, accountId, budgetId, incomeType);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TransactionDbDto &&
           other.id == this.id &&
           other.transactionType == this.transactionType &&
+          other.title == this.title &&
           other.amount == this.amount &&
           other.date == this.date &&
           other.note == this.note &&
@@ -233,6 +245,7 @@ class TransactionDbDto extends DataClass
 class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   final Value<String> id;
   final Value<TransactionTypeTable> transactionType;
+  final Value<String> title;
   final Value<double> amount;
   final Value<DateTime> date;
   final Value<String> note;
@@ -246,6 +259,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   const TransactionsTableCompanion({
     this.id = const Value.absent(),
     this.transactionType = const Value.absent(),
+    this.title = const Value.absent(),
     this.amount = const Value.absent(),
     this.date = const Value.absent(),
     this.note = const Value.absent(),
@@ -260,6 +274,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   TransactionsTableCompanion.insert({
     required String id,
     required TransactionTypeTable transactionType,
+    this.title = const Value.absent(),
     this.amount = const Value.absent(),
     required DateTime date,
     this.note = const Value.absent(),
@@ -278,6 +293,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   static Insertable<TransactionDbDto> custom({
     Expression<String>? id,
     Expression<TransactionTypeTable>? transactionType,
+    Expression<String>? title,
     Expression<double>? amount,
     Expression<DateTime>? date,
     Expression<String>? note,
@@ -292,6 +308,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (transactionType != null) 'transaction_type': transactionType,
+      if (title != null) 'title': title,
       if (amount != null) 'amount': amount,
       if (date != null) 'date': date,
       if (note != null) 'note': note,
@@ -308,6 +325,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   TransactionsTableCompanion copyWith(
       {Value<String>? id,
       Value<TransactionTypeTable>? transactionType,
+      Value<String>? title,
       Value<double>? amount,
       Value<DateTime>? date,
       Value<String>? note,
@@ -321,6 +339,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     return TransactionsTableCompanion(
       id: id ?? this.id,
       transactionType: transactionType ?? this.transactionType,
+      title: title ?? this.title,
       amount: amount ?? this.amount,
       date: date ?? this.date,
       note: note ?? this.note,
@@ -344,6 +363,9 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       final converter = $TransactionsTableTable.$converter0;
       map['transaction_type'] =
           Variable<int>(converter.mapToSql(transactionType.value)!);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
     }
     if (amount.present) {
       map['amount'] = Variable<double>(amount.value);
@@ -384,6 +406,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     return (StringBuffer('TransactionsTableCompanion(')
           ..write('id: $id, ')
           ..write('transactionType: $transactionType, ')
+          ..write('title: $title, ')
           ..write('amount: $amount, ')
           ..write('date: $date, ')
           ..write('note: $note, ')
@@ -420,6 +443,13 @@ class $TransactionsTableTable extends TransactionsTable
               type: const IntType(), requiredDuringInsert: true)
           .withConverter<TransactionTypeTable>(
               $TransactionsTableTable.$converter0);
+  final VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String?> title = GeneratedColumn<String?>(
+      'title', aliasedName, false,
+      type: const StringType(),
+      requiredDuringInsert: false,
+      defaultValue: const Constant(''));
   final VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
   late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
@@ -479,6 +509,7 @@ class $TransactionsTableTable extends TransactionsTable
   List<GeneratedColumn> get $columns => [
         id,
         transactionType,
+        title,
         amount,
         date,
         note,
@@ -505,6 +536,10 @@ class $TransactionsTableTable extends TransactionsTable
       context.missing(_idMeta);
     }
     context.handle(_transactionTypeMeta, const VerificationResult.success());
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    }
     if (data.containsKey('amount')) {
       context.handle(_amountMeta,
           amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));

@@ -12,6 +12,7 @@ enum IncomeTypeTable { active, pasive }
 class TransactionsTable extends Table {
   TextColumn get id => text().customConstraint('UNIQUE')();
   IntColumn get transactionType => intEnum<TransactionTypeTable>()();
+  TextColumn get title => text().withDefault(const Constant(''))();
   RealColumn get amount => real().withDefault(const Constant(0.0))();
   DateTimeColumn get date => dateTime()();
   TextColumn get note => text().withDefault(const Constant(''))();

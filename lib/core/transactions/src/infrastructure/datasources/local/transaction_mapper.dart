@@ -20,6 +20,7 @@ class TransactionMapper {
     return Transaction(
       id: id,
       transactionType: txType,
+      title: dto.title,
       amount: dto.amount,
       date: dto.date,
       note: dto.note,
@@ -43,11 +44,12 @@ class TransactionMapper {
     return TransactionsTableCompanion(
       id: Value(transaction.id.value),
       transactionType: Value(transactionType),
+      title: Value(transaction.title),
       amount: Value(transaction.amount),
       date: Value(transaction.date),
       note: Value(transaction.note),
-      icon: Value(transaction.icon!),
-      color: Value(transaction.color!),
+      icon: Value(transaction.icon),
+      color: Value(transaction.color),
       userId: Value(transaction.txUserId!.value),
       accountId: Value(transaction.txAccountId!.value),
       categoryId: Value(transaction.txCategoryId!.value),

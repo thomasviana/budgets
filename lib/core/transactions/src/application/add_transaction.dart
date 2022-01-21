@@ -10,6 +10,7 @@ class AddTransaction {
 
   Future<void>? call({
     required TransactionType txType,
+    required String title,
     required double amount,
     required DateTime date,
     required String note,
@@ -25,6 +26,7 @@ class AddTransaction {
       Transaction(
         id: TransactionId.auto(),
         transactionType: txType,
+        title: title,
         amount: amount,
         date: date,
         note: note,

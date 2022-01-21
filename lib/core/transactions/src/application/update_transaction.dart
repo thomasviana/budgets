@@ -16,6 +16,7 @@ class UpdateTransaction {
   Future<void> call({
     required TransactionUserId txUserId,
     required TransactionId transactionId,
+    String? title,
     double? amount,
     DateTime? date,
     String? note,
@@ -40,6 +41,7 @@ class UpdateTransaction {
       _transactionRepository.save(
         transaction
           ..changeType(txType ?? transaction.transactionType)
+          ..updateTitle(title ?? transaction.title)
           ..updateAmount(amount ?? transaction.amount)
           ..updateDate(date ?? transaction.date)
           ..updateNote(note ?? transaction.note)

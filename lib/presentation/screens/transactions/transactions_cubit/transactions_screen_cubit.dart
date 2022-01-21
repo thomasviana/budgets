@@ -36,13 +36,4 @@ class TransactionsScreenCubit extends Cubit<TransactionsScreenState> {
       ),
     );
   }
-
-  Future<void> getSubCategory(TransactionCategoryId? id) async {
-    getSubCategories(CategoryId(id!.value)).then(
-      (optionSubCategories) => optionSubCategories.fold(
-        () => emit(state.copyWith(subCategories: [])),
-        (subCategories) => emit(state.copyWith(subCategories: subCategories)),
-      ),
-    );
-  }
 }

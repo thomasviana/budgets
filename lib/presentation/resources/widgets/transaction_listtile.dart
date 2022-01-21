@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../resources.dart';
 
 class TransactionListTile extends StatelessWidget {
+  final String title;
   final int icon;
   final int color;
   final String note;
@@ -14,6 +15,7 @@ class TransactionListTile extends StatelessWidget {
 
   const TransactionListTile({
     Key? key,
+    required this.title,
     required this.icon,
     required this.color,
     required this.note,
@@ -43,7 +45,7 @@ class TransactionListTile extends StatelessWidget {
         backgroundColor: Color(color),
       ),
       title: Text(
-        note,
+        title,
         style: Theme.of(context).textTheme.bodyText1,
       ),
       subtitle: Text(budget),

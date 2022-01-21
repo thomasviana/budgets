@@ -88,7 +88,11 @@ class SelectAccountScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
                 trailing: state.account.fold(
-                  () => null,
+                  () {
+                    if (account.id == accounts.first.id) {
+                      return Icon(Icons.check, color: AppColors.primaryColor);
+                    }
+                  },
                   (stateAccount) {
                     if (stateAccount.id == account.id) {
                       return Icon(Icons.check, color: AppColors.primaryColor);

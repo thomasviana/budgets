@@ -199,6 +199,14 @@ class _SubCategoriesList extends StatelessWidget {
                     ),
                     backgroundColor: Color(subCategory.color),
                   ),
+                  trailing: state.subCategory.fold(
+                    () => null,
+                    (stateSubCategoryt) {
+                      if (stateSubCategoryt.id == subCategory.id) {
+                        return Icon(Icons.check, color: AppColors.primaryColor);
+                      }
+                    },
+                  ),
                   onTap: () {
                     context
                         .read<EditTransactionScreenCubit>()

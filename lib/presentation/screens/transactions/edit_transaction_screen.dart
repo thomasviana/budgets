@@ -114,6 +114,8 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
       }
     }
 
+    //SaveButtonEnable
+
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -142,7 +144,12 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     ),
                   ),
                   TextButton(
-                    child: const Text('Guardar'),
+                    child: const Text(
+                      'Guardar',
+                      style: TextStyle(
+                        color: AppColors.greyDisabled,
+                      ),
+                    ),
                     onPressed: () {
                       AppNavigator.navigateBack(context);
                       final amount = textEditingController.text

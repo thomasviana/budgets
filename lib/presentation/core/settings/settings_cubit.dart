@@ -19,6 +19,7 @@ class SettingsCubit extends Cubit<SettingsState> {
   SaveAccounts saveAccounts;
   GetCategories getCategories;
   SaveCategories saveCategories;
+  SaveSubCategories saveSubCategories;
   GetBudgets getBudgets;
   SaveBudgets saveBudgets;
 
@@ -28,6 +29,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     this.saveAccounts,
     this.getCategories,
     this.saveCategories,
+    this.saveSubCategories,
     this.getBudgets,
     this.saveBudgets,
   ) : super(SettingsState.initial());
@@ -66,14 +68,18 @@ class SettingsCubit extends Cubit<SettingsState> {
       account.setUserId(user.id.value);
     }
     await saveAccounts(accounts: accounts);
+    emit(state.copyWith(accounts: accounts));
   }
 
   Future<void> _setDefaultCategories(UserEntity user) async {
     final categories = Category.defaultCategories;
+    final subCategories = SubCategory.allSubCategories;
     for (final category in categories) {
       category.setUserId(user.id.value);
     }
     await saveCategories(categories: categories);
+    await saveSubCategories(subCategories: subCategories);
+    emit(state.copyWith(categories: categories, subCategories: subCategories));
   }
 
   Future<void> _setDefaultBudgets(UserEntity user) async {
@@ -82,5 +88,6 @@ class SettingsCubit extends Cubit<SettingsState> {
       budget.setUserId(user.id.value);
     }
     await saveBudgets(budgets: budgets);
+    emit(state.copyWith(budgets: budgets));
   }
 }

@@ -263,6 +263,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       get<_i35.SaveAccounts>(),
       get<_i12.GetCategories>(),
       get<_i12.SaveCategories>(),
+      get<_i12.SaveSubCategories>(),
       get<_i37.GetBudgets>(),
       get<_i37.SaveBudgets>()));
   gh.factory<_i60.SettingsScreenCubit>(() => _i60.SettingsScreenCubit(

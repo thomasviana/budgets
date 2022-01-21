@@ -1,3 +1,5 @@
+// ignore_for_file: require_trailing_commas
+
 import 'package:bloc/bloc.dart';
 import 'package:budgets/core/accounts/domain.dart';
 import 'package:budgets/core/budgets/domain.dart';
@@ -151,19 +153,10 @@ class EditTransactionScreenCubit extends Cubit<EditTransactionScreenState> {
   }
 
   Future<void> onCategorySelected(Category category) async {
-    await getSubCategories(category.id).then(
-      (option) => option.fold(
+    await getSubCategories(category.id).then((option) => option.fold(
         () {},
-        (subCategories) => emit(
-          state.copyWith(
-            subCategories: subCategories,
-            category: some(
-              category,
-            ),
-          ),
-        ),
-      ),
-    );
+        (subCategories) => emit(state.copyWith(
+            subCategories: subCategories, category: some(category)))));
   }
 
   void onSubCategorySelected(SubCategory subCategory) {

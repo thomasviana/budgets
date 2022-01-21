@@ -86,8 +86,13 @@ class SelectBudgetScreen extends StatelessWidget {
                   budget.name,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
-                trailing: Icon(
-                  Icons.chevron_right,
+                trailing: state.budget.fold(
+                  () => null,
+                  (stateBudget) {
+                    if (stateBudget.id == budget.id) {
+                      return Icon(Icons.check, color: AppColors.primaryColor);
+                    }
+                  },
                 ),
                 onTap: () {
                   context

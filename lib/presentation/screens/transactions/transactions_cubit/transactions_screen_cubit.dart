@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:budgets/core/categories/application.dart';
-import 'package:budgets/core/categories/domain.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/transactions/application.dart';

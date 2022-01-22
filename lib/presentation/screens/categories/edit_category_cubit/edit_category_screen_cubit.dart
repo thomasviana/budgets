@@ -28,13 +28,15 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
   ) : super(EditCategoryScreenState.initial());
 
   void init(Category? category) {
-    emit(state.copyWith(category: category ?? Category.empty()));
+    category != null
+        ? emit(state.copyWith(category: category, isEditMode: true))
+        : emit(state.copyWith(category: Category.empty(), isEditMode: false));
   }
 
   Future<void> getUserSubCategories() async {
     getSubCategories(state.category!.id).then(
       (optionSubCategories) => optionSubCategories.fold(
-        () => state.isDefaultCategory
+        () => state.isDefaultExpenseCategory
             ? _setDefaultSubCategories()
             : emit(state.copyWith(subCategories: [])),
         (subCategories) => emit(state.copyWith(subCategories: subCategories)),
@@ -63,7 +65,7 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
               name: state.category!.name,
               color: state.category!.color,
               icon: state.category!.icon,
-              type: CategoryType.expense,
+              type: state.category!.type,
             );
           } else {
             await updateCategory(
@@ -99,6 +101,14 @@ class EditCategoryScreenCubit extends Cubit<EditCategoryScreenState> {
     emit(
       state.copyWith(
         category: state.category!..updateName(name!),
+      ),
+    );
+  }
+
+  void onTypeChanged(CategoryType type) {
+    emit(
+      state.copyWith(
+        category: state.category!..changeType(type),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/core/transactions/domain.dart';
 import 'package:budgets/presentation/core/settings/settings_cubit.dart';
 import 'package:budgets/presentation/resources/resources.dart';
@@ -5,7 +6,6 @@ import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import 'transactions_cubit/transactions_screen_cubit.dart';
 
@@ -51,7 +51,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                     onPressed: () {
                       AppNavigator.navigateToEditTransactionPage(
                         context,
-                        (_) {},
+                        (_) => cubit.init(),
                       );
                     },
                   ),
@@ -66,12 +66,12 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
   }
 
   Widget _buildBody(BuildContext context, TransactionsScreenState state) {
-    String _getBudgetAbreviation(TransactionBudgetId? id) {
+    Budget _getBudgetAbreviation(TransactionBudgetId? id) {
       final budgets = context.read<SettingsCubit>().state.budgets;
       final budget = budgets.firstWhere(
         (budget) => budget.id.value == id!.value,
       );
-      return budget.abbreviation!;
+      return budget;
     }
 
     if (state.isLoading) {
@@ -88,14 +88,13 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
           final transaction = state.transactions[index];
 
           return TransactionListTile(
-            title: transaction.title,
-            icon: transaction.icon,
-            color: transaction.color,
-            note: transaction.note,
+            transaction: transaction,
             budget: _getBudgetAbreviation(transaction.txBudgetId),
-            amount: '\$${currency.format(transaction.amount)}',
-            date: DateFormat().add_jm().format(transaction.date),
-            txType: transaction.transactionType,
+            onPressed: () => AppNavigator.navigateToEditTransactionPage(
+              context,
+              (_) => cubit.init(),
+              transaction: transaction,
+            ),
           );
         },
       );

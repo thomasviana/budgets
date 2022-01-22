@@ -7,7 +7,7 @@ import '../../domain.dart';
 enum CategoryType { income, expense }
 
 class Category extends CategoryModel {
-  final CategoryType type;
+  CategoryType type;
   CategoryUserId? categoryUserId;
 
   Category({
@@ -28,6 +28,8 @@ class Category extends CategoryModel {
 
   // ignore: use_setters_to_change_properties
   void setUserId(String userId) => categoryUserId = CategoryUserId(userId);
+  // ignore: use_setters_to_change_properties
+  void changeType(CategoryType newType) => type = newType;
 
   factory Category.empty() => Category(
         id: CategoryId.auto(),
@@ -36,6 +38,8 @@ class Category extends CategoryModel {
         color: AppColors.primaryColor.value,
         type: CategoryType.expense,
       );
+
+  // Expense Categories
 
   factory Category.housing() => Category(
         id: CategoryId('housing'),
@@ -101,6 +105,72 @@ class Category extends CategoryModel {
         type: CategoryType.expense,
       );
 
+  // Income Categories
+
+  factory Category.salary() => Category(
+        id: CategoryId('salary'),
+        name: 'Salario',
+        icon: 0xf58f,
+        color: CategoryColors.amber,
+        type: CategoryType.income,
+      );
+
+  factory Category.honorarium() => Category(
+        id: CategoryId('honorarium'),
+        name: 'Honorarios',
+        icon: 0xf58f,
+        color: CategoryColors.red,
+        type: CategoryType.income,
+      );
+
+  factory Category.rental() => Category(
+        id: CategoryId('rental'),
+        name: 'Renta de capital',
+        icon: 0xf58f,
+        color: CategoryColors.blue_grey,
+        type: CategoryType.income,
+      );
+
+  factory Category.business() => Category(
+        id: CategoryId('business'),
+        name: 'Negocio',
+        icon: 0xf58f,
+        color: CategoryColors.cyan,
+        type: CategoryType.income,
+      );
+
+  factory Category.dividends() => Category(
+        id: CategoryId('dividends'),
+        name: 'Dividendos',
+        icon: 0xf58f,
+        color: CategoryColors.indigo,
+        type: CategoryType.income,
+      );
+
+  factory Category.pension() => Category(
+        id: CategoryId('pension'),
+        name: 'Pensión',
+        icon: 0xf58f,
+        color: CategoryColors.purple,
+        type: CategoryType.income,
+      );
+
+  factory Category.occasional() => Category(
+        id: CategoryId('occasional'),
+        name: 'Ocasional',
+        icon: 0xf58f,
+        color: CategoryColors.blue,
+        type: CategoryType.income,
+      );
+
+  factory Category.gift() => Category(
+        id: CategoryId('gift'),
+        name: 'Regalo',
+        icon: 0xf58f,
+        color: CategoryColors.blue,
+        type: CategoryType.income,
+      );
+
   static List<Category> get defaultCategories {
     return [
       Category.housing(),
@@ -111,6 +181,14 @@ class Category extends CategoryModel {
       Category.recreation(),
       Category.shopping(),
       Category.financial(),
+      Category.salary(),
+      Category.honorarium(),
+      Category.rental(),
+      Category.business(),
+      Category.dividends(),
+      Category.pension(),
+      Category.occasional(),
+      Category.gift(),
     ];
   }
 }

@@ -53,7 +53,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  if (state.isDefaultCategory)
+                  if (!state.isDefaultExpenseCategory &&
+                      !state.isDefaultIncomeCategory)
                     IconButton(
                       icon: Icon(
                         Icons.delete_outline,
@@ -92,181 +93,187 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
     } else {
       return SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20),
-                Center(
-                  child: InkWell(
-                    onTap: () {
-                      _showEditOptions(context, cubit, state);
-                    },
-                    child: Stack(
-                      alignment: Alignment(1, 1.2),
+            SizedBox(height: 20),
+            Center(
+              child: InkWell(
+                onTap: () {
+                  _showEditOptions(context, cubit, state);
+                },
+                child: Stack(
+                  alignment: Alignment(1, 1.2),
+                  children: [
+                    CircleAvatar(
+                      maxRadius: 40,
+                      child: Icon(
+                        IconData(
+                          state.category!.icon,
+                          fontFamily: 'MaterialIcons',
+                        ),
+                        color: AppColors.white,
+                        size: 40,
+                      ),
+                      backgroundColor: Color(state.category!.color),
+                    ),
+                    CircleAvatar(
+                      maxRadius: 15,
+                      child: Icon(
+                        Icons.edit,
+                        color: AppColors.white,
+                        size: 15,
+                      ),
+                      backgroundColor: AppColors.greySecondary,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: kDefaultPadding,
+                left: kDefaultPadding,
+                right: kDefaultPadding,
+                bottom: 8,
+              ),
+              child: Text(
+                'GENERAL',
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Container(
+              color: AppColors.white,
+              child: Column(
+                children: [
+                  Divider(height: 2),
+                  ListTile(
+                    leading: Icon(Icons.drive_file_rename_outline_outlined),
+                    minLeadingWidth: 2,
+                    title: Text(AppLocalizations.of(context)!.misc_name),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        CircleAvatar(
-                          maxRadius: 40,
+                        if (state.category!.name.isNotEmpty)
+                          Text(
+                            state.category!.name,
+                            style: TextStyle(color: AppColors.greySecondary),
+                          ),
+                        if (state.category!.name.isEmpty)
+                          Text(
+                            'Requerido',
+                            style: TextStyle(color: AppColors.red),
+                          ),
+                        SizedBox(width: 10),
+                        Icon(Icons.chevron_right)
+                      ],
+                    ),
+                    onTap: () => AppNavigator.navigateToEditCategoryNamePage(
+                      context,
+                      name: state.category!.name,
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.compare_outlined),
+                    minLeadingWidth: 2,
+                    title: Text('Tipo'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          state.category!.type == CategoryType.income
+                              ? 'Categoria de Ingreso'
+                              : 'Categoria de Egreso',
+                          style: TextStyle(color: AppColors.greySecondary),
+                        ),
+                        SizedBox(width: 10),
+                        Icon(Icons.chevron_right)
+                      ],
+                    ),
+                    onTap: () =>
+                        AppNavigator.navigateToSelectCategoryTypePage(context),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: kDefaultPadding,
+                left: kDefaultPadding,
+                right: kDefaultPadding,
+                bottom: 8,
+              ),
+              child: Text(
+                'SUBCATEGORIES',
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            Container(
+              color: state.subCategories == null || state.subCategories!.isEmpty
+                  ? null
+                  : AppColors.white,
+              child: FutureBuilder(
+                future: cubit.getUserSubCategories(),
+                builder: (context, snapshot) {
+                  final subCategories = state.subCategories ?? [];
+                  return ListView.separated(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(top: 4, bottom: 4),
+                    itemCount: subCategories.length,
+                    separatorBuilder: (BuildContext context, int index) =>
+                        Divider(height: 2),
+                    itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        title: Text(subCategories[index].name),
+                        leading: CircleAvatar(
+                          maxRadius: 20,
                           child: Icon(
                             IconData(
-                              state.category!.icon,
+                              subCategories[index].icon,
                               fontFamily: 'MaterialIcons',
                             ),
                             color: AppColors.white,
-                            size: 40,
                           ),
-                          backgroundColor: Color(state.category!.color),
+                          backgroundColor: Color(subCategories[index].color),
                         ),
-                        CircleAvatar(
-                          maxRadius: 15,
-                          child: Icon(
-                            Icons.edit,
-                            color: AppColors.white,
-                            size: 15,
-                          ),
-                          backgroundColor: AppColors.greySecondary,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: kDefaultPadding,
-                    left: kDefaultPadding,
-                    right: kDefaultPadding,
-                    bottom: 8,
-                  ),
-                  child: Text(
-                    'GENERAL',
-                    style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                Container(
-                  color: AppColors.white,
-                  child: Column(
-                    children: [
-                      Divider(height: 2),
-                      ListTile(
-                        leading: Icon(Icons.drive_file_rename_outline_outlined),
-                        minLeadingWidth: 2,
-                        title: Text(AppLocalizations.of(context)!.misc_name),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (state.category!.name.isNotEmpty)
-                              Text(
-                                state.category!.name,
-                                style:
-                                    TextStyle(color: AppColors.greySecondary),
-                              ),
-                            if (state.category!.name.isEmpty)
-                              Text(
-                                'Requerido',
-                                style: TextStyle(color: AppColors.red),
-                              ),
-                            SizedBox(width: 10),
-                            Icon(Icons.chevron_right)
-                          ],
+                        trailing: Icon(
+                          Icons.chevron_right,
                         ),
                         onTap: () {
-                          showModalBottomSheet(
-                            backgroundColor: Colors.transparent,
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (context) => _EditNameBottomSheet(
-                              state: state,
-                              onCancelPressed: () {},
-                              onSavePressed: (name) {
-                                cubit.onNameChanged(name);
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: kDefaultPadding,
-                    left: kDefaultPadding,
-                    right: kDefaultPadding,
-                    bottom: 8,
-                  ),
-                  child: Text(
-                    'SUBCATEGORIES',
-                    style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                Container(
-                  color: AppColors.white,
-                  child: FutureBuilder(
-                    future: cubit.getUserSubCategories(),
-                    builder: (context, snapshot) {
-                      final subCategories = state.subCategories ?? [];
-                      return ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.only(top: 4, bottom: 4),
-                        itemCount: subCategories.length,
-                        separatorBuilder: (BuildContext context, int index) =>
-                            Divider(height: 2),
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            title: Text(subCategories[index].name),
-                            leading: CircleAvatar(
-                              maxRadius: 20,
-                              child: Icon(
-                                IconData(
-                                  subCategories[index].icon,
-                                  fontFamily: 'MaterialIcons',
-                                ),
-                                color: AppColors.white,
-                              ),
-                              backgroundColor:
-                                  Color(subCategories[index].color),
-                            ),
-                            trailing: Icon(
-                              Icons.chevron_right,
-                            ),
-                            onTap: () {
-                              AppNavigator.navigateToEditSubCategoryPage(
-                                context,
-                                subCategories[index],
-                                (_) => cubit.getUserSubCategories(),
-                              );
-                            },
+                          AppNavigator.navigateToEditSubCategoryPage(
+                            context,
+                            subCategories[index],
+                            (_) => cubit.getUserSubCategories(),
                           );
                         },
                       );
                     },
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 40),
+            Container(
+              color: AppColors.white,
+              child: ListTile(
+                title: Text('Añadir subcategoria'),
+                leading: CircleAvatar(
+                  maxRadius: 20,
+                  child: Icon(
+                    Icons.add,
+                    color: AppColors.white,
                   ),
+                  backgroundColor: AppColors.greyDisabled,
                 ),
-                SizedBox(height: 40),
-                Container(
-                  color: AppColors.white,
-                  child: ListTile(
-                    title: Text('Añadir subcategoria'),
-                    leading: CircleAvatar(
-                      maxRadius: 20,
-                      child: Icon(
-                        Icons.add,
-                        color: AppColors.white,
-                      ),
-                      backgroundColor: AppColors.greyDisabled,
-                    ),
-                    trailing: Icon(
-                      Icons.chevron_right,
-                    ),
-                    onTap: () => cubit.onAddSubCategory(),
-                  ),
+                trailing: Icon(
+                  Icons.chevron_right,
                 ),
-                SizedBox(height: 80),
-              ],
-            )
+                onTap: () => cubit.onAddSubCategory(),
+              ),
+            ),
+            SizedBox(height: 80),
           ],
         ),
       );

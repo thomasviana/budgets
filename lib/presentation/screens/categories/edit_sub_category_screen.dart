@@ -163,20 +163,8 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                         Icon(Icons.chevron_right)
                       ],
                     ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) => _EditNameBottomSheet(
-                          state: state,
-                          onCancelPressed: () {},
-                          onSavePressed: (name) {
-                            cubit.onNameChanged(name);
-                          },
-                        ),
-                      );
-                    },
+                    onTap: () =>
+                        AppNavigator.navigateToEditSubCategoryNamePage(context),
                   ),
                 ],
               ),

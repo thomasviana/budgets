@@ -1,4 +1,7 @@
 import 'package:budgets/core/transactions/domain.dart';
+import 'package:budgets/presentation/screens/categories/edit_category_name_screen.dart';
+import 'package:budgets/presentation/screens/categories/edit_sub_category_name_screen.dart';
+import 'package:budgets/presentation/screens/categories/select_category_type_screen.dart';
 import 'package:budgets/presentation/screens/transactions/edit_note_screen.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_screen.dart';
@@ -35,6 +38,12 @@ import 'app_navigator.dart';
 class AppRouter {
   final EditTransactionScreenCubit _editTransactionScreenCubit =
       sl<EditTransactionScreenCubit>();
+
+  final EditCategoryScreenCubit _editCategoryScreenCubit =
+      sl<EditCategoryScreenCubit>();
+
+  final EditSubCategoryScreenCubit _editSubCategoryScreenCubit =
+      sl<EditSubCategoryScreenCubit>();
 
   Route routes(RouteSettings settings) {
     switch (settings.name) {
@@ -78,9 +87,28 @@ class AppRouter {
         final category = settings.arguments as Category?;
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<EditCategoryScreenCubit>(),
+          BlocProvider.value(
+            value: _editCategoryScreenCubit,
             child: EditCategoryScreen(category: category),
+          ),
+        );
+      case AppNavigator.ROUTE_EDIT_CATEGORY_NAME_PAGE:
+        final name = settings.arguments! as String;
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _editCategoryScreenCubit,
+            child: EditCategoryNameScreen(
+              name: name,
+            ),
+          ),
+        );
+      case AppNavigator.ROUTE_SELECT_CATEGORY_TYPE_PAGE:
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _editCategoryScreenCubit,
+            child: SelectCategoryTypeScreen(),
           ),
         );
       case AppNavigator.ROUTE_EDIT_SUB_CATEGORY_PAGE:
@@ -90,6 +118,17 @@ class AppRouter {
           BlocProvider(
             create: (context) => sl<EditSubCategoryScreenCubit>(),
             child: EditSubCategoryScreen(subCategory: subCategory),
+          ),
+        );
+      case AppNavigator.ROUTE_EDIT_SUB_CATEGORY_NAME_PAGE:
+        final name = settings.arguments! as String;
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _editSubCategoryScreenCubit,
+            child: EditSubCategoryNameScreen(
+              name: name,
+            ),
           ),
         );
       case AppNavigator.ROUTE_ACCOUNTS_PAGE:
@@ -130,17 +169,6 @@ class AppRouter {
             child: EditTransactionScreen(transaction: transaction),
           ),
         );
-      case AppNavigator.ROUTE_SELECT_CATEGORY_PAGE:
-        final categories = settings.arguments as List<Category>?;
-        return _buildRoute(
-          settings,
-          BlocProvider.value(
-            value: _editTransactionScreenCubit,
-            child: SelectCategoryScreen(
-              categories: categories,
-            ),
-          ),
-        );
       case AppNavigator.ROUTE_SELECT_ACCOUNT_PAGE:
         final accounts = settings.arguments! as List<Account>;
         return _buildRoute(
@@ -152,6 +180,18 @@ class AppRouter {
             ),
           ),
         );
+      case AppNavigator.ROUTE_SELECT_CATEGORY_PAGE:
+        final categories = settings.arguments as List<Category>?;
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _editTransactionScreenCubit,
+            child: SelectCategoryScreen(
+              categories: categories,
+            ),
+          ),
+        );
+
       case AppNavigator.ROUTE_SELECT_BUDGET_PAGE:
         final budgets = settings.arguments! as List<Budget>;
         return _buildRoute(

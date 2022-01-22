@@ -18,7 +18,10 @@ class AppNavigator {
 
   static const ROUTE_CATEGORIES_PAGE = '/categories';
   static const ROUTE_EDIT_CATEGORY_PAGE = '/edit-category';
+  static const ROUTE_EDIT_CATEGORY_NAME_PAGE = '/edit-category-name';
+  static const ROUTE_SELECT_CATEGORY_TYPE_PAGE = '/select-category-type';
   static const ROUTE_EDIT_SUB_CATEGORY_PAGE = '/edit-sub-category';
+  static const ROUTE_EDIT_SUB_CATEGORY_NAME_PAGE = '/edit-sub-category-name';
 
   static const ROUTE_ACCOUNTS_PAGE = '/accounts';
   static const ROUTE_EDIT_ACCOUNT_PAGE = '/edit-account';
@@ -80,6 +83,23 @@ class AppNavigator {
         .then(function);
   }
 
+  static void navigateToEditCategoryNamePage(
+    BuildContext context, {
+    String? name,
+  }) {
+    Navigator.pushNamed(context, ROUTE_EDIT_CATEGORY_NAME_PAGE,
+        arguments: name);
+  }
+
+  static void navigateToSelectCategoryTypePage(
+    BuildContext context,
+  ) {
+    Navigator.pushNamed(
+      context,
+      ROUTE_SELECT_CATEGORY_TYPE_PAGE,
+    );
+  }
+
   static void navigateToEditSubCategoryPage(
     BuildContext context,
     SubCategory subCategory,
@@ -88,6 +108,14 @@ class AppNavigator {
     Navigator.pushNamed(context, ROUTE_EDIT_SUB_CATEGORY_PAGE,
             arguments: subCategory)
         .then(function);
+  }
+
+  static void navigateToEditSubCategoryNamePage(
+    BuildContext context, {
+    String? name,
+  }) {
+    Navigator.pushNamed(context, ROUTE_EDIT_SUB_CATEGORY_NAME_PAGE,
+        arguments: name);
   }
 
   static void navigateToAccountsPage(BuildContext context) {

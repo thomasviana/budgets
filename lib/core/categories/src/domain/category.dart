@@ -4,7 +4,7 @@ import '../../../../common/value_objects.dart';
 import '../../../../presentation/resources/colors.dart';
 import '../../domain.dart';
 
-enum CategoryType { income, expense }
+enum CategoryType { expense, income }
 
 class Category extends CategoryModel {
   CategoryType type;
@@ -167,7 +167,7 @@ class Category extends CategoryModel {
         id: CategoryId('gift'),
         name: 'Regalo',
         icon: 0xf58f,
-        color: CategoryColors.blue,
+        color: CategoryColors.teal,
         type: CategoryType.income,
       );
 

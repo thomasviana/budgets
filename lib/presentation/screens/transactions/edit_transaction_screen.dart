@@ -280,7 +280,13 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               onTap: () {
                 AppNavigator.navigateToSelectCategoryPage(
                   context,
-                  settingsCubit.state.categories,
+                  settingsCubit.state.categories
+                      .where(
+                        (category) =>
+                            category.type.index ==
+                            state.transaction!.transactionType.index,
+                      )
+                      .toList(),
                 );
               },
             ),

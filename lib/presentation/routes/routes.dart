@@ -5,6 +5,7 @@ import 'package:budgets/presentation/screens/categories/select_category_type_scr
 import 'package:budgets/presentation/screens/transactions/edit_note_screen.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_screen.dart';
+import 'package:budgets/presentation/screens/transactions/manage_income_screen.dart';
 import 'package:budgets/presentation/screens/transactions/select_account_screen.dart';
 import 'package:budgets/presentation/screens/transactions/select_budget_screen.dart';
 import 'package:budgets/presentation/screens/transactions/select_category_screen.dart';
@@ -211,6 +212,18 @@ class AppRouter {
             value: _editTransactionScreenCubit,
             child: EditNoteScreen(
               content: content,
+            ),
+          ),
+        );
+      case AppNavigator.ROUTE_MANAGE_INCOME_PAGE:
+        final arguments = settings.arguments! as List<dynamic>;
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _editTransactionScreenCubit,
+            child: ManageIncomeScreen(
+              budgets: arguments[0] as List<Budget>,
+              incomeAmount: arguments[1] as String,
             ),
           ),
         );

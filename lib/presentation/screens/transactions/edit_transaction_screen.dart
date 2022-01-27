@@ -291,44 +291,81 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               },
             ),
             Divider(height: 2),
-            ListTile(
-              leading: CircleAvatar(
-                maxRadius: 20,
-                backgroundColor: Color(budget.color),
-                child: hasAbbreviation
-                    ? Text(
-                        budget.abbreviation!,
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
+            if (state.transaction!.transactionType == TransactionType.expense)
+              ListTile(
+                leading: CircleAvatar(
+                  maxRadius: 20,
+                  backgroundColor: Color(budget.color),
+                  child: hasAbbreviation
+                      ? Text(
+                          budget.abbreviation!,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.white,
+                          ),
+                        )
+                      : Icon(
+                          Icons.inbox,
                           color: AppColors.white,
                         ),
-                      )
-                    : Icon(
-                        Icons.inbox,
-                        color: AppColors.white,
-                      ),
+                ),
+                minLeadingWidth: 2,
+                title: Text('Presupuesto'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      budget.name,
+                      style: TextStyle(color: AppColors.greySecondary),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.chevron_right)
+                  ],
+                ),
+                onTap: () {
+                  AppNavigator.navigateToSelectBudgetPage(
+                    context,
+                    budgets: settingsCubit.state.budgets,
+                  );
+                },
               ),
-              minLeadingWidth: 2,
-              title: Text('Presupuesto'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    budget.name,
-                    style: TextStyle(color: AppColors.greySecondary),
+            if (state.transaction!.transactionType == TransactionType.income)
+              ListTile(
+                leading: CircleAvatar(
+                  maxRadius: 20,
+                  backgroundColor: Color(budget.color),
+                  child: Icon(
+                    Icons.all_inbox_rounded,
+                    color: AppColors.white,
                   ),
-                  SizedBox(width: 10),
-                  Icon(Icons.chevron_right)
-                ],
+                ),
+                minLeadingWidth: 2,
+                title: Text('Administrar'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    state.subCategory.fold(
+                      () => Text(
+                        'Requerido',
+                        style: TextStyle(color: AppColors.red),
+                      ),
+                      (subCategory) => Text(
+                        subCategory.name,
+                        style: TextStyle(color: AppColors.greySecondary),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Icon(Icons.chevron_right)
+                  ],
+                ),
+                onTap: () {
+                  final amount = textEditingController.text
+                      .replaceAll(RegExp(r'[^\w\s]+'), '');
+                  AppNavigator.navigateToManageIncomePage(context,
+                      arguments: [settingsCubit.state.budgets, amount]);
+                },
               ),
-              onTap: () {
-                AppNavigator.navigateToSelectBudgetPage(
-                  context,
-                  budgets: settingsCubit.state.budgets,
-                );
-              },
-            ),
             Divider(height: 2),
             ListTile(
               leading: Icon(Icons.drive_file_rename_outline_outlined),

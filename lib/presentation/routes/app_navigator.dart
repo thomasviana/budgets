@@ -34,6 +34,7 @@ class AppNavigator {
   static const ROUTE_SELECT_CATEGORY_PAGE = '/select-category';
   static const ROUTE_SELECT_BUDGET_PAGE = '/select-budget';
   static const ROUTE_EDIT_NOTE_PAGE = '/edit-note';
+  static const ROUTE_MANAGE_INCOME_PAGE = '/manage-income';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
@@ -182,5 +183,16 @@ class AppNavigator {
     String? content,
   }) {
     Navigator.pushNamed(context, ROUTE_EDIT_NOTE_PAGE, arguments: content);
+  }
+
+  static void navigateToManageIncomePage(
+    BuildContext context, {
+    List<dynamic>? arguments,
+  }) {
+    Navigator.pushNamed(
+      context,
+      ROUTE_MANAGE_INCOME_PAGE,
+      arguments: arguments,
+    );
   }
 }

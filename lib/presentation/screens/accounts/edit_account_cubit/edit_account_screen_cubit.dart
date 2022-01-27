@@ -21,7 +21,7 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     this.createAccount,
   ) : super(EditAccountScreenState.initial());
 
-  void init(Account? account) {
+  void checkAccount(Account? account) {
     emit(state.copyWith(account: account ?? Account.empty()));
   }
 
@@ -29,12 +29,12 @@ class EditAccountScreenCubit extends Cubit<EditAccountScreenState> {
     await deleteAccount(state.account!.id);
   }
 
-  Future<void> onAccountSaved({bool isNewAccount = false}) async {
+  Future<void> onAccountSaved() async {
     getProfileInfo().then(
       (userOption) => userOption.fold(
         () {},
         (user) async {
-          if (isNewAccount) {
+          if (!state.isEditMode) {
             await createAccount(
               accountUserId: AccountUserId(user.id.value),
               name: state.account!.name,

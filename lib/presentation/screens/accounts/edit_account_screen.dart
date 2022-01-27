@@ -27,7 +27,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   void initState() {
     super.initState();
     cubit = context.read<EditAccountScreenCubit>();
-    cubit.init(widget.account);
+    cubit.checkAccount(widget.account);
   }
 
   @override

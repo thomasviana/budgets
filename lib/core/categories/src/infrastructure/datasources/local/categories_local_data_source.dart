@@ -7,7 +7,7 @@ import '../../../../infrastructure.dart';
 abstract class CategoriesLocalDataSource {
   Future<void> cacheCategory(Category category);
   Future<void> cacheCategories(List<Category> categories);
-  Future<Option<List<Category>>> getCachedCategories(CategoryUserId userId);
+  Stream<Option<List<Category>>> getCachedCategories(CategoryUserId userId);
   Future<void> deleteCategory(CategoryId categoryId);
 
   Future<void> cacheSubCategory(SubCategory subCategory);
@@ -53,19 +53,12 @@ class CategoriesLocalDataSourceImpl implements CategoriesLocalDataSource {
   }
 
   @override
-  Future<Option<List<Category>>> getCachedCategories(
+  Stream<Option<List<Category>>> getCachedCategories(
     CategoryUserId userId,
-  ) async {
-    final categories = await _categoryDao
-        .getCategories(userId.value)
-        .map((dtos) => _categoryMapper.fromDbDtoList(dtos))
-        .first;
-    if (categories.isNotEmpty) {
-      return some(categories);
-    } else {
-      return none();
-    }
-  }
+  ) =>
+      _categoryDao
+          .getCategories(userId.value)
+          .map((dtos) => optionOf(_categoryMapper.fromDbDtoList(dtos)));
 
   @override
   Future<void> cacheSubCategory(SubCategory subCategory) {

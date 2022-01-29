@@ -2,10 +2,12 @@ import 'package:bloc/bloc.dart';
 import 'package:budgets/core/accounts/application.dart';
 import 'package:budgets/core/accounts/domain.dart';
 import 'package:budgets/core/user/application.dart';
+import 'package:injectable/injectable.dart';
 
 part 'edit_account_screen_event.dart';
 part 'edit_account_screen_state.dart';
 
+@injectable
 class EditAccountScreenBloc
     extends Bloc<EditAccountScreenEvent, EditAccountScreenState> {
   UpdateAccount updateAccount;
@@ -18,10 +20,11 @@ class EditAccountScreenBloc
     this.getProfileInfo,
     this.createAccount,
   ) : super(EditAccountScreenState.initial()) {
-    on<CheckAccount>(
-      (event, emit) =>
-          emit(state.copyWith(account: event.account ?? Account.empty())),
-    );
+    on<CheckAccount>((event, emit) {
+      event.account != null
+          ? emit(state.copyWith(account: event.account, isEditMode: true))
+          : emit(state.copyWith(account: Account.empty(), isEditMode: false));
+    });
     on<AccountDeleted>(
       (event, emit) async => deleteAccount(state.account!.id),
     );
@@ -56,7 +59,7 @@ class EditAccountScreenBloc
     );
     on<ColorUpdated>(
       (event, emit) => emit(
-          state.copyWith(account: state.account!..updateColor(event.newColor))),
+          state.copyWith(account: state.account!..updateColor(event.color))),
     );
     on<LogoSelected>(
       (event, emit) => emit(state.copyWith(
@@ -65,6 +68,19 @@ class EditAccountScreenBloc
     on<LogoDeleted>(
       (event, emit) =>
           emit(state.copyWith(account: state.account!..updateImageUrl(null))),
+    );
+    on<NameChanged>(
+      (event, emit) => emit(
+        state.copyWith(account: state.account!..updateName(event.name)),
+      ),
+    );
+    on<TypeChanged>(
+      (event, emit) => emit(state.copyWith(
+          account: state.account!..updateType(event.accountType))),
+    );
+    on<BalanceChanged>(
+      (event, emit) => emit(state.copyWith(
+          account: state.account!..updateBalance(event.balance))),
     );
   }
 }

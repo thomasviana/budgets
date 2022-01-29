@@ -1,4 +1,3 @@
-import 'package:budgets/presentation/core/settings/settings_cubit.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:injectable/injectable.dart';
 
 import 'di/dependency_injection.dart';
-import 'presentation/core/auth/auth_cubit.dart';
+import 'presentation/core/auth/auth_bloc.dart';
+import 'presentation/core/bloc/settings_bloc.dart';
 import 'presentation/routes/routes.dart';
 
 Future<void> main() async {
@@ -26,8 +26,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
   final AppRouter _appRouter = AppRouter();
-  final _authCubit = sl<AuthCubit>()..onAuthCheckRequested();
-  final _settingsCubit = sl<SettingsCubit>()..getSettings();
+  final _authCubit = sl<AuthBloc>()..add(AuthCheckRequested());
+  final _settingsBloc = sl<SettingsBloc>()..add(SettingsRequested());
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
           value: _authCubit,
         ),
         BlocProvider.value(
-          value: _settingsCubit,
+          value: _settingsBloc,
         ),
       ],
       child: MaterialApp(

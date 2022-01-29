@@ -18,7 +18,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   }
 
   @override
-  Future<Option<List<Category>>> fetchCategories(CategoryUserId userId) {
+  Stream<Option<List<Category>>> fetchCategories(CategoryUserId userId) {
     return _localDataSource.getCachedCategories(userId);
   }
 

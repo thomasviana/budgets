@@ -1,4 +1,4 @@
-import 'package:budgets/presentation/core/settings/settings_cubit.dart';
+import 'package:budgets/presentation/core/bloc/settings_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +9,7 @@ import '../../routes/app_navigator.dart';
 class BudgetsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
+    return BlocBuilder<SettingsBloc, SettingsState>(
       builder: _buildState,
     );
   }
@@ -31,12 +31,8 @@ class BudgetsScreen extends StatelessWidget {
                       Icons.add,
                       color: AppColors.primaryColor,
                     ),
-                    onPressed: () {
-                      AppNavigator.navigateToEditBudgetPage(
-                        context,
-                        (_) => context.read<SettingsCubit>().getSettings(),
-                      );
-                    },
+                    onPressed: () =>
+                        AppNavigator.navigateToEditBudgetPage(context),
                   ),
                 ],
               ),
@@ -85,11 +81,8 @@ class BudgetsScreen extends StatelessWidget {
           trailing: Icon(
             Icons.chevron_right,
           ),
-          onTap: () => AppNavigator.navigateToEditBudgetPage(
-            context,
-            (_) => context.read<SettingsCubit>().getSettings(),
-            budget: budget,
-          ),
+          onTap: () =>
+              AppNavigator.navigateToEditBudgetPage(context, budget: budget),
         );
       },
     );

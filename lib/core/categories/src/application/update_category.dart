@@ -20,15 +20,15 @@ class UpdateCategory {
     int? icon,
     int? color,
   }) async {
-    final category = await _getCategories(userId).then(
-      (categories) => categories.fold(
-        () => null,
-        (categories) => categories.firstWhere(
-          (category) => category.id == categoryId,
-          orElse: () => throw Exception("Category doesn't exist."),
-        ),
-      ),
-    );
+    final category = await _getCategories(userId).first.then(
+          (categories) => categories.fold(
+            () => null,
+            (categories) => categories.firstWhere(
+              (category) => category.id == categoryId,
+              orElse: () => throw Exception("Category doesn't exist."),
+            ),
+          ),
+        );
     if (category != null) {
       _categoryRepository.save(
         category

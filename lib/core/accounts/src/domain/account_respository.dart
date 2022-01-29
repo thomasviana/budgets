@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../domain.dart';
 
 abstract class AccountRepository {
-  Future<Option<List<Account>>> fetchAccounts(
+  Stream<Option<List<Account>>> fetchAccounts(
     AccountUserId userId,
   );
 

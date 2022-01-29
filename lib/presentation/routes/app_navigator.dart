@@ -77,11 +77,9 @@ class AppNavigator {
     Navigator.pushNamed(context, ROUTE_CATEGORIES_PAGE);
   }
 
-  static void navigateToEditCategoryPage(
-      BuildContext context, Function(Object?) function,
+  static void navigateToEditCategoryPage(BuildContext context,
       {Category? category}) {
-    Navigator.pushNamed(context, ROUTE_EDIT_CATEGORY_PAGE, arguments: category)
-        .then(function);
+    Navigator.pushNamed(context, ROUTE_EDIT_CATEGORY_PAGE, arguments: category);
   }
 
   static void navigateToEditCategoryNamePage(
@@ -124,12 +122,10 @@ class AppNavigator {
   }
 
   static void navigateToEditAccountPage(
-    BuildContext context,
-    Function(Object?) function, {
+    BuildContext context, {
     Account? account,
   }) {
-    Navigator.pushNamed(context, ROUTE_EDIT_ACCOUNT_PAGE, arguments: account)
-        .then(function);
+    Navigator.pushNamed(context, ROUTE_EDIT_ACCOUNT_PAGE, arguments: account);
   }
 
   static void navigateToBudgetsPage(BuildContext context) {
@@ -137,12 +133,10 @@ class AppNavigator {
   }
 
   static void navigateToEditBudgetPage(
-    BuildContext context,
-    Function(Object?) function, {
+    BuildContext context, {
     Budget? budget,
   }) {
-    Navigator.pushNamed(context, ROUTE_EDIT_BUDGET_PAGE, arguments: budget)
-        .then(function);
+    Navigator.pushNamed(context, ROUTE_EDIT_BUDGET_PAGE, arguments: budget);
   }
 
   static void navigateToEditTransactionPage(

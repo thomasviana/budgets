@@ -11,6 +11,6 @@ class GetCategories {
     this._categoryRepository,
   );
 
-  Future<Option<List<Category>>> call(CategoryUserId userId) =>
+  Stream<Option<List<Category>>> call(CategoryUserId userId) =>
       _categoryRepository.fetchCategories(userId);
 }

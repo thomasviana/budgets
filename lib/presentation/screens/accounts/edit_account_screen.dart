@@ -8,7 +8,7 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 
 import '../../../core/accounts/domain.dart';
 import '../../routes/app_navigator.dart';
-import 'edit_account_cubit/edit_account_screen_cubit.dart';
+import 'edit_account_bloc/edit_account_screen_bloc.dart';
 
 class EditAccountScreen extends StatefulWidget {
   final Account? account;
@@ -21,18 +21,18 @@ class EditAccountScreen extends StatefulWidget {
 }
 
 class _EditAccountScreenState extends State<EditAccountScreen> {
-  late EditAccountScreenCubit cubit;
+  late EditAccountScreenBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    cubit = context.read<EditAccountScreenCubit>();
-    cubit.checkAccount(widget.account);
+    bloc = context.read<EditAccountScreenBloc>()
+      ..add(CheckAccount(account: widget.account));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditAccountScreenCubit, EditAccountScreenState>(
+    return BlocBuilder<EditAccountScreenBloc, EditAccountScreenState>(
       builder: _buildState,
     );
   }
@@ -45,21 +45,22 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
               largeTitle:
-                  Text(state.isEditMode ? 'Editar cuenta' : 'Crear cuenta'),
+                  Text(state.isEditMode ? 'Editar cuenta' : 'Nueva cuenta'),
               previousPageTitle: 'Atras',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   if (state.account?.id.value != 'bank' &&
                       state.account?.id.value != 'cash' &&
-                      state.account?.id.value != 'wallet')
+                      state.account?.id.value != 'wallet' &&
+                      state.isEditMode)
                     IconButton(
                       icon: Icon(
                         Icons.delete_outline,
                         color: AppColors.red,
                       ),
                       onPressed: () {
-                        cubit.onAccountDeleted();
+                        bloc.add(AccountDeleted());
                         AppNavigator.navigateBack(context);
                       },
                     ),
@@ -70,7 +71,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     ),
                     onPressed: () {
                       if (state.account!.name.isEmpty) return;
-                      cubit.onAccountSaved(isNewAccount: !state.isEditMode);
+                      bloc.add(AccountSaved());
                       AppNavigator.navigateBack(context);
                     },
                   ),
@@ -118,7 +119,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
             Center(
               child: InkWell(
                 onTap: () {
-                  _showEditOptions(context, cubit, state);
+                  _showEditOptions(context, bloc, state);
                 },
                 child: Stack(
                   alignment: Alignment(1, 1.2),
@@ -189,9 +190,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         builder: (context) => _EditNameBottomSheet(
                           state: state,
                           onCancelPressed: () {},
-                          onSavePressed: (name) {
-                            cubit.onNameChanged(name);
-                          },
+                          onSavePressed: (name) => bloc.add(NameChanged(name)),
                         ),
                       );
                     },
@@ -226,7 +225,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                           state: state,
                           onCancelPressed: () {},
                           onTypeSelected: (accountType) {
-                            cubit.onTypeChanged(accountType);
+                            bloc.add(TypeChanged(accountType));
                             AppNavigator.navigateBack(context);
                           },
                         ),
@@ -257,9 +256,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         builder: (context) => _EditBalanceBottomSheet(
                           state: state,
                           onCancelPressed: () {},
-                          onSavePressed: (balance) {
-                            cubit.onBalanceChanged(balance);
-                          },
+                          onSavePressed: (balance) =>
+                              bloc.add(BalanceChanged(balance)),
                         ),
                       );
                     },
@@ -277,7 +275,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
 Future<void> _showEditOptions(
   BuildContext context,
-  EditAccountScreenCubit cubit,
+  EditAccountScreenBloc bloc,
   EditAccountScreenState state,
 ) async {
   await showCupertinoModalPopup<void>(
@@ -288,14 +286,14 @@ Future<void> _showEditOptions(
           child: const Text('Cambiar color'),
           onPressed: () {
             Navigator.pop(context);
-            _pickColor(context, cubit, state);
+            _pickColor(context, bloc, state);
           },
         ),
         CupertinoActionSheetAction(
           child: const Text('Seleccionar logo'),
           onPressed: () {
             Navigator.pop(context);
-            _pickImage(context, cubit, state);
+            _pickImage(context, bloc, state);
           },
         ),
         if (state.account!.imageUrl != null)
@@ -307,8 +305,8 @@ Future<void> _showEditOptions(
               ),
             ),
             onPressed: () {
+              bloc.add(LogoDeleted());
               Navigator.pop(context);
-              cubit.onLogoDeleted();
             },
           )
       ],
@@ -317,9 +315,7 @@ Future<void> _showEditOptions(
           'Cancelar',
           style: TextStyle(color: AppColors.red),
         ),
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: () => Navigator.pop(context),
       ),
     ),
   );
@@ -327,7 +323,7 @@ Future<void> _showEditOptions(
 
 Future _pickColor(
   BuildContext context,
-  EditAccountScreenCubit cubit,
+  EditAccountScreenBloc bloc,
   EditAccountScreenState state,
 ) {
   return showDialog(
@@ -352,9 +348,8 @@ Future _pickColor(
         allowShades: false,
         selectedColor: Color(state.account!.color),
         onMainColorChange: (colorSwatch) {
-          cubit.onColorUpdated(colorSwatch!.value).then(
-                (_) => Navigator.of(context).pop(),
-              );
+          bloc.add(ColorUpdated(colorSwatch!.value));
+          Navigator.of(context).pop();
         },
       ),
     ),
@@ -363,7 +358,7 @@ Future _pickColor(
 
 Future _pickImage(
   BuildContext context,
-  EditAccountScreenCubit cubit,
+  EditAccountScreenBloc bloc,
   EditAccountScreenState state,
 ) {
   return showDialog(
@@ -413,7 +408,7 @@ Future _pickImage(
               .map(
                 (url) => InkWell(
                   onTap: () {
-                    cubit.onLogoSelected(url);
+                    bloc.add(LogoSelected(url));
                     Navigator.of(context).pop();
                   },
                   child: GridTile(

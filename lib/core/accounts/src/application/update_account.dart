@@ -22,15 +22,15 @@ class UpdateAccount {
     String? imageUrl,
     double? balance,
   }) async {
-    final account = await _getAccounts(userId).then(
-      (accounts) => accounts.fold(
-        () => null,
-        (accounts) => accounts.firstWhere(
-          (account) => account.id == accountId,
-          orElse: () => throw Exception("Account doesn't exist."),
-        ),
-      ),
-    );
+    final account = await _getAccounts(userId).first.then(
+          (accounts) => accounts.fold(
+            () => null,
+            (accounts) => accounts.firstWhere(
+              (account) => account.id == accountId,
+              orElse: () => throw Exception("Account doesn't exist."),
+            ),
+          ),
+        );
     if (account != null) {
       _accountRepository.save(
         account

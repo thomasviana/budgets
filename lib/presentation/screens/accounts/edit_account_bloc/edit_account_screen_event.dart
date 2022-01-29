@@ -12,13 +12,28 @@ class AccountDeleted extends EditAccountScreenEvent {}
 class AccountSaved extends EditAccountScreenEvent {}
 
 class ColorUpdated extends EditAccountScreenEvent {
-  final int newColor;
-  ColorUpdated({required this.newColor});
+  final int color;
+  ColorUpdated(this.color);
 }
 
 class LogoSelected extends EditAccountScreenEvent {
   final String imageUrl;
-  LogoSelected({required this.imageUrl});
+  LogoSelected(this.imageUrl);
 }
 
 class LogoDeleted extends EditAccountScreenEvent {}
+
+class NameChanged extends EditAccountScreenEvent {
+  final String name;
+  NameChanged(this.name);
+}
+
+class TypeChanged extends EditAccountScreenEvent {
+  final AccountType accountType;
+  TypeChanged(this.accountType);
+}
+
+class BalanceChanged extends EditAccountScreenEvent {
+  final double balance;
+  BalanceChanged(this.balance);
+}

@@ -1,16 +1,18 @@
-part of 'settings_cubit.dart';
+part of 'settings_bloc.dart';
 
 class SettingsState {
   List<Account> accounts;
   List<Category> categories;
   List<SubCategory> subCategories;
   List<Budget> budgets;
+  bool done;
 
   SettingsState({
     required this.accounts,
     required this.categories,
     required this.subCategories,
     required this.budgets,
+    required this.done,
   });
 
   factory SettingsState.initial() => SettingsState(
@@ -18,6 +20,7 @@ class SettingsState {
         categories: Category.defaultCategories,
         subCategories: SubCategory.allSubCategories,
         budgets: Budget.defaultBudgets,
+        done: false,
       );
 
   SettingsState copyWith({
@@ -25,12 +28,14 @@ class SettingsState {
     List<Category>? categories,
     List<SubCategory>? subCategories,
     List<Budget>? budgets,
+    bool? done,
   }) {
     return SettingsState(
       accounts: accounts ?? this.accounts,
       categories: categories ?? this.categories,
       subCategories: subCategories ?? this.subCategories,
       budgets: budgets ?? this.budgets,
+      done: done ?? this.done,
     );
   }
 }

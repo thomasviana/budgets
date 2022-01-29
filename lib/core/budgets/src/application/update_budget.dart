@@ -21,15 +21,15 @@ class UpdateBudget {
     int? color,
     double? balance,
   }) async {
-    final budget = await _getBudgets(userId).then(
-      (budgets) => budgets.fold(
-        () => null,
-        (budgets) => budgets.firstWhere(
-          (budget) => budget.id == budgetId,
-          orElse: () => throw Exception("Budget doesn't exist."),
-        ),
-      ),
-    );
+    final budget = await _getBudgets(userId).first.then(
+          (budgets) => budgets.fold(
+            () => null,
+            (budgets) => budgets.firstWhere(
+              (budget) => budget.id == budgetId,
+              orElse: () => throw Exception("Budget doesn't exist."),
+            ),
+          ),
+        );
     if (budget != null) {
       _budgetRepository.save(
         budget

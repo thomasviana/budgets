@@ -11,6 +11,6 @@ class GetBudgets {
     this._budgetRepository,
   );
 
-  Future<Option<List<Budget>>> call(BudgetUserId userId) =>
+  Stream<Option<List<Budget>>> call(BudgetUserId userId) =>
       _budgetRepository.fetchBudgets(userId);
 }

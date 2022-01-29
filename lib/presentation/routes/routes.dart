@@ -1,4 +1,5 @@
 import 'package:budgets/core/transactions/domain.dart';
+import 'package:budgets/presentation/screens/accounts/edit_account_bloc/edit_account_screen_bloc.dart';
 import 'package:budgets/presentation/screens/categories/edit_category_name_screen.dart';
 import 'package:budgets/presentation/screens/categories/edit_sub_category_name_screen.dart';
 import 'package:budgets/presentation/screens/categories/select_category_type_screen.dart';
@@ -17,7 +18,6 @@ import '../../core/budgets/domain.dart';
 import '../../core/categories/domain.dart';
 import '../../di/dependency_injection.dart';
 import '../screens/accounts/accounts_screen.dart';
-import '../screens/accounts/edit_account_cubit/edit_account_screen_cubit.dart';
 import '../screens/accounts/edit_account_screen.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/auth/cubit/auth_screen_cubit.dart';
@@ -142,7 +142,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider(
-            create: (context) => sl<EditAccountScreenCubit>(),
+            create: (context) => sl<EditAccountScreenBloc>(),
             child: EditAccountScreen(account: account),
           ),
         );

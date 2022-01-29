@@ -1,9 +1,9 @@
+import 'package:budgets/presentation/core/auth/auth_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../core/auth/auth_cubit.dart';
 import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
 
@@ -60,7 +60,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               leading: Icon(Icons.logout, color: AppColors.red),
               onTap: () {
-                context.read<AuthCubit>().onLogOut();
+                context.read<AuthBloc>().add(AuthLogOut());
                 AppNavigator.navigateToAuthPage(context);
               },
             ),

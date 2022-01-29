@@ -18,7 +18,7 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
-  Future<Option<List<Account>>> fetchAccounts(AccountUserId userId) {
+  Stream<Option<List<Account>>> fetchAccounts(AccountUserId userId) {
     return _accountslocalDataSource.getCachedAccounts(userId);
   }
 

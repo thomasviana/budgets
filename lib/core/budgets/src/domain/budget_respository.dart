@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../domain.dart';
 
 abstract class BudgetRepository {
-  Future<Option<List<Budget>>> fetchBudgets(
+  Stream<Option<List<Budget>>> fetchBudgets(
     BudgetUserId userId,
   );
 

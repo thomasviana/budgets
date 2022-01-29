@@ -1,6 +1,6 @@
 import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/core/transactions/domain.dart';
-import 'package:budgets/presentation/core/settings/settings_cubit.dart';
+import 'package:budgets/presentation/core/bloc/settings_bloc.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,7 +67,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
 
   Widget _buildBody(BuildContext context, TransactionsScreenState state) {
     Budget _getBudgetAbreviation(TransactionBudgetId? id) {
-      final budgets = context.read<SettingsCubit>().state.budgets;
+      final budgets = context.read<SettingsBloc>().state.budgets;
       final budget = budgets.firstWhere(
         (budget) => budget.id.value == id!.value,
       );

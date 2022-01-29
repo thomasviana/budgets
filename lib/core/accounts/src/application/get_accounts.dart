@@ -11,6 +11,6 @@ class GetAccounts {
     this._accountRepository,
   );
 
-  Future<Option<List<Account>>> call(AccountUserId userId) =>
+  Stream<Option<List<Account>>> call(AccountUserId userId) =>
       _accountRepository.fetchAccounts(userId);
 }

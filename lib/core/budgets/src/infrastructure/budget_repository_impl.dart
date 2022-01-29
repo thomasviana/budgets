@@ -18,7 +18,7 @@ class BudgetRepositoryImpl implements BudgetRepository {
   }
 
   @override
-  Future<Option<List<Budget>>> fetchBudgets(BudgetUserId userId) {
+  Stream<Option<List<Budget>>> fetchBudgets(BudgetUserId userId) {
     return _budgetslocalDataSource.getCachedBudgets(userId);
   }
 

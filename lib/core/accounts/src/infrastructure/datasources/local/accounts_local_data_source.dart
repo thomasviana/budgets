@@ -7,7 +7,7 @@ import '../../../../infrastructure.dart';
 abstract class AccountsLocalDataSource {
   Future<void> cacheAccount(Account account);
   Future<void> cacheAccounts(List<Account> accounts);
-  Future<Option<List<Account>>> getCachedAccounts(AccountUserId userId);
+  Stream<Option<List<Account>>> getCachedAccounts(AccountUserId userId);
   Future<void> deleteAccount(AccountId accountId);
 }
 
@@ -43,17 +43,10 @@ class AccountsLocalDataSourceImpl implements AccountsLocalDataSource {
   }
 
   @override
-  Future<Option<List<Account>>> getCachedAccounts(
+  Stream<Option<List<Account>>> getCachedAccounts(
     AccountUserId userId,
-  ) async {
-    final accounts = await _accountDao
-        .getAccounts(userId.value)
-        .map((dtos) => _accountMapper.fromDbDtoList(dtos))
-        .first;
-    if (accounts.isNotEmpty) {
-      return some(accounts);
-    } else {
-      return none();
-    }
-  }
+  ) =>
+      _accountDao
+          .getAccounts(userId.value)
+          .map((dtos) => optionOf(_accountMapper.fromDbDtoList(dtos)));
 }

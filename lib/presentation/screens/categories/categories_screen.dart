@@ -1,5 +1,5 @@
 import 'package:budgets/core/categories/domain.dart';
-import 'package:budgets/presentation/core/settings/settings_cubit.dart';
+import 'package:budgets/presentation/core/bloc/settings_bloc.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +11,7 @@ import '../../routes/app_navigator.dart';
 class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SettingsCubit, SettingsState>(
+    return BlocBuilder<SettingsBloc, SettingsState>(
       builder: _buildState,
     );
   }
@@ -33,12 +33,8 @@ class CategoriesScreen extends StatelessWidget {
                       Icons.add,
                       color: AppColors.primaryColor,
                     ),
-                    onPressed: () {
-                      AppNavigator.navigateToEditCategoryPage(
-                        context,
-                        (_) => context.read<SettingsCubit>().getSettings(),
-                      );
-                    },
+                    onPressed: () =>
+                        AppNavigator.navigateToEditCategoryPage(context),
                   ),
                 ],
               ),
@@ -107,11 +103,8 @@ class CategoriesScreen extends StatelessWidget {
                   trailing: Icon(
                     Icons.chevron_right,
                   ),
-                  onTap: () => AppNavigator.navigateToEditCategoryPage(
-                    context,
-                    (_) => context.read<SettingsCubit>().getSettings(),
-                    category: category,
-                  ),
+                  onTap: () => AppNavigator.navigateToEditCategoryPage(context,
+                      category: category),
                 );
               },
             ),
@@ -156,11 +149,8 @@ class CategoriesScreen extends StatelessWidget {
                   trailing: Icon(
                     Icons.chevron_right,
                   ),
-                  onTap: () => AppNavigator.navigateToEditCategoryPage(
-                    context,
-                    (_) => context.read<SettingsCubit>().getSettings(),
-                    category: category,
-                  ),
+                  onTap: () => AppNavigator.navigateToEditCategoryPage(context,
+                      category: category),
                 );
               },
             ),

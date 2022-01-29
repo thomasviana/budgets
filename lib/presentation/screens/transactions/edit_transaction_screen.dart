@@ -1,5 +1,5 @@
 import 'package:budgets/core/transactions/domain.dart';
-import 'package:budgets/presentation/core/settings/settings_cubit.dart';
+import 'package:budgets/presentation/core/bloc/settings_bloc.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as f;
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
@@ -25,14 +25,14 @@ class EditTransactionScreen extends StatefulWidget {
 
 class _EditTransactionScreenState extends State<EditTransactionScreen> {
   late EditTransactionScreenCubit cubit;
-  late SettingsCubit settingsCubit;
+  late SettingsBloc settingsBloc;
   late CurrencyTextInputFormatter formatter;
   late TextEditingController textEditingController;
   late f.Timestamp dateTime;
 
   @override
   void initState() {
-    settingsCubit = context.read<SettingsCubit>();
+    settingsBloc = context.read<SettingsBloc>();
     cubit = context.read<EditTransactionScreenCubit>()
       ..init(widget.transaction)
       ..getUserSubCategories();
@@ -54,7 +54,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
   Widget _buildState(BuildContext context, EditTransactionScreenState state) {
     // Account leading
     final account = state.account.fold(
-      () => settingsCubit.state.accounts.first,
+      () => settingsBloc.state.accounts.first,
       (account) => account,
     );
     NetworkImage? image;
@@ -76,7 +76,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
     // Budget leading
     final budget = state.budget.fold(
-      () => settingsCubit.state.budgets.first,
+      () => settingsBloc.state.budgets.first,
       (budget) => budget,
     );
     bool hasAbbreviation = true;
@@ -229,7 +229,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               onTap: () {
                 AppNavigator.navigateToSelectAccountPage(
                   context,
-                  settingsCubit.state.accounts,
+                  settingsBloc.state.accounts,
                 );
               },
             ),
@@ -280,7 +280,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               onTap: () {
                 AppNavigator.navigateToSelectCategoryPage(
                   context,
-                  settingsCubit.state.categories
+                  settingsBloc.state.categories
                       .where(
                         (category) =>
                             category.type.index ==
@@ -326,7 +326,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                 onTap: () {
                   AppNavigator.navigateToSelectBudgetPage(
                     context,
-                    budgets: settingsCubit.state.budgets,
+                    budgets: settingsBloc.state.budgets,
                   );
                 },
               ),
@@ -363,7 +363,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   final amount = textEditingController.text
                       .replaceAll(RegExp(r'[^\w\s]+'), '');
                   AppNavigator.navigateToManageIncomePage(context,
-                      arguments: [settingsCubit.state.budgets, amount]);
+                      arguments: [settingsBloc.state.budgets, amount]);
                 },
               ),
             Divider(height: 2),

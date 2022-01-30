@@ -3,13 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../../core/categories/domain.dart';
 import '../../routes/app_navigator.dart';
-import 'edit_category_cubit/edit_category_screen_cubit.dart';
+import 'edit_category_bloc/edit_category_screen_bloc.dart';
 
 class EditCategoryScreen extends StatefulWidget {
   final Category? category;
@@ -22,19 +21,19 @@ class EditCategoryScreen extends StatefulWidget {
 }
 
 class _EditCategoryScreenState extends State<EditCategoryScreen> {
-  late EditCategoryScreenCubit cubit;
+  late EditCategoryScreenBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    cubit = context.read<EditCategoryScreenCubit>()
-      ..init(widget.category)
-      ..getUserSubCategories();
+    bloc = context.read<EditCategoryScreenBloc>()
+      ..add(CheckCategory(category: widget.category))
+      ..add(GetUserSubcategories());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditCategoryScreenCubit, EditCategoryScreenState>(
+    return BlocBuilder<EditCategoryScreenBloc, EditCategoryScreenState>(
       builder: _buildState,
     );
   }
@@ -61,7 +60,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                         color: AppColors.red,
                       ),
                       onPressed: () {
-                        cubit.onCategoryDeleted();
+                        bloc.add(CategoryDeleted());
                         AppNavigator.navigateBack(context);
                       },
                     ),
@@ -71,7 +70,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                       color: AppColors.primaryColor,
                     ),
                     onPressed: () {
-                      cubit.onCategorySaved(isNewCategory: !state.isEditMode);
+                      bloc.add(CategorySaved());
                       AppNavigator.navigateBack(context);
                     },
                   ),
@@ -86,6 +85,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
   }
 
   Widget _buildBody(BuildContext context, EditCategoryScreenState state) {
+    final subCategories = state.subCategories ?? [];
+
     if (state.isLoading) {
       return Center(
         child: CircularProgressIndicator(),
@@ -99,7 +100,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
             Center(
               child: InkWell(
                 onTap: () {
-                  _showEditOptions(context, cubit, state);
+                  _showEditOptions(context, bloc, state);
                 },
                 child: Stack(
                   alignment: Alignment(1, 1.2),
@@ -213,41 +214,34 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
               color: state.subCategories == null || state.subCategories!.isEmpty
                   ? null
                   : AppColors.white,
-              child: FutureBuilder(
-                future: cubit.getUserSubCategories(),
-                builder: (context, snapshot) {
-                  final subCategories = state.subCategories ?? [];
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.only(top: 4, bottom: 4),
-                    itemCount: subCategories.length,
-                    separatorBuilder: (BuildContext context, int index) =>
-                        Divider(height: 2),
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: Text(subCategories[index].name),
-                        leading: CircleAvatar(
-                          maxRadius: 20,
-                          child: Icon(
-                            IconData(
-                              subCategories[index].icon,
-                              fontFamily: 'MaterialIcons',
-                            ),
-                            color: AppColors.white,
-                          ),
-                          backgroundColor: Color(subCategories[index].color),
+              child: ListView.separated(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.only(top: 4, bottom: 4),
+                itemCount: subCategories.length,
+                separatorBuilder: (BuildContext context, int index) =>
+                    Divider(height: 2),
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(subCategories[index].name),
+                    leading: CircleAvatar(
+                      maxRadius: 20,
+                      child: Icon(
+                        IconData(
+                          subCategories[index].icon,
+                          fontFamily: 'MaterialIcons',
                         ),
-                        trailing: Icon(
-                          Icons.chevron_right,
-                        ),
-                        onTap: () {
-                          AppNavigator.navigateToEditSubCategoryPage(
-                            context,
-                            subCategories[index],
-                            (_) => cubit.getUserSubCategories(),
-                          );
-                        },
+                        color: AppColors.white,
+                      ),
+                      backgroundColor: Color(subCategories[index].color),
+                    ),
+                    trailing: Icon(
+                      Icons.chevron_right,
+                    ),
+                    onTap: () {
+                      AppNavigator.navigateToEditSubCategoryPage(
+                        context,
+                        subCategories[index],
                       );
                     },
                   );
@@ -258,20 +252,19 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
             Container(
               color: AppColors.white,
               child: ListTile(
-                title: Text('Añadir subcategoria'),
-                leading: CircleAvatar(
-                  maxRadius: 20,
-                  child: Icon(
-                    Icons.add,
-                    color: AppColors.white,
+                  title: Text('Añadir subcategoria'),
+                  leading: CircleAvatar(
+                    maxRadius: 20,
+                    child: Icon(
+                      Icons.add,
+                      color: AppColors.white,
+                    ),
+                    backgroundColor: AppColors.greyDisabled,
                   ),
-                  backgroundColor: AppColors.greyDisabled,
-                ),
-                trailing: Icon(
-                  Icons.chevron_right,
-                ),
-                onTap: () => cubit.onAddSubCategory(),
-              ),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                  ),
+                  onTap: () => bloc.add(SubcategoryAdded())),
             ),
             SizedBox(height: 80),
           ],
@@ -283,7 +276,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
 
 Future<void> _showEditOptions(
   BuildContext context,
-  EditCategoryScreenCubit cubit,
+  EditCategoryScreenBloc bloc,
   EditCategoryScreenState state,
 ) async {
   await showCupertinoModalPopup<void>(
@@ -294,14 +287,14 @@ Future<void> _showEditOptions(
           child: const Text('Cambiar icono'),
           onPressed: () {
             Navigator.pop(context);
-            _pickIcon(context, cubit);
+            _pickIcon(context, bloc);
           },
         ),
         CupertinoActionSheetAction(
           child: const Text('Cambiar color'),
           onPressed: () {
             Navigator.pop(context);
-            _pickColor(context, cubit, state);
+            _pickColor(context, bloc, state);
           },
         )
       ],
@@ -320,7 +313,7 @@ Future<void> _showEditOptions(
 
 Future _pickColor(
   BuildContext context,
-  EditCategoryScreenCubit cubit,
+  EditCategoryScreenBloc bloc,
   EditCategoryScreenState state,
 ) {
   return showDialog(
@@ -339,9 +332,8 @@ Future _pickColor(
         allowShades: false,
         selectedColor: Color(state.category!.color),
         onMainColorChange: (colorSwatch) {
-          cubit.onColorUpdated(colorSwatch!.value).then(
-                (_) => Navigator.of(context).pop(),
-              );
+          bloc.add(ColorUpdated(colorSwatch!.value));
+          Navigator.of(context).pop();
         },
       ),
     ),
@@ -350,7 +342,7 @@ Future _pickColor(
 
 Future<void> _pickIcon(
   BuildContext context,
-  EditCategoryScreenCubit cubit,
+  EditCategoryScreenBloc bloc,
 ) async {
   final materialIcons = AppIcons.materialIcons();
   final icon = await FlutterIconPicker.showIconPicker(
@@ -373,95 +365,6 @@ Future<void> _pickIcon(
   );
 
   if (icon != null) {
-    cubit.onIconUpdated(icon.codePoint);
-  }
-}
-
-class _EditNameBottomSheet extends HookWidget {
-  final Function(String) onSavePressed;
-  final VoidCallback onCancelPressed;
-  final EditCategoryScreenState state;
-
-  const _EditNameBottomSheet({
-    Key? key,
-    required this.onSavePressed,
-    required this.onCancelPressed,
-    required this.state,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textEditingController = useTextEditingController()
-      ..text = state.category!.name;
-    return DraggableScrollableSheet(
-      initialChildSize: 0.95,
-      maxChildSize: 0.95,
-      builder: (context, controller) => Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      AppNavigator.navigateBack(context);
-                      onCancelPressed();
-                    }),
-                const Text(
-                  'Editar categoria',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                TextButton(
-                  child: const Text('Guardar'),
-                  onPressed: () {
-                    AppNavigator.navigateBack(context);
-                    onSavePressed(textEditingController.value.text.trim());
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 50),
-            TextField(
-              controller: textEditingController,
-              keyboardType: TextInputType.name,
-              autofocus: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                label: Center(
-                  child: Text(
-                    'Nuevo nombre',
-                  ),
-                ),
-                labelStyle: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14,
-                ),
-                hintStyle: TextStyle(fontSize: 18),
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                hintText: '',
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+    bloc.add(IconUpdated(icon.codePoint));
   }
 }

@@ -1,14 +1,15 @@
 import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/categories/edit_category_cubit/edit_category_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'edit_category_bloc/edit_category_screen_bloc.dart';
 
 class SelectCategoryTypeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditCategoryScreenCubit, EditCategoryScreenState>(
+    return BlocBuilder<EditCategoryScreenBloc, EditCategoryScreenState>(
       builder: _buildState,
     );
   }
@@ -53,8 +54,8 @@ class SelectCategoryTypeScreen extends StatelessWidget {
                 : null,
             onTap: () {
               context
-                  .read<EditCategoryScreenCubit>()
-                  .onTypeChanged(CategoryType.expense);
+                  .read<EditCategoryScreenBloc>()
+                  .add(TypeChanged(CategoryType.expense));
               Navigator.pop(context);
             },
           ),
@@ -74,8 +75,8 @@ class SelectCategoryTypeScreen extends StatelessWidget {
                 : null,
             onTap: () {
               context
-                  .read<EditCategoryScreenCubit>()
-                  .onTypeChanged(CategoryType.income);
+                  .read<EditCategoryScreenBloc>()
+                  .add(TypeChanged(CategoryType.income));
               Navigator.pop(context);
             },
           ),

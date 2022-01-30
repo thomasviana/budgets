@@ -8,7 +8,7 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 
 import '../../../core/categories/domain.dart';
 import '../../routes/app_navigator.dart';
-import 'edit_sub_category_cubit/edit_sub_category_screen_cubit.dart';
+import 'edit_sub_category_bloc/edit_sub_category_screen_bloc.dart';
 
 class EditSubCategoryScreen extends StatefulWidget {
   final SubCategory subCategory;
@@ -21,18 +21,18 @@ class EditSubCategoryScreen extends StatefulWidget {
 }
 
 class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
-  late EditSubCategoryScreenCubit cubit;
+  late EditSubCategoryScreenBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    cubit = context.read<EditSubCategoryScreenCubit>();
-    cubit.init(widget.subCategory);
+    bloc = context.read<EditSubCategoryScreenBloc>()
+      ..add(CheckSubCategory(subCategory: widget.subCategory));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditSubCategoryScreenCubit, EditSubCategoryScreenState>(
+    return BlocBuilder<EditSubCategoryScreenBloc, EditSubCategoryScreenState>(
       builder: _buildState,
     );
   }
@@ -55,7 +55,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                       color: AppColors.red,
                     ),
                     onPressed: () {
-                      cubit.onSubCategoryDeleted();
+                      bloc.add(SubCategoryDeleted());
                       AppNavigator.navigateBack(context);
                     },
                   ),
@@ -65,7 +65,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                       color: AppColors.primaryColor,
                     ),
                     onPressed: () {
-                      cubit.onSubCategorySaved();
+                      bloc.add(SubCategorySaved());
                       AppNavigator.navigateBack(context);
                     },
                   ),
@@ -94,7 +94,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
             Center(
               child: InkWell(
                 onTap: () {
-                  _showEditOptions(context, cubit, state);
+                  _showEditOptions(context, bloc, state);
                 },
                 child: Stack(
                   alignment: Alignment(1, 1.2),
@@ -178,7 +178,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
 
 Future<void> _showEditOptions(
   BuildContext context,
-  EditSubCategoryScreenCubit cubit,
+  EditSubCategoryScreenBloc bloc,
   EditSubCategoryScreenState state,
 ) async {
   await showCupertinoModalPopup<void>(
@@ -189,14 +189,14 @@ Future<void> _showEditOptions(
           child: const Text('Cambiar icono'),
           onPressed: () {
             Navigator.pop(context);
-            _pickIcon(context, cubit);
+            _pickIcon(context, bloc);
           },
         ),
         CupertinoActionSheetAction(
           child: const Text('Cambiar color'),
           onPressed: () {
             Navigator.pop(context);
-            _pickColor(context, cubit, state);
+            _pickColor(context, bloc, state);
           },
         )
       ],
@@ -215,7 +215,7 @@ Future<void> _showEditOptions(
 
 Future _pickColor(
   BuildContext context,
-  EditSubCategoryScreenCubit cubit,
+  EditSubCategoryScreenBloc bloc,
   EditSubCategoryScreenState state,
 ) {
   return showDialog(
@@ -234,9 +234,8 @@ Future _pickColor(
         allowShades: false,
         selectedColor: Color(state.subCategory!.color),
         onMainColorChange: (colorSwatch) {
-          cubit.onColorUpdated(colorSwatch!.value).then(
-                (_) => Navigator.of(context).pop(),
-              );
+          bloc.add(ColorUpdated(colorSwatch!.value));
+          Navigator.of(context).pop();
         },
       ),
     ),
@@ -245,7 +244,7 @@ Future _pickColor(
 
 Future<void> _pickIcon(
   BuildContext context,
-  EditSubCategoryScreenCubit cubit,
+  EditSubCategoryScreenBloc bloc,
 ) async {
   final materialIcons = AppIcons.materialIcons();
   final icon = await FlutterIconPicker.showIconPicker(
@@ -268,7 +267,7 @@ Future<void> _pickIcon(
   );
 
   if (icon != null) {
-    cubit.onIconUpdated(icon.codePoint);
+    bloc.add(IconUpdated(icon.codePoint));
   }
 }
 

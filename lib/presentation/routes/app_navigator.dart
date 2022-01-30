@@ -102,11 +102,9 @@ class AppNavigator {
   static void navigateToEditSubCategoryPage(
     BuildContext context,
     SubCategory subCategory,
-    Function(Object?) function,
   ) {
     Navigator.pushNamed(context, ROUTE_EDIT_SUB_CATEGORY_PAGE,
-            arguments: subCategory)
-        .then(function);
+        arguments: subCategory);
   }
 
   static void navigateToEditSubCategoryNamePage(

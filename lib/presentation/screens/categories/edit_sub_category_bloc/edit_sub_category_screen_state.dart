@@ -1,4 +1,4 @@
-part of 'edit_sub_category_screen_cubit.dart';
+part of 'edit_sub_category_screen_bloc.dart';
 
 class EditSubCategoryScreenState {
   final SubCategory? subCategory;

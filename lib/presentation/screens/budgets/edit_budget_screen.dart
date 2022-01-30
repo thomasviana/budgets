@@ -8,7 +8,7 @@ import 'package:flutter_material_color_picker/flutter_material_color_picker.dart
 
 import '../../../core/budgets/domain.dart';
 import '../../routes/app_navigator.dart';
-import 'edit_budget_cubit/edit_budget_screen_cubit.dart';
+import 'edit_budget_bloc/edit_budget_screen_bloc.dart';
 
 class EditBudgetScreen extends StatefulWidget {
   final Budget? budget;
@@ -21,18 +21,18 @@ class EditBudgetScreen extends StatefulWidget {
 }
 
 class _EditBudgetScreenState extends State<EditBudgetScreen> {
-  late EditBudgetScreenCubit cubit;
+  late EditBudgetScreenBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    cubit = context.read<EditBudgetScreenCubit>();
-    cubit.init(widget.budget);
+    bloc = context.read<EditBudgetScreenBloc>()
+      ..add(CheckBudget(budget: widget.budget));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditBudgetScreenCubit, EditBudgetScreenState>(
+    return BlocBuilder<EditBudgetScreenBloc, EditBudgetScreenState>(
       builder: _buildState,
     );
   }
@@ -59,7 +59,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                         color: AppColors.red,
                       ),
                       onPressed: () {
-                        cubit.onBudgetDeleted();
+                        bloc.add(BudgetDeleted());
                         AppNavigator.navigateBack(context);
                       },
                     ),
@@ -70,7 +70,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                     ),
                     onPressed: () {
                       if (state.budget!.name.isEmpty) return;
-                      cubit.onBudgetSaved(isNewBudget: !state.isEditMode);
+                      bloc.add(BudgetSaved());
                       AppNavigator.navigateBack(context);
                     },
                   ),
@@ -104,7 +104,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
             Center(
               child: InkWell(
                 onTap: () {
-                  _showEditOptions(context, cubit, state);
+                  _showEditOptions(context, bloc, state);
                 },
                 child: Stack(
                   alignment: Alignment(1, 1.2),
@@ -188,7 +188,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                           state: state,
                           onCancelPressed: () {},
                           onSavePressed: (name) {
-                            cubit.onNameChanged(name);
+                            bloc.add(NameChanged(name));
                           },
                         ),
                       );
@@ -219,7 +219,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                           state: state,
                           onCancelPressed: () {},
                           onSavePressed: (abbrevation) {
-                            cubit.onAbbreviationChanged(abbrevation);
+                            bloc.add(AbbreviationChanged(abbrevation));
                           },
                         ),
                       );
@@ -250,7 +250,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                           state: state,
                           onCancelPressed: () {},
                           onSavePressed: (balance) {
-                            cubit.onBalanceChanged(balance);
+                            bloc.add(BalanceChanged(balance));
                           },
                         ),
                       );
@@ -269,7 +269,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
 
 Future<void> _showEditOptions(
   BuildContext context,
-  EditBudgetScreenCubit cubit,
+  EditBudgetScreenBloc bloc,
   EditBudgetScreenState state,
 ) async {
   await showCupertinoModalPopup<void>(
@@ -280,7 +280,7 @@ Future<void> _showEditOptions(
           child: const Text('Cambiar color'),
           onPressed: () {
             Navigator.pop(context);
-            _pickColor(context, cubit, state);
+            _pickColor(context, bloc, state);
           },
         ),
       ],
@@ -299,7 +299,7 @@ Future<void> _showEditOptions(
 
 Future _pickColor(
   BuildContext context,
-  EditBudgetScreenCubit cubit,
+  EditBudgetScreenBloc bloc,
   EditBudgetScreenState state,
 ) {
   return showDialog(
@@ -324,9 +324,8 @@ Future _pickColor(
         allowShades: false,
         selectedColor: Color(state.budget!.color),
         onMainColorChange: (colorSwatch) {
-          cubit.onColorUpdated(colorSwatch!.value).then(
-                (_) => Navigator.of(context).pop(),
-              );
+          bloc.add(ColorUpdated(colorSwatch!.value));
+          Navigator.of(context).pop();
         },
       ),
     ),

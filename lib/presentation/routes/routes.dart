@@ -1,6 +1,9 @@
 import 'package:budgets/core/transactions/domain.dart';
 import 'package:budgets/presentation/screens/accounts/edit_account_bloc/edit_account_screen_bloc.dart';
+import 'package:budgets/presentation/screens/budgets/edit_budget_bloc/edit_budget_screen_bloc.dart';
+import 'package:budgets/presentation/screens/categories/edit_category_bloc/edit_category_screen_bloc.dart';
 import 'package:budgets/presentation/screens/categories/edit_category_name_screen.dart';
+import 'package:budgets/presentation/screens/categories/edit_sub_category_bloc/edit_sub_category_screen_bloc.dart';
 import 'package:budgets/presentation/screens/categories/edit_sub_category_name_screen.dart';
 import 'package:budgets/presentation/screens/categories/select_category_type_screen.dart';
 import 'package:budgets/presentation/screens/transactions/edit_note_screen.dart';
@@ -22,12 +25,9 @@ import '../screens/accounts/edit_account_screen.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/auth/cubit/auth_screen_cubit.dart';
 import '../screens/budgets/budgets_screen.dart';
-import '../screens/budgets/edit_budget_cubit/edit_budget_screen_cubit.dart';
 import '../screens/budgets/edit_budget_screen.dart';
 import '../screens/categories/categories_screen.dart';
-import '../screens/categories/edit_category_cubit/edit_category_screen_cubit.dart';
 import '../screens/categories/edit_category_screen.dart';
-import '../screens/categories/edit_sub_category_cubit/edit_sub_category_screen_cubit.dart';
 import '../screens/categories/edit_sub_category_screen.dart';
 import '../screens/intro/intro_screen.dart';
 import '../screens/main/main_app_screen.dart';
@@ -40,11 +40,11 @@ class AppRouter {
   final EditTransactionScreenCubit _editTransactionScreenCubit =
       sl<EditTransactionScreenCubit>();
 
-  final EditCategoryScreenCubit _editCategoryScreenCubit =
-      sl<EditCategoryScreenCubit>();
+  final EditCategoryScreenBloc _editCategoryScreenBloc =
+      sl<EditCategoryScreenBloc>();
 
-  final EditSubCategoryScreenCubit _editSubCategoryScreenCubit =
-      sl<EditSubCategoryScreenCubit>();
+  final EditSubCategoryScreenBloc _editSubCategoryScreenBloc =
+      sl<EditSubCategoryScreenBloc>();
 
   Route routes(RouteSettings settings) {
     switch (settings.name) {
@@ -89,7 +89,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider.value(
-            value: _editCategoryScreenCubit,
+            value: _editCategoryScreenBloc,
             child: EditCategoryScreen(category: category),
           ),
         );
@@ -98,7 +98,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider.value(
-            value: _editCategoryScreenCubit,
+            value: _editCategoryScreenBloc,
             child: EditCategoryNameScreen(
               name: name,
             ),
@@ -108,7 +108,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider.value(
-            value: _editCategoryScreenCubit,
+            value: _editCategoryScreenBloc,
             child: SelectCategoryTypeScreen(),
           ),
         );
@@ -117,7 +117,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider(
-            create: (context) => sl<EditSubCategoryScreenCubit>(),
+            create: (context) => sl<EditSubCategoryScreenBloc>(),
             child: EditSubCategoryScreen(subCategory: subCategory),
           ),
         );
@@ -126,7 +126,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider.value(
-            value: _editSubCategoryScreenCubit,
+            value: _editSubCategoryScreenBloc,
             child: EditSubCategoryNameScreen(
               name: name,
             ),
@@ -156,7 +156,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider(
-            create: (context) => sl<EditBudgetScreenCubit>(),
+            create: (context) => sl<EditBudgetScreenBloc>(),
             child: EditBudgetScreen(budget: budget),
           ),
         );

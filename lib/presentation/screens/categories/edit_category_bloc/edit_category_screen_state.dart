@@ -1,4 +1,4 @@
-part of 'edit_category_screen_cubit.dart';
+part of 'edit_category_screen_bloc.dart';
 
 class EditCategoryScreenState {
   final Category? category;
@@ -26,6 +26,7 @@ class EditCategoryScreenState {
       );
 
   factory EditCategoryScreenState.initial() => EditCategoryScreenState(
+        category: Category.empty(),
         isLoading: false,
         isEditMode: true,
       );

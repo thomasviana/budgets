@@ -48,6 +48,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
               );
             },
           );
+
           await emit.onEach<Option<List<Account>>>(
             getAccounts(AccountUserId(user.id.value)),
             onData: (userAccounts) async {

@@ -1,4 +1,4 @@
-part of 'edit_budget_screen_cubit.dart';
+part of 'edit_budget_screen_bloc.dart';
 
 class EditBudgetScreenState {
   final Budget? budget;
@@ -12,6 +12,7 @@ class EditBudgetScreenState {
   });
 
   factory EditBudgetScreenState.initial() => EditBudgetScreenState(
+        budget: Budget.empty(),
         isLoading: false,
         isEditMode: true,
       );

@@ -110,11 +110,11 @@ import '../presentation/core/bloc/settings_bloc.dart' as _i59;
 import '../presentation/screens/accounts/edit_account_bloc/edit_account_screen_bloc.dart'
     as _i33;
 import '../presentation/screens/auth/cubit/auth_screen_cubit.dart' as _i12;
-import '../presentation/screens/budgets/edit_budget_cubit/edit_budget_screen_cubit.dart'
+import '../presentation/screens/budgets/edit_budget_bloc/edit_budget_screen_bloc.dart'
     as _i35;
-import '../presentation/screens/categories/edit_category_cubit/edit_category_screen_cubit.dart'
+import '../presentation/screens/categories/edit_category_bloc/edit_category_screen_bloc.dart'
     as _i37;
-import '../presentation/screens/categories/edit_sub_category_cubit/edit_sub_category_screen_cubit.dart'
+import '../presentation/screens/categories/edit_sub_category_bloc/edit_sub_category_screen_bloc.dart'
     as _i39;
 import '../presentation/screens/home/cubit/home_screen_cubit.dart' as _i50;
 import '../presentation/screens/profile/cubit/profile_screen_cubit.dart'
@@ -194,12 +194,12 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       get<_i34.DeleteAccount>(),
       get<_i11.GetProfileInfo>(),
       get<_i34.CreateAccount>()));
-  gh.factory<_i35.EditBudgetScreenCubit>(() => _i35.EditBudgetScreenCubit(
+  gh.factory<_i35.EditBudgetScreenBloc>(() => _i35.EditBudgetScreenBloc(
       get<_i36.UpdateBudget>(),
       get<_i36.DeleteBudget>(),
       get<_i11.GetProfileInfo>(),
       get<_i36.CreateBudget>()));
-  gh.factory<_i37.EditCategoryScreenCubit>(() => _i37.EditCategoryScreenCubit(
+  gh.factory<_i37.EditCategoryScreenBloc>(() => _i37.EditCategoryScreenBloc(
       get<_i38.UpdateCategory>(),
       get<_i38.DeleteCategory>(),
       get<_i11.GetProfileInfo>(),
@@ -207,8 +207,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       get<_i38.SaveSubCategories>(),
       get<_i38.CreateSubCategory>(),
       get<_i38.CreateCategory>()));
-  gh.factory<_i39.EditSubCategoryScreenCubit>(() =>
-      _i39.EditSubCategoryScreenCubit(
+  gh.factory<_i39.EditSubCategoryScreenBloc>(() =>
+      _i39.EditSubCategoryScreenBloc(
           get<_i38.UpdateSubCategory>(), get<_i38.DeleteSubCategory>()));
   gh.factory<_i40.EditTransactionScreenCubit>(() =>
       _i40.EditTransactionScreenCubit(

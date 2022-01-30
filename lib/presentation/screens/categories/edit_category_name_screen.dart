@@ -1,9 +1,9 @@
 import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/categories/edit_category_cubit/edit_category_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../resources/colors.dart';
+import 'edit_category_bloc/edit_category_screen_bloc.dart';
 
 class EditCategoryNameScreen extends StatefulWidget {
   final String name;
@@ -27,7 +27,7 @@ class _EditCategoryNameScreenState extends State<EditCategoryNameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditCategoryScreenCubit, EditCategoryScreenState>(
+    return BlocBuilder<EditCategoryScreenBloc, EditCategoryScreenState>(
       builder: _buildState,
     );
   }
@@ -47,8 +47,8 @@ class _EditCategoryNameScreenState extends State<EditCategoryNameScreen> {
               child: Text('Listo'),
               onPressed: () {
                 context
-                    .read<EditCategoryScreenCubit>()
-                    .onNameChanged(textEditingController.text.trim());
+                    .read<EditCategoryScreenBloc>()
+                    .add(NameChanged(textEditingController.text.trim()));
                 AppNavigator.navigateBack(context);
               },
             ),

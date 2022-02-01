@@ -11,6 +11,6 @@ class GetTransactions {
     this._transactionRepository,
   );
 
-  Future<Option<List<Transaction>>> call(TransactionUserId userId) =>
+  Stream<Option<List<Transaction>>> call(TransactionUserId userId) =>
       _transactionRepository.fetchTransactions(userId);
 }

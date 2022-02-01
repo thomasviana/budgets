@@ -11,6 +11,6 @@ class GetSubCategories {
     this._subCategoryRepository,
   );
 
-  Future<Option<List<SubCategory>>> call(CategoryId categoryId) =>
+  Stream<Option<List<SubCategory>>> call(CategoryId categoryId) =>
       _subCategoryRepository.fetchSubCategories(categoryId);
 }

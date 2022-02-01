@@ -7,7 +7,7 @@ import '../../../../infrastructure.dart';
 abstract class TransactionsLocalDataSource {
   Future<void> cacheTransaction(Transaction transaction);
   Future<void> cacheTransactions(List<Transaction> transactions);
-  Future<Option<List<Transaction>>> getCachedTransactions(
+  Stream<Option<List<Transaction>>> getCachedTransactions(
       TransactionUserId userId);
   Future<void> deleteTransaction(TransactionId transactionId);
 }
@@ -44,17 +44,10 @@ class TransactionsLocalDataSourceImpl implements TransactionsLocalDataSource {
   }
 
   @override
-  Future<Option<List<Transaction>>> getCachedTransactions(
+  Stream<Option<List<Transaction>>> getCachedTransactions(
     TransactionUserId userId,
-  ) async {
-    final transactions = await _transactionDao
-        .getTransactions(userId.value)
-        .map((dtos) => _transactionMapper.fromDbDtoList(dtos))
-        .first;
-    if (transactions.isNotEmpty) {
-      return some(transactions);
-    } else {
-      return none();
-    }
-  }
+  ) =>
+      _transactionDao
+          .getTransactions(userId.value)
+          .map((dtos) => optionOf(_transactionMapper.fromDbDtoList(dtos)));
 }

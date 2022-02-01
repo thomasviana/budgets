@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../domain.dart';
 
 abstract class TransactionRepository {
-  Future<Option<List<Transaction>>> fetchTransactions(
+  Stream<Option<List<Transaction>>> fetchTransactions(
     TransactionUserId userId,
   );
 

@@ -28,7 +28,7 @@ class SubCategoryRepositoryImpl implements SubCategoryRepository {
   }
 
   @override
-  Future<Option<List<SubCategory>>> fetchSubCategories(CategoryId categoryId) {
+  Stream<Option<List<SubCategory>>> fetchSubCategories(CategoryId categoryId) {
     return _categoriesLocalDataSource.getCachedSubCategories(categoryId);
   }
 }

@@ -28,15 +28,15 @@ class UpdateTransaction {
     IncomeType? incomeType,
     TransactionType? txType,
   }) async {
-    final transaction = await _getTransactions(txUserId).then(
-      (transactions) => transactions.fold(
-        () => null,
-        (transactions) => transactions.firstWhere(
-          (transaction) => transaction.id == transactionId,
-          orElse: () => throw Exception("Transaction doesn't exist."),
-        ),
-      ),
-    );
+    final transaction = await _getTransactions(txUserId).first.then(
+          (transactions) => transactions.fold(
+            () => null,
+            (transactions) => transactions.firstWhere(
+              (transaction) => transaction.id == transactionId,
+              orElse: () => throw Exception("Transaction doesn't exist."),
+            ),
+          ),
+        );
     if (transaction != null) {
       _transactionRepository.save(
         transaction

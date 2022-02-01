@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../domain.dart';
 
 abstract class SubCategoryRepository {
-  Future<Option<List<SubCategory>>> fetchSubCategories(
+  Stream<Option<List<SubCategory>>> fetchSubCategories(
     CategoryId categoryId,
   );
 

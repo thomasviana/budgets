@@ -12,7 +12,7 @@ abstract class CategoriesLocalDataSource {
 
   Future<void> cacheSubCategory(SubCategory subCategory);
   Future<void> cacheSubCategories(List<SubCategory> subCategories);
-  Future<Option<List<SubCategory>>> getCachedSubCategories(
+  Stream<Option<List<SubCategory>>> getCachedSubCategories(
       CategoryId categoryId);
   Future<void> deleteSubCategory(CategoryId subCategoryId);
 }
@@ -82,16 +82,10 @@ class CategoriesLocalDataSourceImpl implements CategoriesLocalDataSource {
   }
 
   @override
-  Future<Option<List<SubCategory>>> getCachedSubCategories(
-      CategoryId categoryId) async {
-    final subCategories = await _subCategoryDao
+  Stream<Option<List<SubCategory>>> getCachedSubCategories(
+      CategoryId categoryId) {
+    return _subCategoryDao
         .getSubCategories(categoryId.value)
-        .map((dtos) => _subCategoryMapper.fromDbDtoList(dtos))
-        .first;
-    if (subCategories.isNotEmpty) {
-      return some(subCategories);
-    } else {
-      return none();
-    }
+        .map((dtos) => optionOf(_subCategoryMapper.fromDbDtoList(dtos)));
   }
 }

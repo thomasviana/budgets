@@ -10,7 +10,7 @@ class EditSubCategoryScreenState {
   });
 
   factory EditSubCategoryScreenState.initial() => EditSubCategoryScreenState(
-        isLoading: false,
+        isLoading: true,
       );
 
   EditSubCategoryScreenState copyWith({

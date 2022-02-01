@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:budgets/core/categories/application.dart';
 import 'package:budgets/core/categories/domain.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 part 'edit_sub_category_screen_event.dart';
@@ -16,7 +17,10 @@ class EditSubCategoryScreenBloc
     this.deleteSubCategory,
   ) : super(EditSubCategoryScreenState.initial()) {
     on<CheckSubCategory>(
-      (event, emit) => emit(state.copyWith(subCategory: event.subCategory)),
+      (event, emit) {
+        print(event.subCategory);
+        emit(state.copyWith(subCategory: event.subCategory, isLoading: false));
+      },
     );
     on<SubCategoryDeleted>(
       (event, emit) async => deleteSubCategory(state.subCategory!.id),

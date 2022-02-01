@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:budgets/core/categories/application.dart';
 import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/core/user/application.dart';
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 part 'edit_category_screen_event.dart';
@@ -28,17 +29,24 @@ class EditCategoryScreenBloc
   ) : super(EditCategoryScreenState.initial()) {
     on<CheckCategory>((event, emit) {
       event.category != null
-          ? emit(state.copyWith(category: event.category, isEditMode: true))
-          : emit(state.copyWith(category: Category.empty(), isEditMode: false));
+          ? emit(state.copyWith(
+              category: event.category, isEditMode: true, isLoading: false))
+          : emit(state.copyWith(
+              category: Category.empty(), isEditMode: false, isLoading: false));
     });
 
-    on<GetUserSubcategories>((event, emit) {
-      getSubCategories(state.category!.id).then(
-        (optionSubCategories) => optionSubCategories.fold(
-          () => state.isDefaultExpenseCategory
-              ? _setDefaultSubCategories(emit)
-              : emit(state.copyWith(subCategories: [])),
-          (subCategories) => emit(state.copyWith(subCategories: subCategories)),
+    on<GetUserSubcategories>((event, emit) async {
+      await emit.onEach<Option<List<SubCategory>>>(
+        getSubCategories(state.category!.id),
+        onData: (optionSubCategories) => optionSubCategories.fold(
+          () {
+            state.isDefaultExpenseCategory
+                ? _setDefaultSubCategories(emit)
+                : emit(state.copyWith(subCategories: []));
+          },
+          (subCategories) {
+            emit(state.copyWith(subCategories: subCategories));
+          },
         ),
       );
     });

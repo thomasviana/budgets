@@ -38,45 +38,51 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
   }
 
   Widget _buildState(BuildContext context, EditSubCategoryScreenState state) {
-    return Scaffold(
-      body: CupertinoPageScaffold(
-        backgroundColor: AppColors.greyBackground,
-        child: NestedScrollView(
-          headerSliverBuilder: (ctx, inner) => [
-            CupertinoSliverNavigationBar(
-              largeTitle: Text('Subcategoría'),
-              previousPageTitle: 'Atras',
-              trailing: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.delete_outline,
-                      color: AppColors.red,
+    if (state.isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Scaffold(
+        body: CupertinoPageScaffold(
+          backgroundColor: AppColors.greyBackground,
+          child: NestedScrollView(
+            headerSliverBuilder: (ctx, inner) => [
+              CupertinoSliverNavigationBar(
+                largeTitle: Text('Subcategoría'),
+                previousPageTitle: 'Atras',
+                trailing: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.delete_outline,
+                        color: AppColors.red,
+                      ),
+                      onPressed: () {
+                        bloc.add(SubCategoryDeleted());
+                        AppNavigator.navigateBack(context);
+                      },
                     ),
-                    onPressed: () {
-                      bloc.add(SubCategoryDeleted());
-                      AppNavigator.navigateBack(context);
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.check,
-                      color: AppColors.primaryColor,
+                    IconButton(
+                      icon: Icon(
+                        Icons.check,
+                        color: AppColors.primaryColor,
+                      ),
+                      onPressed: () {
+                        bloc.add(SubCategorySaved());
+                        AppNavigator.navigateBack(context);
+                      },
                     ),
-                    onPressed: () {
-                      bloc.add(SubCategorySaved());
-                      AppNavigator.navigateBack(context);
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
-          body: _buildBody(context, state),
+                  ],
+                ),
+              )
+            ],
+            body: _buildBody(context, state),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget _buildBody(BuildContext context, EditSubCategoryScreenState state) {
@@ -163,8 +169,9 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                         Icon(Icons.chevron_right)
                       ],
                     ),
-                    onTap: () =>
-                        AppNavigator.navigateToEditSubCategoryNamePage(context),
+                    onTap: () => AppNavigator.navigateToEditSubCategoryNamePage(
+                        context,
+                        name: state.subCategory!.name),
                   ),
                 ],
               ),

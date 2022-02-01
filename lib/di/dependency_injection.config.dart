@@ -121,9 +121,9 @@ import '../presentation/screens/profile/cubit/profile_screen_cubit.dart'
     as _i53;
 import '../presentation/screens/settings/cubit/settings_screen_cubit.dart'
     as _i60;
-import '../presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart'
+import '../presentation/screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart'
     as _i40;
-import '../presentation/screens/transactions/transactions_cubit/transactions_screen_cubit.dart'
+import '../presentation/screens/transactions/transactions_bloc/transactions_screen_bloc.dart'
     as _i70;
 import 'db_injectable_module.dart' as _i92;
 import 'facebook_injectable_module.dart' as _i93;
@@ -210,8 +210,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i39.EditSubCategoryScreenBloc>(() =>
       _i39.EditSubCategoryScreenBloc(
           get<_i38.UpdateSubCategory>(), get<_i38.DeleteSubCategory>()));
-  gh.factory<_i40.EditTransactionScreenCubit>(() =>
-      _i40.EditTransactionScreenCubit(
+  gh.factory<_i40.EditTransactionScreenBloc>(() =>
+      _i40.EditTransactionScreenBloc(
           get<_i41.UpdateTransaction>(),
           get<_i41.DeleteTransaction>(),
           get<_i11.GetProfileInfo>(),
@@ -280,11 +280,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i69.TransactionsLocalDataSource>(() =>
       _i69.TransactionsLocalDataSourceImpl(
           get<_i68.TransactionDao>(), get<_i68.TransactionMapper>()));
-  gh.factory<_i70.TransactionsScreenCubit>(() => _i70.TransactionsScreenCubit(
-      get<_i41.GetTransactions>(),
-      get<_i11.GetProfileInfo>(),
-      get<_i41.AddTransaction>(),
-      get<_i38.GetSubCategories>()));
+  gh.factory<_i70.TransactionsScreenBloc>(() => _i70.TransactionsScreenBloc(
+      get<_i41.GetTransactions>(), get<_i11.GetProfileInfo>()));
   gh.factory<_i71.UpdateAccount>(() => _i71.UpdateAccount(
       get<_i6.AccountRepository>(), get<_i46.GetAccounts>()));
   gh.factory<_i72.UpdateBudget>(() =>

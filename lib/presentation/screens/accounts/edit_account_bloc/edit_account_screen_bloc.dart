@@ -22,8 +22,10 @@ class EditAccountScreenBloc
   ) : super(EditAccountScreenState.initial()) {
     on<CheckAccount>((event, emit) {
       event.account != null
-          ? emit(state.copyWith(account: event.account, isEditMode: true))
-          : emit(state.copyWith(account: Account.empty(), isEditMode: false));
+          ? emit(state.copyWith(
+              account: event.account, isEditMode: true, isLoading: false))
+          : emit(state.copyWith(
+              account: Account.empty(), isEditMode: false, isLoading: false));
     });
     on<AccountDeleted>(
       (event, emit) async => deleteAccount(state.account!.id),

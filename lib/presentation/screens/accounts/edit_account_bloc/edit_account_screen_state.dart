@@ -12,8 +12,7 @@ class EditAccountScreenState {
   });
 
   factory EditAccountScreenState.initial() => EditAccountScreenState(
-        account: Account.empty(),
-        isLoading: false,
+        isLoading: true,
         isEditMode: true,
       );
 

@@ -11,7 +11,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../../routes/app_navigator.dart';
-import 'edit_transaction_cubit/edit_transaction_screen_cubit.dart';
+import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class EditTransactionScreen extends StatefulWidget {
   final Transaction? transaction;
@@ -24,21 +24,19 @@ class EditTransactionScreen extends StatefulWidget {
 }
 
 class _EditTransactionScreenState extends State<EditTransactionScreen> {
-  late EditTransactionScreenCubit cubit;
+  late EditTransactionScreenBloc bloc;
   late SettingsBloc settingsBloc;
   late CurrencyTextInputFormatter formatter;
-  late TextEditingController textEditingController;
   late f.Timestamp dateTime;
 
   @override
   void initState() {
     settingsBloc = context.read<SettingsBloc>();
-    cubit = context.read<EditTransactionScreenCubit>()
-      ..init(widget.transaction)
-      ..getUserSubCategories();
+    bloc = context.read<EditTransactionScreenBloc>()
+      ..add(CheckTransaction(transaction: widget.transaction))
+      ..add(GetUserSubcategories());
     formatter = CurrencyTextInputFormatter(symbol: '\$', decimalDigits: 0);
-    textEditingController = TextEditingController()
-      ..text = formatter.format(cubit.state.transaction!.amount.toString());
+
     dateTime = f.Timestamp.now();
     initializeDateFormatting();
     super.initState();
@@ -46,7 +44,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditTransactionScreenCubit, EditTransactionScreenState>(
+    return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
       builder: _buildState,
     );
   }
@@ -114,209 +112,122 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
       }
     }
 
-    //SaveButtonEnable
-
-    return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      _showCancelOptions(
-                        context,
-                        onDiscardPressed: () =>
-                            AppNavigator.navigateBack(context),
-                      );
-                    },
-                  ),
-                  const Text(
-                    'Transacción',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+    if (state.isLoading) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      return Scaffold(
+        body: Container(
+          color: Colors.white,
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      child: const Text('Cancelar'),
+                      onPressed: () {
+                        _showCancelOptions(
+                          context,
+                          onDiscardPressed: () =>
+                              AppNavigator.navigateBack(context),
+                        );
+                      },
                     ),
-                  ),
-                  TextButton(
-                    child: const Text(
-                      'Guardar',
+                    const Text(
+                      'Transacción',
                       style: TextStyle(
-                        color: AppColors.greyDisabled,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
-                    onPressed: () {
-                      AppNavigator.navigateBack(context);
-                      final amount = textEditingController.text
-                          .replaceAll(RegExp(r'[^\w\s]+'), '');
-                      cubit.onTransactionSaved(
-                        double.parse(amount),
-                        dateTime.toDate(),
-                      );
-                    },
-                  ),
-                ],
+                    TextButton(
+                      child: Text(
+                        'Guardar',
+                        style: TextStyle(
+                          color: state.isSaveEnabled
+                              ? AppColors.primaryColor
+                              : AppColors.greyDisabled,
+                        ),
+                      ),
+                      onPressed: () {
+                        bloc.add(
+                          TransactionSaved(
+                            amount: state.transaction!.amount,
+                            date: dateTime.toDate(),
+                          ),
+                        );
+                        AppNavigator.navigateBack(context);
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: CupertinoSlidingSegmentedControl(
-                children: const {
-                  0: Text('Egreso'),
-                  1: Text('Ingreso'),
-                },
-                onValueChanged: (int? index) =>
-                    cubit.onTransactionTypeChanged(index),
-                groupValue: state.transaction!.transactionType.index,
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: CupertinoSlidingSegmentedControl(
+                  children: const {
+                    0: Text('Egreso'),
+                    1: Text('Ingreso'),
+                  },
+                  onValueChanged: (int? index) =>
+                      bloc.add(TransactionTypeChanged(index: index)),
+                  groupValue: state.transaction!.transactionType.index,
+                ),
               ),
-            ),
-            const SizedBox(height: 25),
-            TextField(
-              controller: textEditingController,
-              inputFormatters: [formatter],
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              autofocus: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color:
-                    state.transaction!.isExpense ? AppColors.red : Colors.green,
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-              ),
-              decoration: InputDecoration(
-                hintStyle: TextStyle(
+              const SizedBox(height: 25),
+              TextField(
+                inputFormatters: [formatter],
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                autofocus: true,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: state.transaction!.isExpense
+                      ? AppColors.red
+                      : Colors.green,
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
                 ),
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                hintText: '\$${currency.format(state.transaction!.amount)}',
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Divider(height: 2),
-            ListTile(
-              leading: CircleAvatar(
-                maxRadius: 20,
-                backgroundColor: Color(account.color),
-                backgroundImage: image,
-                child: isImageAvailable ? null : accountIcon,
-              ),
-              minLeadingWidth: 2,
-              title: Text('Cuenta'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    account.name,
-                    style: TextStyle(color: AppColors.greySecondary),
+                decoration: InputDecoration(
+                  hintStyle: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: state.transaction!.isExpense
+                        ? AppColors.red
+                        : Colors.green,
                   ),
-                  SizedBox(width: 10),
-                  Icon(Icons.chevron_right)
-                ],
-              ),
-              onTap: () {
-                AppNavigator.navigateToSelectAccountPage(
-                  context,
-                  settingsBloc.state.accounts,
-                );
-              },
-            ),
-            Divider(height: 2),
-            ListTile(
-              leading: state.subCategory.fold(
-                () => CircleAvatar(
-                  maxRadius: 20,
-                  child: Text(
-                    '?',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: AppColors.white),
-                  ),
-                  backgroundColor: AppColors.greyDisabled,
+                  focusedBorder: InputBorder.none,
+                  hintText: '\$${currency.format(state.transaction!.amount)}',
                 ),
-                (subcategory) => CircleAvatar(
-                  maxRadius: 20,
-                  child: Icon(
-                    IconData(
-                      subcategory.icon,
-                      fontFamily: 'MaterialIcons',
-                    ),
-                    color: AppColors.white,
+                onChanged: (amount) => bloc.add(
+                  AmountUpdated(
+                    amount: amount.isEmpty
+                        ? 0.0
+                        : double.parse(
+                            amount.replaceAll(RegExp(r'[^\w\s]+'), '')),
                   ),
-                  backgroundColor: Color(subcategory.color),
                 ),
               ),
-              title: Text('Categoría'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  state.subCategory.fold(
-                    () => Text(
-                      'Requerido',
-                      style: TextStyle(color: AppColors.red),
-                    ),
-                    (subCategory) => Text(
-                      subCategory.name,
-                      style: TextStyle(color: AppColors.greySecondary),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Icon(Icons.chevron_right)
-                ],
+              SizedBox(
+                height: 20,
               ),
-              onTap: () {
-                AppNavigator.navigateToSelectCategoryPage(
-                  context,
-                  settingsBloc.state.categories
-                      .where(
-                        (category) =>
-                            category.type.index ==
-                            state.transaction!.transactionType.index,
-                      )
-                      .toList(),
-                );
-              },
-            ),
-            Divider(height: 2),
-            if (state.transaction!.transactionType == TransactionType.expense)
+              Divider(height: 2),
               ListTile(
                 leading: CircleAvatar(
                   maxRadius: 20,
-                  backgroundColor: Color(budget.color),
-                  child: hasAbbreviation
-                      ? Text(
-                          budget.abbreviation!,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white,
-                          ),
-                        )
-                      : Icon(
-                          Icons.inbox,
-                          color: AppColors.white,
-                        ),
+                  backgroundColor: Color(account.color),
+                  backgroundImage: image,
+                  child: isImageAvailable ? null : accountIcon,
                 ),
                 minLeadingWidth: 2,
-                title: Text('Presupuesto'),
+                title: Text('Cuenta'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      budget.name,
+                      account.name,
                       style: TextStyle(color: AppColors.greySecondary),
                     ),
                     SizedBox(width: 10),
@@ -324,24 +235,39 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   ],
                 ),
                 onTap: () {
-                  AppNavigator.navigateToSelectBudgetPage(
+                  AppNavigator.navigateToSelectAccountPage(
                     context,
-                    budgets: settingsBloc.state.budgets,
+                    settingsBloc.state.accounts,
                   );
                 },
               ),
-            if (state.transaction!.transactionType == TransactionType.income)
+              Divider(height: 2),
               ListTile(
-                leading: CircleAvatar(
-                  maxRadius: 20,
-                  backgroundColor: Color(budget.color),
-                  child: Icon(
-                    Icons.all_inbox_rounded,
-                    color: AppColors.white,
+                leading: state.subCategory.fold(
+                  () => CircleAvatar(
+                    maxRadius: 20,
+                    child: Text(
+                      '?',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: AppColors.white),
+                    ),
+                    backgroundColor: AppColors.greyDisabled,
+                  ),
+                  (subcategory) => CircleAvatar(
+                    maxRadius: 20,
+                    child: Icon(
+                      IconData(
+                        subcategory.icon,
+                        fontFamily: 'MaterialIcons',
+                      ),
+                      color: AppColors.white,
+                    ),
+                    backgroundColor: Color(subcategory.color),
                   ),
                 ),
-                minLeadingWidth: 2,
-                title: Text('Administrar'),
+                title: Text('Categoría'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -360,63 +286,145 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   ],
                 ),
                 onTap: () {
-                  final amount = textEditingController.text
-                      .replaceAll(RegExp(r'[^\w\s]+'), '');
-                  AppNavigator.navigateToManageIncomePage(context,
-                      arguments: [settingsBloc.state.budgets, amount]);
+                  AppNavigator.navigateToSelectCategoryPage(
+                    context,
+                    settingsBloc.state.categories
+                        .where(
+                          (category) =>
+                              category.type.index ==
+                              state.transaction!.transactionType.index,
+                        )
+                        .toList(),
+                  );
                 },
               ),
-            Divider(height: 2),
-            ListTile(
-              leading: Icon(Icons.drive_file_rename_outline_outlined),
-              minLeadingWidth: 2,
-              title: Text('Nota'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    state.transaction!.note,
-                    style: TextStyle(color: AppColors.greySecondary),
+              Divider(height: 2),
+              if (state.transaction!.transactionType == TransactionType.expense)
+                ListTile(
+                  leading: CircleAvatar(
+                    maxRadius: 20,
+                    backgroundColor: Color(budget.color),
+                    child: hasAbbreviation
+                        ? Text(
+                            budget.abbreviation!,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.white,
+                            ),
+                          )
+                        : Icon(
+                            Icons.inbox,
+                            color: AppColors.white,
+                          ),
                   ),
-                  SizedBox(width: 10),
-                  Icon(Icons.chevron_right)
-                ],
-              ),
-              onTap: () {
-                AppNavigator.navigateToEditNotePage(
-                  context,
-                  content: state.transaction!.note,
-                );
-              },
-            ),
-            Divider(height: 2),
-            Theme(
-              data:
-                  Theme.of(context).copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                leading: Icon(Icons.calendar_today_rounded),
-                title: Text('Fecha'),
+                  minLeadingWidth: 2,
+                  title: Text('Presupuesto'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        budget.name,
+                        style: TextStyle(color: AppColors.greySecondary),
+                      ),
+                      SizedBox(width: 10),
+                      Icon(Icons.chevron_right)
+                    ],
+                  ),
+                  onTap: () {
+                    AppNavigator.navigateToSelectBudgetPage(
+                      context,
+                      budgets: settingsBloc.state.budgets,
+                    );
+                  },
+                ),
+              if (state.transaction!.transactionType == TransactionType.income)
+                ListTile(
+                  leading: CircleAvatar(
+                    maxRadius: 20,
+                    backgroundColor: Color(budget.color),
+                    child: Icon(
+                      Icons.all_inbox_rounded,
+                      color: AppColors.white,
+                    ),
+                  ),
+                  minLeadingWidth: 2,
+                  title: Text('Administrar'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      state.subCategory.fold(
+                        () => Text(
+                          'Requerido',
+                          style: TextStyle(color: AppColors.red),
+                        ),
+                        (subCategory) => Text(
+                          subCategory.name,
+                          style: TextStyle(color: AppColors.greySecondary),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Icon(Icons.chevron_right)
+                    ],
+                  ),
+                  onTap: () => AppNavigator.navigateToManageIncomePage(context,
+                      arguments: [
+                        settingsBloc.state.budgets,
+                        state.transaction!.amount
+                      ]),
+                ),
+              Divider(height: 2),
+              ListTile(
+                leading: Icon(Icons.drive_file_rename_outline_outlined),
+                minLeadingWidth: 2,
+                title: Text('Nota'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      getFormattedDate(dateTime.toDate()),
+                      state.transaction!.note,
                       style: TextStyle(color: AppColors.greySecondary),
                     ),
                     SizedBox(width: 10),
                     Icon(Icons.chevron_right)
                   ],
                 ),
-                children: [
-                  buildDatePicker(),
-                ],
+                onTap: () {
+                  AppNavigator.navigateToEditNotePage(
+                    context,
+                    content: state.transaction!.note,
+                  );
+                },
               ),
-            ),
-            Divider(height: 2),
-          ],
+              Divider(height: 2),
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  leading: Icon(Icons.calendar_today_rounded),
+                  title: Text('Fecha'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        getFormattedDate(dateTime.toDate()),
+                        style: TextStyle(color: AppColors.greySecondary),
+                      ),
+                      SizedBox(width: 10),
+                      Icon(Icons.chevron_right)
+                    ],
+                  ),
+                  children: [
+                    buildDatePicker(),
+                  ],
+                ),
+              ),
+              Divider(height: 2),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
 

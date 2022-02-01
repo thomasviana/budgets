@@ -1,9 +1,10 @@
 import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class SelectBudgetScreen extends StatelessWidget {
   final List<Budget> budgets;
@@ -14,7 +15,7 @@ class SelectBudgetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditTransactionScreenCubit, EditTransactionScreenState>(
+    return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
       builder: _buildState,
     );
   }
@@ -96,8 +97,8 @@ class SelectBudgetScreen extends StatelessWidget {
                 ),
                 onTap: () {
                   context
-                      .read<EditTransactionScreenCubit>()
-                      .onBudgetSelected(budget);
+                      .read<EditTransactionScreenBloc>()
+                      .add(BudgetSelected(budget: budget));
                   Navigator.pop(context);
                 },
               );

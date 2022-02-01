@@ -1,9 +1,10 @@
 import 'package:budgets/core/accounts/domain.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class SelectAccountScreen extends StatelessWidget {
   final List<Account> accounts;
@@ -14,7 +15,7 @@ class SelectAccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditTransactionScreenCubit, EditTransactionScreenState>(
+    return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
       builder: _buildState,
     );
   }
@@ -101,8 +102,8 @@ class SelectAccountScreen extends StatelessWidget {
                 ),
                 onTap: () {
                   context
-                      .read<EditTransactionScreenCubit>()
-                      .onAccountSelected(account);
+                      .read<EditTransactionScreenBloc>()
+                      .add(AccountSelected(account: account));
                   Navigator.pop(context);
                 },
               );

@@ -1,4 +1,4 @@
-part of 'edit_transaction_screen_cubit.dart';
+part of 'edit_transaction_screen_bloc.dart';
 
 class EditTransactionScreenState {
   final Transaction? transaction;
@@ -21,8 +21,10 @@ class EditTransactionScreenState {
     required this.isEditMode,
   });
 
+  bool get isSaveEnabled => transaction!.amount != 0 && category.isSome();
+
   factory EditTransactionScreenState.initial() => EditTransactionScreenState(
-        isLoading: false,
+        isLoading: true,
         isEditMode: false,
         account: none(),
         budget: none(),

@@ -1,4 +1,4 @@
-part of 'transactions_screen_cubit.dart';
+part of 'transactions_screen_bloc.dart';
 
 class TransactionsScreenState {
   final bool isLoading;

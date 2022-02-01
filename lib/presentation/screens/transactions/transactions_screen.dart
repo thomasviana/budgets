@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'transactions_cubit/transactions_screen_cubit.dart';
+import 'transactions_bloc/transactions_screen_bloc.dart';
 
 class TransactionsScreen extends StatefulWidget {
   @override
@@ -15,17 +15,17 @@ class TransactionsScreen extends StatefulWidget {
 }
 
 class _TransactionssScreenState extends State<TransactionsScreen> {
-  late TransactionsScreenCubit cubit;
+  late TransactionsScreenBloc bloc;
 
   @override
   void initState() {
     super.initState();
-    cubit = context.read<TransactionsScreenCubit>()..init();
+    bloc = context.read<TransactionsScreenBloc>()..add(GetUserTransactions());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TransactionsScreenCubit, TransactionsScreenState>(
+    return BlocBuilder<TransactionsScreenBloc, TransactionsScreenState>(
       builder: _buildState,
     );
   }
@@ -49,10 +49,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                       size: 34,
                     ),
                     onPressed: () {
-                      AppNavigator.navigateToEditTransactionPage(
-                        context,
-                        (_) => cubit.init(),
-                      );
+                      AppNavigator.navigateToEditTransactionPage(context);
                     },
                   ),
                 ],
@@ -79,6 +76,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
         child: CircularProgressIndicator(),
       );
     } else {
+      print(state.transactions.length);
       return ListView.separated(
         padding: EdgeInsets.only(top: 8),
         itemCount: state.transactions.length,
@@ -92,7 +90,6 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
             budget: _getBudgetAbreviation(transaction.txBudgetId),
             onPressed: () => AppNavigator.navigateToEditTransactionPage(
               context,
-              (_) => cubit.init(),
               transaction: transaction,
             ),
           );

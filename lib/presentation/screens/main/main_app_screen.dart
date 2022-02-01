@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/screens/transactions/transactions_bloc/transactions_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,7 +9,6 @@ import '../home/home_screen.dart';
 import '../settings/cubit/settings_screen_cubit.dart';
 import '../settings/settings_screen.dart';
 import '../stats/stats_screen.dart';
-import '../transactions/transactions_cubit/transactions_screen_cubit.dart';
 import '../transactions/transactions_screen.dart';
 
 class MainAppScreen extends StatefulWidget {
@@ -53,7 +53,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
         return StatsScreen();
       case 2:
         return BlocProvider(
-          create: (context) => sl<TransactionsScreenCubit>(),
+          create: (context) => sl<TransactionsScreenBloc>(),
           child: TransactionsScreen(),
         );
       case 3:

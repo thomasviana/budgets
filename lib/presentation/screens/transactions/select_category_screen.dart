@@ -1,9 +1,11 @@
 import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
+import 'package:budgets/presentation/screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class SelectCategoryScreen extends StatefulWidget {
   final List<Category>? categories;
@@ -17,14 +19,15 @@ class SelectCategoryScreen extends StatefulWidget {
 
 class _SelectCategoryScreenState extends State<SelectCategoryScreen>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-  late EditTransactionScreenCubit cubit;
+  late EditTransactionScreenBloc bloc;
   late TabController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
-    cubit = context.read<EditTransactionScreenCubit>()..getUserSubCategories();
+    bloc = context.read<EditTransactionScreenBloc>()
+      ..add(GetUserSubcategories());
   }
 
   @override
@@ -35,7 +38,7 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditTransactionScreenCubit, EditTransactionScreenState>(
+    return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
       builder: _buildState,
     );
   }
@@ -92,7 +95,7 @@ class _CategoriesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditTransactionScreenCubit, EditTransactionScreenState>(
+    return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
       builder: (context, state) {
         return ListView(
           shrinkWrap: true,
@@ -140,11 +143,9 @@ class _CategoriesList extends StatelessWidget {
                   ),
                   onTap: () {
                     context
-                        .read<EditTransactionScreenCubit>()
-                        .onCategorySelected(category)
-                        .then(
-                          (value) => controller.animateTo(1),
-                        );
+                        .read<EditTransactionScreenBloc>()
+                        .add(CategorySelected(category: category));
+                    controller.animateTo(1);
                   },
                 );
               },
@@ -160,7 +161,7 @@ class _CategoriesList extends StatelessWidget {
 class _SubCategoriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditTransactionScreenCubit, EditTransactionScreenState>(
+    return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
       builder: (context, state) {
         return ListView(
           shrinkWrap: true,
@@ -209,8 +210,8 @@ class _SubCategoriesList extends StatelessWidget {
                   ),
                   onTap: () {
                     context
-                        .read<EditTransactionScreenCubit>()
-                        .onSubCategorySelected(subCategory);
+                        .read<EditTransactionScreenBloc>()
+                        .add(SubCategorySelected(subCategory: subCategory));
                     AppNavigator.navigateBack(context);
                   },
                 );

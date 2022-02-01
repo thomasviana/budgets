@@ -1,9 +1,9 @@
 import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../resources/colors.dart';
+import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class EditNoteScreen extends StatefulWidget {
   final String content;
@@ -27,7 +27,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditTransactionScreenCubit, EditTransactionScreenState>(
+    return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
       builder: _buildState,
     );
   }
@@ -47,8 +47,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
               child: Text('Listo'),
               onPressed: () {
                 context
-                    .read<EditTransactionScreenCubit>()
-                    .onNoteUpdated(textEditingController.text.trim());
+                    .read<EditTransactionScreenBloc>()
+                    .add(NoteUpdated(note: textEditingController.text.trim()));
                 AppNavigator.navigateBack(context);
               },
             ),

@@ -1,6 +1,6 @@
 import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/core/transactions/domain.dart';
-import 'package:budgets/presentation/core/bloc/settings_bloc.dart';
+import 'package:budgets/presentation/core/settings/settings_bloc.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
@@ -76,7 +76,6 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
         child: CircularProgressIndicator(),
       );
     } else {
-      print(state.transactions.length);
       return ListView.separated(
         padding: EdgeInsets.only(top: 8),
         itemCount: state.transactions.length,

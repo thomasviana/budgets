@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -39,15 +40,17 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<GetUserAccounts>(_getUserAccounts, transformer: concurrent());
     on<GetUserCategories>(_getUserCategories, transformer: concurrent());
     on<GetUserBudgets>(_getUserBudgets, transformer: concurrent());
-    print('settings');
+    developer.log('getUserSettings');
   }
 
   Future<void> _getUserAccounts(
       SettingsEvent event, Emitter<SettingsState> emit) async {
     final userOption = await getProfileInfo();
     await emit.onEach<Option<List<Account>>>(
-      userOption.fold(() => Stream.empty(),
-          (user) => getAccounts(AccountUserId(user.id.value))),
+      userOption.fold(
+        () => Stream.empty(),
+        (user) => getAccounts(AccountUserId(user.id.value)),
+      ),
       onData: (userAccounts) async {
         userAccounts.fold(
           () async => _setDefaultAccounts(),
@@ -90,6 +93,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _setDefaultAccounts() async {
+    developer.debugger();
     final userOption = await getProfileInfo();
     userOption.fold(() => null, (user) async {
       final accounts = Account.defaultAccounts;

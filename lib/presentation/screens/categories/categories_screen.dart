@@ -1,5 +1,5 @@
 import 'package:budgets/core/categories/domain.dart';
-import 'package:budgets/presentation/core/bloc/settings_bloc.dart';
+import 'package:budgets/presentation/core/settings/settings_bloc.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

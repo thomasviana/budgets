@@ -106,7 +106,7 @@ import '../core/user/src/application/update_user_info.dart' as _i91;
 import '../core/user/src/infrastructure/auth/auth_service_impl.dart' as _i79;
 import '../core/user/src/infrastructure/auth/user_firebase_prov.dart' as _i76;
 import '../presentation/core/auth/auth_bloc.dart' as _i10;
-import '../presentation/core/bloc/settings_bloc.dart' as _i59;
+import '../presentation/core/settings/settings_bloc.dart' as _i59;
 import '../presentation/screens/accounts/edit_account_bloc/edit_account_screen_bloc.dart'
     as _i33;
 import '../presentation/screens/auth/cubit/auth_screen_cubit.dart' as _i12;

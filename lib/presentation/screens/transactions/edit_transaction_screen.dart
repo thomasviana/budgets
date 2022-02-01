@@ -1,5 +1,5 @@
 import 'package:budgets/core/transactions/domain.dart';
-import 'package:budgets/presentation/core/bloc/settings_bloc.dart';
+import 'package:budgets/presentation/core/settings/settings_bloc.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as f;
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';

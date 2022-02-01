@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:bloc/bloc.dart';
 import 'package:budgets/core/user/application.dart';
 import 'package:budgets/core/user/domain.dart';
@@ -31,7 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
         },
       );
-      print('auth');
+      developer.log('checkAuthStatus');
     });
     on<AuthLogOut>((event, emit) async {
       await logOut();

@@ -56,9 +56,8 @@ class CategoriesLocalDataSourceImpl implements CategoriesLocalDataSource {
   Stream<Option<List<Category>>> getCachedCategories(
     CategoryUserId userId,
   ) =>
-      _categoryDao
-          .getCategories(userId.value)
-          .map((dtos) => optionOf(_categoryMapper.fromDbDtoList(dtos)));
+      _categoryDao.getCategories(userId.value).map((dtos) =>
+          dtos.isEmpty ? none() : some(_categoryMapper.fromDbDtoList(dtos)));
 
   @override
   Future<void> cacheSubCategory(SubCategory subCategory) {

@@ -45,7 +45,6 @@ class BudgetsLocalDataSourceImpl implements BudgetsLocalDataSource {
   Stream<Option<List<Budget>>> getCachedBudgets(
     BudgetUserId userId,
   ) =>
-      _budgetDao
-          .getBudgets(userId.value)
-          .map((dtos) => optionOf(_budgetMapper.fromDbDtoList(dtos)));
+      _budgetDao.getBudgets(userId.value).map((dtos) =>
+          dtos.isEmpty ? none() : some(_budgetMapper.fromDbDtoList(dtos)));
 }

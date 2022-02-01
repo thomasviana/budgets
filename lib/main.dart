@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 
 import 'di/dependency_injection.dart';
 import 'presentation/core/auth/auth_bloc.dart';
-import 'presentation/core/bloc/settings_bloc.dart';
+import 'presentation/core/settings/settings_bloc.dart';
 import 'presentation/routes/routes.dart';
 
 Future<void> main() async {

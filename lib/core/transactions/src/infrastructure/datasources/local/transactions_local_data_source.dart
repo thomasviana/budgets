@@ -47,7 +47,6 @@ class TransactionsLocalDataSourceImpl implements TransactionsLocalDataSource {
   Stream<Option<List<Transaction>>> getCachedTransactions(
     TransactionUserId userId,
   ) =>
-      _transactionDao
-          .getTransactions(userId.value)
-          .map((dtos) => optionOf(_transactionMapper.fromDbDtoList(dtos)));
+      _transactionDao.getTransactions(userId.value).map((dtos) =>
+          dtos.isEmpty ? none() : some(_transactionMapper.fromDbDtoList(dtos)));
 }

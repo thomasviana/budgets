@@ -27,7 +27,10 @@ class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
   final AppRouter _appRouter = AppRouter();
   final _authCubit = sl<AuthBloc>()..add(AuthCheckRequested());
-  final _settingsBloc = sl<SettingsBloc>()..add(SettingsRequested());
+  final _settingsBloc = sl<SettingsBloc>()
+    ..add(GetUserAccounts())
+    ..add(GetUserCategories())
+    ..add(GetUserBudgets());
 
   @override
   Widget build(BuildContext context) {

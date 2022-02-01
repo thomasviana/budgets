@@ -22,8 +22,10 @@ class EditBudgetScreenBloc
   ) : super(EditBudgetScreenState.initial()) {
     on<CheckBudget>((event, emit) {
       event.budget != null
-          ? emit(state.copyWith(budget: event.budget, isEditMode: true))
-          : emit(state.copyWith(budget: Budget.empty(), isEditMode: false));
+          ? emit(state.copyWith(
+              budget: event.budget, isEditMode: true, isLoading: false))
+          : emit(state.copyWith(
+              budget: Budget.empty(), isEditMode: false, isLoading: false));
     });
     on<BudgetDeleted>(
       (event, emit) async => deleteBudget(state.budget!.id),

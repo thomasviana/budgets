@@ -12,8 +12,7 @@ class EditBudgetScreenState {
   });
 
   factory EditBudgetScreenState.initial() => EditBudgetScreenState(
-        budget: Budget.empty(),
-        isLoading: false,
+        isLoading: true,
         isEditMode: true,
       );
 

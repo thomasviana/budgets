@@ -7,7 +7,7 @@ import 'package:budgets/presentation/screens/categories/edit_sub_category_bloc/e
 import 'package:budgets/presentation/screens/categories/edit_sub_category_name_screen.dart';
 import 'package:budgets/presentation/screens/categories/select_category_type_screen.dart';
 import 'package:budgets/presentation/screens/transactions/edit_note_screen.dart';
-import 'package:budgets/presentation/screens/transactions/edit_transaction_cubit/edit_transaction_screen_cubit.dart';
+import 'package:budgets/presentation/screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_screen.dart';
 import 'package:budgets/presentation/screens/transactions/manage_income_screen.dart';
 import 'package:budgets/presentation/screens/transactions/select_account_screen.dart';
@@ -37,8 +37,8 @@ import '../screens/splash/splash_screen.dart';
 import 'app_navigator.dart';
 
 class AppRouter {
-  final EditTransactionScreenCubit _editTransactionScreenCubit =
-      sl<EditTransactionScreenCubit>();
+  final EditTransactionScreenBloc _editTransactionScreenBloc =
+      sl<EditTransactionScreenBloc>();
 
   final EditCategoryScreenBloc _editCategoryScreenBloc =
       sl<EditCategoryScreenBloc>();
@@ -116,8 +116,8 @@ class AppRouter {
         final subCategory = settings.arguments! as SubCategory;
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<EditSubCategoryScreenBloc>(),
+          BlocProvider.value(
+            value: _editSubCategoryScreenBloc,
             child: EditSubCategoryScreen(subCategory: subCategory),
           ),
         );
@@ -166,7 +166,7 @@ class AppRouter {
           fullscreenDialog: true,
           settings: settings,
           builder: (context) => BlocProvider.value(
-            value: _editTransactionScreenCubit,
+            value: _editTransactionScreenBloc,
             child: EditTransactionScreen(transaction: transaction),
           ),
         );
@@ -175,7 +175,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider.value(
-            value: _editTransactionScreenCubit,
+            value: _editTransactionScreenBloc,
             child: SelectAccountScreen(
               accounts: accounts,
             ),
@@ -186,7 +186,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider.value(
-            value: _editTransactionScreenCubit,
+            value: _editTransactionScreenBloc,
             child: SelectCategoryScreen(
               categories: categories,
             ),
@@ -198,7 +198,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider.value(
-            value: _editTransactionScreenCubit,
+            value: _editTransactionScreenBloc,
             child: SelectBudgetScreen(
               budgets: budgets,
             ),
@@ -209,7 +209,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider.value(
-            value: _editTransactionScreenCubit,
+            value: _editTransactionScreenBloc,
             child: EditNoteScreen(
               content: content,
             ),
@@ -220,7 +220,7 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider.value(
-            value: _editTransactionScreenCubit,
+            value: _editTransactionScreenBloc,
             child: ManageIncomeScreen(
               budgets: arguments[0] as List<Budget>,
               incomeAmount: arguments[1] as String,

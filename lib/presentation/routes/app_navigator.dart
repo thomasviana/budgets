@@ -138,13 +138,11 @@ class AppNavigator {
   }
 
   static void navigateToEditTransactionPage(
-    BuildContext context,
-    Function(Object?) function, {
+    BuildContext context, {
     Transaction? transaction,
   }) {
     Navigator.pushNamed(context, ROUTE_EDIT_TRANSACTION_PAGE,
-            arguments: transaction)
-        .then(function);
+        arguments: transaction);
   }
 
   static void navigateToSelectAccountPage(

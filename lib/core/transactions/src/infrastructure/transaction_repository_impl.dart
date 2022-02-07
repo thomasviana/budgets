@@ -6,25 +6,25 @@ import '../../infrastructure.dart';
 
 @LazySingleton(as: TransactionRepository)
 class TransactionRepositoryImpl implements TransactionRepository {
-  final TransactionsLocalDataSource _budgetslocalDataSource;
+  final TransactionsLocalDataSource _transactionslocalDataSource;
 
   TransactionRepositoryImpl(
-    this._budgetslocalDataSource,
+    this._transactionslocalDataSource,
   );
 
   @override
   Future<void> delete(TransactionId budgetId) {
-    return _budgetslocalDataSource.deleteTransaction(budgetId);
+    return _transactionslocalDataSource.deleteTransaction(budgetId);
   }
 
   @override
   Stream<Option<List<Transaction>>> fetchTransactions(
       TransactionUserId userId) {
-    return _budgetslocalDataSource.getCachedTransactions(userId);
+    return _transactionslocalDataSource.getCachedTransactions(userId);
   }
 
   @override
   Future<void> save(Transaction budget) {
-    return _budgetslocalDataSource.cacheTransaction(budget);
+    return _transactionslocalDataSource.cacheTransaction(budget);
   }
 }

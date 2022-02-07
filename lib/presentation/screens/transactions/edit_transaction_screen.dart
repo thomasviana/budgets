@@ -372,16 +372,10 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   title: Text('Administrar'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      state.subCategory.fold(
-                        () => Text(
-                          'Requerido',
-                          style: TextStyle(color: AppColors.red),
-                        ),
-                        (subCategory) => Text(
-                          subCategory.name,
-                          style: TextStyle(color: AppColors.greySecondary),
-                        ),
+                    children: const [
+                      Text(
+                        'Requerido',
+                        style: TextStyle(color: AppColors.red),
                       ),
                       SizedBox(width: 10),
                       Icon(Icons.chevron_right)

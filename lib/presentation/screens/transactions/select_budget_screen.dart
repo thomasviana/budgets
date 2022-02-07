@@ -23,7 +23,7 @@ class SelectBudgetScreen extends StatelessWidget {
   Widget _buildState(BuildContext context, EditTransactionScreenState state) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cuenta'),
+        title: Text('Presupuesto'),
         leading: IconButton(
           icon: Icon(Icons.chevron_left),
           onPressed: () => AppNavigator.navigateBack(context),
@@ -33,7 +33,7 @@ class SelectBudgetScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
               child: Text('Editar'),
-              onPressed: () => AppNavigator.navigateToAccountsPage(context),
+              onPressed: () => AppNavigator.navigateToBudgetsPage(context),
             ),
           ),
         ],
@@ -49,7 +49,7 @@ class SelectBudgetScreen extends StatelessWidget {
               bottom: 8,
             ),
             child: Text(
-              'CUENTAS',
+              'PRESUPUESTOS',
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
               textAlign: TextAlign.start,
             ),

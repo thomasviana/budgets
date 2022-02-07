@@ -33,7 +33,6 @@ class EditTransactionScreenBloc
     this.saveSubCategories,
   ) : super(EditTransactionScreenState.initial()) {
     on<CheckTransaction>((event, emit) {
-      print(event.transaction);
       event.transaction != null
           ? emit(state.copyWith(
               transaction: event.transaction,

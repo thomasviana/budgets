@@ -23,9 +23,7 @@ class TransactionsScreenBloc
         optionUser.fold(() => Stream.empty(),
             (user) => getTransactions(TransactionUserId(user.id.value))),
         onData: (optionTransactions) => optionTransactions.fold(
-          () {
-            print('naaaa');
-          },
+          () {},
           (transactions) => emit(state.copyWith(transactions: transactions)),
         ),
       );

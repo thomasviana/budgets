@@ -17,6 +17,9 @@ class MainAppScreen extends StatefulWidget {
 }
 
 class _MainAppScreenState extends State<MainAppScreen> {
+  final _transactionsBloc = sl<TransactionsScreenBloc>()
+    ..add(GetUserTransactions());
+
   bool homeSelected = true;
   bool statsSelected = false;
   bool recordsSelected = false;
@@ -52,8 +55,8 @@ class _MainAppScreenState extends State<MainAppScreen> {
       case 1:
         return StatsScreen();
       case 2:
-        return BlocProvider(
-          create: (context) => sl<TransactionsScreenBloc>(),
+        return BlocProvider.value(
+          value: _transactionsBloc,
           child: TransactionsScreen(),
         );
       case 3:

@@ -1,12 +1,11 @@
 import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
+import 'package:budgets/presentation/screens/transactions/manage_income_bloc/manage_income_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
-
-class ManageIncomeScreen extends StatelessWidget {
+class ManageIncomeScreen extends StatefulWidget {
   final List<Budget> budgets;
   final double incomeAmount;
   const ManageIncomeScreen({
@@ -14,180 +13,224 @@ class ManageIncomeScreen extends StatelessWidget {
     required this.budgets,
     required this.incomeAmount,
   }) : super(key: key);
+  @override
+  State<ManageIncomeScreen> createState() => _ManageIncomeScreenState();
+}
+
+class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
+  late ManageIncomeScreenBloc bloc;
+
+  @override
+  void initState() {
+    bloc = context.read<ManageIncomeScreenBloc>()
+      ..add(CheckInitialValues(
+        budgets: widget.budgets,
+        incomeAmount: widget.incomeAmount,
+      ));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
+    return BlocBuilder<ManageIncomeScreenBloc, ManageIncomeScreenState>(
       builder: _buildState,
     );
   }
 
-  Widget _buildState(BuildContext context, EditTransactionScreenState state) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Administrar'),
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () => AppNavigator.navigateBack(context),
+  Widget _buildState(BuildContext context, ManageIncomeScreenState state) {
+    if (state.isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Administrar'),
+          leading: IconButton(
+            icon: Icon(Icons.chevron_left),
+            onPressed: () => AppNavigator.navigateBack(context),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(kDefaultPadding),
-              child: Text(
-                '\$${currency.format(incomeAmount)}',
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(kDefaultPadding),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        Text('Ingreso'),
+                        const SizedBox(height: 8),
+                        Text(
+                          '\$${currency.format(widget.incomeAmount)}',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text('Administrado'),
+                        const SizedBox(height: 8),
+                        Text(
+                          '\$${currency.format(state.managedAmount)}',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text('Pendiente'),
+                        const SizedBox(height: 8),
+                        Text(
+                          '\$${currency.format(state.pendingAmount)}',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-            ),
-            ListView(
-              shrinkWrap: true,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.all(kDefaultPadding).copyWith(top: 0),
-                  child: Text(
-                    'Asigna un porcentaje de tu ingreso a cada uno de tus presupuestos',
-                    style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 9 / 7,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
+              ListView(
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.all(kDefaultPadding).copyWith(top: 0),
+                    child: Text(
+                      'Asigna un porcentaje de tu ingreso a cada uno de tus presupuestos',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                      textAlign: TextAlign.center,
                     ),
-                    itemCount: budgets.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final budget = budgets[index];
-                      bool hasAbbreviation = true;
-                      if (budget.abbreviation == null ||
-                          budget.abbreviation!.isEmpty) {
-                        hasAbbreviation = false;
-                      }
-                      return Container(
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.all(4.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8.0),
-                              margin: const EdgeInsets.all(8.0),
-                              alignment: Alignment.center,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Color(budget.color),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: hasAbbreviation
-                                  ? Text(
-                                      budget.abbreviation!,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.white,
-                                      ),
-                                    )
-                                  : Icon(
-                                      Icons.inbox,
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 200,
+                        childAspectRatio: 9 / 7,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                      ),
+                      itemCount: state.budgets!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final budget = state.budgets![index];
+                        return Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.grey,
+                                blurRadius: 4.0,
+                                offset: Offset(0, 2.0),
+                              )
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                  padding: const EdgeInsets.all(8.0),
+                                  margin: const EdgeInsets.all(8.0),
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Color(budget.color),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Text(
+                                    budget.abbreviation ?? budget.name,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
                                       color: AppColors.white,
                                     ),
-                            ),
-                            Text('\$100'),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.remove,
-                                    color: AppColors.primaryColor,
-                                  ),
+                                  )),
+                              Text(
+                                '\$${currency.format(state.budgetAmounts![index])}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                 ),
-                                Text('10%'),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.add,
-                                    color: AppColors.primaryColor,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Material(
+                                    type: MaterialType.transparency,
+                                    clipBehavior: Clip.hardEdge,
+                                    shape: CircleBorder(),
+                                    child: IconButton(
+                                      onPressed: state.isDecrementEnabled(index)
+                                          ? () => bloc.add(
+                                                BudgetDecremented(index: index),
+                                              )
+                                          : null,
+                                      icon: Icon(
+                                        Icons.remove,
+                                        color: state.isDecrementEnabled(index)
+                                            ? AppColors.primaryColor
+                                            : AppColors.greyDisabled,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 4.0,
-                              offset: Offset(0, 2.0),
-                            )
-                          ],
-                        ),
-                      );
-                      // return ListTile(
-                      //   leading: CircleAvatar(
-                      //     maxRadius: 20,
-                      //     backgroundColor: Color(budget.color),
-                      //     child: hasAbbreviation
-                      //         ? Text(
-                      //             budget.abbreviation!,
-                      //             style: TextStyle(
-                      //               fontSize: 14,
-                      //               fontWeight: FontWeight.bold,
-                      //               color: AppColors.white,
-                      //             ),
-                      //           )
-                      //         : Icon(
-                      //             Icons.inbox,
-                      //             color: AppColors.white,
-                      //           ),
-                      //   ),
-                      //   title: Text(
-                      //     budget.name,
-                      //     style: Theme.of(context).textTheme.bodyText1,
-                      //   ),
-                      //   trailing: state.budget.fold(
-                      //     () => null,
-                      //     (stateBudget) {
-                      //       if (stateBudget.id == budget.id) {
-                      //         return Icon(Icons.check,
-                      //             color: AppColors.primaryColor);
-                      //       }
-                      //     },
-                      //   ),
-                      //   onTap: () {
-                      //     context
-                      //         .read<EditTransactionScreenBloc>()
-                      //         .add(BudgetSelected(budget: budget));
-                      //     Navigator.pop(context);
-                      //   },
-                      // );
-                    },
-                  ),
-                )
-              ],
-            ),
-          ],
+                                  Text(
+                                    percentage.format(
+                                        state.budgetPercentages![index]),
+                                  ),
+                                  Material(
+                                    type: MaterialType.transparency,
+                                    clipBehavior: Clip.hardEdge,
+                                    shape: CircleBorder(),
+                                    child: IconButton(
+                                      onPressed: state.isIncrementEnabled(index)
+                                          ? () => bloc.add(
+                                                BudgetIncremented(index: index),
+                                              )
+                                          : null,
+                                      icon: Icon(
+                                        Icons.add,
+                                        color: state.isIncrementEnabled(index)
+                                            ? AppColors.primaryColor
+                                            : AppColors.greyDisabled,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

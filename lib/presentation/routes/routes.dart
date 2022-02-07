@@ -9,6 +9,7 @@ import 'package:budgets/presentation/screens/categories/select_category_type_scr
 import 'package:budgets/presentation/screens/transactions/edit_note_screen.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_screen.dart';
+import 'package:budgets/presentation/screens/transactions/manage_income_bloc/manage_income_screen_bloc.dart';
 import 'package:budgets/presentation/screens/transactions/manage_income_screen.dart';
 import 'package:budgets/presentation/screens/transactions/select_account_screen.dart';
 import 'package:budgets/presentation/screens/transactions/select_budget_screen.dart';
@@ -219,8 +220,8 @@ class AppRouter {
         final arguments = settings.arguments! as List<dynamic>;
         return _buildRoute(
           settings,
-          BlocProvider.value(
-            value: _editTransactionScreenBloc,
+          BlocProvider(
+            create: (context) => sl<ManageIncomeScreenBloc>(),
             child: ManageIncomeScreen(
               budgets: arguments[0] as List<Budget>,
               incomeAmount: arguments[1] as double,

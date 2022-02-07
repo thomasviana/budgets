@@ -26,7 +26,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
   final AppRouter _appRouter = AppRouter();
-  final _authCubit = sl<AuthBloc>()..add(AuthCheckRequested());
+  final _authBloc = sl<AuthBloc>()..add(AuthCheckRequested());
   final _settingsBloc = sl<SettingsBloc>()
     ..add(GetUserAccounts())
     ..add(GetUserCategories())
@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(
-          value: _authCubit,
+          value: _authBloc,
         ),
         BlocProvider.value(
           value: _settingsBloc,

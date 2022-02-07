@@ -223,7 +223,7 @@ class AppRouter {
             value: _editTransactionScreenBloc,
             child: ManageIncomeScreen(
               budgets: arguments[0] as List<Budget>,
-              incomeAmount: arguments[1] as String,
+              incomeAmount: arguments[1] as double,
             ),
           ),
         );

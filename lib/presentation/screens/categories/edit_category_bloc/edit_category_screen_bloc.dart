@@ -89,21 +89,21 @@ class EditCategoryScreenBloc
     on<IconUpdated>(
       (event, emit) => emit(
         state.copyWith(
-          category: state.category!..updateIcon(event.icon),
+          category: state.category!.copyWith(icon: event.icon),
         ),
       ),
     );
     on<NameChanged>(
       (event, emit) => emit(
         state.copyWith(
-          category: state.category!..updateName(event.name),
+          category: state.category!.copyWith(name: event.name),
         ),
       ),
     );
     on<TypeChanged>(
       (event, emit) => emit(
         state.copyWith(
-          category: state.category!..changeType(event.categoryType),
+          category: state.category!.copyWith(type: event.categoryType),
         ),
       ),
     );

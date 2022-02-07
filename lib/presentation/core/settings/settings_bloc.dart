@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:bloc/bloc.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:budgets/core/accounts/application.dart';
 import 'package:budgets/core/accounts/domain.dart';
 import 'package:budgets/core/budgets/application.dart';
@@ -37,9 +36,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     this.getBudgets,
     this.saveBudgets,
   ) : super(SettingsState.initial()) {
-    on<GetUserAccounts>(_getUserAccounts, transformer: concurrent());
-    on<GetUserCategories>(_getUserCategories, transformer: concurrent());
-    on<GetUserBudgets>(_getUserBudgets, transformer: concurrent());
+    on<GetUserAccounts>(_getUserAccounts);
+    on<GetUserCategories>(_getUserCategories);
+    on<GetUserBudgets>(_getUserBudgets);
     developer.log('getUserSettings');
   }
 

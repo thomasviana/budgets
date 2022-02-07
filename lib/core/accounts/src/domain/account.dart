@@ -23,6 +23,25 @@ class Account extends Entity<AccountId> {
     this.accountUserId,
   }) : super(id);
 
+  Account copyWith({
+    String? name,
+    AccountType? type,
+    int? color,
+    String? imageUrl,
+    double? balance,
+    AccountUserId? accountUserId,
+  }) {
+    return Account(
+      id: id,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      color: color ?? this.color,
+      imageUrl: imageUrl ?? this.imageUrl,
+      balance: balance ?? this.balance,
+      accountUserId: accountUserId,
+    );
+  }
+
   // ignore: use_setters_to_change_properties
   void setUserId(String userId) => accountUserId = AccountUserId(userId);
   // ignore: use_setters_to_change_properties

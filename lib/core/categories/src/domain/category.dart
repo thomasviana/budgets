@@ -26,6 +26,24 @@ class Category extends CategoryModel {
           amount: amount ?? 0,
         );
 
+  Category copyWith({
+    String? name,
+    int? icon,
+    int? color,
+    double? amount,
+    CategoryType? type,
+  }) {
+    return Category(
+      id: id,
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
+      amount: amount ?? this.amount,
+      type: type ?? this.type,
+      categoryUserId: categoryUserId,
+    );
+  }
+
   // ignore: use_setters_to_change_properties
   void setUserId(String userId) => categoryUserId = CategoryUserId(userId);
   // ignore: use_setters_to_change_properties

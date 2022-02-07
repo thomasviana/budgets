@@ -21,6 +21,23 @@ class Budget extends Entity<BudgetId> {
     this.budgetUserId,
   }) : super(id);
 
+  Budget copyWith({
+    String? name,
+    String? abbreviation,
+    int? color,
+    double? balance,
+    BudgetUserId? budgetUserId,
+  }) {
+    return Budget(
+      id: id,
+      name: name ?? this.name,
+      abbreviation: abbreviation ?? this.abbreviation,
+      color: color ?? this.color,
+      balance: balance ?? this.balance,
+      budgetUserId: budgetUserId,
+    );
+  }
+
   // ignore: use_setters_to_change_properties
   void setUserId(String userId) => budgetUserId = BudgetUserId(userId);
   // ignore: use_setters_to_change_properties

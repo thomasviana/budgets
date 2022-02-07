@@ -59,31 +59,24 @@ class EditBudgetScreenBloc
     );
     on<ColorUpdated>(
       (event, emit) => emit(
-        state.copyWith(
-          budget: state.budget!..updateColor(event.color),
-        ),
+        state.copyWith(budget: state.budget!.copyWith(color: event.color)),
       ),
     );
 
     on<NameChanged>(
       (event, emit) => emit(
-        state.copyWith(
-          budget: state.budget!..updateName(event.name),
-        ),
+        state.copyWith(budget: state.budget!.copyWith(name: event.name)),
       ),
     );
     on<AbbreviationChanged>(
       (event, emit) => emit(
         state.copyWith(
-          budget: state.budget!..updateAbbreviation(event.abbreviation),
-        ),
+            budget: state.budget!.copyWith(abbreviation: event.abbreviation)),
       ),
     );
     on<BalanceChanged>(
       (event, emit) => emit(
-        state.copyWith(
-          budget: state.budget!..updateBalance(event.balance),
-        ),
+        state.copyWith(budget: state.budget!.copyWith(balance: event.balance)),
       ),
     );
   }

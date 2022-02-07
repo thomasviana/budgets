@@ -88,7 +88,7 @@ class CategoriesScreen extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 final category = expenseCategories[index];
                 return ListTile(
-                  title: Text(expenseCategories[index].name),
+                  title: Text(category.name),
                   leading: CircleAvatar(
                     maxRadius: 20,
                     child: Icon(
@@ -103,8 +103,11 @@ class CategoriesScreen extends StatelessWidget {
                   trailing: Icon(
                     Icons.chevron_right,
                   ),
-                  onTap: () => AppNavigator.navigateToEditCategoryPage(context,
-                      category: category),
+                  onTap: () {
+                    AppNavigator.navigateToEditCategoryPage(context,
+                        category: category);
+                    print(category.name);
+                  },
                 );
               },
             ),
@@ -149,8 +152,10 @@ class CategoriesScreen extends StatelessWidget {
                   trailing: Icon(
                     Icons.chevron_right,
                   ),
-                  onTap: () => AppNavigator.navigateToEditCategoryPage(context,
-                      category: category),
+                  onTap: () {
+                    AppNavigator.navigateToEditCategoryPage(context,
+                        category: category);
+                  },
                 );
               },
             ),

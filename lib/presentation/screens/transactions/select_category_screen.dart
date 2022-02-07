@@ -145,7 +145,11 @@ class _CategoriesList extends StatelessWidget {
                     context
                         .read<EditTransactionScreenBloc>()
                         .add(CategorySelected(category: category));
-                    controller.animateTo(1);
+                    if (state.transaction!.isExpense) {
+                      controller.animateTo(1);
+                    } else {
+                      AppNavigator.navigateBack(context);
+                    }
                   },
                 );
               },

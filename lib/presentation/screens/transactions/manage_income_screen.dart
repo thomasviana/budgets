@@ -8,7 +8,7 @@ import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class ManageIncomeScreen extends StatelessWidget {
   final List<Budget> budgets;
-  final String incomeAmount;
+  final double incomeAmount;
   const ManageIncomeScreen({
     Key? key,
     required this.budgets,
@@ -31,83 +31,162 @@ class ManageIncomeScreen extends StatelessWidget {
           onPressed: () => AppNavigator.navigateBack(context),
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 100,
-            child: Text('\$${currency.format(double.parse(incomeAmount))}'),
-          ),
-          ListView(
-            shrinkWrap: true,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 30,
-                  left: kDefaultPadding,
-                  right: kDefaultPadding,
-                  bottom: 8,
-                ),
-                child: Text(
-                  'CUENTAS',
-                  style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
-                  textAlign: TextAlign.start,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(kDefaultPadding),
+              child: Text(
+                '\$${currency.format(incomeAmount)}',
+                style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              ListView.separated(
-                shrinkWrap: true,
-                itemCount: budgets.length,
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(height: 0),
-                itemBuilder: (BuildContext context, int index) {
-                  final budget = budgets[index];
-                  bool hasAbbreviation = true;
-                  if (budget.abbreviation == null ||
-                      budget.abbreviation!.isEmpty) {
-                    hasAbbreviation = false;
-                  }
-                  return ListTile(
-                    leading: CircleAvatar(
-                      maxRadius: 20,
-                      backgroundColor: Color(budget.color),
-                      child: hasAbbreviation
-                          ? Text(
-                              budget.abbreviation!,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.white,
+            ),
+            ListView(
+              shrinkWrap: true,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.all(kDefaultPadding).copyWith(top: 0),
+                  child: Text(
+                    'Asigna un porcentaje de tu ingreso a cada uno de tus presupuestos',
+                    style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 9 / 7,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: budgets.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final budget = budgets[index];
+                      bool hasAbbreviation = true;
+                      if (budget.abbreviation == null ||
+                          budget.abbreviation!.isEmpty) {
+                        hasAbbreviation = false;
+                      }
+                      return Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.all(4.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8.0),
+                              margin: const EdgeInsets.all(8.0),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Color(budget.color),
+                                borderRadius: BorderRadius.circular(15),
                               ),
-                            )
-                          : Icon(
-                              Icons.inbox,
-                              color: AppColors.white,
+                              child: hasAbbreviation
+                                  ? Text(
+                                      budget.abbreviation!,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.white,
+                                      ),
+                                    )
+                                  : Icon(
+                                      Icons.inbox,
+                                      color: AppColors.white,
+                                    ),
                             ),
-                    ),
-                    title: Text(
-                      budget.name,
-                      style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                    trailing: state.budget.fold(
-                      () => null,
-                      (stateBudget) {
-                        if (stateBudget.id == budget.id) {
-                          return Icon(Icons.check,
-                              color: AppColors.primaryColor);
-                        }
-                      },
-                    ),
-                    onTap: () {
-                      context
-                          .read<EditTransactionScreenBloc>()
-                          .add(BudgetSelected(budget: budget));
-                      Navigator.pop(context);
+                            Text('\$100'),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.remove,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                ),
+                                Text('10%'),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 4.0,
+                              offset: Offset(0, 2.0),
+                            )
+                          ],
+                        ),
+                      );
+                      // return ListTile(
+                      //   leading: CircleAvatar(
+                      //     maxRadius: 20,
+                      //     backgroundColor: Color(budget.color),
+                      //     child: hasAbbreviation
+                      //         ? Text(
+                      //             budget.abbreviation!,
+                      //             style: TextStyle(
+                      //               fontSize: 14,
+                      //               fontWeight: FontWeight.bold,
+                      //               color: AppColors.white,
+                      //             ),
+                      //           )
+                      //         : Icon(
+                      //             Icons.inbox,
+                      //             color: AppColors.white,
+                      //           ),
+                      //   ),
+                      //   title: Text(
+                      //     budget.name,
+                      //     style: Theme.of(context).textTheme.bodyText1,
+                      //   ),
+                      //   trailing: state.budget.fold(
+                      //     () => null,
+                      //     (stateBudget) {
+                      //       if (stateBudget.id == budget.id) {
+                      //         return Icon(Icons.check,
+                      //             color: AppColors.primaryColor);
+                      //       }
+                      //     },
+                      //   ),
+                      //   onTap: () {
+                      //     context
+                      //         .read<EditTransactionScreenBloc>()
+                      //         .add(BudgetSelected(budget: budget));
+                      //     Navigator.pop(context);
+                      //   },
+                      // );
                     },
-                  );
-                },
-              )
-            ],
-          ),
-        ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

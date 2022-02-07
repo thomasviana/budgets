@@ -244,16 +244,30 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               Divider(height: 2),
               ListTile(
                 leading: state.subCategory.fold(
-                  () => CircleAvatar(
-                    maxRadius: 20,
-                    child: Text(
-                      '?',
-                      style: TextStyle(
+                  () => state.category.fold(
+                    () => CircleAvatar(
+                      maxRadius: 20,
+                      child: Text(
+                        '?',
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 25,
-                          color: AppColors.white),
+                          color: AppColors.white,
+                        ),
+                      ),
+                      backgroundColor: AppColors.greyDisabled,
                     ),
-                    backgroundColor: AppColors.greyDisabled,
+                    (category) => CircleAvatar(
+                      maxRadius: 20,
+                      child: Icon(
+                        IconData(
+                          category.icon,
+                          fontFamily: 'MaterialIcons',
+                        ),
+                        color: AppColors.white,
+                      ),
+                      backgroundColor: Color(category.color),
+                    ),
                   ),
                   (subcategory) => CircleAvatar(
                     maxRadius: 20,
@@ -272,9 +286,15 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     state.subCategory.fold(
-                      () => Text(
-                        'Requerido',
-                        style: TextStyle(color: AppColors.red),
+                      () => state.category.fold(
+                        () => Text(
+                          'Requerido',
+                          style: TextStyle(color: AppColors.red),
+                        ),
+                        (category) => Text(
+                          category.name,
+                          style: TextStyle(color: AppColors.greySecondary),
+                        ),
                       ),
                       (subCategory) => Text(
                         subCategory.name,

@@ -241,7 +241,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i50.HomeScreenCubit(get<_i11.GetProfileInfo>()));
   gh.lazySingleton<_i51.ImagePicker>(
       () => imagePickerInjectableModule.imagePicker);
-  gh.factory<_i52.ManageIncomeScreenBloc>(() => _i52.ManageIncomeScreenBloc());
+  gh.factory<_i52.ManageIncomeScreenBloc>(() => _i52.ManageIncomeScreenBloc(
+      get<_i11.GetProfileInfo>(), get<_i36.UpdateBudget>()));
   gh.factory<_i53.PickUserImage>(
       () => _i53.PickUserImage(get<_i51.ImagePicker>()));
   gh.factory<_i54.ProfileScreenCubit>(() => _i54.ProfileScreenCubit(

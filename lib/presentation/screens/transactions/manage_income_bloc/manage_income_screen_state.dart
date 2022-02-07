@@ -3,8 +3,8 @@ part of 'manage_income_screen_bloc.dart';
 class ManageIncomeScreenState {
   final List<Budget>? budgets;
   final double? incomeAmount;
-  final double managedAmount;
-  final double pendingAmount;
+  double managedAmount;
+  double pendingAmount;
   final bool isLoading;
   List<double>? budgetAmounts;
   List<double>? budgetPercentages;
@@ -23,7 +23,7 @@ class ManageIncomeScreenState {
   bool isDecrementEnabled(int index) =>
       budgetPercentages![index] > 0.0 + 0.1; // + step
   bool isIncrementEnabled(int index) =>
-      budgetPercentages![index] < 1.0 - 0.1; // - step
+      budgetPercentages![index] < 1.0 - 0.1 && pendingAmount > 0; // - step
 
   factory ManageIncomeScreenState.initial() => ManageIncomeScreenState(
         isLoading: true,

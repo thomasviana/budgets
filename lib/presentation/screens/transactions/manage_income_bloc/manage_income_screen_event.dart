@@ -24,3 +24,5 @@ class BudgetDecremented extends ManageIncomeScreenEvent {
     required this.index,
   });
 }
+
+class IncomeManaged extends ManageIncomeScreenEvent {}

@@ -13,6 +13,7 @@ class AppColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color red = Color(0xFFFF0000);
   static const Color green = Color(0xFF32CD30);
+  static const Color amber = Color(0xFFFFBF00);
 }
 
 class CategoryColors {

@@ -101,7 +101,7 @@ class Category extends CategoryModel {
 
   factory Category.recreation() => Category(
         id: CategoryId('recreation'),
-        name: 'Recreación',
+        name: 'Diversión',
         icon: 0xf736,
         color: CategoryColors.purple,
         type: CategoryType.expense,

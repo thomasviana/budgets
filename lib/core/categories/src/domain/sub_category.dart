@@ -20,6 +20,14 @@ class SubCategory extends CategoryModel {
 
   // ??????  HOUSING
 
+  factory SubCategory.housing() => SubCategory(
+        id: CategoryId('housing'),
+        name: 'Vivienda (general)',
+        icon: 0xe318,
+        color: CategoryColors.amber,
+        categoryId: CategoryId('housing'),
+      );
+
   factory SubCategory.rent() => SubCategory(
         id: CategoryId.auto(),
         name: 'Arriendo',
@@ -36,7 +44,7 @@ class SubCategory extends CategoryModel {
         categoryId: CategoryId('housing'),
       );
 
-  factory SubCategory.services() => SubCategory(
+  factory SubCategory.housingServices() => SubCategory(
         id: CategoryId.auto(),
         name: 'Servicios Públicos',
         icon: 0xe318,
@@ -69,6 +77,14 @@ class SubCategory extends CategoryModel {
       );
 
   // ??????  FOOD
+
+  factory SubCategory.food() => SubCategory(
+        id: CategoryId('food'),
+        name: 'Alimentación (general)',
+        icon: 0xe532,
+        color: CategoryColors.red,
+        categoryId: CategoryId('food'),
+      );
 
   factory SubCategory.generalFood() => SubCategory(
         id: CategoryId.auto(),
@@ -103,6 +119,14 @@ class SubCategory extends CategoryModel {
       );
 
   // ??????  TRANSPORTATION
+
+  factory SubCategory.transportation() => SubCategory(
+        id: CategoryId('transportation'),
+        name: 'Transporte (general)',
+        icon: 0xf6b0,
+        color: CategoryColors.blue_grey,
+        categoryId: CategoryId('transportation'),
+      );
 
   factory SubCategory.publicTransport() => SubCategory(
         id: CategoryId.auto(),
@@ -186,6 +210,14 @@ class SubCategory extends CategoryModel {
 
   // ??????  HEALTH CARE
 
+  factory SubCategory.healthCare() => SubCategory(
+        id: CategoryId('healthCare'),
+        name: 'Eps / Seguridad Social',
+        icon: 0xf013e,
+        color: CategoryColors.cyan,
+        categoryId: CategoryId('healthCare'),
+      );
+
   factory SubCategory.publicHealth() => SubCategory(
         id: CategoryId.auto(),
         name: 'Eps / Seguridad Social',
@@ -219,6 +251,14 @@ class SubCategory extends CategoryModel {
       );
 
   // ??????  SERVICES
+
+  factory SubCategory.services() => SubCategory(
+        id: CategoryId('services'),
+        name: 'Servicios (general)',
+        icon: 0xf0078,
+        color: CategoryColors.indigo,
+        categoryId: CategoryId('services'),
+      );
 
   factory SubCategory.cellPhonePlan() => SubCategory(
         id: CategoryId.auto(),
@@ -254,6 +294,14 @@ class SubCategory extends CategoryModel {
 
   // ??????  RECREATION
 
+  factory SubCategory.recreation() => SubCategory(
+        id: CategoryId('recreation'),
+        name: 'Diversión (general)',
+        icon: 0xf0112,
+        color: CategoryColors.purple,
+        categoryId: CategoryId('recreation'),
+      );
+
   factory SubCategory.restaurants() => SubCategory(
         id: CategoryId.auto(),
         name: 'Restaurantes',
@@ -279,6 +327,14 @@ class SubCategory extends CategoryModel {
       );
 
   // ??????  SHOPPING
+
+  factory SubCategory.shopping() => SubCategory(
+        id: CategoryId('shopping'),
+        name: 'Compras (general)',
+        icon: 0xf016f,
+        color: CategoryColors.blue,
+        categoryId: CategoryId('shopping'),
+      );
 
   factory SubCategory.clothes() => SubCategory(
         id: CategoryId.auto(),
@@ -338,6 +394,14 @@ class SubCategory extends CategoryModel {
 
   // ??????  FINANCIAL
 
+  factory SubCategory.financial() => SubCategory(
+        id: CategoryId('financial'),
+        name: 'Gastos financieros (general)',
+        icon: 0xf58f,
+        color: CategoryColors.teal,
+        categoryId: CategoryId('financial'),
+      );
+
   factory SubCategory.loans() => SubCategory(
         id: CategoryId.auto(),
         name: 'Creditos',
@@ -370,17 +434,100 @@ class SubCategory extends CategoryModel {
         categoryId: CategoryId('financial'),
       );
 
+  // !!!!!!!  SALARY
+
+  factory SubCategory.salary() => SubCategory(
+        id: CategoryId('salary'),
+        name: 'Salario (general)',
+        icon: 0xf58f,
+        color: CategoryColors.amber,
+        categoryId: CategoryId('salary'),
+      );
+
+  // !!!!!!!  HONORARIUM
+
+  factory SubCategory.honorarium() => SubCategory(
+        id: CategoryId('honorarium'),
+        name: 'Honorarios (general)',
+        icon: 0xf58f,
+        color: CategoryColors.red,
+        categoryId: CategoryId('honorarium'),
+      );
+
+  // !!!!!!!  RENT
+
+  factory SubCategory.rental() => SubCategory(
+        id: CategoryId('rental'),
+        name: 'Rentas de capital (general)',
+        icon: 0xf58f,
+        color: CategoryColors.blue_grey,
+        categoryId: CategoryId('rental'),
+      );
+
+  // !!!!!!!  BUSINESS
+
+  factory SubCategory.business() => SubCategory(
+        id: CategoryId('business'),
+        name: 'Negocios (general)',
+        icon: 0xf58f,
+        color: CategoryColors.cyan,
+        categoryId: CategoryId('business'),
+      );
+
+  // !!!!!!!  DIVIDENDS
+
+  factory SubCategory.dividends() => SubCategory(
+        id: CategoryId('dividends'),
+        name: 'Dividendos (general)',
+        icon: 0xf58f,
+        color: CategoryColors.indigo,
+        categoryId: CategoryId('dividends'),
+      );
+
+  // !!!!!!!  PENSIONS
+
+  factory SubCategory.pension() => SubCategory(
+        id: CategoryId('pension'),
+        name: 'Pensión (general)',
+        icon: 0xf58f,
+        color: CategoryColors.purple,
+        categoryId: CategoryId('pension'),
+      );
+
+  // !!!!!!!  OCASSIONAL
+
+  factory SubCategory.occasional() => SubCategory(
+        id: CategoryId('occasional'),
+        name: 'Ocasional (general)',
+        icon: 0xf58f,
+        color: CategoryColors.blue,
+        categoryId: CategoryId('occasional'),
+      );
+
+  // !!!!!!!  GIFT
+
+  factory SubCategory.gift() => SubCategory(
+        id: CategoryId('gift'),
+        name: 'Regalos (general)',
+        icon: 0xf58f,
+        color: CategoryColors.teal,
+        categoryId: CategoryId('gift'),
+      );
+
   static List<SubCategory> allSubCategories = [
+    SubCategory.housing(),
     SubCategory.rent(),
     SubCategory.morgage(),
-    SubCategory.services(),
+    SubCategory.housingServices(),
     SubCategory.admin(),
     SubCategory.houseMaintenance(),
     SubCategory.propertyTaxes(),
+    SubCategory.food(),
     SubCategory.generalFood(),
     SubCategory.meats(),
     SubCategory.fruitsAndVegetables(),
     SubCategory.miscellaneous(),
+    SubCategory.transportation(),
     SubCategory.publicTransport(),
     SubCategory.uber(),
     SubCategory.tolls(),
@@ -391,17 +538,21 @@ class SubCategory extends CategoryModel {
     SubCategory.carTaxes(),
     SubCategory.maintenance(),
     SubCategory.carWash(),
+    SubCategory.healthCare(),
     SubCategory.publicHealth(),
     SubCategory.healthCarePlan(),
     SubCategory.medicalAppointments(),
     SubCategory.medicines(),
+    SubCategory.services(),
     SubCategory.cellPhonePlan(),
     SubCategory.homePlan(),
     SubCategory.subscriptions(),
     SubCategory.otherServices(),
+    SubCategory.recreation(),
     SubCategory.restaurants(),
     SubCategory.cinema(),
     SubCategory.events(),
+    SubCategory.shopping(),
     SubCategory.clothes(),
     SubCategory.home(),
     SubCategory.electronics(),
@@ -409,16 +560,22 @@ class SubCategory extends CategoryModel {
     SubCategory.accessories(),
     SubCategory.pets(),
     SubCategory.gifts(),
+    SubCategory.financial(),
     SubCategory.loans(),
     SubCategory.creditCards(),
     SubCategory.assurances(),
     SubCategory.taxes(),
+    SubCategory.salary(),
+    SubCategory.honorarium(),
+    SubCategory.rental(),
+    SubCategory.dividends(),
+    SubCategory.pension(),
   ];
 
   static List<SubCategory> housingSubCategories = [
     SubCategory.rent(),
     SubCategory.morgage(),
-    SubCategory.services(),
+    SubCategory.housingServices(),
   ];
 
   static List<SubCategory> foodSubCategories = [

@@ -13,9 +13,11 @@ class TransactionsScreenBloc
     extends Bloc<TransactionScreenEvent, TransactionsScreenState> {
   GetTransactions getTransactions;
   GetProfileInfo getProfileInfo;
+  DeleteTransaction deleteTransaction;
   TransactionsScreenBloc(
     this.getTransactions,
     this.getProfileInfo,
+    this.deleteTransaction,
   ) : super(TransactionsScreenState.initial()) {
     on<GetUserTransactions>((event, emit) async {
       final optionUser = await getProfileInfo();
@@ -28,5 +30,9 @@ class TransactionsScreenBloc
         ),
       );
     });
+
+    on<TransactionDeleted>(
+      (event, emit) async => deleteTransaction(event.transactionId),
+    );
   }
 }

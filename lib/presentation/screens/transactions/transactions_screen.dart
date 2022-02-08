@@ -91,6 +91,8 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
               context,
               transaction: transaction,
             ),
+            onDeletePressed: (_) =>
+                bloc.add(TransactionDeleted(transactionId: transaction.id)),
           );
         },
       );

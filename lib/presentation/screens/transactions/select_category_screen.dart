@@ -75,14 +75,28 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
           ),
         ],
       ),
-      body: TabBarView(
-        controller: _controller,
+      body: Column(
         children: [
-          _CategoriesList(
-            categories: widget.categories!,
-            controller: _controller,
+          SearchBox(
+            text: state.query!,
+            hintText: 'Buscar categoría',
+            onChanged: (query) =>
+                bloc.add(SearchSubCategory(query: query.trim())),
           ),
-          _SubCategoriesList()
+          Expanded(
+            child: state.query!.isEmpty
+                ? TabBarView(
+                    controller: _controller,
+                    children: [
+                      _CategoriesList(
+                        categories: widget.categories!,
+                        controller: _controller,
+                      ),
+                      _SubCategoriesList()
+                    ],
+                  )
+                : _SubCategorySuggestions(),
+          ),
         ],
       ),
     );
@@ -90,6 +104,76 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class _SubCategorySuggestions extends StatelessWidget {
+  const _SubCategorySuggestions({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
+      builder: (context, state) {
+        return ListView(
+          shrinkWrap: true,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 8,
+                left: kDefaultPadding,
+                right: kDefaultPadding,
+                bottom: 8,
+              ),
+              child: Text(
+                'SUGERENCIAS',
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            ListView.separated(
+              shrinkWrap: true,
+              itemCount: state.subCategorySuggestions!.length,
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(height: 0),
+              itemBuilder: (BuildContext context, int index) {
+                final subCategory = state.subCategorySuggestions![index];
+                return ListTile(
+                  title: Text(subCategory.name),
+                  leading: CircleAvatar(
+                    maxRadius: 20,
+                    child: Icon(
+                      IconData(
+                        subCategory.icon,
+                        fontFamily: 'MaterialIcons',
+                      ),
+                      color: AppColors.white,
+                    ),
+                    backgroundColor: Color(subCategory.color),
+                  ),
+                  trailing: state.category.fold(
+                    () => null,
+                    (stateCategoryt) {
+                      if (stateCategoryt.id == subCategory.id) {
+                        return Icon(Icons.check, color: AppColors.primaryColor);
+                      }
+                    },
+                  ),
+                  onTap: () {
+                    context
+                        .read<EditTransactionScreenBloc>()
+                        .add(SubCategorySelected(subCategory: subCategory));
+                    AppNavigator.navigateBack(context);
+                  },
+                );
+              },
+            ),
+            const Divider(height: 0),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class _CategoriesList extends StatelessWidget {
@@ -110,7 +194,7 @@ class _CategoriesList extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                top: 30,
+                top: 8,
                 left: kDefaultPadding,
                 right: kDefaultPadding,
                 bottom: 8,
@@ -281,6 +365,65 @@ class _SubCategoriesList extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class SearchBox extends StatefulWidget {
+  final String text;
+  final ValueChanged<String> onChanged;
+  final String hintText;
+  const SearchBox({
+    Key? key,
+    required this.text,
+    required this.onChanged,
+    required this.hintText,
+  }) : super(key: key);
+
+  @override
+  _SearchBoxState createState() => _SearchBoxState();
+}
+
+class _SearchBoxState extends State<SearchBox> {
+  final controller = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    final styleActive = TextStyle(color: AppColors.black);
+    final styleHint = TextStyle(color: Colors.black54);
+    final style = widget.text.isEmpty ? styleHint : styleActive;
+    return Container(
+      height: 42,
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: AppColors.white,
+        border: Border.all(color: Colors.black26),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          icon: Icon(Icons.search, color: style.color),
+          suffixIcon: widget.text.isNotEmpty
+              ? GestureDetector(
+                  child: Icon(
+                    Icons.close,
+                    color: style.color,
+                  ),
+                  onTap: () {
+                    controller.clear();
+                    widget.onChanged('');
+                    FocusScope.of(context).requestFocus(FocusNode());
+                  },
+                )
+              : null,
+          hintText: widget.hintText,
+          hintStyle: style,
+          border: InputBorder.none,
+        ),
+        style: style,
+        onChanged: widget.onChanged,
+      ),
     );
   }
 }

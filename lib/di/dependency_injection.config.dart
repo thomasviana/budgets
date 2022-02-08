@@ -285,7 +285,9 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       _i70.TransactionsLocalDataSourceImpl(
           get<_i69.TransactionDao>(), get<_i69.TransactionMapper>()));
   gh.factory<_i71.TransactionsScreenBloc>(() => _i71.TransactionsScreenBloc(
-      get<_i41.GetTransactions>(), get<_i11.GetProfileInfo>()));
+      get<_i41.GetTransactions>(),
+      get<_i11.GetProfileInfo>(),
+      get<_i41.DeleteTransaction>()));
   gh.factory<_i72.UpdateAccount>(() => _i72.UpdateAccount(
       get<_i6.AccountRepository>(), get<_i46.GetAccounts>()));
   gh.factory<_i73.UpdateBudget>(() =>

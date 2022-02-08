@@ -30,6 +30,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_material_color_picker: ^1.1.0+2
+  flutter_slidable: ^1.2.0
   freezed_annotation: ^1.1.0
   google_fonts: ^2.1.1
   google_sign_in: 5.2.1

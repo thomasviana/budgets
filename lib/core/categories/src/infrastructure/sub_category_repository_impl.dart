@@ -31,4 +31,9 @@ class SubCategoryRepositoryImpl implements SubCategoryRepository {
   Stream<Option<List<SubCategory>>> fetchSubCategories(CategoryId categoryId) {
     return _categoriesLocalDataSource.getCachedSubCategories(categoryId);
   }
+
+  @override
+  Stream<Option<List<SubCategory>>> fetchAllSubCategories() {
+    return _categoriesLocalDataSource.getAllCachedSubCategories();
+  }
 }

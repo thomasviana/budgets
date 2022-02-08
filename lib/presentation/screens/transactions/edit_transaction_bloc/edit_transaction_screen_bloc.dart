@@ -65,9 +65,29 @@ class EditTransactionScreenBloc
         },
       );
     });
-    on<TransactionDeleted>(
-      (event, emit) async => deleteTransaction(state.transaction!.id),
-    );
+
+    on<GetAllUserSubcategories>((event, emit) async {
+      await emit.onEach<Option<List<SubCategory>>>(
+        getSubCategories.all(),
+        onData: (optionSubCategories) => optionSubCategories.fold(
+          () => emit(state.copyWith(allSubCategories: [])),
+          (allSubCategories) =>
+              emit(state.copyWith(allSubCategories: allSubCategories)),
+        ),
+      );
+    });
+
+    on<SearchSubCategory>((event, emit) {
+      final suggestions = state.allSubCategories!.where((subCategory) {
+        final nameLower = subCategory.name.toLowerCase();
+        final searchLower = event.query.toLowerCase();
+        return nameLower.contains(searchLower);
+      }).toList();
+      emit(
+        state.copyWith(query: event.query, subCategorySuggestions: suggestions),
+      );
+    });
+
     on<TransactionSaved>(
       (event, emit) async => getProfileInfo().then(
         (optionUser) => optionUser.fold(
@@ -91,6 +111,7 @@ class EditTransactionScreenBloc
                   () {},
                   (category) => TransactionCategoryId(category.id.value),
                 ),
+                txType: state.transaction!.transactionType,
                 txUserId: TransactionUserId(user.id.value),
                 incomeType: IncomeType.values[1],
               );
@@ -119,7 +140,7 @@ class EditTransactionScreenBloc
                   () => TransactionCategoryId('housing'),
                   (category) => TransactionCategoryId(category.id.value),
                 ),
-                txType: TransactionType.values[1],
+                txType: state.transaction!.transactionType,
                 txUserId: TransactionUserId(user.id.value),
                 incomeType: IncomeType.values[1],
               );

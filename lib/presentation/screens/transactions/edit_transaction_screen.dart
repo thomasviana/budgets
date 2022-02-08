@@ -34,7 +34,8 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     settingsBloc = context.read<SettingsBloc>();
     bloc = context.read<EditTransactionScreenBloc>()
       ..add(CheckTransaction(transaction: widget.transaction))
-      ..add(GetUserSubcategories());
+      ..add(GetUserSubcategories())
+      ..add(GetAllUserSubcategories());
     formatter = CurrencyTextInputFormatter(symbol: '\$', decimalDigits: 0);
 
     dateTime = f.Timestamp.now();
@@ -151,15 +152,17 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                               : AppColors.greyDisabled,
                         ),
                       ),
-                      onPressed: () {
-                        bloc.add(
-                          TransactionSaved(
-                            amount: state.transaction!.amount,
-                            date: dateTime.toDate(),
-                          ),
-                        );
-                        AppNavigator.navigateBack(context);
-                      },
+                      onPressed: state.isSaveEnabled
+                          ? () {
+                              bloc.add(
+                                TransactionSaved(
+                                  amount: state.transaction!.amount,
+                                  date: dateTime.toDate(),
+                                ),
+                              );
+                              AppNavigator.navigateBack(context);
+                            }
+                          : null,
                     ),
                   ],
                 ),

@@ -6,3 +6,10 @@ class GetUserTransactions extends TransactionScreenEvent {
   final Transaction? transaction;
   GetUserTransactions({this.transaction});
 }
+
+class TransactionDeleted extends TransactionScreenEvent {
+  final TransactionId transactionId;
+  TransactionDeleted({
+    required this.transactionId,
+  });
+}

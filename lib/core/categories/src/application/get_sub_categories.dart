@@ -13,4 +13,7 @@ class GetSubCategories {
 
   Stream<Option<List<SubCategory>>> call(CategoryId categoryId) =>
       _subCategoryRepository.fetchSubCategories(categoryId);
+
+  Stream<Option<List<SubCategory>>> all() =>
+      _subCategoryRepository.fetchAllSubCategories();
 }

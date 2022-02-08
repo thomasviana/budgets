@@ -9,7 +9,12 @@ class CheckTransaction extends EditTransactionScreenEvent {
 
 class GetUserSubcategories extends EditTransactionScreenEvent {}
 
-class TransactionDeleted extends EditTransactionScreenEvent {}
+class GetAllUserSubcategories extends EditTransactionScreenEvent {}
+
+class SearchSubCategory extends EditTransactionScreenEvent {
+  final String query;
+  SearchSubCategory({required this.query});
+}
 
 class TransactionSaved extends EditTransactionScreenEvent {
   final double amount;

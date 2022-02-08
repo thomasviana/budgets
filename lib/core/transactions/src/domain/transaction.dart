@@ -39,6 +39,37 @@ class Transaction extends Entity<TransactionId> {
   bool get isIncome => transactionType == TransactionType.income;
   bool get isExpense => transactionType == TransactionType.expense;
 
+  Transaction copyWith({
+    TransactionType? transactionType,
+    String? title,
+    double? amount = 0,
+    DateTime? date,
+    String? note,
+    int? icon,
+    int? color,
+    TransactionUserId? txUserId,
+    TransactionCategoryId? txCategoryId,
+    TransactionAccountId? txAccountId,
+    TransactionBudgetId? txBudgetId,
+    IncomeType? incomeType,
+  }) {
+    return Transaction(
+      id: id,
+      transactionType: transactionType ?? this.transactionType,
+      title: title ?? this.title,
+      amount: amount ?? this.amount,
+      date: date ?? this.date,
+      note: note ?? this.note,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
+      txUserId: txUserId ?? this.txUserId,
+      txCategoryId: txCategoryId ?? this.txCategoryId,
+      txAccountId: txAccountId ?? this.txAccountId,
+      txBudgetId: txBudgetId ?? this.txBudgetId,
+      incomeType: incomeType ?? this.incomeType,
+    );
+  }
+
   // ignore: use_setters_to_change_properties
   void changeType(TransactionType newType) => transactionType = newType;
   // ignore: use_setters_to_change_properties

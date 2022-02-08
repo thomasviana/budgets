@@ -92,7 +92,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _setDefaultAccounts() async {
-    developer.debugger();
     final userOption = await getProfileInfo();
     userOption.fold(() => null, (user) async {
       final accounts = Account.defaultAccounts;

@@ -218,22 +218,23 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.only(top: 4, bottom: 4),
-                itemCount: subCategories.length,
+                itemCount: subCategories.length - 1,
                 separatorBuilder: (BuildContext context, int index) =>
                     Divider(height: 2),
                 itemBuilder: (BuildContext context, int index) {
+                  final subCategory = subCategories[index + 1];
                   return ListTile(
-                    title: Text(subCategories[index].name),
+                    title: Text(subCategory.name),
                     leading: CircleAvatar(
                       maxRadius: 20,
                       child: Icon(
                         IconData(
-                          subCategories[index].icon,
+                          subCategory.icon,
                           fontFamily: 'MaterialIcons',
                         ),
                         color: AppColors.white,
                       ),
-                      backgroundColor: Color(subCategories[index].color),
+                      backgroundColor: Color(subCategory.color),
                     ),
                     trailing: Icon(
                       Icons.chevron_right,
@@ -241,7 +242,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                     onTap: () {
                       AppNavigator.navigateToEditSubCategoryPage(
                         context,
-                        subCategories[index],
+                        subCategory,
                       );
                     },
                   );

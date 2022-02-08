@@ -220,8 +220,15 @@ class AppRouter {
         final arguments = settings.arguments! as List<dynamic>;
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<ManageIncomeScreenBloc>(),
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => sl<ManageIncomeScreenBloc>(),
+              ),
+              BlocProvider.value(
+                value: _editTransactionScreenBloc,
+              ),
+            ],
             child: ManageIncomeScreen(
               budgets: arguments[0] as List<Budget>,
               incomeAmount: arguments[1] as double,

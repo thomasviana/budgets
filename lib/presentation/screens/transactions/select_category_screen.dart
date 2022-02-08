@@ -62,7 +62,15 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
               child: Text('Editar'),
-              onPressed: () => AppNavigator.navigateToCategoriesPage(context),
+              onPressed: () => state.category.fold(
+                () {},
+                (category) => _controller.index == 0
+                    ? AppNavigator.navigateToCategoriesPage(context)
+                    : AppNavigator.navigateToEditCategoryPage(
+                        context,
+                        category: category,
+                      ),
+              ),
             ),
           ),
         ],
@@ -145,11 +153,7 @@ class _CategoriesList extends StatelessWidget {
                     context
                         .read<EditTransactionScreenBloc>()
                         .add(CategorySelected(category: category));
-                    if (state.transaction!.isExpense) {
-                      controller.animateTo(1);
-                    } else {
-                      AppNavigator.navigateBack(context);
-                    }
+                    controller.animateTo(1);
                   },
                 );
               },
@@ -178,19 +182,71 @@ class _SubCategoriesList extends StatelessWidget {
                 bottom: 8,
               ),
               child: Text(
+                'GENERAL',
+                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            ListTile(
+              title: Text(state.subCategories!.first.name),
+              leading: CircleAvatar(
+                maxRadius: 20,
+                child: Icon(
+                  IconData(
+                    state.subCategories!.first.icon,
+                    fontFamily: 'MaterialIcons',
+                  ),
+                  color: AppColors.white,
+                ),
+                backgroundColor: Color(state.subCategories!.first.color),
+              ),
+              trailing: state.subCategory.fold(
+                () => null,
+                (stateSubCategoryt) {
+                  if (stateSubCategoryt.id == state.subCategories!.first.id) {
+                    return Icon(Icons.check, color: AppColors.primaryColor);
+                  }
+                },
+              ),
+              onTap: () {
+                context.read<EditTransactionScreenBloc>().add(
+                    SubCategorySelected(
+                        subCategory: state.subCategories!.first));
+                AppNavigator.navigateBack(context);
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 30,
+                left: kDefaultPadding,
+                right: kDefaultPadding,
+                bottom: 8,
+              ),
+              child: Text(
                 'SUBCATEGORÍAS',
                 style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
                 textAlign: TextAlign.start,
               ),
             ),
             Divider(height: 0),
+            if (state.subCategories!.length == 1)
+              state.category.fold(
+                () => SizedBox(),
+                (category) => Padding(
+                  padding: const EdgeInsets.all(kDefaultPadding),
+                  child: Text(
+                    'No hay subcategorias añadidas aún para la categoria:  ${category.name}.',
+                    style: TextStyle(color: AppColors.greySecondary),
+                  ),
+                ),
+              ),
             ListView.separated(
               shrinkWrap: true,
-              itemCount: state.subCategories!.length,
+              itemCount: state.subCategories!.length - 1,
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(height: 0),
               itemBuilder: (BuildContext context, int index) {
-                final subCategory = state.subCategories![index];
+                final subCategory = state.subCategories![index + 1];
                 return ListTile(
                   title: Text(subCategory.name),
                   leading: CircleAvatar(

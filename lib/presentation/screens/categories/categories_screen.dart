@@ -103,11 +103,8 @@ class CategoriesScreen extends StatelessWidget {
                   trailing: Icon(
                     Icons.chevron_right,
                   ),
-                  onTap: () {
-                    AppNavigator.navigateToEditCategoryPage(context,
-                        category: category);
-                    print(category.name);
-                  },
+                  onTap: () => AppNavigator.navigateToEditCategoryPage(context,
+                      category: category),
                 );
               },
             ),

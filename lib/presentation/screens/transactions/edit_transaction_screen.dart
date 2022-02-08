@@ -186,7 +186,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                 style: TextStyle(
                   color: state.transaction!.isExpense
                       ? AppColors.red
-                      : Colors.green,
+                      : AppColors.green,
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
                 ),
@@ -196,7 +196,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     fontWeight: FontWeight.bold,
                     color: state.transaction!.isExpense
                         ? AppColors.red
-                        : Colors.green,
+                        : AppColors.green,
                   ),
                   focusedBorder: InputBorder.none,
                   hintText: '\$${currency.format(state.transaction!.amount)}',
@@ -244,30 +244,17 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
               Divider(height: 2),
               ListTile(
                 leading: state.subCategory.fold(
-                  () => state.category.fold(
-                    () => CircleAvatar(
-                      maxRadius: 20,
-                      child: Text(
-                        '?',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: AppColors.white,
-                        ),
-                      ),
-                      backgroundColor: AppColors.greyDisabled,
-                    ),
-                    (category) => CircleAvatar(
-                      maxRadius: 20,
-                      child: Icon(
-                        IconData(
-                          category.icon,
-                          fontFamily: 'MaterialIcons',
-                        ),
+                  () => CircleAvatar(
+                    maxRadius: 20,
+                    child: Text(
+                      '?',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
                         color: AppColors.white,
                       ),
-                      backgroundColor: Color(category.color),
                     ),
+                    backgroundColor: AppColors.greyDisabled,
                   ),
                   (subcategory) => CircleAvatar(
                     maxRadius: 20,
@@ -286,15 +273,9 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     state.subCategory.fold(
-                      () => state.category.fold(
-                        () => Text(
-                          'Requerido',
-                          style: TextStyle(color: AppColors.red),
-                        ),
-                        (category) => Text(
-                          category.name,
-                          style: TextStyle(color: AppColors.greySecondary),
-                        ),
+                      () => Text(
+                        'Requerido',
+                        style: TextStyle(color: AppColors.red),
                       ),
                       (subCategory) => Text(
                         subCategory.name,
@@ -305,21 +286,19 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     Icon(Icons.chevron_right)
                   ],
                 ),
-                onTap: () {
-                  AppNavigator.navigateToSelectCategoryPage(
-                    context,
-                    settingsBloc.state.categories
-                        .where(
-                          (category) =>
-                              category.type.index ==
-                              state.transaction!.transactionType.index,
-                        )
-                        .toList(),
-                  );
-                },
+                onTap: () => AppNavigator.navigateToSelectCategoryPage(
+                  context,
+                  settingsBloc.state.categories
+                      .where(
+                        (category) =>
+                            category.type.index ==
+                            state.transaction!.transactionType.index,
+                      )
+                      .toList(),
+                ),
               ),
               Divider(height: 2),
-              if (state.transaction!.transactionType == TransactionType.expense)
+              if (state.transaction!.isExpense)
                 ListTile(
                   leading: CircleAvatar(
                     maxRadius: 20,
@@ -358,7 +337,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     );
                   },
                 ),
-              if (state.transaction!.transactionType == TransactionType.income)
+              if (state.transaction!.isIncome)
                 ListTile(
                   leading: CircleAvatar(
                     maxRadius: 20,
@@ -372,11 +351,17 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   title: Text('Administrar'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text(
-                        'Requerido',
-                        style: TextStyle(color: AppColors.red),
-                      ),
+                    children: [
+                      if (state.managementDone)
+                        Text(
+                          'Hecho',
+                          style: TextStyle(color: AppColors.green),
+                        )
+                      else
+                        Text(
+                          'Requerido',
+                          style: TextStyle(color: AppColors.red),
+                        ),
                       SizedBox(width: 10),
                       Icon(Icons.chevron_right)
                     ],

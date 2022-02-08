@@ -75,3 +75,5 @@ class NoteUpdated extends EditTransactionScreenEvent {
     required this.note,
   });
 }
+
+class IncomeManagementDone extends EditTransactionScreenEvent {}

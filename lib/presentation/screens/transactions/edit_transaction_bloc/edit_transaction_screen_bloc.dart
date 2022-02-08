@@ -49,8 +49,9 @@ class EditTransactionScreenBloc
       state.category.fold(
         () {},
         (stateCategory) async {
-          final isDefaultCategory = Category.defaultCategories
-              .any((category) => category.id.value == stateCategory.id.value);
+          final isDefaultCategory = Category.defaultCategories.any((category) =>
+              category.id.value == stateCategory.id.value &&
+              category.type == CategoryType.expense);
           await emit.onEach<Option<List<SubCategory>>>(
             getSubCategories(stateCategory.id),
             onData: (optionSubCategories) => optionSubCategories.fold(
@@ -73,7 +74,6 @@ class EditTransactionScreenBloc
           () => null,
           (user) async {
             if (state.isEditMode) {
-              print('edit');
               await updateTransaction(
                 transactionId: state.transaction!.id,
                 amount: event.amount,
@@ -95,8 +95,6 @@ class EditTransactionScreenBloc
                 incomeType: IncomeType.values[1],
               );
             } else {
-              print('new');
-
               await addTransaction(
                 title: state.subCategory
                     .fold(() => '', (subCategory) => subCategory.name),
@@ -133,15 +131,18 @@ class EditTransactionScreenBloc
     on<TransactionTypeChanged>(
       (event, emit) => emit(
         state.copyWith(
-          transaction: state.transaction!
-            ..changeType(TransactionType.values[event.index!]),
+          transaction: state.transaction!.copyWith(
+            transactionType: TransactionType.values[event.index!],
+          ),
+          category: none(),
+          subCategory: none(),
         ),
       ),
     );
     on<AmountUpdated>(
       (event, emit) => emit(
         state.copyWith(
-            transaction: state.transaction!..updateAmount(event.amount)),
+            transaction: state.transaction!.copyWith(amount: event.amount)),
       ),
     );
     on<AccountSelected>(
@@ -172,14 +173,19 @@ class EditTransactionScreenBloc
         state.copyWith(budget: some(event.budget)),
       ),
     );
+    on<IncomeManagementDone>(
+      (event, emit) => emit(state.copyWith(managementDone: true)),
+    );
     on<DateUpdated>(
       (event, emit) => emit(
-        state.copyWith(transaction: state.transaction!..updateDate(event.date)),
+        state.copyWith(
+            transaction: state.transaction!.copyWith(date: event.date)),
       ),
     );
     on<NoteUpdated>(
       (event, emit) => emit(
-        state.copyWith(transaction: state.transaction!..updateNote(event.note)),
+        state.copyWith(
+            transaction: state.transaction!.copyWith(note: event.note)),
       ),
     );
   }

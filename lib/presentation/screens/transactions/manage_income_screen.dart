@@ -1,6 +1,7 @@
 import 'package:budgets/core/budgets/domain.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
+import 'package:budgets/presentation/screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 import 'package:budgets/presentation/screens/transactions/manage_income_bloc/manage_income_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,6 +57,9 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
               child: TextButton(
                 onPressed: () {
                   bloc.add(IncomeManaged());
+                  context
+                      .read<EditTransactionScreenBloc>()
+                      .add(IncomeManagementDone());
                   AppNavigator.navigateBack(context);
                 },
                 child: Text('Hecho'),

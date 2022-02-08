@@ -9,6 +9,7 @@ class EditTransactionScreenState {
   final Option<Budget> budget;
   final bool isLoading;
   final bool isEditMode;
+  final bool managementDone;
 
   EditTransactionScreenState({
     this.transaction,
@@ -19,6 +20,7 @@ class EditTransactionScreenState {
     required this.budget,
     required this.isLoading,
     required this.isEditMode,
+    this.managementDone = false,
   });
 
   bool get isSaveEnabled => transaction!.amount != 0 && category.isSome();
@@ -41,6 +43,7 @@ class EditTransactionScreenState {
     Option<Budget>? budget,
     bool? isLoading,
     bool? isEditMode,
+    bool? managementDone,
   }) {
     return EditTransactionScreenState(
       transaction: transaction ?? this.transaction,
@@ -51,6 +54,7 @@ class EditTransactionScreenState {
       budget: budget ?? this.budget,
       isLoading: isLoading ?? this.isLoading,
       isEditMode: isEditMode ?? this.isEditMode,
+      managementDone: managementDone ?? this.managementDone,
     );
   }
 }

@@ -52,10 +52,11 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
 
       return dates
           .map((date) => _StickyHeaderList(
+                state: state,
                 date: date,
                 transactions: state.transactions,
-                bloc: bloc,
-                state: state,
+                onDelete: (id) =>
+                    bloc.add(TransactionDeleted(transactionId: id)),
               ))
           .toList();
     }
@@ -76,9 +77,8 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                 color: AppColors.primaryColor,
                 size: 34,
               ),
-              onPressed: () {
-                AppNavigator.navigateToEditTransactionPage(context);
-              },
+              onPressed: () =>
+                  AppNavigator.navigateToEditTransactionPage(context),
             ),
           ),
           ..._sliverListContentList(),
@@ -89,18 +89,18 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
 }
 
 class _StickyHeaderList extends StatelessWidget {
-  const _StickyHeaderList({
-    Key? key,
-    required this.date,
-    required this.transactions,
-    required this.bloc,
-    required this.state,
-  }) : super(key: key);
-
+  final TransactionsScreenState state;
   final DateTime date;
   final List<Transaction> transactions;
-  final TransactionsScreenBloc bloc;
-  final TransactionsScreenState state;
+  final dynamic Function(TransactionId) onDelete;
+
+  const _StickyHeaderList({
+    Key? key,
+    required this.state,
+    required this.date,
+    required this.transactions,
+    required this.onDelete,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +113,7 @@ class _StickyHeaderList extends StatelessWidget {
     }
 
     return SliverStickyHeader(
+      key: UniqueKey(),
       header: Container(
         height: 30,
         color: AppColors.white,
@@ -137,8 +138,7 @@ class _StickyHeaderList extends StatelessWidget {
                 context,
                 transaction: transaction,
               ),
-              onDeletePressed: (_) =>
-                  bloc.add(TransactionDeleted(transactionId: transaction.id)),
+              onDeletePressed: (_) => onDelete(transaction.id),
             );
           },
           childCount: transactions

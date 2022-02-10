@@ -18,7 +18,8 @@ class SettingsScreen extends StatelessWidget {
             largeTitle: Text(AppLocalizations.of(context)!.misc_settings),
           )
         ],
-        body: Column(
+        body: ListView(
+          padding: EdgeInsets.zero,
           children: [
             Divider(height: 2),
             ListTile(

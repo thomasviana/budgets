@@ -23,18 +23,13 @@ class AccountsScreen extends StatelessWidget {
             CupertinoSliverNavigationBar(
               largeTitle: Text('Cuentas'),
               previousPageTitle: 'Atras',
-              trailing: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.add,
-                      color: AppColors.primaryColor,
-                    ),
-                    onPressed: () =>
-                        AppNavigator.navigateToEditAccountPage(context),
-                  ),
-                ],
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: AppColors.primaryColor,
+                ),
+                onPressed: () =>
+                    AppNavigator.navigateToEditAccountPage(context),
               ),
             )
           ],

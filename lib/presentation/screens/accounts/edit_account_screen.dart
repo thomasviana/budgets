@@ -111,8 +111,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           color: AppColors.white,
         );
       }
-      return Container(
-        alignment: Alignment.center,
+      return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

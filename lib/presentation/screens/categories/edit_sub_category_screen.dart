@@ -92,8 +92,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return Container(
-        alignment: Alignment.center,
+      return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

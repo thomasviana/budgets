@@ -44,11 +44,13 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
-              largeTitle:
-                  Text(state.isEditMode ? 'Editar cuenta' : 'Crear cuenta'),
+              largeTitle: Text(state.isEditMode
+                  ? 'Editar presupuesto'
+                  : 'Crear presupuesto'),
               previousPageTitle: 'Atras',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   if (state.budget?.id.value != 'inv' &&
                       state.budget?.id.value != 'seg' &&

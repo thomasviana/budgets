@@ -25,18 +25,13 @@ class CategoriesScreen extends StatelessWidget {
             CupertinoSliverNavigationBar(
               largeTitle: Text(AppLocalizations.of(context)!.misc_categories),
               previousPageTitle: AppLocalizations.of(context)!.misc_back,
-              trailing: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.add,
-                      color: AppColors.primaryColor,
-                    ),
-                    onPressed: () =>
-                        AppNavigator.navigateToEditCategoryPage(context),
-                  ),
-                ],
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: AppColors.primaryColor,
+                ),
+                onPressed: () =>
+                    AppNavigator.navigateToEditCategoryPage(context),
               ),
             )
           ],

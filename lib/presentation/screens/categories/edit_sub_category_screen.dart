@@ -53,6 +53,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                 previousPageTitle: 'Atras',
                 trailing: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       icon: Icon(

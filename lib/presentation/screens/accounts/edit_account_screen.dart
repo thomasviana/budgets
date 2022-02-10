@@ -49,6 +49,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               previousPageTitle: 'Atras',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   if (state.account?.id.value != 'bank' &&
                       state.account?.id.value != 'cash' &&

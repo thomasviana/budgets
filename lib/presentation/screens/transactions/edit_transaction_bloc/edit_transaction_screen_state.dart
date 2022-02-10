@@ -29,7 +29,7 @@ class EditTransactionScreenState {
     this.query = '',
   });
 
-  bool get isSaveEnabled => transaction!.amount != 0 && category.isSome();
+  bool get isSaveEnabled => transaction!.amount != 0 && subCategory.isSome();
 
   factory EditTransactionScreenState.initial() => EditTransactionScreenState(
         isLoading: true,

@@ -23,4 +23,14 @@ class TransactionsScreenState {
       transactions: transactions ?? this.transactions,
     );
   }
+
+  List<DateTime> get dates => transactions
+      .map((transaction) => DateTime(
+            transaction.date.year,
+            transaction.date.month,
+            transaction.date.day,
+          ))
+      .toList()
+      .where((date) => date.month == 2 || date.month == 1)
+      .toList();
 }

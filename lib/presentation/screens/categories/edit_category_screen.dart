@@ -51,6 +51,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
               previousPageTitle: AppLocalizations.of(context)!.misc_back,
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   if (!state.isDefaultExpenseCategory &&
                       !state.isDefaultIncomeCategory)

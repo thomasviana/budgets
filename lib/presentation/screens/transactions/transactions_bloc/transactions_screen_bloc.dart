@@ -36,5 +36,17 @@ class TransactionsScreenBloc
     on<TransactionDeleted>(
       (event, emit) async => deleteTransaction(event.transactionId),
     );
+
+    on<MonthIncremented>(
+      (event, emit) => emit(
+        state.copyWith(date: DateTime(state.date.year, state.date.month + 1)),
+      ),
+    );
+
+    on<MonthDecremented>(
+      (event, emit) => emit(
+        state.copyWith(date: DateTime(state.date.year, state.date.month - 1)),
+      ),
+    );
   }
 }

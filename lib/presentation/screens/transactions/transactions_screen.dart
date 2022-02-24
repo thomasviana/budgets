@@ -113,10 +113,12 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                               color: AppColors.greyPrimary
                                   .withOpacity(scaleAnimation),
                             ),
-                            onPressed: () {},
+                            onPressed: () => bloc.add(MonthDecremented()),
                           ),
                           Text(
-                            'Febrary',
+                            DateFormat('MMMM - yyyy',
+                                    AppLocalizations.of(context)!.localeName)
+                                .format(state.date),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -129,7 +131,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                               color: AppColors.greyPrimary
                                   .withOpacity(scaleAnimation),
                             ),
-                            onPressed: () {},
+                            onPressed: () => bloc.add(MonthIncremented()),
                           ),
                         ],
                       ),

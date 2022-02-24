@@ -13,3 +13,7 @@ class TransactionDeleted extends TransactionScreenEvent {
     required this.transactionId,
   });
 }
+
+class MonthIncremented extends TransactionScreenEvent {}
+
+class MonthDecremented extends TransactionScreenEvent {}

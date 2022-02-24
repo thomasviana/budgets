@@ -16,11 +16,13 @@ class AddTransaction {
     required String note,
     required int icon,
     required int color,
-    required TransactionUserId txUserId,
-    required TransactionCategoryId txCategoryId,
-    required TransactionAccountId txAccountId,
-    required TransactionBudgetId txBudgetId,
+    TransactionUserId? txUserId,
+    TransactionCategoryId? txCategoryId,
+    TransactionSubCategoryId? txSubCategoryId,
+    TransactionAccountId? txAccountId,
+    TransactionBudgetId? txBudgetId,
     IncomeType? incomeType,
+    bool isIncomeManaged = false,
   }) {
     return _transactionRepository.save(
       Transaction(
@@ -35,8 +37,10 @@ class AddTransaction {
         txUserId: txUserId,
         txAccountId: txAccountId,
         txCategoryId: txCategoryId,
+        txSubCategoryId: txSubCategoryId,
         txBudgetId: txBudgetId,
         incomeType: incomeType,
+        isIncomeManaged: isIncomeManaged,
       ),
     );
   }

@@ -26,6 +26,7 @@ class UpdateTransaction {
     TransactionCategoryId? txCategoryId,
     TransactionBudgetId? txBudgetId,
     IncomeType? incomeType,
+    bool? isIncomeManaged,
     TransactionType? txType,
   }) async {
     final transaction = await _getTransactions(txUserId).first.then(
@@ -39,18 +40,20 @@ class UpdateTransaction {
         );
     if (transaction != null) {
       _transactionRepository.save(
-        transaction
-          ..changeType(txType ?? transaction.transactionType)
-          ..updateTitle(title ?? transaction.title)
-          ..updateAmount(amount ?? transaction.amount)
-          ..updateDate(date ?? transaction.date)
-          ..updateNote(note ?? transaction.note)
-          ..updateIcon(icon ?? transaction.icon)
-          ..updateColor(color ?? transaction.color)
-          ..updateAccountId(txAccountId ?? transaction.txAccountId)
-          ..updateCategoryId(txCategoryId ?? transaction.txCategoryId)
-          ..updateBudgetId(txBudgetId ?? transaction.txBudgetId)
-          ..updateIncomeType(incomeType ?? transaction.incomeType),
+        transaction.copyWith(
+          transactionType: txType,
+          title: title,
+          amount: amount,
+          date: date,
+          note: note,
+          icon: icon,
+          color: color,
+          txAccountId: txAccountId,
+          txCategoryId: txCategoryId,
+          txBudgetId: txBudgetId,
+          incomeType: incomeType,
+          isIncomeManaged: isIncomeManaged,
+        ),
       );
     }
   }

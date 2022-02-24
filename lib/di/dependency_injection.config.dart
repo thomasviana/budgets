@@ -19,7 +19,7 @@ import '../core/accounts/infrastructure.dart' as _i8;
 import '../core/accounts/src/application/create_account.dart' as _i27;
 import '../core/accounts/src/application/delete_account.dart' as _i30;
 import '../core/accounts/src/application/get_accounts.dart' as _i46;
-import '../core/accounts/src/application/save_accounts.dart' as _i57;
+import '../core/accounts/src/application/set_default_accounts.dart' as _i57;
 import '../core/accounts/src/application/update_account.dart' as _i72;
 import '../core/accounts/src/infrastructure/account_repository_impl.dart'
     as _i7;
@@ -37,7 +37,7 @@ import '../core/budgets/infrastructure.dart' as _i18;
 import '../core/budgets/src/application/create_budget.dart' as _i28;
 import '../core/budgets/src/application/delete_budget.dart' as _i31;
 import '../core/budgets/src/application/get_budgets.dart' as _i47;
-import '../core/budgets/src/application/save_budgets.dart' as _i58;
+import '../core/budgets/src/application/set_default_budgets.dart' as _i58;
 import '../core/budgets/src/application/update_budget.dart' as _i73;
 import '../core/budgets/src/infrastructure/budget_repository_impl.dart' as _i17;
 import '../core/budgets/src/infrastructure/datasources/local/budget_mapper.dart'
@@ -57,8 +57,9 @@ import '../core/categories/src/application/delete_category.dart' as _i32;
 import '../core/categories/src/application/delete_sub_category.dart' as _i84;
 import '../core/categories/src/application/get_categories.dart' as _i48;
 import '../core/categories/src/application/get_sub_categories.dart' as _i87;
-import '../core/categories/src/application/save_categories.dart' as _i59;
-import '../core/categories/src/application/save_sub_categories.dart' as _i90;
+import '../core/categories/src/application/set_default_categories.dart' as _i59;
+import '../core/categories/src/application/set_default_sub_categories.dart'
+    as _i90;
 import '../core/categories/src/application/update_category.dart' as _i74;
 import '../core/categories/src/application/update_sub_category.dart' as _i75;
 import '../core/categories/src/infrastructure/category_repository_impl.dart'
@@ -179,12 +180,12 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i24.CategoryMapper>(() => _i24.CategoryMapper());
   gh.lazySingleton<_i25.CategoryRepository>(
       () => _i26.CategoryRepositoryImpl(get<_i20.CategoriesLocalDataSource>()));
-  gh.factory<_i27.CreateAccount>(
-      () => _i27.CreateAccount(get<_i6.AccountRepository>()));
-  gh.factory<_i28.CreateBudget>(
-      () => _i28.CreateBudget(get<_i16.BudgetRepository>()));
-  gh.factory<_i29.CreateCategory>(
-      () => _i29.CreateCategory(get<_i25.CategoryRepository>()));
+  gh.factory<_i27.CreateAccount>(() => _i27.CreateAccount(
+      get<_i6.AccountRepository>(), get<_i11.GetProfileInfo>()));
+  gh.factory<_i28.CreateBudget>(() => _i28.CreateBudget(
+      get<_i16.BudgetRepository>(), get<_i11.GetProfileInfo>()));
+  gh.factory<_i29.CreateCategory>(() => _i29.CreateCategory(
+      get<_i25.CategoryRepository>(), get<_i11.GetProfileInfo>()));
   gh.factory<_i30.DeleteAccount>(
       () => _i30.DeleteAccount(get<_i6.AccountRepository>()));
   gh.factory<_i31.DeleteBudget>(
@@ -199,14 +200,13 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i35.EditBudgetScreenBloc>(() => _i35.EditBudgetScreenBloc(
       get<_i36.UpdateBudget>(),
       get<_i36.DeleteBudget>(),
-      get<_i11.GetProfileInfo>(),
       get<_i36.CreateBudget>()));
   gh.factory<_i37.EditCategoryScreenBloc>(() => _i37.EditCategoryScreenBloc(
       get<_i38.UpdateCategory>(),
+      get<_i38.UpdateSubCategory>(),
       get<_i38.DeleteCategory>(),
-      get<_i11.GetProfileInfo>(),
       get<_i38.GetSubCategories>(),
-      get<_i38.SaveSubCategories>(),
+      get<_i38.SetDefaultSubCategories>(),
       get<_i38.CreateSubCategory>(),
       get<_i38.CreateCategory>()));
   gh.factory<_i39.EditSubCategoryScreenBloc>(() =>
@@ -218,9 +218,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
           get<_i41.DeleteTransaction>(),
           get<_i11.GetProfileInfo>(),
           get<_i41.AddTransaction>(),
-          get<_i38.SaveCategories>(),
           get<_i38.GetSubCategories>(),
-          get<_i38.SaveSubCategories>()));
+          get<_i38.SetDefaultSubCategories>()));
   gh.lazySingleton<_i42.FacebookAuth>(
       () => facebookInjectableModule.facebookAuth);
   gh.lazySingleton<_i43.FirebaseAuth>(
@@ -252,21 +251,21 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       get<_i11.PickUserImage>()));
   gh.factory<_i55.RecordCubit>(
       () => _i55.RecordCubit(get<_i56.RecordRepositoryBase>()));
-  gh.factory<_i57.SaveAccounts>(
-      () => _i57.SaveAccounts(get<_i6.AccountRepository>()));
-  gh.factory<_i58.SaveBudgets>(
-      () => _i58.SaveBudgets(get<_i16.BudgetRepository>()));
-  gh.factory<_i59.SaveCategories>(
-      () => _i59.SaveCategories(get<_i25.CategoryRepository>()));
+  gh.factory<_i57.SetDefaultAccounts>(() => _i57.SetDefaultAccounts(
+      get<_i11.GetProfileInfo>(), get<_i6.AccountRepository>()));
+  gh.factory<_i58.SetDefaultBudgets>(() => _i58.SetDefaultBudgets(
+      get<_i16.BudgetRepository>(), get<_i11.GetProfileInfo>()));
+  gh.factory<_i59.SetDefaultCategories>(() => _i59.SetDefaultCategories(
+      get<_i11.GetProfileInfo>(), get<_i25.CategoryRepository>()));
   gh.factory<_i60.SettingsBloc>(() => _i60.SettingsBloc(
       get<_i11.GetProfileInfo>(),
       get<_i34.GetAccounts>(),
-      get<_i34.SaveAccounts>(),
+      get<_i34.SetDefaultAccounts>(),
       get<_i38.GetCategories>(),
-      get<_i38.SaveCategories>(),
-      get<_i38.SaveSubCategories>(),
+      get<_i38.SetDefaultCategories>(),
       get<_i36.GetBudgets>(),
-      get<_i36.SaveBudgets>()));
+      get<_i36.SetDefaultBudgets>(),
+      get<_i38.SetDefaultSubCategories>()));
   gh.factory<_i61.SettingsScreenCubit>(() => _i61.SettingsScreenCubit(
       get<_i11.CheckAuthStatus>(), get<_i11.GetProfileInfo>()));
   gh.lazySingleton<_i22.SubCategoryDao>(
@@ -289,11 +288,17 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       get<_i11.GetProfileInfo>(),
       get<_i41.DeleteTransaction>()));
   gh.factory<_i72.UpdateAccount>(() => _i72.UpdateAccount(
-      get<_i6.AccountRepository>(), get<_i46.GetAccounts>()));
-  gh.factory<_i73.UpdateBudget>(() =>
-      _i73.UpdateBudget(get<_i16.BudgetRepository>(), get<_i36.GetBudgets>()));
+      get<_i6.AccountRepository>(),
+      get<_i46.GetAccounts>(),
+      get<_i11.GetProfileInfo>()));
+  gh.factory<_i73.UpdateBudget>(() => _i73.UpdateBudget(
+      get<_i16.BudgetRepository>(),
+      get<_i36.GetBudgets>(),
+      get<_i11.GetProfileInfo>()));
   gh.factory<_i74.UpdateCategory>(() => _i74.UpdateCategory(
-      get<_i25.CategoryRepository>(), get<_i38.GetCategories>()));
+      get<_i25.CategoryRepository>(),
+      get<_i38.GetCategories>(),
+      get<_i11.GetProfileInfo>()));
   gh.factory<_i75.UpdateSubCategory>(() => _i75.UpdateSubCategory(
       get<_i25.SubCategoryRepository>(), get<_i38.GetSubCategories>()));
   gh.factory<_i76.UpdateTransaction>(() => _i76.UpdateTransaction(
@@ -305,7 +310,6 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.lazySingleton<_i79.AuthService>(() => _i80.AuthServiceImpl(
       get<_i43.FirebaseAuth>(),
       get<_i49.GoogleSignIn>(),
-      get<_i42.FacebookAuth>(),
       get<_i77.UserFirebaseProv>()));
   gh.factory<_i81.CheckAuthStatus>(
       () => _i81.CheckAuthStatus(get<_i79.AuthService>()));
@@ -323,8 +327,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i88.GetTransactions>(
       () => _i88.GetTransactions(get<_i67.TransactionRepository>()));
   gh.factory<_i89.LogOut>(() => _i89.LogOut(get<_i79.AuthService>()));
-  gh.factory<_i90.SaveSubCategories>(
-      () => _i90.SaveSubCategories(get<_i25.SubCategoryRepository>()));
+  gh.factory<_i90.SetDefaultSubCategories>(() => _i90.SetDefaultSubCategories(
+      get<_i11.GetProfileInfo>(), get<_i25.SubCategoryRepository>()));
   gh.factory<_i91.SignIn>(() => _i91.SignIn(get<_i79.AuthService>()));
   gh.factory<_i92.UpdateUserInfo>(
       () => _i92.UpdateUserInfo(get<_i79.AuthService>()));

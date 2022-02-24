@@ -13,17 +13,8 @@ class EditCategoryScreenState {
     required this.isEditMode,
   });
 
-  bool get isDefaultExpenseCategory => Category.defaultCategories.any(
-        (category) =>
-            category.id.value == this.category?.id.value &&
-            category.type == CategoryType.expense,
-      );
-
-  bool get isDefaultIncomeCategory => Category.defaultCategories.any(
-        (category) =>
-            category.id.value == this.category?.id.value &&
-            category.type == CategoryType.income,
-      );
+  bool get isDefaultCategory => Category.defaultCategories
+      .any((category) => category.id.value == this.category?.id.value);
 
   factory EditCategoryScreenState.initial() => EditCategoryScreenState(
         isLoading: true,

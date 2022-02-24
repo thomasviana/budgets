@@ -8,15 +8,32 @@ class SubCategory extends CategoryModel {
     required String name,
     required int icon,
     required int color,
-    double? amount,
+    double? balance,
     required this.categoryId,
   }) : super(
           id: id,
           name: name,
           icon: icon,
           color: color,
-          amount: amount ?? 0,
+          balance: balance ?? 0,
         );
+
+  SubCategory copyWith({
+    String? name,
+    int? icon,
+    int? color,
+    double? balance,
+    CategoryId? categoryId,
+  }) {
+    return SubCategory(
+      id: id,
+      name: name ?? this.name,
+      icon: icon ?? this.icon,
+      color: color ?? this.color,
+      balance: balance ?? this.balance,
+      categoryId: categoryId ?? this.categoryId,
+    );
+  }
 
   // ??????  HOUSING
 
@@ -29,7 +46,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.rent() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('rent'),
         name: 'Arriendo',
         icon: 0xe318,
         color: CategoryColors.amber,
@@ -37,7 +54,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.morgage() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('morgage'),
         name: 'Hipoteca',
         icon: 0xe318,
         color: CategoryColors.amber,
@@ -45,7 +62,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.housingServices() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('housingServices'),
         name: 'Servicios Públicos',
         icon: 0xe318,
         color: CategoryColors.amber,
@@ -53,7 +70,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.admin() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('admin'),
         name: 'Administración',
         icon: 0xe318,
         color: CategoryColors.amber,
@@ -61,7 +78,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.houseMaintenance() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('houseMaintenance'),
         name: 'Mantenimiento',
         icon: 0xe318,
         color: CategoryColors.amber,
@@ -69,7 +86,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.propertyTaxes() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('propertyTaxes'),
         name: 'Impuesto predial',
         icon: 0xe318,
         color: CategoryColors.amber,
@@ -87,7 +104,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.generalFood() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('generalFood'),
         name: 'Mercado general',
         icon: 0xe532,
         color: CategoryColors.red,
@@ -95,7 +112,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.meats() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('meats'),
         name: 'Carnes',
         icon: 0xe532,
         color: CategoryColors.red,
@@ -103,7 +120,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.fruitsAndVegetables() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('fruitsAndVegetables'),
         name: 'Frutas y verduras',
         icon: 0xe532,
         color: CategoryColors.red,
@@ -111,7 +128,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.miscellaneous() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('miscellaneous'),
         name: 'Otros',
         icon: 0xe532,
         color: CategoryColors.red,
@@ -129,7 +146,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.publicTransport() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('publicTransport'),
         name: 'Transporte público',
         icon: 0xf6b0,
         color: CategoryColors.blue_grey,
@@ -137,7 +154,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.uber() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('uber'),
         name: 'Uber / Taxi',
         icon: 0xf880,
         color: CategoryColors.blue_grey,
@@ -145,7 +162,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.tolls() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('tolls'),
         name: 'Peajes',
         icon: 0xf0242,
         color: CategoryColors.blue_grey,
@@ -153,7 +170,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.gas() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('gas'),
         name: 'Gasolina',
         icon: 0xf86d,
         color: CategoryColors.blue_grey,
@@ -161,7 +178,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.parking() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('parking'),
         name: 'Parqueadero',
         icon: 0xf876,
         color: CategoryColors.blue_grey,
@@ -169,7 +186,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.carCredit() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('carCredit'),
         name: 'Cuota vehicular',
         icon: 0xf618,
         color: CategoryColors.blue_grey,
@@ -177,7 +194,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.carAssurance() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('carAssurance'),
         name: 'Seguro vehicular',
         icon: 0xf013e,
         color: CategoryColors.blue_grey,
@@ -185,7 +202,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.carTaxes() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('carTaxes'),
         name: 'Impuesto vehicular',
         icon: 0xf021b,
         color: CategoryColors.blue_grey,
@@ -193,7 +210,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.maintenance() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('maintenance'),
         name: 'Mantenimiento',
         icon: 0xf619,
         color: CategoryColors.blue_grey,
@@ -201,7 +218,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.carWash() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('carWash'),
         name: 'Lavada',
         icon: 0xf867,
         color: CategoryColors.blue_grey,
@@ -212,14 +229,14 @@ class SubCategory extends CategoryModel {
 
   factory SubCategory.healthCare() => SubCategory(
         id: CategoryId('healthCare'),
-        name: 'Eps / Seguridad Social',
+        name: 'Salud (general)',
         icon: 0xf013e,
         color: CategoryColors.cyan,
         categoryId: CategoryId('healthCare'),
       );
 
   factory SubCategory.publicHealth() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('publicHealth'),
         name: 'Eps / Seguridad Social',
         icon: 0xf013e,
         color: CategoryColors.cyan,
@@ -227,7 +244,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.healthCarePlan() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('healthCarePlan'),
         name: 'Medicina prepagada',
         icon: 0xf7df,
         color: CategoryColors.cyan,
@@ -235,7 +252,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.medicalAppointments() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('medicalAppointments'),
         name: 'Citas médicas',
         icon: 0xf7de,
         color: CategoryColors.cyan,
@@ -243,7 +260,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.medicines() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('medicines'),
         name: 'Medicamentos',
         icon: 0xe3d9,
         color: CategoryColors.cyan,
@@ -261,7 +278,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.cellPhonePlan() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('cellPhonePlan'),
         name: 'Plan celular',
         icon: 0xf0078,
         color: CategoryColors.indigo,
@@ -269,7 +286,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.homePlan() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('homePlan'),
         name: 'Plan hogar (Wifi, TV)',
         icon: 0xe6e7,
         color: CategoryColors.indigo,
@@ -277,7 +294,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.subscriptions() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('subscriptions'),
         name: 'Suscripciones',
         icon: 0xf860,
         color: CategoryColors.indigo,
@@ -285,7 +302,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.otherServices() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('otherServices'),
         name: 'Otros servicios',
         icon: 0xf7f4,
         color: CategoryColors.indigo,
@@ -303,7 +320,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.restaurants() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('restaurants'),
         name: 'Restaurantes',
         icon: 0xf0112,
         color: CategoryColors.purple,
@@ -311,7 +328,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.cinema() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('cinema'),
         name: 'Cine',
         icon: 0xed7e,
         color: CategoryColors.purple,
@@ -319,7 +336,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.events() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('events'),
         name: 'Otros eventos',
         icon: 0xe23e,
         color: CategoryColors.purple,
@@ -337,7 +354,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.clothes() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('clothes'),
         name: 'Ropa',
         icon: 0xf016f,
         color: CategoryColors.blue,
@@ -345,7 +362,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.home() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('home'),
         name: 'Hogar',
         icon: 0xf0036,
         color: CategoryColors.blue,
@@ -353,7 +370,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.electronics() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('electronics'),
         name: 'Electronicos',
         icon: 0xf664,
         color: CategoryColors.blue,
@@ -361,7 +378,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.healthAndBeauty() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('healthAndBeauty'),
         name: 'Cuidado y belleza',
         icon: 0xf016f,
         color: CategoryColors.blue,
@@ -369,7 +386,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.accessories() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('accessories'),
         name: 'Accesorios',
         icon: 0xf016f,
         color: CategoryColors.blue,
@@ -377,7 +394,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.pets() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('pets'),
         name: 'Para mascotas',
         icon: 0xf0077,
         color: CategoryColors.blue,
@@ -385,7 +402,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.gifts() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('gifts'),
         name: 'Regalos',
         icon: 0xf61a,
         color: CategoryColors.blue,
@@ -403,7 +420,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.loans() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('loans'),
         name: 'Creditos',
         icon: 0xf58f,
         color: CategoryColors.teal,
@@ -411,7 +428,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.creditCards() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('creditCards'),
         name: 'Tarjetas de crédito',
         icon: 0xe19f,
         color: CategoryColors.teal,
@@ -419,7 +436,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.assurances() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('assurances'),
         name: 'Seguros',
         icon: 0xf013e,
         color: CategoryColors.teal,
@@ -427,7 +444,7 @@ class SubCategory extends CategoryModel {
       );
 
   factory SubCategory.taxes() => SubCategory(
-        id: CategoryId.auto(),
+        id: CategoryId('taxes'),
         name: 'Impuestos',
         icon: 0xf6ce,
         color: CategoryColors.teal,
@@ -568,8 +585,11 @@ class SubCategory extends CategoryModel {
     SubCategory.salary(),
     SubCategory.honorarium(),
     SubCategory.rental(),
+    SubCategory.business(),
     SubCategory.dividends(),
     SubCategory.pension(),
+    SubCategory.occasional(),
+    SubCategory.gift(),
   ];
 
   static List<SubCategory> housingSubCategories = [

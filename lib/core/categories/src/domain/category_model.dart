@@ -6,24 +6,15 @@ class CategoryModel extends Entity<CategoryId> {
   String name;
   int icon;
   int color;
-  double amount = 0;
+  double balance = 0;
 
   CategoryModel({
     required CategoryId id,
     required this.name,
     required this.icon,
     required this.color,
-    required this.amount,
+    required this.balance,
   }) : super(id);
-
-// ignore: use_setters_to_change_properties
-  void updateName(String newName) => name = newName;
-  // ignore: use_setters_to_change_properties
-  void updateIcon(int newIcon) => icon = newIcon;
-  // ignore: use_setters_to_change_properties
-  void updateColor(int newColor) => color = newColor;
-  // ignore: use_setters_to_change_properties
-  void updateAmount(double newAmount) => amount = newAmount;
 }
 
 class CategoryId extends AlphanumericId {

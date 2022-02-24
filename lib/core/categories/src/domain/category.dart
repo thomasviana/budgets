@@ -12,10 +12,10 @@ class Category extends CategoryModel {
 
   Category({
     required CategoryId id,
-    required String name,
+    String name = '',
     required int icon,
     required int color,
-    double? amount,
+    double? balance,
     required this.type,
     this.categoryUserId,
   }) : super(
@@ -23,35 +23,32 @@ class Category extends CategoryModel {
           name: name,
           icon: icon,
           color: color,
-          amount: amount ?? 0,
+          balance: balance ?? 0,
         );
 
   Category copyWith({
     String? name,
     int? icon,
     int? color,
-    double? amount,
+    double? balance,
     CategoryType? type,
+    CategoryUserId? categoryUserId,
   }) {
     return Category(
       id: id,
       name: name ?? this.name,
       icon: icon ?? this.icon,
       color: color ?? this.color,
-      amount: amount ?? this.amount,
+      balance: balance ?? this.balance,
       type: type ?? this.type,
-      categoryUserId: categoryUserId,
+      categoryUserId: categoryUserId ?? this.categoryUserId,
     );
   }
 
-  // ignore: use_setters_to_change_properties
   void setUserId(String userId) => categoryUserId = CategoryUserId(userId);
-  // ignore: use_setters_to_change_properties
-  void changeType(CategoryType newType) => type = newType;
 
   factory Category.empty() => Category(
         id: CategoryId.auto(),
-        name: '',
         icon: 0xe5f9,
         color: AppColors.primaryColor.value,
         type: CategoryType.expense,

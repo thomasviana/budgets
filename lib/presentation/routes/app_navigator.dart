@@ -77,17 +77,24 @@ class AppNavigator {
     Navigator.pushNamed(context, ROUTE_CATEGORIES_PAGE);
   }
 
-  static void navigateToEditCategoryPage(BuildContext context,
-      {Category? category}) {
-    Navigator.pushNamed(context, ROUTE_EDIT_CATEGORY_PAGE, arguments: category);
+  static void navigateToEditCategoryPage(
+    BuildContext context, {
+    Function(Object?)? then,
+    Category? category,
+  }) {
+    Navigator.pushNamed(context, ROUTE_EDIT_CATEGORY_PAGE, arguments: category)
+        .then(then ?? (_) {});
   }
 
   static void navigateToEditCategoryNamePage(
     BuildContext context, {
     String? name,
   }) {
-    Navigator.pushNamed(context, ROUTE_EDIT_CATEGORY_NAME_PAGE,
-        arguments: name);
+    Navigator.pushNamed(
+      context,
+      ROUTE_EDIT_CATEGORY_NAME_PAGE,
+      arguments: name,
+    );
   }
 
   static void navigateToSelectCategoryTypePage(
@@ -103,16 +110,22 @@ class AppNavigator {
     BuildContext context,
     SubCategory subCategory,
   ) {
-    Navigator.pushNamed(context, ROUTE_EDIT_SUB_CATEGORY_PAGE,
-        arguments: subCategory);
+    Navigator.pushNamed(
+      context,
+      ROUTE_EDIT_SUB_CATEGORY_PAGE,
+      arguments: subCategory,
+    );
   }
 
   static void navigateToEditSubCategoryNamePage(
     BuildContext context, {
     String? name,
   }) {
-    Navigator.pushNamed(context, ROUTE_EDIT_SUB_CATEGORY_NAME_PAGE,
-        arguments: name);
+    Navigator.pushNamed(
+      context,
+      ROUTE_EDIT_SUB_CATEGORY_NAME_PAGE,
+      arguments: name,
+    );
   }
 
   static void navigateToAccountsPage(BuildContext context) {
@@ -141,24 +154,28 @@ class AppNavigator {
     BuildContext context, {
     Transaction? transaction,
   }) {
-    Navigator.pushNamed(context, ROUTE_EDIT_TRANSACTION_PAGE,
-        arguments: transaction);
+    Navigator.pushNamed(
+      context,
+      ROUTE_EDIT_TRANSACTION_PAGE,
+      arguments: transaction,
+    );
   }
 
   static void navigateToSelectAccountPage(
     BuildContext context,
     List<Account>? accounts,
   ) {
-    Navigator.pushNamed(context, ROUTE_SELECT_ACCOUNT_PAGE,
-        arguments: accounts);
+    Navigator.pushNamed(
+      context,
+      ROUTE_SELECT_ACCOUNT_PAGE,
+      arguments: accounts,
+    );
   }
 
   static void navigateToSelectCategoryPage(
     BuildContext context,
-    List<Category>? categories,
   ) {
-    Navigator.pushNamed(context, ROUTE_SELECT_CATEGORY_PAGE,
-        arguments: categories);
+    Navigator.pushNamed(context, ROUTE_SELECT_CATEGORY_PAGE);
   }
 
   static void navigateToSelectBudgetPage(

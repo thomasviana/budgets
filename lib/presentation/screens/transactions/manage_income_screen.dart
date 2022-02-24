@@ -24,10 +24,12 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
   @override
   void initState() {
     bloc = context.read<ManageIncomeScreenBloc>()
-      ..add(CheckInitialValues(
-        budgets: widget.budgets,
-        incomeAmount: widget.incomeAmount,
-      ));
+      ..add(
+        CheckInitialValues(
+          budgets: widget.budgets,
+          incomeAmount: widget.incomeAmount,
+        ),
+      );
     super.initState();
   }
 
@@ -55,20 +57,28 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: TextButton(
-                onPressed: () {
-                  bloc.add(IncomeManaged());
-                  context
-                      .read<EditTransactionScreenBloc>()
-                      .add(IncomeManagementDone());
-                  AppNavigator.navigateBack(context);
-                },
-                child: Text('Hecho'),
+                child: Text(
+                  'Hecho',
+                  style: TextStyle(
+                    color: state.isDoneEnabled
+                        ? AppColors.primaryColor
+                        : AppColors.greyDisabled,
+                  ),
+                ),
+                onPressed: state.isDoneEnabled
+                    ? () {
+                        bloc.add(IncomeManaged());
+                        context.read<EditTransactionScreenBloc>().add(
+                              IncomeManagementDone(),
+                            );
+                        AppNavigator.navigateBack(context);
+                      }
+                    : null,
               ),
             ),
           ],
         ),
         body: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
           child: Column(
             children: [
               const SizedBox(height: kDefaultPadding),
@@ -184,10 +194,10 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                padding: const EdgeInsets.all(kDefaultPadding).copyWith(top: 0),
                 child: GridView.builder(
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                     maxCrossAxisExtent: 200,
                     childAspectRatio: 9 / 7,
@@ -215,22 +225,23 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                              padding: const EdgeInsets.all(8.0),
-                              margin: const EdgeInsets.all(8.0),
-                              alignment: Alignment.center,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Color(budget.color),
-                                borderRadius: BorderRadius.circular(15),
+                            padding: const EdgeInsets.all(8.0),
+                            margin: const EdgeInsets.all(8.0),
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Color(budget.color),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Text(
+                              budget.abbreviation ?? budget.name,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.white,
                               ),
-                              child: Text(
-                                budget.abbreviation ?? budget.name,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.white,
-                                ),
-                              )),
+                            ),
+                          ),
                           Text(
                             '\$${currency.format(state.budgetAmounts![index])}',
                             style: TextStyle(

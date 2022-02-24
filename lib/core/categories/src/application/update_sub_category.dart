@@ -19,6 +19,7 @@ class UpdateSubCategory {
     String? name,
     int? icon,
     int? color,
+    double? amount,
   }) async {
     final subCategory = await _getSubCategories(categoryId).first.then(
           (subCategories) => subCategories.fold(
@@ -31,10 +32,12 @@ class UpdateSubCategory {
         );
     if (subCategory != null) {
       _subCategoryRepository.save(
-        subCategory
-          ..updateName(name ?? subCategory.name)
-          ..updateIcon(icon ?? subCategory.icon)
-          ..updateColor(color ?? subCategory.color),
+        subCategory.copyWith(
+          name: name,
+          icon: icon,
+          color: color,
+          balance: subCategory.balance + (amount ?? 0),
+        ),
       );
     }
   }

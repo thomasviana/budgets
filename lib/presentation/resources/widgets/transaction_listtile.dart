@@ -51,17 +51,23 @@ class TransactionListTile extends StatelessWidget {
           backgroundColor: Color(transaction.color),
         ),
         title: Text(
-          transaction.title,
+          transaction.title ?? '',
           style: Theme.of(context).textTheme.bodyText1,
         ),
         subtitle: Row(
           children: [
             Text(
-              budget.abbreviation!,
+              transaction.isExpense
+                  ? budget.abbreviation!
+                  : transaction.incomeType == IncomeType.active
+                      ? 'IA'
+                      : 'IP',
               style: TextStyle(
-                  color: Color(budget.color), fontWeight: FontWeight.bold),
+                color: Color(budget.color),
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            if (transaction.note.isNotEmpty)
+            if (transaction.note!.isNotEmpty)
               Text(
                 ' - ${transaction.note}',
                 style: TextStyle(

@@ -2,7 +2,6 @@ import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
@@ -170,8 +169,9 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                       ],
                     ),
                     onTap: () => AppNavigator.navigateToEditSubCategoryNamePage(
-                        context,
-                        name: state.subCategory!.name),
+                      context,
+                      name: state.subCategory!.name,
+                    ),
                   ),
                 ],
               ),
@@ -275,94 +275,5 @@ Future<void> _pickIcon(
 
   if (icon != null) {
     bloc.add(IconUpdated(icon.codePoint));
-  }
-}
-
-class _EditNameBottomSheet extends HookWidget {
-  final Function(String) onSavePressed;
-  final VoidCallback onCancelPressed;
-  final EditSubCategoryScreenState state;
-
-  const _EditNameBottomSheet({
-    Key? key,
-    required this.onSavePressed,
-    required this.onCancelPressed,
-    required this.state,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textEditingController = useTextEditingController()
-      ..text = state.subCategory!.name;
-    return DraggableScrollableSheet(
-      initialChildSize: 0.95,
-      maxChildSize: 0.95,
-      builder: (context, controller) => Container(
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      AppNavigator.navigateBack(context);
-                      onCancelPressed();
-                    }),
-                const Text(
-                  'Editar subcategoria',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                TextButton(
-                  child: const Text('Guardar'),
-                  onPressed: () {
-                    AppNavigator.navigateBack(context);
-                    onSavePressed(textEditingController.value.text.trim());
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 50),
-            TextField(
-              controller: textEditingController,
-              keyboardType: TextInputType.name,
-              autofocus: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                label: Center(
-                  child: Text(
-                    'Nuevo nombre',
-                  ),
-                ),
-                labelStyle: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14,
-                ),
-                hintStyle: TextStyle(fontSize: 18),
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                hintText: '',
-              ),
-            )
-          ],
-        ),
-      ),
-    );
   }
 }

@@ -15,7 +15,7 @@ class Account extends Entity<AccountId> {
 
   Account({
     required AccountId id,
-    required this.name,
+    this.name = '',
     required this.type,
     required this.color,
     this.imageUrl,
@@ -38,22 +38,11 @@ class Account extends Entity<AccountId> {
       color: color ?? this.color,
       imageUrl: imageUrl ?? this.imageUrl,
       balance: balance ?? this.balance,
-      accountUserId: accountUserId,
+      accountUserId: accountUserId ?? this.accountUserId,
     );
   }
 
-  // ignore: use_setters_to_change_properties
   void setUserId(String userId) => accountUserId = AccountUserId(userId);
-  // ignore: use_setters_to_change_properties
-  void updateName(String newName) => name = newName;
-  // ignore: use_setters_to_change_properties
-  void updateType(AccountType newType) => type = newType;
-  // ignore: use_setters_to_change_properties
-  void updateColor(int newColor) => color = newColor;
-  // ignore: use_setters_to_change_properties
-  void updateImageUrl(String? newImageUrl) => imageUrl = newImageUrl;
-  // ignore: use_setters_to_change_properties
-  void updateBalance(double newBalance) => balance = newBalance;
 
   int get icon {
     if (type == AccountType.bank) return 0xe040;
@@ -71,7 +60,6 @@ class Account extends Entity<AccountId> {
 
   factory Account.empty() => Account(
         id: AccountId.auto(),
-        name: '',
         type: AccountType.bank,
         color: AppColors.primaryColor.value,
       );

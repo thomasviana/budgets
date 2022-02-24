@@ -81,10 +81,6 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
               ),
               hintStyle: TextStyle(fontSize: 18),
               border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
               hintText: '',
             ),
           )

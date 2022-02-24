@@ -11,6 +11,13 @@ class TransactionsScreenState {
     required this.date,
   });
 
+  List<Transaction> get filteredTransactions {
+    final filteredTransactions = transactions
+        .where((transaction) => transaction.date.month == date.month)
+        .toList();
+    return filteredTransactions;
+  }
+
   factory TransactionsScreenState.initial() => TransactionsScreenState(
         isLoading: false,
         transactions: [],
@@ -29,6 +36,9 @@ class TransactionsScreenState {
     );
   }
 
-  List<DateTime> get dates =>
-      transactions.map((transaction) => transaction.date).toList();
+  List<DateTime> get filteredDates => transactions
+      .map((transaction) => transaction.date)
+      .toList()
+      .where((element) => element.month == date.month)
+      .toList();
 }

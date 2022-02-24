@@ -43,8 +43,8 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
   }
 
   Widget _buildBody(BuildContext context, TransactionsScreenState state) {
-    List<_StickyHeaderList> _sliverListContentList() {
-      final dates = state.dates
+    List<_StickyHeaderList> _sliverListTransactions() {
+      final dates = state.filteredDates
           .map((date) => DateTime(date.year, date.month, date.day))
           .toList()
           .toSet()
@@ -53,7 +53,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
           .map(
             (date) => _StickyHeaderList(
               date: date,
-              transactions: state.transactions,
+              transactions: state.filteredTransactions,
               onDelete: (id) => bloc.add(TransactionDeleted(transactionId: id)),
             ),
           )
@@ -116,12 +116,10 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                             onPressed: () => bloc.add(MonthDecremented()),
                           ),
                           Text(
-                            DateFormat('MMMM - yyyy',
-                                    AppLocalizations.of(context)!.localeName)
-                                .format(state.date),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                            DateFormat(
+                              'MMMM - yyyy',
+                              AppLocalizations.of(context)!.localeName,
+                            ).format(state.date),
                           ),
                           IconButton(
                             iconSize: 24 * scaleAnimation,
@@ -140,7 +138,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                 },
               ),
             ),
-            if (state.transactions.isEmpty)
+            if (state.filteredTransactions.isEmpty)
               SliverToBoxAdapter(
                 child: Center(
                   child: Padding(
@@ -158,7 +156,8 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                   ),
                 ),
               ),
-            ..._sliverListContentList(),
+            if (state.filteredTransactions.isNotEmpty)
+              ..._sliverListTransactions(),
           ],
         ),
       );
@@ -188,47 +187,43 @@ class _StickyHeaderList extends StatelessWidget {
       return budget;
     }
 
-    if (transactions.isEmpty) {
-      return Center(child: Text('Wmpty'));
-    } else {
-      return SliverStickyHeader(
-        key: UniqueKey(),
-        header: Material(
-          elevation: 6,
-          child: Container(
-            height: 30,
-            color: AppColors.white,
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              DateFormat('MMM d', AppLocalizations.of(context)!.localeName)
-                  .format(date),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
+    return SliverStickyHeader(
+      key: UniqueKey(),
+      header: Material(
+        elevation: 6,
+        child: Container(
+          height: 30,
+          color: AppColors.white,
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            DateFormat('MMM d', AppLocalizations.of(context)!.localeName)
+                .format(date),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
         ),
-        sliver: SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, i) {
-              final transaction = transactions
-                  .where((transaction) => transaction.date.day == date.day)
-                  .toList()[i];
-              return TransactionListTile(
-                transaction: transaction,
-                budget: _getBudget(transaction.txBudgetId),
-                onPressed: () => AppNavigator.navigateToEditTransactionPage(
-                  context,
-                  transaction: transaction,
-                ),
-                onDeletePressed: (_) => onDelete(transaction.id),
-              );
-            },
-            childCount: transactions
+      ),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, i) {
+            final transaction = transactions
                 .where((transaction) => transaction.date.day == date.day)
-                .length,
-          ),
+                .toList()[i];
+            return TransactionListTile(
+              transaction: transaction,
+              budget: _getBudget(transaction.txBudgetId),
+              onPressed: () => AppNavigator.navigateToEditTransactionPage(
+                context,
+                transaction: transaction,
+              ),
+              onDeletePressed: (_) => onDelete(transaction.id),
+            );
+          },
+          childCount: transactions
+              .where((transaction) => transaction.date.day == date.day)
+              .length,
         ),
-      );
-    }
+      ),
+    );
   }
 }

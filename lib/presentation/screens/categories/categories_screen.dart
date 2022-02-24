@@ -1,4 +1,3 @@
-import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/presentation/core/settings/settings_bloc.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,14 +24,14 @@ class CategoriesScreen extends StatelessWidget {
             CupertinoSliverNavigationBar(
               largeTitle: Text(AppLocalizations.of(context)!.misc_categories),
               previousPageTitle: AppLocalizations.of(context)!.misc_back,
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.add,
-                  color: AppColors.primaryColor,
-                ),
-                onPressed: () =>
-                    AppNavigator.navigateToEditCategoryPage(context),
-              ),
+              // trailing: IconButton(
+              //   icon: Icon(
+              //     Icons.add,
+              //     color: AppColors.primaryColor,
+              //   ),
+              //   onPressed: () =>
+              //       AppNavigator.navigateToEditCategoryPage(context),
+              // ),
             )
           ],
           body: _buildBody(context, state),
@@ -42,18 +41,6 @@ class CategoriesScreen extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, SettingsState state) {
-    final expenseCategories = state.categories
-        .where(
-          (category) => category.type == CategoryType.expense,
-        )
-        .toList();
-
-    final incomeCategories = state.categories
-        .where(
-          (category) => category.type == CategoryType.income,
-        )
-        .toList();
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,11 +64,11 @@ class CategoriesScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.only(top: 8),
-              itemCount: expenseCategories.length,
+              itemCount: state.expenseCategories.length,
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(height: 2),
               itemBuilder: (BuildContext context, int index) {
-                final category = expenseCategories[index];
+                final category = state.expenseCategories[index];
                 return ListTile(
                   title: Text(category.name),
                   leading: CircleAvatar(
@@ -98,8 +85,10 @@ class CategoriesScreen extends StatelessWidget {
                   trailing: Icon(
                     Icons.chevron_right,
                   ),
-                  onTap: () => AppNavigator.navigateToEditCategoryPage(context,
-                      category: category),
+                  onTap: () => AppNavigator.navigateToEditCategoryPage(
+                    context,
+                    category: category,
+                  ),
                 );
               },
             ),
@@ -123,13 +112,13 @@ class CategoriesScreen extends StatelessWidget {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.only(top: 8),
-              itemCount: incomeCategories.length,
+              itemCount: state.incomeCategories.length,
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(height: 2),
               itemBuilder: (BuildContext context, int index) {
-                final category = incomeCategories[index];
+                final category = state.incomeCategories[index];
                 return ListTile(
-                  title: Text(incomeCategories[index].name),
+                  title: Text(state.incomeCategories[index].name),
                   leading: CircleAvatar(
                     maxRadius: 20,
                     child: Icon(
@@ -145,8 +134,10 @@ class CategoriesScreen extends StatelessWidget {
                     Icons.chevron_right,
                   ),
                   onTap: () {
-                    AppNavigator.navigateToEditCategoryPage(context,
-                        category: category);
+                    AppNavigator.navigateToEditCategoryPage(
+                      context,
+                      category: category,
+                    );
                   },
                 );
               },

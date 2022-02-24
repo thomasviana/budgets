@@ -33,14 +33,26 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
   void initState() {
     settingsBloc = context.read<SettingsBloc>();
     bloc = context.read<EditTransactionScreenBloc>()
-      ..add(CheckTransaction(transaction: widget.transaction))
-      ..add(GetUserSubcategories())
+      ..add(
+        CheckTransaction(
+          transaction: widget.transaction,
+          accounts: settingsBloc.state.accounts,
+          subCategories: settingsBloc.state.subCategories,
+          budgets: settingsBloc.state.budgets,
+        ),
+      )
       ..add(GetAllUserSubcategories());
     formatter = CurrencyTextInputFormatter(symbol: '\$', decimalDigits: 0);
 
     dateTime = f.Timestamp.now();
     initializeDateFormatting();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.add(Dispose());
+    super.dispose();
   }
 
   @override
@@ -51,74 +63,75 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
   }
 
   Widget _buildState(BuildContext context, EditTransactionScreenState state) {
-    // Account leading
-    final account = state.account.fold(
-      () => settingsBloc.state.accounts.first,
-      (account) => account,
-    );
-    NetworkImage? image;
-    Icon? accountIcon;
-    bool isImageAvailable;
-    if (account.imageUrl != null) {
-      isImageAvailable = true;
-      image = NetworkImage(account.imageUrl!);
-    } else {
-      isImageAvailable = false;
-      accountIcon = Icon(
-        IconData(
-          account.icon,
-          fontFamily: 'MaterialIcons',
-        ),
-        color: AppColors.white,
-      );
-    }
-
-    // Budget leading
-    final budget = state.budget.fold(
-      () => settingsBloc.state.budgets.first,
-      (budget) => budget,
-    );
-    bool hasAbbreviation = true;
-    if (budget.abbreviation == null || budget.abbreviation!.isEmpty) {
-      hasAbbreviation = false;
-    }
-
-    //Date Picker
-    Widget buildDatePicker() => SizedBox(
-          height: 150,
-          child: CupertinoDatePicker(
-            initialDateTime: DateTime.now(),
-            maximumDate: DateTime.now(),
-            onDateTimeChanged: (dateTime) {
-              final timeStamp = f.Timestamp.fromDate(dateTime);
-              setState(() {
-                this.dateTime = timeStamp;
-              });
-            },
-          ),
-        );
-
-    //Date formatter
-    String getFormattedDate(DateTime date) {
-      if (date.day == DateTime.now().day) {
-        return AppLocalizations.of(context)!.misc_today +
-            DateFormat(',').add_jm().format(date);
-      } else if (date.day == DateTime.now().subtract(Duration(days: 1)).day) {
-        return AppLocalizations.of(context)!.misc_yesterday +
-            DateFormat(',').add_jm().format(date);
-      } else {
-        return DateFormat('MMM d,', AppLocalizations.of(context)!.localeName)
-            .add_jm()
-            .format(date);
-      }
-    }
-
     if (state.isLoading) {
       return Center(child: CircularProgressIndicator());
     } else {
+      // Account leading
+      final account = state.account.fold(
+        () => settingsBloc.state.accounts.first,
+        (account) => account,
+      );
+
+      NetworkImage? image;
+      Icon? accountIcon;
+      bool isImageAvailable;
+      if (account.imageUrl != null) {
+        isImageAvailable = true;
+        image = NetworkImage(account.imageUrl!);
+      } else {
+        isImageAvailable = false;
+        accountIcon = Icon(
+          IconData(
+            account.icon,
+            fontFamily: 'MaterialIcons',
+          ),
+          color: AppColors.white,
+        );
+      }
+
+      // Budget leading
+      final budget = state.budget.fold(
+        () => settingsBloc.state.budgets.first,
+        (budget) => budget,
+      );
+      bool hasAbbreviation = true;
+      if (budget.abbreviation == null || budget.abbreviation!.isEmpty) {
+        hasAbbreviation = false;
+      }
+
+      //Date Picker
+      Widget buildDatePicker() => SizedBox(
+            height: 150,
+            child: CupertinoDatePicker(
+              initialDateTime: DateTime.now(),
+              maximumDate: DateTime.now(),
+              onDateTimeChanged: (dateTime) {
+                final timeStamp = f.Timestamp.fromDate(dateTime);
+                setState(() {
+                  this.dateTime = timeStamp;
+                });
+              },
+            ),
+          );
+
+      //Date formatter
+      String getFormattedDate(DateTime date) {
+        if (date.day == DateTime.now().day) {
+          return AppLocalizations.of(context)!.misc_today +
+              DateFormat(',').add_jm().format(date);
+        } else if (date.day == DateTime.now().subtract(Duration(days: 1)).day) {
+          return AppLocalizations.of(context)!.misc_yesterday +
+              DateFormat(',').add_jm().format(date);
+        } else {
+          return DateFormat('MMM d,', AppLocalizations.of(context)!.localeName)
+              .add_jm()
+              .format(date);
+        }
+      }
+
       return Scaffold(
         body: Container(
-          color: Colors.white,
+          color: AppColors.white,
           child: ListView(
             children: [
               Padding(
@@ -156,7 +169,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                           ? () {
                               bloc.add(
                                 TransactionSaved(
-                                  amount: state.transaction!.amount,
+                                  amount: state.transaction.amount,
                                   date: dateTime.toDate(),
                                 ),
                               );
@@ -177,7 +190,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   },
                   onValueChanged: (int? index) =>
                       bloc.add(TransactionTypeChanged(index: index)),
-                  groupValue: state.transaction!.transactionType.index,
+                  groupValue: state.transaction.transactionType.index,
                 ),
               ),
               const SizedBox(height: 25),
@@ -187,7 +200,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                 autofocus: true,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: state.transaction!.isExpense
+                  color: state.transaction.isExpense
                       ? AppColors.red
                       : AppColors.green,
                   fontSize: 40,
@@ -197,19 +210,20 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   hintStyle: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
-                    color: state.transaction!.isExpense
+                    color: state.transaction.isExpense
                         ? AppColors.red
                         : AppColors.green,
                   ),
                   focusedBorder: InputBorder.none,
-                  hintText: '\$${currency.format(state.transaction!.amount)}',
+                  hintText: '\$${currency.format(state.transaction.amount)}',
                 ),
                 onChanged: (amount) => bloc.add(
                   AmountUpdated(
                     amount: amount.isEmpty
                         ? 0.0
                         : double.parse(
-                            amount.replaceAll(RegExp(r'[^\w\s]+'), '')),
+                            amount.replaceAll(RegExp(r'[^\w\s]+'), ''),
+                          ),
                   ),
                 ),
               ),
@@ -244,6 +258,46 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   );
                 },
               ),
+              if (state.transaction.isIncome) ...[
+                Divider(height: 2),
+                ListTile(
+                  leading: CircleAvatar(
+                    maxRadius: 20,
+                    backgroundColor: Color(account.color),
+                    backgroundImage: image,
+                    child: Text(
+                      state.transaction.incomeType == IncomeType.active
+                          ? 'IA'
+                          : 'IP',
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  minLeadingWidth: 2,
+                  title: Text('Tipo'),
+                  trailing: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: CupertinoSlidingSegmentedControl(
+                      children: const {
+                        0: Text('Activo'),
+                        1: Text('Pasivo'),
+                      },
+                      onValueChanged: (int? index) =>
+                          bloc.add(IncomeTypeChanged(index: index)),
+                      groupValue: state.transaction.incomeType!.index,
+                    ),
+                  ),
+                  onTap: () {
+                    AppNavigator.navigateToSelectAccountPage(
+                      context,
+                      settingsBloc.state.accounts,
+                    );
+                  },
+                ),
+              ],
               Divider(height: 2),
               ListTile(
                 leading: state.subCategory.fold(
@@ -289,19 +343,10 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     Icon(Icons.chevron_right)
                   ],
                 ),
-                onTap: () => AppNavigator.navigateToSelectCategoryPage(
-                  context,
-                  settingsBloc.state.categories
-                      .where(
-                        (category) =>
-                            category.type.index ==
-                            state.transaction!.transactionType.index,
-                      )
-                      .toList(),
-                ),
+                onTap: () => AppNavigator.navigateToSelectCategoryPage(context),
               ),
               Divider(height: 2),
-              if (state.transaction!.isExpense)
+              if (state.transaction.isExpense)
                 ListTile(
                   leading: CircleAvatar(
                     maxRadius: 20,
@@ -340,7 +385,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     );
                   },
                 ),
-              if (state.transaction!.isIncome)
+              if (state.transaction.isIncome)
                 ListTile(
                   leading: CircleAvatar(
                     maxRadius: 20,
@@ -355,7 +400,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (state.managementDone)
+                      if (state.transaction.isIncomeManaged)
                         Text(
                           'Hecho',
                           style: TextStyle(color: AppColors.green),
@@ -369,11 +414,16 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                       Icon(Icons.chevron_right)
                     ],
                   ),
-                  onTap: () => AppNavigator.navigateToManageIncomePage(context,
-                      arguments: [
-                        settingsBloc.state.budgets,
-                        state.transaction!.amount
-                      ]),
+                  onTap: state.transaction.isIncomeManaged ||
+                          state.transaction.amount == 0
+                      ? () {}
+                      : () => AppNavigator.navigateToManageIncomePage(
+                            context,
+                            arguments: [
+                              settingsBloc.state.budgets,
+                              state.transaction.amount
+                            ],
+                          ),
                 ),
               Divider(height: 2),
               ListTile(
@@ -384,7 +434,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      state.transaction!.note,
+                      state.transaction.note ?? '',
                       style: TextStyle(color: AppColors.greySecondary),
                     ),
                     SizedBox(width: 10),
@@ -394,7 +444,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                 onTap: () {
                   AppNavigator.navigateToEditNotePage(
                     context,
-                    content: state.transaction!.note,
+                    content: state.transaction.note,
                   );
                 },
               ),

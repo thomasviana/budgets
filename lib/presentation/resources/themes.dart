@@ -37,9 +37,10 @@ class AppTheme {
       colorScheme: _colorSchemeLight,
       textTheme: _textThemeBlack,
     ).copyWith(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        iconTheme: IconThemeData(color: Colors.white, size: 20),
-        appBarTheme: appBarTheme,
-        listTileTheme: ListTileThemeData(tileColor: AppColors.white));
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      iconTheme: IconThemeData(color: Colors.white, size: 20),
+      appBarTheme: appBarTheme,
+      listTileTheme: ListTileThemeData(tileColor: AppColors.white),
+    );
   }
 }

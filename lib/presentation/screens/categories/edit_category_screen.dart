@@ -53,8 +53,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (!state.isDefaultExpenseCategory &&
-                      !state.isDefaultIncomeCategory)
+                  if (!state.isDefaultCategory)
                     IconButton(
                       icon: Icon(
                         Icons.delete_outline,
@@ -175,26 +174,29 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                       name: state.category!.name,
                     ),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.compare_outlined),
-                    minLeadingWidth: 2,
-                    title: Text('Tipo'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          state.category!.type == CategoryType.income
-                              ? 'Categoria de Ingreso'
-                              : 'Categoria de Egreso',
-                          style: TextStyle(color: AppColors.greySecondary),
-                        ),
-                        SizedBox(width: 10),
-                        Icon(Icons.chevron_right)
-                      ],
+                  if (!state.isEditMode)
+                    ListTile(
+                      leading: Icon(Icons.compare_outlined),
+                      minLeadingWidth: 2,
+                      title: Text('Tipo'),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            state.category!.type == CategoryType.income
+                                ? 'Categoria de Ingreso'
+                                : 'Categoria de Egreso',
+                            style: TextStyle(color: AppColors.greySecondary),
+                          ),
+                          SizedBox(width: 10),
+                          Icon(Icons.chevron_right)
+                        ],
+                      ),
+                      onTap: () =>
+                          AppNavigator.navigateToSelectCategoryTypePage(
+                        context,
+                      ),
                     ),
-                    onTap: () =>
-                        AppNavigator.navigateToSelectCategoryTypePage(context),
-                  ),
                 ],
               ),
             ),
@@ -218,8 +220,11 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
               child: ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.only(top: 4, bottom: 4),
-                itemCount: subCategories.length - 1,
+                padding: subCategories.length == 1
+                    ? EdgeInsets.zero
+                    : EdgeInsets.only(top: 4, bottom: 4),
+                itemCount:
+                    subCategories.isNotEmpty ? subCategories.length - 1 : 0,
                 separatorBuilder: (BuildContext context, int index) =>
                     Divider(height: 2),
                 itemBuilder: (BuildContext context, int index) {
@@ -254,19 +259,20 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
             Container(
               color: AppColors.white,
               child: ListTile(
-                  title: Text('Añadir subcategoria'),
-                  leading: CircleAvatar(
-                    maxRadius: 20,
-                    child: Icon(
-                      Icons.add,
-                      color: AppColors.white,
-                    ),
-                    backgroundColor: AppColors.greyDisabled,
+                title: Text('Añadir subcategoria'),
+                leading: CircleAvatar(
+                  maxRadius: 20,
+                  child: Icon(
+                    Icons.add,
+                    color: AppColors.white,
                   ),
-                  trailing: Icon(
-                    Icons.chevron_right,
-                  ),
-                  onTap: () => bloc.add(SubcategoryAdded())),
+                  backgroundColor: AppColors.greyDisabled,
+                ),
+                trailing: Icon(
+                  Icons.chevron_right,
+                ),
+                onTap: () => bloc.add(SubcategoryAdded()),
+              ),
             ),
             SizedBox(height: 80),
           ],

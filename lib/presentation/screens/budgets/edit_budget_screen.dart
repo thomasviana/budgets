@@ -44,9 +44,9 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
         child: NestedScrollView(
           headerSliverBuilder: (ctx, inner) => [
             CupertinoSliverNavigationBar(
-              largeTitle: Text(state.isEditMode
-                  ? 'Editar presupuesto'
-                  : 'Crear presupuesto'),
+              largeTitle: Text(
+                state.isEditMode ? 'Editar presupuesto' : 'Crear presupuesto',
+              ),
               previousPageTitle: 'Atras',
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -355,8 +355,9 @@ class _EditNameBottomSheet extends HookWidget {
       maxChildSize: 0.95,
       builder: (context, controller) => Container(
         decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        ),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Column(
           children: [
@@ -364,11 +365,12 @@ class _EditNameBottomSheet extends HookWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      AppNavigator.navigateBack(context);
-                      onCancelPressed();
-                    }),
+                  child: const Text('Cancelar'),
+                  onPressed: () {
+                    AppNavigator.navigateBack(context);
+                    onCancelPressed();
+                  },
+                ),
                 const Text(
                   'Editar cuenta',
                   style: TextStyle(
@@ -444,8 +446,9 @@ class _EditAbbreviationBottomSheet extends HookWidget {
       maxChildSize: 0.95,
       builder: (context, controller) => Container(
         decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        ),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Column(
           children: [
@@ -538,8 +541,9 @@ class _EditBalanceBottomSheet extends HookWidget {
       maxChildSize: 0.95,
       builder: (context, controller) => Container(
         decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        ),
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Column(
           children: [
@@ -547,11 +551,12 @@ class _EditBalanceBottomSheet extends HookWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                    child: const Text('Cancelar'),
-                    onPressed: () {
-                      AppNavigator.navigateBack(context);
-                      onCancelPressed();
-                    }),
+                  child: const Text('Cancelar'),
+                  onPressed: () {
+                    AppNavigator.navigateBack(context);
+                    onCancelPressed();
+                  },
+                ),
                 const Text(
                   'Editar cuenta',
                   style: TextStyle(

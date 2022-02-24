@@ -17,7 +17,8 @@ class EditSubCategoryScreenBloc
   ) : super(EditSubCategoryScreenState.initial()) {
     on<CheckSubCategory>(
       (event, emit) => emit(
-          state.copyWith(subCategory: event.subCategory, isLoading: false)),
+        state.copyWith(subCategory: event.subCategory, isLoading: false),
+      ),
     );
     on<SubCategoryDeleted>(
       (event, emit) async => deleteSubCategory(state.subCategory!.id),
@@ -34,21 +35,21 @@ class EditSubCategoryScreenBloc
     on<ColorUpdated>(
       (event, emit) => emit(
         state.copyWith(
-          subCategory: state.subCategory!..updateColor(event.color),
+          subCategory: state.subCategory!.copyWith(color: event.color),
         ),
       ),
     );
     on<IconUpdated>(
       (event, emit) => emit(
         state.copyWith(
-          subCategory: state.subCategory!..updateIcon(event.icon),
+          subCategory: state.subCategory!.copyWith(icon: event.icon),
         ),
       ),
     );
     on<NameChanged>(
       (event, emit) => emit(
         state.copyWith(
-          subCategory: state.subCategory!..updateName(event.name),
+          subCategory: state.subCategory!.copyWith(name: event.name),
         ),
       ),
     );

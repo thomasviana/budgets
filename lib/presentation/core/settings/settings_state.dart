@@ -15,6 +15,18 @@ class SettingsState {
     required this.done,
   });
 
+  List<Category> get expenseCategories => categories
+      .where(
+        (category) => category.type == CategoryType.expense,
+      )
+      .toList();
+
+  List<Category> get incomeCategories => categories
+      .where(
+        (category) => category.type == CategoryType.income,
+      )
+      .toList();
+
   factory SettingsState.initial() => SettingsState(
         accounts: Account.defaultAccounts,
         categories: Category.defaultCategories,

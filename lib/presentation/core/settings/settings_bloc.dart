@@ -19,22 +19,22 @@ part 'settings_state.dart';
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   GetProfileInfo getProfileInfo;
   GetAccounts getAccounts;
-  SaveAccounts saveAccounts;
+  SetDefaultAccounts setDefaultAccounts;
   GetCategories getCategories;
-  SaveCategories saveCategories;
-  SaveSubCategories saveSubCategories;
+  SetDefaultCategories setDefaultCategories;
   GetBudgets getBudgets;
-  SaveBudgets saveBudgets;
+  SetDefaultBudgets setDefaultBudgets;
+  SetDefaultSubCategories setDefaultSubCategories;
 
   SettingsBloc(
     this.getProfileInfo,
     this.getAccounts,
-    this.saveAccounts,
+    this.setDefaultAccounts,
     this.getCategories,
-    this.saveCategories,
-    this.saveSubCategories,
+    this.setDefaultCategories,
     this.getBudgets,
-    this.saveBudgets,
+    this.setDefaultBudgets,
+    this.setDefaultSubCategories,
   ) : super(SettingsState.initial()) {
     on<GetUserAccounts>(_getUserAccounts);
     on<GetUserCategories>(_getUserCategories);
@@ -43,7 +43,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _getUserAccounts(
-      SettingsEvent event, Emitter<SettingsState> emit) async {
+    SettingsEvent event,
+    Emitter<SettingsState> emit,
+  ) async {
     final userOption = await getProfileInfo();
     await emit.onEach<Option<List<Account>>>(
       userOption.fold(
@@ -52,7 +54,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       ),
       onData: (userAccounts) async {
         userAccounts.fold(
-          () async => _setDefaultAccounts(),
+          () async => setDefaultAccounts(),
           (accounts) => emit(state.copyWith(accounts: accounts)),
         );
       },
@@ -60,7 +62,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _getUserCategories(
-      SettingsEvent event, Emitter<SettingsState> emit) async {
+    SettingsEvent event,
+    Emitter<SettingsState> emit,
+  ) async {
     final userOption = await getProfileInfo();
     await emit.onEach<Option<List<Category>>>(
       userOption.fold(
@@ -69,7 +73,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       ),
       onData: (userCategories) async {
         userCategories.fold(
-          () async => _setDefaultCategories(),
+          () async =>
+              setDefaultCategories().then((value) => setDefaultSubCategories()),
           (categories) => emit(state.copyWith(categories: categories)),
         );
       },
@@ -77,52 +82,21 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _getUserBudgets(
-      SettingsEvent event, Emitter<SettingsState> emit) async {
+    SettingsEvent event,
+    Emitter<SettingsState> emit,
+  ) async {
     final userOption = await getProfileInfo();
     await emit.onEach<Option<List<Budget>>>(
-      userOption.fold(() => Stream.empty(),
-          (user) => getBudgets(BudgetUserId(user.id.value))),
+      userOption.fold(
+        () => Stream.empty(),
+        (user) => getBudgets(BudgetUserId(user.id.value)),
+      ),
       onData: (userBudgets) async {
         userBudgets.fold(
-          () async => _setDefaultBudgets(),
+          () async => setDefaultBudgets(),
           (budgets) => emit(state.copyWith(budgets: budgets)),
         );
       },
     );
-  }
-
-  Future<void> _setDefaultAccounts() async {
-    final userOption = await getProfileInfo();
-    userOption.fold(() => null, (user) async {
-      final accounts = Account.defaultAccounts;
-      for (final account in accounts) {
-        account.setUserId(user.id.value);
-      }
-      await saveAccounts(accounts: accounts);
-    });
-  }
-
-  Future<void> _setDefaultCategories() async {
-    final userOption = await getProfileInfo();
-    userOption.fold(() => null, (user) async {
-      final categories = Category.defaultCategories;
-      final subCategories = SubCategory.allSubCategories;
-      for (final category in categories) {
-        category.setUserId(user.id.value);
-      }
-      await saveCategories(categories: categories);
-      await saveSubCategories(subCategories: subCategories);
-    });
-  }
-
-  Future<void> _setDefaultBudgets() async {
-    final userOption = await getProfileInfo();
-    userOption.fold(() => null, (user) async {
-      final budgets = Budget.defaultBudgets;
-      for (final budget in budgets) {
-        budget.setUserId(user.id.value);
-      }
-      await saveBudgets(budgets: budgets);
-    });
   }
 }

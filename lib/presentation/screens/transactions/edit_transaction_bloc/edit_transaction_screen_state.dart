@@ -1,7 +1,7 @@
 part of 'edit_transaction_screen_bloc.dart';
 
 class EditTransactionScreenState {
-  final Transaction? transaction;
+  final Transaction transaction;
   final Option<Account> account;
   final Option<Category> category;
   final Option<SubCategory> subCategory;
@@ -11,11 +11,10 @@ class EditTransactionScreenState {
   final Option<Budget> budget;
   final bool isLoading;
   final bool isEditMode;
-  final bool managementDone;
   final String? query;
 
   EditTransactionScreenState({
-    this.transaction,
+    required this.transaction,
     required this.account,
     required this.category,
     required this.subCategory,
@@ -25,13 +24,25 @@ class EditTransactionScreenState {
     required this.budget,
     required this.isLoading,
     required this.isEditMode,
-    this.managementDone = false,
     this.query = '',
   });
 
-  bool get isSaveEnabled => transaction!.amount != 0 && subCategory.isSome();
+  bool get isIncomeManaged =>
+      transaction.isIncome && transaction.isIncomeManaged;
+  bool get isSaveEnabled =>
+      transaction.amount != 0 &&
+      subCategory.isSome() &&
+      (transaction.isIncome
+          ? transaction.isIncomeManaged
+          : transaction.isExpense);
+  bool get isDefaultCategory => category.fold(
+        () => false,
+        (category) => Category.defaultCategories
+            .any((defCategory) => defCategory.id.value == category.id.value),
+      );
 
   factory EditTransactionScreenState.initial() => EditTransactionScreenState(
+        transaction: Transaction.empty(),
         isLoading: true,
         isEditMode: false,
         account: none(),
@@ -52,7 +63,6 @@ class EditTransactionScreenState {
     Option<Budget>? budget,
     bool? isLoading,
     bool? isEditMode,
-    bool? managementDone,
     String? query,
   }) {
     return EditTransactionScreenState(
@@ -67,7 +77,6 @@ class EditTransactionScreenState {
       budget: budget ?? this.budget,
       isLoading: isLoading ?? this.isLoading,
       isEditMode: isEditMode ?? this.isEditMode,
-      managementDone: managementDone ?? this.managementDone,
       query: query ?? this.query,
     );
   }

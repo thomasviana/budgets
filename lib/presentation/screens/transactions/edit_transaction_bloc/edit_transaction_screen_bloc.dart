@@ -20,52 +20,66 @@ class EditTransactionScreenBloc
   DeleteTransaction deleteTransaction;
   GetProfileInfo getProfileInfo;
   AddTransaction addTransaction;
-  SaveCategories saveCategories;
   GetSubCategories getSubCategories;
-  SaveSubCategories saveSubCategories;
+  SetDefaultSubCategories setDefaultSubCategories;
   EditTransactionScreenBloc(
     this.updateTransaction,
     this.deleteTransaction,
     this.getProfileInfo,
     this.addTransaction,
-    this.saveCategories,
     this.getSubCategories,
-    this.saveSubCategories,
+    this.setDefaultSubCategories,
   ) : super(EditTransactionScreenState.initial()) {
     on<CheckTransaction>((event, emit) {
-      event.transaction != null
-          ? emit(state.copyWith(
-              transaction: event.transaction,
-              isEditMode: true,
-              isLoading: false,
-            ))
-          : emit(state.copyWith(
-              transaction: Transaction.empty(),
-              isEditMode: false,
-              isLoading: false,
-            ));
-    });
-    on<GetUserSubcategories>((event, emit) async {
-      state.category.fold(
-        () {},
-        (stateCategory) async {
-          final isDefaultCategory = Category.defaultCategories.any((category) =>
-              category.id.value == stateCategory.id.value &&
-              category.type == CategoryType.expense);
-          await emit.onEach<Option<List<SubCategory>>>(
-            getSubCategories(stateCategory.id),
-            onData: (optionSubCategories) => optionSubCategories.fold(
-              () => isDefaultCategory
-                  ? _setDefaultSubCategories(emit)
-                  : emit(state.copyWith(subCategories: [])),
-              (subCategories) =>
-                  emit(state.copyWith(subCategories: subCategories)),
+      if (event.transaction != null) {
+        final account = event.accounts.firstWhere(
+          (account) =>
+              account.id.value == event.transaction!.txAccountId!.value,
+        );
+        final subCategory = event.subCategories.firstWhere(
+          (subCategory) =>
+              subCategory.id.value == event.transaction!.txSubCategoryId!.value,
+        );
+        final budget = event.budgets.lastWhere(
+          (budget) => budget.id.value == event.transaction!.txBudgetId!.value,
+        );
+        emit(
+          state.copyWith(
+            transaction: event.transaction,
+            isEditMode: true,
+            isLoading: false,
+            account: optionOf(account),
+            subCategory: optionOf(subCategory),
+            budget: optionOf(budget),
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            account: optionOf(event.accounts.first),
+            budget: optionOf(
+              event.budgets.firstWhere((account) => account.id.value == 'seg'),
             ),
-          );
-        },
+          ),
+        );
+      }
+    });
+
+    on<GetUserSubcategories>((event, emit) async {
+      await emit.onEach<Option<List<SubCategory>>>(
+        state.category.fold(
+          () => Stream.empty(),
+          (category) => getSubCategories(category.id),
+        ),
+        onData: (optionSubCategories) => optionSubCategories.fold(
+          () {},
+          (subCategories) => emit(state.copyWith(subCategories: subCategories)),
+        ),
       );
     });
 
+    // For search subcategories feature
     on<GetAllUserSubcategories>((event, emit) async {
       await emit.onEach<Option<List<SubCategory>>>(
         getSubCategories.all(),
@@ -95,33 +109,12 @@ class EditTransactionScreenBloc
           (user) async {
             if (state.isEditMode) {
               await updateTransaction(
-                transactionId: state.transaction!.id,
-                amount: event.amount,
-                date: event.date,
-                note: state.transaction!.note,
-                txAccountId: state.account.fold(
-                  () {},
-                  (account) => TransactionAccountId(account.id.value),
-                ),
-                txBudgetId: state.budget.fold(
-                  () {},
-                  (budget) => TransactionBudgetId(budget.id.value),
-                ),
-                txCategoryId: state.category.fold(
-                  () {},
-                  (category) => TransactionCategoryId(category.id.value),
-                ),
-                txType: state.transaction!.transactionType,
-                txUserId: TransactionUserId(user.id.value),
-                incomeType: IncomeType.values[1],
-              );
-            } else {
-              await addTransaction(
+                transactionId: state.transaction.id,
                 title: state.subCategory
                     .fold(() => '', (subCategory) => subCategory.name),
                 amount: event.amount,
                 date: event.date,
-                note: state.transaction!.note,
+                note: state.transaction.note,
                 icon: state.subCategory
                     .fold(() => 0xe532, (subCategory) => subCategory.icon),
                 color: state.subCategory.fold(
@@ -129,20 +122,56 @@ class EditTransactionScreenBloc
                   (subCategory) => subCategory.color,
                 ),
                 txAccountId: state.account.fold(
-                  () => TransactionAccountId('bank'),
+                  () {},
                   (account) => TransactionAccountId(account.id.value),
                 ),
                 txBudgetId: state.budget.fold(
-                  () => TransactionBudgetId('seg'),
+                  () {},
                   (budget) => TransactionBudgetId(budget.id.value),
                 ),
                 txCategoryId: state.category.fold(
-                  () => TransactionCategoryId('housing'),
+                  () {},
                   (category) => TransactionCategoryId(category.id.value),
                 ),
-                txType: state.transaction!.transactionType,
+                txType: state.transaction.transactionType,
                 txUserId: TransactionUserId(user.id.value),
-                incomeType: IncomeType.values[1],
+                incomeType: state.transaction.incomeType,
+                isIncomeManaged: state.transaction.isIncomeManaged,
+              );
+            } else {
+              await addTransaction(
+                title: state.subCategory
+                    .fold(() => '', (subCategory) => subCategory.name),
+                amount: event.amount,
+                date: event.date,
+                note: state.transaction.note ?? '',
+                icon: state.subCategory
+                    .fold(() => 0xe532, (subCategory) => subCategory.icon),
+                color: state.subCategory.fold(
+                  () => AppColors.primaryColor.value,
+                  (subCategory) => subCategory.color,
+                ),
+                txAccountId: state.account.fold(
+                  () {},
+                  (account) => TransactionAccountId(account.id.value),
+                ),
+                txBudgetId: state.budget.fold(
+                  () {},
+                  (budget) => TransactionBudgetId(budget.id.value),
+                ),
+                txCategoryId: state.category.fold(
+                  () {},
+                  (category) => TransactionCategoryId(category.id.value),
+                ),
+                txSubCategoryId: state.subCategory.fold(
+                  () {},
+                  (subCategory) =>
+                      TransactionSubCategoryId(subCategory.id.value),
+                ),
+                txType: state.transaction.transactionType,
+                txUserId: TransactionUserId(user.id.value),
+                incomeType: state.transaction.incomeType,
+                isIncomeManaged: state.transaction.isIncomeManaged,
               );
             }
           },
@@ -150,20 +179,23 @@ class EditTransactionScreenBloc
       ),
     );
     on<TransactionTypeChanged>(
-      (event, emit) => emit(
-        state.copyWith(
-          transaction: state.transaction!.copyWith(
-            transactionType: TransactionType.values[event.index!],
+      (event, emit) {
+        emit(
+          state.copyWith(
+            transaction: state.transaction.copyWith(
+              transactionType: TransactionType.values[event.index!],
+            ),
+            category: none(),
+            subCategory: none(),
           ),
-          category: none(),
-          subCategory: none(),
-        ),
-      ),
+        );
+      },
     );
     on<AmountUpdated>(
       (event, emit) => emit(
         state.copyWith(
-            transaction: state.transaction!.copyWith(amount: event.amount)),
+          transaction: state.transaction.copyWith(amount: event.amount),
+        ),
       ),
     );
     on<AccountSelected>(
@@ -189,30 +221,49 @@ class EditTransactionScreenBloc
         state.copyWith(subCategory: some(event.subCategory)),
       ),
     );
+    on<IncomeTypeChanged>(
+      (event, emit) {
+        emit(
+          state.copyWith(
+            transaction: state.transaction.copyWith(
+              incomeType: IncomeType.values[event.index!],
+            ),
+          ),
+        );
+      },
+    );
     on<BudgetSelected>(
       (event, emit) => emit(
         state.copyWith(budget: some(event.budget)),
       ),
     );
     on<IncomeManagementDone>(
-      (event, emit) => emit(state.copyWith(managementDone: true)),
+      (event, emit) => emit(
+        state.copyWith(
+          transaction: state.transaction.copyWith(
+            isIncomeManaged: true,
+          ),
+        ),
+      ),
     );
     on<DateUpdated>(
       (event, emit) => emit(
         state.copyWith(
-            transaction: state.transaction!.copyWith(date: event.date)),
+          transaction: state.transaction.copyWith(date: event.date),
+        ),
       ),
     );
     on<NoteUpdated>(
       (event, emit) => emit(
         state.copyWith(
-            transaction: state.transaction!.copyWith(note: event.note)),
+          transaction: state.transaction.copyWith(note: event.note),
+        ),
       ),
     );
-  }
-  Future<void> _setDefaultSubCategories(Emitter emit) async {
-    final subCategories = SubCategory.allSubCategories;
-    await saveSubCategories(subCategories: subCategories);
-    emit(state.copyWith(subCategories: subCategories));
+    on<Dispose>(
+      (event, emit) => emit(
+        EditTransactionScreenState.initial(),
+      ),
+    );
   }
 }

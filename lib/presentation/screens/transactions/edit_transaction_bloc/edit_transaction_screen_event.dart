@@ -4,7 +4,15 @@ abstract class EditTransactionScreenEvent {}
 
 class CheckTransaction extends EditTransactionScreenEvent {
   final Transaction? transaction;
-  CheckTransaction({this.transaction});
+  final List<Account> accounts;
+  final List<SubCategory> subCategories;
+  final List<Budget> budgets;
+  CheckTransaction({
+    this.transaction,
+    required this.accounts,
+    required this.subCategories,
+    required this.budgets,
+  });
 }
 
 class GetUserSubcategories extends EditTransactionScreenEvent {}
@@ -60,6 +68,13 @@ class SubCategorySelected extends EditTransactionScreenEvent {
   });
 }
 
+class IncomeTypeChanged extends EditTransactionScreenEvent {
+  final int? index;
+  IncomeTypeChanged({
+    this.index,
+  });
+}
+
 class BudgetSelected extends EditTransactionScreenEvent {
   final Budget budget;
   BudgetSelected({
@@ -82,3 +97,5 @@ class NoteUpdated extends EditTransactionScreenEvent {
 }
 
 class IncomeManagementDone extends EditTransactionScreenEvent {}
+
+class Dispose extends EditTransactionScreenEvent {}

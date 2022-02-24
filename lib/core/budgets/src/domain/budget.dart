@@ -14,7 +14,7 @@ class Budget extends Entity<BudgetId> {
 
   Budget({
     required BudgetId id,
-    required this.name,
+    this.name = '',
     this.abbreviation,
     required this.color,
     this.balance = 0,
@@ -34,26 +34,14 @@ class Budget extends Entity<BudgetId> {
       abbreviation: abbreviation ?? this.abbreviation,
       color: color ?? this.color,
       balance: balance ?? this.balance,
-      budgetUserId: budgetUserId,
+      budgetUserId: budgetUserId ?? this.budgetUserId,
     );
   }
 
-  // ignore: use_setters_to_change_properties
   void setUserId(String userId) => budgetUserId = BudgetUserId(userId);
-  // ignore: use_setters_to_change_properties
-  void updateName(String newName) => name = newName;
-  // ignore: use_setters_to_change_properties
-  void updateAbbreviation(String? newAbbreviation) =>
-      abbreviation = newAbbreviation;
-  // ignore: use_setters_to_change_properties
-  void updateColor(int newColor) => color = newColor;
-  // ignore: use_setters_to_change_properties
-  void updateBalance(double newBalance) => balance = newBalance;
 
   factory Budget.empty() => Budget(
         id: BudgetId.auto(),
-        name: '',
-        abbreviation: '',
         color: AppColors.primaryColor.value,
       );
 

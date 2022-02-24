@@ -22,10 +22,20 @@ class EditAccountScreenBloc
   ) : super(EditAccountScreenState.initial()) {
     on<CheckAccount>((event, emit) {
       event.account != null
-          ? emit(state.copyWith(
-              account: event.account, isEditMode: true, isLoading: false))
-          : emit(state.copyWith(
-              account: Account.empty(), isEditMode: false, isLoading: false));
+          ? emit(
+              state.copyWith(
+                account: event.account,
+                isEditMode: true,
+                isLoading: false,
+              ),
+            )
+          : emit(
+              state.copyWith(
+                account: Account.empty(),
+                isEditMode: false,
+                isLoading: false,
+              ),
+            );
     });
     on<AccountDeleted>(
       (event, emit) async => deleteAccount(state.account!.id),
@@ -37,22 +47,18 @@ class EditAccountScreenBloc
           (user) async {
             if (!state.isEditMode) {
               await createAccount(
-                accountUserId: AccountUserId(user.id.value),
                 name: state.account!.name,
                 color: state.account!.color,
                 type: state.account!.type,
                 imageUrl: state.account!.imageUrl,
-                balance: state.account!.balance,
               );
             } else {
               await updateAccount(
-                userId: AccountUserId(user.id.value),
                 accountId: state.account!.id,
                 name: state.account!.name,
                 color: state.account!.color,
                 type: state.account!.type,
                 imageUrl: state.account!.imageUrl,
-                balance: state.account!.balance,
               );
             }
           },
@@ -61,15 +67,20 @@ class EditAccountScreenBloc
     );
     on<ColorUpdated>(
       (event, emit) => emit(
-          state.copyWith(account: state.account!.copyWith(color: event.color))),
+        state.copyWith(account: state.account!.copyWith(color: event.color)),
+      ),
     );
     on<LogoSelected>(
-      (event, emit) => emit(state.copyWith(
-          account: state.account!.copyWith(imageUrl: event.imageUrl))),
+      (event, emit) => emit(
+        state.copyWith(
+          account: state.account!.copyWith(imageUrl: event.imageUrl),
+        ),
+      ),
     );
     on<LogoDeleted>(
-      (event, emit) =>
-          state.copyWith(account: state.account!.copyWith(imageUrl: null)),
+      (event, emit) => state.copyWith(
+        account: state.account!.copyWith(imageUrl: null),
+      ), //TODO: Use Option
     );
     on<NameChanged>(
       (event, emit) => emit(
@@ -77,12 +88,18 @@ class EditAccountScreenBloc
       ),
     );
     on<TypeChanged>(
-      (event, emit) => emit(state.copyWith(
-          account: state.account!.copyWith(type: event.accountType))),
+      (event, emit) => emit(
+        state.copyWith(
+          account: state.account!.copyWith(type: event.accountType),
+        ),
+      ),
     );
     on<BalanceChanged>(
-      (event, emit) => emit(state.copyWith(
-          account: state.account!.copyWith(balance: event.balance))),
+      (event, emit) => emit(
+        state.copyWith(
+          account: state.account!.copyWith(balance: event.balance),
+        ),
+      ),
     );
   }
 }

@@ -22,10 +22,12 @@ class TransactionsScreenBloc
     on<GetUserTransactions>((event, emit) async {
       final optionUser = await getProfileInfo();
       await emit.onEach<Option<List<Transaction>>>(
-        optionUser.fold(() => Stream.empty(),
-            (user) => getTransactions(TransactionUserId(user.id.value))),
+        optionUser.fold(
+          () => Stream.empty(),
+          (user) => getTransactions(TransactionUserId(user.id.value)),
+        ),
         onData: (optionTransactions) => optionTransactions.fold(
-          () {},
+          () => emit(state.copyWith(transactions: [])),
           (transactions) => emit(state.copyWith(transactions: transactions)),
         ),
       );

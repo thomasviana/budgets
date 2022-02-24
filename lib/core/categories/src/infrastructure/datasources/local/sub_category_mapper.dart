@@ -17,7 +17,7 @@ class SubCategoryMapper {
       name: dto.name,
       icon: dto.icon,
       color: dto.color,
-      amount: dto.amount,
+      balance: dto.balance,
       categoryId: categoryId,
     );
   }
@@ -27,16 +27,18 @@ class SubCategoryMapper {
 
   SubCategoriesTableCompanion toDbDto(SubCategory subCategory) {
     return SubCategoriesTableCompanion(
-        id: Value(subCategory.id.value),
-        name: Value(subCategory.name),
-        icon: Value(subCategory.icon),
-        color: Value(subCategory.color),
-        amount: Value(subCategory.amount),
-        cateogryId: Value(subCategory.categoryId.value));
+      id: Value(subCategory.id.value),
+      name: Value(subCategory.name),
+      icon: Value(subCategory.icon),
+      color: Value(subCategory.color),
+      balance: Value(subCategory.balance),
+      cateogryId: Value(subCategory.categoryId.value),
+    );
   }
 
   List<SubCategoriesTableCompanion> toDbDtoList(
-      List<SubCategory> subCategories) {
+    List<SubCategory> subCategories,
+  ) {
     return subCategories.map((subCategory) => toDbDto(subCategory)).toList();
   }
 }

@@ -19,7 +19,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Stream<Option<List<Transaction>>> fetchTransactions(
-      TransactionUserId userId) {
+    TransactionUserId userId,
+  ) {
     return _transactionslocalDataSource.getCachedTransactions(userId);
   }
 

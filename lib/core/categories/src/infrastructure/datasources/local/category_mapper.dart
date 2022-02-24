@@ -19,7 +19,7 @@ class CategoryMapper {
       name: dto.name,
       icon: dto.icon,
       color: dto.color,
-      amount: dto.amount,
+      balance: dto.balance,
       type: categoryType,
     );
   }
@@ -34,7 +34,7 @@ class CategoryMapper {
       name: Value(category.name),
       icon: Value(category.icon),
       color: Value(category.color),
-      amount: Value(category.amount),
+      balance: Value(category.balance),
       type: Value(categoryType),
       userId: Value(category.categoryUserId!.value),
     );

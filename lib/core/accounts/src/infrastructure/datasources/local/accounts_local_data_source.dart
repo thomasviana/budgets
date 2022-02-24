@@ -46,6 +46,9 @@ class AccountsLocalDataSourceImpl implements AccountsLocalDataSource {
   Stream<Option<List<Account>>> getCachedAccounts(
     AccountUserId userId,
   ) =>
-      _accountDao.getAccounts(userId.value).map((dtos) =>
-          dtos.isEmpty ? none() : some(_accountMapper.fromDbDtoList(dtos)));
+      _accountDao.getAccounts(userId.value).map(
+            (dtos) => dtos.isEmpty
+                ? none()
+                : some(_accountMapper.fromDbDtoList(dtos)),
+          );
 }

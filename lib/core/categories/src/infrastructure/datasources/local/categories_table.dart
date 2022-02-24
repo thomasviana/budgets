@@ -13,7 +13,7 @@ class CategoriesTable extends Table {
   TextColumn get name => text()();
   IntColumn get icon => integer()();
   IntColumn get color => integer()();
-  RealColumn get amount => real().withDefault(const Constant(0.0))();
+  RealColumn get balance => real().withDefault(const Constant(0.0))();
   IntColumn get type => intEnum<CategoryTypeTable>()();
   TextColumn get userId => text().nullable()();
 
@@ -30,7 +30,7 @@ class SubCategoriesTable extends Table {
   TextColumn get name => text()();
   IntColumn get icon => integer()();
   IntColumn get color => integer()();
-  RealColumn get amount => real().withDefault(const Constant(0.0))();
+  RealColumn get balance => real().withDefault(const Constant(0.0))();
   TextColumn get cateogryId => text().references(CategoriesTable, #id)();
 
   @override

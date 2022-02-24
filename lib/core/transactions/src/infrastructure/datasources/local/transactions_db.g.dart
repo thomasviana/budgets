@@ -19,9 +19,11 @@ class TransactionDbDto extends DataClass
   final int color;
   final String? userId;
   final String? categoryId;
+  final String? subCategoryId;
   final String? accountId;
   final String? budgetId;
   final IncomeTypeTable? incomeType;
+  final bool isIncomeManaged;
   TransactionDbDto(
       {required this.id,
       required this.transactionType,
@@ -33,9 +35,11 @@ class TransactionDbDto extends DataClass
       required this.color,
       this.userId,
       this.categoryId,
+      this.subCategoryId,
       this.accountId,
       this.budgetId,
-      this.incomeType});
+      this.incomeType,
+      required this.isIncomeManaged});
   factory TransactionDbDto.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -61,12 +65,16 @@ class TransactionDbDto extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}user_id']),
       categoryId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}category_id']),
+      subCategoryId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}sub_category_id']),
       accountId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}account_id']),
       budgetId: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}budget_id']),
       incomeType: $TransactionsTableTable.$converter1.mapToDart(const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}income_type'])),
+      isIncomeManaged: const BoolType().mapFromDatabaseResponse(
+          data['${effectivePrefix}is_income_managed'])!,
     );
   }
   @override
@@ -90,6 +98,9 @@ class TransactionDbDto extends DataClass
     if (!nullToAbsent || categoryId != null) {
       map['category_id'] = Variable<String?>(categoryId);
     }
+    if (!nullToAbsent || subCategoryId != null) {
+      map['sub_category_id'] = Variable<String?>(subCategoryId);
+    }
     if (!nullToAbsent || accountId != null) {
       map['account_id'] = Variable<String?>(accountId);
     }
@@ -100,6 +111,7 @@ class TransactionDbDto extends DataClass
       final converter = $TransactionsTableTable.$converter1;
       map['income_type'] = Variable<int?>(converter.mapToSql(incomeType));
     }
+    map['is_income_managed'] = Variable<bool>(isIncomeManaged);
     return map;
   }
 
@@ -118,6 +130,9 @@ class TransactionDbDto extends DataClass
       categoryId: categoryId == null && nullToAbsent
           ? const Value.absent()
           : Value(categoryId),
+      subCategoryId: subCategoryId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subCategoryId),
       accountId: accountId == null && nullToAbsent
           ? const Value.absent()
           : Value(accountId),
@@ -127,6 +142,7 @@ class TransactionDbDto extends DataClass
       incomeType: incomeType == null && nullToAbsent
           ? const Value.absent()
           : Value(incomeType),
+      isIncomeManaged: Value(isIncomeManaged),
     );
   }
 
@@ -145,9 +161,11 @@ class TransactionDbDto extends DataClass
       color: serializer.fromJson<int>(json['color']),
       userId: serializer.fromJson<String?>(json['userId']),
       categoryId: serializer.fromJson<String?>(json['categoryId']),
+      subCategoryId: serializer.fromJson<String?>(json['subCategoryId']),
       accountId: serializer.fromJson<String?>(json['accountId']),
       budgetId: serializer.fromJson<String?>(json['budgetId']),
       incomeType: serializer.fromJson<IncomeTypeTable?>(json['incomeType']),
+      isIncomeManaged: serializer.fromJson<bool>(json['isIncomeManaged']),
     );
   }
   @override
@@ -165,9 +183,11 @@ class TransactionDbDto extends DataClass
       'color': serializer.toJson<int>(color),
       'userId': serializer.toJson<String?>(userId),
       'categoryId': serializer.toJson<String?>(categoryId),
+      'subCategoryId': serializer.toJson<String?>(subCategoryId),
       'accountId': serializer.toJson<String?>(accountId),
       'budgetId': serializer.toJson<String?>(budgetId),
       'incomeType': serializer.toJson<IncomeTypeTable?>(incomeType),
+      'isIncomeManaged': serializer.toJson<bool>(isIncomeManaged),
     };
   }
 
@@ -182,9 +202,11 @@ class TransactionDbDto extends DataClass
           int? color,
           String? userId,
           String? categoryId,
+          String? subCategoryId,
           String? accountId,
           String? budgetId,
-          IncomeTypeTable? incomeType}) =>
+          IncomeTypeTable? incomeType,
+          bool? isIncomeManaged}) =>
       TransactionDbDto(
         id: id ?? this.id,
         transactionType: transactionType ?? this.transactionType,
@@ -196,9 +218,11 @@ class TransactionDbDto extends DataClass
         color: color ?? this.color,
         userId: userId ?? this.userId,
         categoryId: categoryId ?? this.categoryId,
+        subCategoryId: subCategoryId ?? this.subCategoryId,
         accountId: accountId ?? this.accountId,
         budgetId: budgetId ?? this.budgetId,
         incomeType: incomeType ?? this.incomeType,
+        isIncomeManaged: isIncomeManaged ?? this.isIncomeManaged,
       );
   @override
   String toString() {
@@ -213,16 +237,32 @@ class TransactionDbDto extends DataClass
           ..write('color: $color, ')
           ..write('userId: $userId, ')
           ..write('categoryId: $categoryId, ')
+          ..write('subCategoryId: $subCategoryId, ')
           ..write('accountId: $accountId, ')
           ..write('budgetId: $budgetId, ')
-          ..write('incomeType: $incomeType')
+          ..write('incomeType: $incomeType, ')
+          ..write('isIncomeManaged: $isIncomeManaged')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, transactionType, title, amount, date,
-      note, icon, color, userId, categoryId, accountId, budgetId, incomeType);
+  int get hashCode => Object.hash(
+      id,
+      transactionType,
+      title,
+      amount,
+      date,
+      note,
+      icon,
+      color,
+      userId,
+      categoryId,
+      subCategoryId,
+      accountId,
+      budgetId,
+      incomeType,
+      isIncomeManaged);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -237,9 +277,11 @@ class TransactionDbDto extends DataClass
           other.color == this.color &&
           other.userId == this.userId &&
           other.categoryId == this.categoryId &&
+          other.subCategoryId == this.subCategoryId &&
           other.accountId == this.accountId &&
           other.budgetId == this.budgetId &&
-          other.incomeType == this.incomeType);
+          other.incomeType == this.incomeType &&
+          other.isIncomeManaged == this.isIncomeManaged);
 }
 
 class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
@@ -253,9 +295,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   final Value<int> color;
   final Value<String?> userId;
   final Value<String?> categoryId;
+  final Value<String?> subCategoryId;
   final Value<String?> accountId;
   final Value<String?> budgetId;
   final Value<IncomeTypeTable?> incomeType;
+  final Value<bool> isIncomeManaged;
   const TransactionsTableCompanion({
     this.id = const Value.absent(),
     this.transactionType = const Value.absent(),
@@ -267,9 +311,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     this.color = const Value.absent(),
     this.userId = const Value.absent(),
     this.categoryId = const Value.absent(),
+    this.subCategoryId = const Value.absent(),
     this.accountId = const Value.absent(),
     this.budgetId = const Value.absent(),
     this.incomeType = const Value.absent(),
+    this.isIncomeManaged = const Value.absent(),
   });
   TransactionsTableCompanion.insert({
     required String id,
@@ -282,9 +328,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     required int color,
     this.userId = const Value.absent(),
     this.categoryId = const Value.absent(),
+    this.subCategoryId = const Value.absent(),
     this.accountId = const Value.absent(),
     this.budgetId = const Value.absent(),
     this.incomeType = const Value.absent(),
+    this.isIncomeManaged = const Value.absent(),
   })  : id = Value(id),
         transactionType = Value(transactionType),
         date = Value(date),
@@ -301,9 +349,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     Expression<int>? color,
     Expression<String?>? userId,
     Expression<String?>? categoryId,
+    Expression<String?>? subCategoryId,
     Expression<String?>? accountId,
     Expression<String?>? budgetId,
     Expression<IncomeTypeTable?>? incomeType,
+    Expression<bool>? isIncomeManaged,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -316,9 +366,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       if (color != null) 'color': color,
       if (userId != null) 'user_id': userId,
       if (categoryId != null) 'category_id': categoryId,
+      if (subCategoryId != null) 'sub_category_id': subCategoryId,
       if (accountId != null) 'account_id': accountId,
       if (budgetId != null) 'budget_id': budgetId,
       if (incomeType != null) 'income_type': incomeType,
+      if (isIncomeManaged != null) 'is_income_managed': isIncomeManaged,
     });
   }
 
@@ -333,9 +385,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       Value<int>? color,
       Value<String?>? userId,
       Value<String?>? categoryId,
+      Value<String?>? subCategoryId,
       Value<String?>? accountId,
       Value<String?>? budgetId,
-      Value<IncomeTypeTable?>? incomeType}) {
+      Value<IncomeTypeTable?>? incomeType,
+      Value<bool>? isIncomeManaged}) {
     return TransactionsTableCompanion(
       id: id ?? this.id,
       transactionType: transactionType ?? this.transactionType,
@@ -347,9 +401,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       color: color ?? this.color,
       userId: userId ?? this.userId,
       categoryId: categoryId ?? this.categoryId,
+      subCategoryId: subCategoryId ?? this.subCategoryId,
       accountId: accountId ?? this.accountId,
       budgetId: budgetId ?? this.budgetId,
       incomeType: incomeType ?? this.incomeType,
+      isIncomeManaged: isIncomeManaged ?? this.isIncomeManaged,
     );
   }
 
@@ -388,6 +444,9 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     if (categoryId.present) {
       map['category_id'] = Variable<String?>(categoryId.value);
     }
+    if (subCategoryId.present) {
+      map['sub_category_id'] = Variable<String?>(subCategoryId.value);
+    }
     if (accountId.present) {
       map['account_id'] = Variable<String?>(accountId.value);
     }
@@ -397,6 +456,9 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     if (incomeType.present) {
       final converter = $TransactionsTableTable.$converter1;
       map['income_type'] = Variable<int?>(converter.mapToSql(incomeType.value));
+    }
+    if (isIncomeManaged.present) {
+      map['is_income_managed'] = Variable<bool>(isIncomeManaged.value);
     }
     return map;
   }
@@ -414,9 +476,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
           ..write('color: $color, ')
           ..write('userId: $userId, ')
           ..write('categoryId: $categoryId, ')
+          ..write('subCategoryId: $subCategoryId, ')
           ..write('accountId: $accountId, ')
           ..write('budgetId: $budgetId, ')
-          ..write('incomeType: $incomeType')
+          ..write('incomeType: $incomeType, ')
+          ..write('isIncomeManaged: $isIncomeManaged')
           ..write(')'))
         .toString();
   }
@@ -489,6 +553,12 @@ class $TransactionsTableTable extends TransactionsTable
   late final GeneratedColumn<String?> categoryId = GeneratedColumn<String?>(
       'category_id', aliasedName, true,
       type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _subCategoryIdMeta =
+      const VerificationMeta('subCategoryId');
+  @override
+  late final GeneratedColumn<String?> subCategoryId = GeneratedColumn<String?>(
+      'sub_category_id', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
   final VerificationMeta _accountIdMeta = const VerificationMeta('accountId');
   @override
   late final GeneratedColumn<String?> accountId = GeneratedColumn<String?>(
@@ -505,6 +575,15 @@ class $TransactionsTableTable extends TransactionsTable
       incomeType = GeneratedColumn<int?>('income_type', aliasedName, true,
               type: const IntType(), requiredDuringInsert: false)
           .withConverter<IncomeTypeTable?>($TransactionsTableTable.$converter1);
+  final VerificationMeta _isIncomeManagedMeta =
+      const VerificationMeta('isIncomeManaged');
+  @override
+  late final GeneratedColumn<bool?> isIncomeManaged = GeneratedColumn<bool?>(
+      'is_income_managed', aliasedName, false,
+      type: const BoolType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'CHECK (is_income_managed IN (0, 1))',
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -517,9 +596,11 @@ class $TransactionsTableTable extends TransactionsTable
         color,
         userId,
         categoryId,
+        subCategoryId,
         accountId,
         budgetId,
-        incomeType
+        incomeType,
+        isIncomeManaged
       ];
   @override
   String get aliasedName => _alias ?? 'transactions';
@@ -576,6 +657,12 @@ class $TransactionsTableTable extends TransactionsTable
           categoryId.isAcceptableOrUnknown(
               data['category_id']!, _categoryIdMeta));
     }
+    if (data.containsKey('sub_category_id')) {
+      context.handle(
+          _subCategoryIdMeta,
+          subCategoryId.isAcceptableOrUnknown(
+              data['sub_category_id']!, _subCategoryIdMeta));
+    }
     if (data.containsKey('account_id')) {
       context.handle(_accountIdMeta,
           accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta));
@@ -585,6 +672,12 @@ class $TransactionsTableTable extends TransactionsTable
           budgetId.isAcceptableOrUnknown(data['budget_id']!, _budgetIdMeta));
     }
     context.handle(_incomeTypeMeta, const VerificationResult.success());
+    if (data.containsKey('is_income_managed')) {
+      context.handle(
+          _isIncomeManagedMeta,
+          isIncomeManaged.isAcceptableOrUnknown(
+              data['is_income_managed']!, _isIncomeManagedMeta));
+    }
     return context;
   }
 

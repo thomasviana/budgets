@@ -8,7 +8,8 @@ abstract class TransactionsLocalDataSource {
   Future<void> cacheTransaction(Transaction transaction);
   Future<void> cacheTransactions(List<Transaction> transactions);
   Stream<Option<List<Transaction>>> getCachedTransactions(
-      TransactionUserId userId);
+    TransactionUserId userId,
+  );
   Future<void> deleteTransaction(TransactionId transactionId);
 }
 
@@ -47,6 +48,9 @@ class TransactionsLocalDataSourceImpl implements TransactionsLocalDataSource {
   Stream<Option<List<Transaction>>> getCachedTransactions(
     TransactionUserId userId,
   ) =>
-      _transactionDao.getTransactions(userId.value).map((dtos) =>
-          dtos.isEmpty ? none() : some(_transactionMapper.fromDbDtoList(dtos)));
+      _transactionDao.getTransactions(userId.value).map(
+            (dtos) => dtos.isEmpty
+                ? none()
+                : some(_transactionMapper.fromDbDtoList(dtos)),
+          );
 }

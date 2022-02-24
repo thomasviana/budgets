@@ -14,7 +14,8 @@ abstract class CategoriesLocalDataSource {
   Future<void> cacheSubCategories(List<SubCategory> subCategories);
   Stream<Option<List<SubCategory>>> getAllCachedSubCategories();
   Stream<Option<List<SubCategory>>> getCachedSubCategories(
-      CategoryId categoryId);
+    CategoryId categoryId,
+  );
 
   Future<void> deleteSubCategory(CategoryId subCategoryId);
 }
@@ -58,8 +59,11 @@ class CategoriesLocalDataSourceImpl implements CategoriesLocalDataSource {
   Stream<Option<List<Category>>> getCachedCategories(
     CategoryUserId userId,
   ) =>
-      _categoryDao.getCategories(userId.value).map((dtos) =>
-          dtos.isEmpty ? none() : some(_categoryMapper.fromDbDtoList(dtos)));
+      _categoryDao.getCategories(userId.value).map(
+            (dtos) => dtos.isEmpty
+                ? none()
+                : some(_categoryMapper.fromDbDtoList(dtos)),
+          );
 
   @override
   Future<void> cacheSubCategory(SubCategory subCategory) {
@@ -84,16 +88,21 @@ class CategoriesLocalDataSourceImpl implements CategoriesLocalDataSource {
 
   @override
   Stream<Option<List<SubCategory>>> getCachedSubCategories(
-      CategoryId categoryId) {
-    return _subCategoryDao
-        .getSubCategories(categoryId.value)
-        .map((dtos) => optionOf(_subCategoryMapper.fromDbDtoList(dtos)));
+    CategoryId categoryId,
+  ) {
+    return _subCategoryDao.getSubCategories(categoryId.value).map(
+          (dtos) => dtos.isEmpty
+              ? none()
+              : some(_subCategoryMapper.fromDbDtoList(dtos)),
+        );
   }
 
   @override
   Stream<Option<List<SubCategory>>> getAllCachedSubCategories() {
-    return _subCategoryDao
-        .watchSubCategories()
-        .map((dtos) => optionOf(_subCategoryMapper.fromDbDtoList(dtos)));
+    return _subCategoryDao.watchSubCategories().map(
+          (dtos) => dtos.isEmpty
+              ? none()
+              : some(_subCategoryMapper.fromDbDtoList(dtos)),
+        );
   }
 }

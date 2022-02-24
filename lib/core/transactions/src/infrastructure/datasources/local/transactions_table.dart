@@ -20,9 +20,12 @@ class TransactionsTable extends Table {
   IntColumn get color => integer()();
   TextColumn get userId => text().nullable()();
   TextColumn get categoryId => text().nullable()();
+  TextColumn get subCategoryId => text().nullable()();
   TextColumn get accountId => text().nullable()();
   TextColumn get budgetId => text().nullable()();
   IntColumn get incomeType => intEnum<IncomeTypeTable>().nullable()();
+  BoolColumn get isIncomeManaged =>
+      boolean().withDefault(const Constant(false))();
 
   @override
   Set<Column> get primaryKey => {id};

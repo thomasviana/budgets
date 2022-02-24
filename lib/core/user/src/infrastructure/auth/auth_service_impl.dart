@@ -11,13 +11,13 @@ import 'user_firebase_prov.dart';
 class AuthServiceImpl implements AuthService {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-  final FacebookAuth _facebookAuth;
+  // final FacebookAuth _facebookAuth;
   final UserFirebaseProv _userFirebaseProvider;
 
   AuthServiceImpl(
     this._firebaseAuth,
     this._googleSignIn,
-    this._facebookAuth,
+    // this._facebookAuth,
     this._userFirebaseProvider,
   );
 

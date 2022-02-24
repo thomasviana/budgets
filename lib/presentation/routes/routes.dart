@@ -183,14 +183,11 @@ class AppRouter {
           ),
         );
       case AppNavigator.ROUTE_SELECT_CATEGORY_PAGE:
-        final categories = settings.arguments as List<Category>?;
         return _buildRoute(
           settings,
           BlocProvider.value(
             value: _editTransactionScreenBloc,
-            child: SelectCategoryScreen(
-              categories: categories,
-            ),
+            child: SelectCategoryScreen(),
           ),
         );
 

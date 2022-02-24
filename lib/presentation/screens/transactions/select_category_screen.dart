@@ -1,4 +1,5 @@
 import 'package:budgets/core/categories/domain.dart';
+import 'package:budgets/presentation/core/settings/settings_bloc.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
@@ -8,10 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class SelectCategoryScreen extends StatefulWidget {
-  final List<Category>? categories;
   const SelectCategoryScreen({
     Key? key,
-    required this.categories,
   }) : super(key: key);
   @override
   _SelectCategoryScreenState createState() => _SelectCategoryScreenState();
@@ -20,14 +19,15 @@ class SelectCategoryScreen extends StatefulWidget {
 class _SelectCategoryScreenState extends State<SelectCategoryScreen>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   late EditTransactionScreenBloc bloc;
+  late SettingsBloc settingsBloc;
   late TabController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 2, vsync: this);
-    bloc = context.read<EditTransactionScreenBloc>()
-      ..add(GetUserSubcategories());
+    bloc = context.read<EditTransactionScreenBloc>();
+    settingsBloc = context.read<SettingsBloc>();
   }
 
   @override
@@ -37,6 +37,7 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return BlocBuilder<EditTransactionScreenBloc, EditTransactionScreenState>(
       builder: _buildState,
@@ -44,6 +45,12 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
   }
 
   Widget _buildState(BuildContext context, EditTransactionScreenState state) {
+    final categories = settingsBloc.state.categories
+        .where(
+          (category) =>
+              category.type.index == state.transaction.transactionType.index,
+        )
+        .toList();
     return Scaffold(
       appBar: AppBar(
         title: Text('Categoría'),
@@ -69,6 +76,7 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
                     : AppNavigator.navigateToEditCategoryPage(
                         context,
                         category: category,
+                        then: (_) => bloc.add(GetUserSubcategories()),
                       ),
               ),
             ),
@@ -89,7 +97,7 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
                     controller: _controller,
                     children: [
                       _CategoriesList(
-                        categories: widget.categories!,
+                        categories: categories,
                         controller: _controller,
                       ),
                       _SubCategoriesList()
@@ -294,8 +302,10 @@ class _SubCategoriesList extends StatelessWidget {
               ),
               onTap: () {
                 context.read<EditTransactionScreenBloc>().add(
-                    SubCategorySelected(
-                        subCategory: state.subCategories!.first));
+                      SubCategorySelected(
+                        subCategory: state.subCategories!.first,
+                      ),
+                    );
                 AppNavigator.navigateBack(context);
               },
             ),
@@ -353,10 +363,10 @@ class _SubCategoriesList extends StatelessWidget {
                     },
                   ),
                   onTap: () {
+                    AppNavigator.navigateBack(context);
                     context
                         .read<EditTransactionScreenBloc>()
                         .add(SubCategorySelected(subCategory: subCategory));
-                    AppNavigator.navigateBack(context);
                   },
                 );
               },

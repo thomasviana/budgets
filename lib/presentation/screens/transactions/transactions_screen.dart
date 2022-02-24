@@ -49,15 +49,14 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
           .toList()
           .toSet()
           .toList();
-
       return dates
-          .map((date) => _StickyHeaderList(
-                state: state,
-                date: date,
-                transactions: state.transactions,
-                onDelete: (id) =>
-                    bloc.add(TransactionDeleted(transactionId: id)),
-              ))
+          .map(
+            (date) => _StickyHeaderList(
+              date: date,
+              transactions: state.transactions,
+              onDelete: (id) => bloc.add(TransactionDeleted(transactionId: id)),
+            ),
+          )
           .toList();
     }
 
@@ -66,37 +65,112 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return CustomScrollView(
-        physics: AlwaysScrollableScrollPhysics(),
-        slivers: [
-          CupertinoSliverNavigationBar(
-            largeTitle: Text('Transacciones'),
-            trailing: IconButton(
-              icon: Icon(
-                Icons.add_circle,
-                color: AppColors.primaryColor,
-                size: 34,
+      return SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: Text(
+                'Transactions',
+                style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
               ),
-              onPressed: () =>
-                  AppNavigator.navigateToEditTransactionPage(context),
+              elevation: 0.5,
+              floating: true,
+              pinned: true,
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    Icons.add_circle,
+                    color: AppColors.primaryColor,
+                    size: 34,
+                  ),
+                  onPressed: () =>
+                      AppNavigator.navigateToEditTransactionPage(context),
+                ),
+              ],
+              expandedHeight: kToolbarHeight + 45,
+              flexibleSpace: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  final containerHeight =
+                      (constraints.biggest.height - 65) / 45;
+                  final scaleAnimation =
+                      containerHeight < 0.0 ? 0.0 : containerHeight;
+                  return Padding(
+                    padding: const EdgeInsets.only(top: kToolbarHeight),
+                    child: Container(
+                      margin: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.black12,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            iconSize: 24 * scaleAnimation,
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            icon: Icon(
+                              Icons.chevron_left,
+                              color: AppColors.greyPrimary
+                                  .withOpacity(scaleAnimation),
+                            ),
+                            onPressed: () {},
+                          ),
+                          Text(
+                            'Febrary',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          IconButton(
+                            iconSize: 24 * scaleAnimation,
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            icon: Icon(
+                              Icons.chevron_right,
+                              color: AppColors.greyPrimary
+                                  .withOpacity(scaleAnimation),
+                            ),
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-          ..._sliverListContentList(),
-        ],
+            if (state.transactions.isEmpty)
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: MediaQuery.of(context).size.height / 3,
+                    ),
+                    child: Text(
+                      'No hay transacciones\ningresadas aún.',
+                      style: TextStyle(
+                        color: AppColors.greyDisabled,
+                        fontSize: 20,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ..._sliverListContentList(),
+          ],
+        ),
       );
     }
   }
 }
 
 class _StickyHeaderList extends StatelessWidget {
-  final TransactionsScreenState state;
   final DateTime date;
   final List<Transaction> transactions;
   final dynamic Function(TransactionId) onDelete;
 
   const _StickyHeaderList({
     Key? key,
-    required this.state,
     required this.date,
     required this.transactions,
     required this.onDelete,
@@ -104,7 +178,7 @@ class _StickyHeaderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Budget _getBudgetAbreviation(TransactionBudgetId? id) {
+    Budget _getBudget(TransactionBudgetId? id) {
       final budgets = context.read<SettingsBloc>().state.budgets;
       final budget = budgets.firstWhere(
         (budget) => budget.id.value == id!.value,
@@ -112,40 +186,47 @@ class _StickyHeaderList extends StatelessWidget {
       return budget;
     }
 
-    return SliverStickyHeader(
-      key: UniqueKey(),
-      header: Container(
-        height: 30,
-        color: AppColors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        alignment: Alignment.centerLeft,
-        child: Text(
-          DateFormat('MMM d', AppLocalizations.of(context)!.localeName)
-              .format(date),
-          style: TextStyle(fontWeight: FontWeight.bold),
+    if (transactions.isEmpty) {
+      return Center(child: Text('Wmpty'));
+    } else {
+      return SliverStickyHeader(
+        key: UniqueKey(),
+        header: Material(
+          elevation: 6,
+          child: Container(
+            height: 30,
+            color: AppColors.white,
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              DateFormat('MMM d', AppLocalizations.of(context)!.localeName)
+                  .format(date),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ),
         ),
-      ),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (context, i) {
-            final transaction = transactions
-                .where((transaction) => transaction.date.day == date.day)
-                .toList()[i];
-            return TransactionListTile(
-              transaction: transaction,
-              budget: _getBudgetAbreviation(transaction.txBudgetId),
-              onPressed: () => AppNavigator.navigateToEditTransactionPage(
-                context,
+        sliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, i) {
+              final transaction = transactions
+                  .where((transaction) => transaction.date.day == date.day)
+                  .toList()[i];
+              return TransactionListTile(
                 transaction: transaction,
-              ),
-              onDeletePressed: (_) => onDelete(transaction.id),
-            );
-          },
-          childCount: transactions
-              .where((transaction) => transaction.date.day == date.day)
-              .length,
+                budget: _getBudget(transaction.txBudgetId),
+                onPressed: () => AppNavigator.navigateToEditTransactionPage(
+                  context,
+                  transaction: transaction,
+                ),
+                onDeletePressed: (_) => onDelete(transaction.id),
+              );
+            },
+            childCount: transactions
+                .where((transaction) => transaction.date.day == date.day)
+                .length,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

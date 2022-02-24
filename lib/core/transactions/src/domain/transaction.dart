@@ -8,50 +8,64 @@ enum IncomeType { active, pasive }
 
 class Transaction extends Entity<TransactionId> {
   TransactionType transactionType;
-  String title;
-  double amount = 0;
+  String? title;
+  double amount;
   DateTime date;
-  String note;
+  String? note;
   int icon;
   int color;
   TransactionUserId? txUserId;
   TransactionCategoryId? txCategoryId;
+  TransactionSubCategoryId? txSubCategoryId;
   TransactionAccountId? txAccountId;
   TransactionBudgetId? txBudgetId;
   IncomeType? incomeType;
+  bool isIncomeManaged;
 
   Transaction({
     required TransactionId id,
     required this.transactionType,
-    required this.title,
-    required this.amount,
+    this.title = '',
+    this.amount = 0,
     required this.date,
-    required this.note,
+    this.note = '',
     required this.icon,
     required this.color,
     this.txUserId,
     this.txCategoryId,
+    this.txSubCategoryId,
     this.txAccountId,
     this.txBudgetId,
-    this.incomeType,
+    this.incomeType = IncomeType.active,
+    this.isIncomeManaged = false,
   }) : super(id);
 
   bool get isIncome => transactionType == TransactionType.income;
   bool get isExpense => transactionType == TransactionType.expense;
 
+  factory Transaction.empty() => Transaction(
+        id: TransactionId.auto(),
+        transactionType: TransactionType.expense,
+        date: DateTime.now(),
+        icon: 0xe5f9,
+        color: AppColors.primaryColor.value,
+      );
+
   Transaction copyWith({
     TransactionType? transactionType,
     String? title,
-    double? amount = 0,
+    double? amount,
     DateTime? date,
     String? note,
     int? icon,
     int? color,
     TransactionUserId? txUserId,
     TransactionCategoryId? txCategoryId,
+    TransactionSubCategoryId? txSubCategoryId,
     TransactionAccountId? txAccountId,
     TransactionBudgetId? txBudgetId,
     IncomeType? incomeType,
+    bool? isIncomeManaged,
   }) {
     return Transaction(
       id: id,
@@ -64,50 +78,13 @@ class Transaction extends Entity<TransactionId> {
       color: color ?? this.color,
       txUserId: txUserId ?? this.txUserId,
       txCategoryId: txCategoryId ?? this.txCategoryId,
+      txSubCategoryId: txSubCategoryId ?? this.txSubCategoryId,
       txAccountId: txAccountId ?? this.txAccountId,
       txBudgetId: txBudgetId ?? this.txBudgetId,
       incomeType: incomeType ?? this.incomeType,
+      isIncomeManaged: isIncomeManaged ?? this.isIncomeManaged,
     );
   }
-
-  // ignore: use_setters_to_change_properties
-  void changeType(TransactionType newType) => transactionType = newType;
-  // ignore: use_setters_to_change_properties
-  void updateTitle(String newTitle) => title = newTitle;
-  // ignore: use_setters_to_change_properties
-  void updateAmount(double newAmount) => amount = newAmount;
-  // ignore: use_setters_to_change_properties
-  void updateDate(DateTime newDate) => date = newDate;
-  // ignore: use_setters_to_change_properties
-  void updateNote(String newNote) => note = newNote;
-  // ignore: use_setters_to_change_properties
-  void updateIcon(int newIcon) => icon = newIcon;
-  // ignore: use_setters_to_change_properties
-  void updateColor(int newColor) => color = newColor;
-  // ignore: use_setters_to_change_properties
-  void setUserId(TransactionUserId? userId) => txUserId = userId;
-  // ignore: use_setters_to_change_properties
-  void updateCategoryId(TransactionCategoryId? categoryId) =>
-      txCategoryId = categoryId;
-  // ignore: use_setters_to_change_properties
-  void updateAccountId(TransactionAccountId? accountId) =>
-      txAccountId = accountId;
-  // ignore: use_setters_to_change_properties
-  void updateBudgetId(TransactionBudgetId? newBudgetId) =>
-      txBudgetId = newBudgetId;
-  // ignore: use_setters_to_change_properties
-  void updateIncomeType(IncomeType? newType) => incomeType = newType;
-
-  factory Transaction.empty() => Transaction(
-        id: TransactionId.auto(),
-        transactionType: TransactionType.expense,
-        title: '',
-        amount: 0,
-        date: DateTime.now(),
-        note: '',
-        icon: 0xe5f9,
-        color: AppColors.primaryColor.value,
-      );
 }
 
 class TransactionId extends AlphanumericId {
@@ -126,6 +103,12 @@ class TransactionCategoryId extends AlphanumericId {
   const TransactionCategoryId(String value) : super(value);
 
   TransactionCategoryId.auto() : this(const Uuid().v1());
+}
+
+class TransactionSubCategoryId extends AlphanumericId {
+  const TransactionSubCategoryId(String value) : super(value);
+
+  TransactionSubCategoryId.auto() : this(const Uuid().v1());
 }
 
 class TransactionAccountId extends AlphanumericId {

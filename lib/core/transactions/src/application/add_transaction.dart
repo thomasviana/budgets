@@ -1,3 +1,4 @@
+import 'package:budgets/core/user/application.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain.dart';
@@ -5,8 +6,12 @@ import '../../domain.dart';
 @injectable
 class AddTransaction {
   final TransactionRepository _transactionRepository;
+  final GetProfileInfo _getProfileInfo;
 
-  const AddTransaction(this._transactionRepository);
+  const AddTransaction(
+    this._transactionRepository,
+    this._getProfileInfo,
+  );
 
   Future<void>? call({
     required TransactionType txType,
@@ -23,24 +28,33 @@ class AddTransaction {
     TransactionBudgetId? txBudgetId,
     IncomeType? incomeType,
     bool isIncomeManaged = false,
-  }) {
-    return _transactionRepository.save(
-      Transaction(
-        id: TransactionId.auto(),
-        transactionType: txType,
-        title: title,
-        amount: amount,
-        date: date,
-        note: note,
-        icon: icon,
-        color: color,
-        txUserId: txUserId,
-        txAccountId: txAccountId,
-        txCategoryId: txCategoryId,
-        txSubCategoryId: txSubCategoryId,
-        txBudgetId: txBudgetId,
-        incomeType: incomeType,
-        isIncomeManaged: isIncomeManaged,
+    Map<String, dynamic>? budgetManagement,
+  }) async {
+    _getProfileInfo().then(
+      (optionUser) => optionUser.fold(
+        () {},
+        (user) {
+          _transactionRepository.save(
+            Transaction(
+              id: TransactionId.auto(),
+              transactionType: txType,
+              title: title,
+              amount: amount,
+              date: date,
+              note: note,
+              icon: icon,
+              color: color,
+              txUserId: TransactionUserId(user.id.value),
+              txAccountId: txAccountId,
+              txCategoryId: txCategoryId,
+              txSubCategoryId: txSubCategoryId,
+              txBudgetId: txBudgetId,
+              incomeType: incomeType,
+              isIncomeManaged: isIncomeManaged,
+              budgetManagement: budgetManagement,
+            ),
+          );
+        },
       ),
     );
   }

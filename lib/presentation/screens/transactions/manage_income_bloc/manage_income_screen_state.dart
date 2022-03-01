@@ -1,6 +1,7 @@
 part of 'manage_income_screen_bloc.dart';
 
 class ManageIncomeScreenState {
+  final TransactionId? transactionId;
   final List<Budget>? budgets;
   final double? incomeAmount;
   final double? managedAmount;
@@ -10,6 +11,7 @@ class ManageIncomeScreenState {
   List<double>? budgetPercentages;
 
   ManageIncomeScreenState({
+    this.transactionId,
     this.budgets,
     this.incomeAmount,
     this.managedAmount = 0,
@@ -32,6 +34,7 @@ class ManageIncomeScreenState {
       );
 
   ManageIncomeScreenState copyWith({
+    TransactionId? transactionId,
     List<Budget>? budgets,
     double? incomeAmount,
     double? managedAmount,
@@ -41,6 +44,7 @@ class ManageIncomeScreenState {
     List<double>? budgetPercentages,
   }) {
     return ManageIncomeScreenState(
+      transactionId: transactionId ?? this.transactionId,
       budgets: budgets ?? this.budgets,
       incomeAmount: incomeAmount ?? this.incomeAmount,
       managedAmount: managedAmount ?? this.managedAmount,

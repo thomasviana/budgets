@@ -227,8 +227,9 @@ class AppRouter {
               ),
             ],
             child: ManageIncomeScreen(
-              budgets: arguments[0] as List<Budget>,
-              incomeAmount: arguments[1] as double,
+              transactionId: arguments[0] as TransactionId,
+              budgets: arguments[1] as List<Budget>,
+              incomeAmount: arguments[2] as double,
             ),
           ),
         );

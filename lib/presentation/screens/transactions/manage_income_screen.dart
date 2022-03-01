@@ -1,4 +1,5 @@
 import 'package:budgets/core/budgets/domain.dart';
+import 'package:budgets/core/transactions/domain.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:budgets/presentation/screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
@@ -7,10 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ManageIncomeScreen extends StatefulWidget {
+  final TransactionId transactionId;
   final List<Budget> budgets;
   final double incomeAmount;
   const ManageIncomeScreen({
     Key? key,
+    required this.transactionId,
     required this.budgets,
     required this.incomeAmount,
   }) : super(key: key);
@@ -20,16 +23,19 @@ class ManageIncomeScreen extends StatefulWidget {
 
 class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
   late ManageIncomeScreenBloc bloc;
+  late EditTransactionScreenBloc txBloc;
 
   @override
   void initState() {
     bloc = context.read<ManageIncomeScreenBloc>()
       ..add(
         CheckInitialValues(
+          transactionId: widget.transactionId,
           budgets: widget.budgets,
           incomeAmount: widget.incomeAmount,
         ),
       );
+    txBloc = context.read<EditTransactionScreenBloc>();
     super.initState();
   }
 
@@ -67,10 +73,10 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                 ),
                 onPressed: state.isDoneEnabled
                     ? () {
-                        bloc.add(IncomeManaged());
-                        context.read<EditTransactionScreenBloc>().add(
-                              IncomeManagementDone(),
-                            );
+                        final budgetsInfo = bloc.getBudgetsInfo();
+                        txBloc.add(
+                          IncomeManagementDone(budgetsInfo: budgetsInfo),
+                        );
                         AppNavigator.navigateBack(context);
                       }
                     : null,

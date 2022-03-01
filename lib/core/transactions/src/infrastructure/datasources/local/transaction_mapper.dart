@@ -34,6 +34,7 @@ class TransactionMapper {
       txBudgetId: budgetId,
       incomeType: incomeType,
       isIncomeManaged: dto.isIncomeManaged,
+      budgetManagement: dto.budgetManagement!.budgetToAmount,
     );
   }
 
@@ -44,6 +45,8 @@ class TransactionMapper {
     final incomeType = IncomeTypeTable.values[transaction.incomeType!.index];
     final transactionType =
         TransactionTypeTable.values[transaction.transactionType.index];
+    final BudgetManagement budgetManagement =
+        BudgetManagement(budgetToAmount: transaction.budgetManagement);
     return TransactionsTableCompanion(
       id: Value(transaction.id.value),
       transactionType: Value(transactionType),
@@ -60,6 +63,7 @@ class TransactionMapper {
       budgetId: Value(transaction.txBudgetId!.value),
       incomeType: Value(incomeType),
       isIncomeManaged: Value(transaction.isIncomeManaged),
+      budgetManagement: Value(budgetManagement),
     );
   }
 

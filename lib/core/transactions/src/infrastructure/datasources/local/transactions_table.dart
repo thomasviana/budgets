@@ -1,12 +1,52 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
+import 'package:json_annotation/json_annotation.dart' as j;
 
 import 'transactions_db.dart';
 
 part 'transactions_table.g.dart';
 
+@j.JsonSerializable()
+class BudgetManagement {
+  final Map<String, Map<String, double>>? budgetToAmount;
+
+  BudgetManagement({
+    required this.budgetToAmount,
+  });
+
+  factory BudgetManagement.fromJson(Map<String, dynamic> json) =>
+      _$BudgetManagementFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BudgetManagementToJson(this);
+}
+
 enum TransactionTypeTable { expense, income }
 enum IncomeTypeTable { active, pasive }
+
+class BudgetManagementConverter
+    extends TypeConverter<BudgetManagement, String> {
+  const BudgetManagementConverter();
+  @override
+  BudgetManagement? mapToDart(String? fromDb) {
+    if (fromDb == null) {
+      return null;
+    }
+    return BudgetManagement.fromJson(
+      json.decode(fromDb) as Map<String, dynamic>,
+    );
+  }
+
+  @override
+  String? mapToSql(BudgetManagement? value) {
+    if (value == null) {
+      return null;
+    }
+
+    return json.encode(value.toJson());
+  }
+}
 
 @DataClassName('TransactionDbDto')
 class TransactionsTable extends Table {
@@ -26,6 +66,8 @@ class TransactionsTable extends Table {
   IntColumn get incomeType => intEnum<IncomeTypeTable>().nullable()();
   BoolColumn get isIncomeManaged =>
       boolean().withDefault(const Constant(false))();
+  TextColumn get budgetManagement =>
+      text().map(const BudgetManagementConverter()).nullable()();
 
   @override
   Set<Column> get primaryKey => {id};

@@ -14,7 +14,6 @@ class UpdateTransaction {
   );
 
   Future<void> call({
-    required TransactionUserId txUserId,
     required TransactionId transactionId,
     String? title,
     double? amount,
@@ -28,8 +27,9 @@ class UpdateTransaction {
     IncomeType? incomeType,
     bool? isIncomeManaged,
     TransactionType? txType,
+    BudgetManagementMap? budgetManagement,
   }) async {
-    final transaction = await _getTransactions(txUserId).first.then(
+    final transaction = await _getTransactions().first.then(
           (transactions) => transactions.fold(
             () => null,
             (transactions) => transactions.firstWhere(
@@ -53,6 +53,7 @@ class UpdateTransaction {
           txBudgetId: txBudgetId,
           incomeType: incomeType,
           isIncomeManaged: isIncomeManaged,
+          budgetManagement: budgetManagement,
         ),
       );
     }

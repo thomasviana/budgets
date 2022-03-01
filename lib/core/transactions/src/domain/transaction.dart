@@ -6,6 +6,8 @@ import '../../../../common/value_objects.dart';
 enum TransactionType { expense, income }
 enum IncomeType { active, pasive }
 
+typedef BudgetManagementMap = Map<String, Map<String, double>>;
+
 class Transaction extends Entity<TransactionId> {
   TransactionType transactionType;
   String? title;
@@ -21,6 +23,7 @@ class Transaction extends Entity<TransactionId> {
   TransactionBudgetId? txBudgetId;
   IncomeType? incomeType;
   bool isIncomeManaged;
+  BudgetManagementMap? budgetManagement;
 
   Transaction({
     required TransactionId id,
@@ -38,6 +41,7 @@ class Transaction extends Entity<TransactionId> {
     this.txBudgetId,
     this.incomeType = IncomeType.active,
     this.isIncomeManaged = false,
+    this.budgetManagement,
   }) : super(id);
 
   bool get isIncome => transactionType == TransactionType.income;
@@ -66,6 +70,7 @@ class Transaction extends Entity<TransactionId> {
     TransactionBudgetId? txBudgetId,
     IncomeType? incomeType,
     bool? isIncomeManaged,
+    BudgetManagementMap? budgetManagement,
   }) {
     return Transaction(
       id: id,
@@ -83,6 +88,7 @@ class Transaction extends Entity<TransactionId> {
       txBudgetId: txBudgetId ?? this.txBudgetId,
       incomeType: incomeType ?? this.incomeType,
       isIncomeManaged: isIncomeManaged ?? this.isIncomeManaged,
+      budgetManagement: budgetManagement ?? this.budgetManagement,
     );
   }
 }

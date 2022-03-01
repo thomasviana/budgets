@@ -24,6 +24,7 @@ class TransactionDbDto extends DataClass
   final String? budgetId;
   final IncomeTypeTable? incomeType;
   final bool isIncomeManaged;
+  final BudgetManagement? budgetManagement;
   TransactionDbDto(
       {required this.id,
       required this.transactionType,
@@ -39,7 +40,8 @@ class TransactionDbDto extends DataClass
       this.accountId,
       this.budgetId,
       this.incomeType,
-      required this.isIncomeManaged});
+      required this.isIncomeManaged,
+      this.budgetManagement});
   factory TransactionDbDto.fromData(Map<String, dynamic> data,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -75,6 +77,9 @@ class TransactionDbDto extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}income_type'])),
       isIncomeManaged: const BoolType().mapFromDatabaseResponse(
           data['${effectivePrefix}is_income_managed'])!,
+      budgetManagement: $TransactionsTableTable.$converter2.mapToDart(
+          const StringType().mapFromDatabaseResponse(
+              data['${effectivePrefix}budget_management'])),
     );
   }
   @override
@@ -112,6 +117,11 @@ class TransactionDbDto extends DataClass
       map['income_type'] = Variable<int?>(converter.mapToSql(incomeType));
     }
     map['is_income_managed'] = Variable<bool>(isIncomeManaged);
+    if (!nullToAbsent || budgetManagement != null) {
+      final converter = $TransactionsTableTable.$converter2;
+      map['budget_management'] =
+          Variable<String?>(converter.mapToSql(budgetManagement));
+    }
     return map;
   }
 
@@ -143,6 +153,9 @@ class TransactionDbDto extends DataClass
           ? const Value.absent()
           : Value(incomeType),
       isIncomeManaged: Value(isIncomeManaged),
+      budgetManagement: budgetManagement == null && nullToAbsent
+          ? const Value.absent()
+          : Value(budgetManagement),
     );
   }
 
@@ -166,6 +179,8 @@ class TransactionDbDto extends DataClass
       budgetId: serializer.fromJson<String?>(json['budgetId']),
       incomeType: serializer.fromJson<IncomeTypeTable?>(json['incomeType']),
       isIncomeManaged: serializer.fromJson<bool>(json['isIncomeManaged']),
+      budgetManagement:
+          serializer.fromJson<BudgetManagement?>(json['budgetManagement']),
     );
   }
   @override
@@ -188,6 +203,8 @@ class TransactionDbDto extends DataClass
       'budgetId': serializer.toJson<String?>(budgetId),
       'incomeType': serializer.toJson<IncomeTypeTable?>(incomeType),
       'isIncomeManaged': serializer.toJson<bool>(isIncomeManaged),
+      'budgetManagement':
+          serializer.toJson<BudgetManagement?>(budgetManagement),
     };
   }
 
@@ -206,7 +223,8 @@ class TransactionDbDto extends DataClass
           String? accountId,
           String? budgetId,
           IncomeTypeTable? incomeType,
-          bool? isIncomeManaged}) =>
+          bool? isIncomeManaged,
+          BudgetManagement? budgetManagement}) =>
       TransactionDbDto(
         id: id ?? this.id,
         transactionType: transactionType ?? this.transactionType,
@@ -223,6 +241,7 @@ class TransactionDbDto extends DataClass
         budgetId: budgetId ?? this.budgetId,
         incomeType: incomeType ?? this.incomeType,
         isIncomeManaged: isIncomeManaged ?? this.isIncomeManaged,
+        budgetManagement: budgetManagement ?? this.budgetManagement,
       );
   @override
   String toString() {
@@ -241,7 +260,8 @@ class TransactionDbDto extends DataClass
           ..write('accountId: $accountId, ')
           ..write('budgetId: $budgetId, ')
           ..write('incomeType: $incomeType, ')
-          ..write('isIncomeManaged: $isIncomeManaged')
+          ..write('isIncomeManaged: $isIncomeManaged, ')
+          ..write('budgetManagement: $budgetManagement')
           ..write(')'))
         .toString();
   }
@@ -262,7 +282,8 @@ class TransactionDbDto extends DataClass
       accountId,
       budgetId,
       incomeType,
-      isIncomeManaged);
+      isIncomeManaged,
+      budgetManagement);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -281,7 +302,8 @@ class TransactionDbDto extends DataClass
           other.accountId == this.accountId &&
           other.budgetId == this.budgetId &&
           other.incomeType == this.incomeType &&
-          other.isIncomeManaged == this.isIncomeManaged);
+          other.isIncomeManaged == this.isIncomeManaged &&
+          other.budgetManagement == this.budgetManagement);
 }
 
 class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
@@ -300,6 +322,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
   final Value<String?> budgetId;
   final Value<IncomeTypeTable?> incomeType;
   final Value<bool> isIncomeManaged;
+  final Value<BudgetManagement?> budgetManagement;
   const TransactionsTableCompanion({
     this.id = const Value.absent(),
     this.transactionType = const Value.absent(),
@@ -316,6 +339,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     this.budgetId = const Value.absent(),
     this.incomeType = const Value.absent(),
     this.isIncomeManaged = const Value.absent(),
+    this.budgetManagement = const Value.absent(),
   });
   TransactionsTableCompanion.insert({
     required String id,
@@ -333,6 +357,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     this.budgetId = const Value.absent(),
     this.incomeType = const Value.absent(),
     this.isIncomeManaged = const Value.absent(),
+    this.budgetManagement = const Value.absent(),
   })  : id = Value(id),
         transactionType = Value(transactionType),
         date = Value(date),
@@ -354,6 +379,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     Expression<String?>? budgetId,
     Expression<IncomeTypeTable?>? incomeType,
     Expression<bool>? isIncomeManaged,
+    Expression<BudgetManagement?>? budgetManagement,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -371,6 +397,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       if (budgetId != null) 'budget_id': budgetId,
       if (incomeType != null) 'income_type': incomeType,
       if (isIncomeManaged != null) 'is_income_managed': isIncomeManaged,
+      if (budgetManagement != null) 'budget_management': budgetManagement,
     });
   }
 
@@ -389,7 +416,8 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       Value<String?>? accountId,
       Value<String?>? budgetId,
       Value<IncomeTypeTable?>? incomeType,
-      Value<bool>? isIncomeManaged}) {
+      Value<bool>? isIncomeManaged,
+      Value<BudgetManagement?>? budgetManagement}) {
     return TransactionsTableCompanion(
       id: id ?? this.id,
       transactionType: transactionType ?? this.transactionType,
@@ -406,6 +434,7 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
       budgetId: budgetId ?? this.budgetId,
       incomeType: incomeType ?? this.incomeType,
       isIncomeManaged: isIncomeManaged ?? this.isIncomeManaged,
+      budgetManagement: budgetManagement ?? this.budgetManagement,
     );
   }
 
@@ -460,6 +489,11 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
     if (isIncomeManaged.present) {
       map['is_income_managed'] = Variable<bool>(isIncomeManaged.value);
     }
+    if (budgetManagement.present) {
+      final converter = $TransactionsTableTable.$converter2;
+      map['budget_management'] =
+          Variable<String?>(converter.mapToSql(budgetManagement.value));
+    }
     return map;
   }
 
@@ -480,7 +514,8 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
           ..write('accountId: $accountId, ')
           ..write('budgetId: $budgetId, ')
           ..write('incomeType: $incomeType, ')
-          ..write('isIncomeManaged: $isIncomeManaged')
+          ..write('isIncomeManaged: $isIncomeManaged, ')
+          ..write('budgetManagement: $budgetManagement')
           ..write(')'))
         .toString();
   }
@@ -584,6 +619,14 @@ class $TransactionsTableTable extends TransactionsTable
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (is_income_managed IN (0, 1))',
       defaultValue: const Constant(false));
+  final VerificationMeta _budgetManagementMeta =
+      const VerificationMeta('budgetManagement');
+  @override
+  late final GeneratedColumnWithTypeConverter<BudgetManagement, String?>
+      budgetManagement = GeneratedColumn<String?>(
+              'budget_management', aliasedName, true,
+              type: const StringType(), requiredDuringInsert: false)
+          .withConverter<BudgetManagement>($TransactionsTableTable.$converter2);
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -600,7 +643,8 @@ class $TransactionsTableTable extends TransactionsTable
         accountId,
         budgetId,
         incomeType,
-        isIncomeManaged
+        isIncomeManaged,
+        budgetManagement
       ];
   @override
   String get aliasedName => _alias ?? 'transactions';
@@ -678,6 +722,7 @@ class $TransactionsTableTable extends TransactionsTable
           isIncomeManaged.isAcceptableOrUnknown(
               data['is_income_managed']!, _isIncomeManagedMeta));
     }
+    context.handle(_budgetManagementMeta, const VerificationResult.success());
     return context;
   }
 
@@ -699,6 +744,8 @@ class $TransactionsTableTable extends TransactionsTable
           TransactionTypeTable.values);
   static TypeConverter<IncomeTypeTable?, int> $converter1 =
       const EnumIndexConverter<IncomeTypeTable>(IncomeTypeTable.values);
+  static TypeConverter<BudgetManagement, String> $converter2 =
+      const BudgetManagementConverter();
 }
 
 abstract class _$TransactionsDatabase extends GeneratedDatabase {

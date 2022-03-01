@@ -28,7 +28,7 @@ class AddTransaction {
     TransactionBudgetId? txBudgetId,
     IncomeType? incomeType,
     bool isIncomeManaged = false,
-    Map<String, dynamic>? budgetManagement,
+    BudgetManagementMap? budgetManagement,
   }) async {
     _getProfileInfo().then(
       (optionUser) => optionUser.fold(

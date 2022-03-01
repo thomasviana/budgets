@@ -117,7 +117,7 @@ import '../presentation/screens/categories/edit_category_bloc/edit_category_scre
     as _i37;
 import '../presentation/screens/categories/edit_sub_category_bloc/edit_sub_category_screen_bloc.dart'
     as _i39;
-import '../presentation/screens/home/cubit/home_screen_cubit.dart' as _i50;
+import '../presentation/screens/home/home_bloc/home_screen_bloc.dart' as _i50;
 import '../presentation/screens/profile/cubit/profile_screen_cubit.dart'
     as _i54;
 import '../presentation/screens/settings/cubit/settings_screen_cubit.dart'
@@ -216,7 +216,6 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       _i40.EditTransactionScreenBloc(
           get<_i41.UpdateTransaction>(),
           get<_i41.DeleteTransaction>(),
-          get<_i11.GetProfileInfo>(),
           get<_i41.AddTransaction>(),
           get<_i38.GetSubCategories>(),
           get<_i38.SetDefaultSubCategories>()));
@@ -236,12 +235,12 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i48.GetCategories(get<_i25.CategoryRepository>()));
   gh.lazySingleton<_i49.GoogleSignIn>(
       () => firebaseInjectableModule.googleSignIn);
-  gh.factory<_i50.HomeScreenCubit>(
-      () => _i50.HomeScreenCubit(get<_i11.GetProfileInfo>()));
+  gh.factory<_i50.HomeScreenBloc>(
+      () => _i50.HomeScreenBloc(get<_i41.GetTransactions>()));
   gh.lazySingleton<_i51.ImagePicker>(
       () => imagePickerInjectableModule.imagePicker);
   gh.factory<_i52.ManageIncomeScreenBloc>(() => _i52.ManageIncomeScreenBloc(
-      get<_i11.GetProfileInfo>(), get<_i36.UpdateBudget>()));
+      get<_i36.UpdateBudget>(), get<_i41.UpdateTransaction>()));
   gh.factory<_i53.PickUserImage>(
       () => _i53.PickUserImage(get<_i51.ImagePicker>()));
   gh.factory<_i54.ProfileScreenCubit>(() => _i54.ProfileScreenCubit(
@@ -284,9 +283,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       _i70.TransactionsLocalDataSourceImpl(
           get<_i69.TransactionDao>(), get<_i69.TransactionMapper>()));
   gh.factory<_i71.TransactionsScreenBloc>(() => _i71.TransactionsScreenBloc(
-      get<_i41.GetTransactions>(),
-      get<_i11.GetProfileInfo>(),
-      get<_i41.DeleteTransaction>()));
+      get<_i41.GetTransactions>(), get<_i41.DeleteTransaction>()));
   gh.factory<_i72.UpdateAccount>(() => _i72.UpdateAccount(
       get<_i6.AccountRepository>(),
       get<_i46.GetAccounts>(),
@@ -305,8 +302,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       get<_i67.TransactionRepository>(), get<_i41.GetTransactions>()));
   gh.lazySingleton<_i77.UserFirebaseProv>(() => _i77.UserFirebaseProv(
       get<_i45.FirebaseStorage>(), get<_i44.FirebaseFirestore>()));
-  gh.factory<_i78.AddTransaction>(
-      () => _i78.AddTransaction(get<_i67.TransactionRepository>()));
+  gh.factory<_i78.AddTransaction>(() => _i78.AddTransaction(
+      get<_i67.TransactionRepository>(), get<_i11.GetProfileInfo>()));
   gh.lazySingleton<_i79.AuthService>(() => _i80.AuthServiceImpl(
       get<_i43.FirebaseAuth>(),
       get<_i49.GoogleSignIn>(),
@@ -324,8 +321,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i86.GetProfileInfo(get<_i79.AuthService>()));
   gh.factory<_i87.GetSubCategories>(
       () => _i87.GetSubCategories(get<_i25.SubCategoryRepository>()));
-  gh.factory<_i88.GetTransactions>(
-      () => _i88.GetTransactions(get<_i67.TransactionRepository>()));
+  gh.factory<_i88.GetTransactions>(() => _i88.GetTransactions(
+      get<_i67.TransactionRepository>(), get<_i11.GetProfileInfo>()));
   gh.factory<_i89.LogOut>(() => _i89.LogOut(get<_i79.AuthService>()));
   gh.factory<_i90.SetDefaultSubCategories>(() => _i90.SetDefaultSubCategories(
       get<_i11.GetProfileInfo>(), get<_i25.SubCategoryRepository>()));

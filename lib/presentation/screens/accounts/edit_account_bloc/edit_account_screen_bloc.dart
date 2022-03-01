@@ -79,8 +79,8 @@ class EditAccountScreenBloc
     );
     on<LogoDeleted>(
       (event, emit) => state.copyWith(
-        account: state.account!.copyWith(imageUrl: null),
-      ), //TODO: Use Option
+        account: state.account!.copyWith(imageUrl: null), //TODO: Use Option
+      ),
     );
     on<NameChanged>(
       (event, emit) => emit(

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tuple/tuple.dart';
 
 import '../../resources/colors.dart';
 import 'components/accounts_tab.dart';
 import 'components/budgets_tab.dart';
 import 'components/home_silver_app_bar.dart';
-import 'cubit/home_screen_cubit.dart';
-import 'delegates/sliver_persistent_header_delegate_impl.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -16,10 +13,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  late HomeScreenCubit cubit;
   final List<Tuple2> tabs = [
-    Tuple2('Cuentas', AccountsTab()),
     Tuple2('Presupuestos', BudgetsTab()),
+    Tuple2('Cuentas', AccountsTab()),
   ];
 
   late TabController _tabController;
@@ -27,8 +23,6 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    cubit = context.read<HomeScreenCubit>();
-    cubit.init();
     _tabController = TabController(length: tabs.length, vsync: this);
     _tabController.addListener(() => setState(() {}));
   }
@@ -41,12 +35,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeScreenCubit, HomeScreenState>(
-      builder: _buildState,
-    );
-  }
-
-  Widget _buildState(BuildContext context, HomeScreenState state) {
     return SafeArea(
       child: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -59,8 +47,8 @@ class _HomeScreenState extends State<HomeScreen>
               delegate: SliverPersistentHeaderDelegateImpl(
                 color: AppColors.white,
                 tabBar: TabBar(
-                  labelColor: Colors.black,
-                  indicatorColor: Colors.black,
+                  labelColor: AppColors.black,
+                  indicatorColor: AppColors.primaryVariant,
                   controller: _tabController,
                   tabs: tabs
                       .map<Tab>(
@@ -81,5 +69,39 @@ class _HomeScreenState extends State<HomeScreen>
         ),
       ),
     );
+  }
+}
+
+class SliverPersistentHeaderDelegateImpl
+    extends SliverPersistentHeaderDelegate {
+  final TabBar tabBar;
+  final Color color;
+
+  const SliverPersistentHeaderDelegateImpl({
+    this.color = Colors.transparent,
+    required this.tabBar,
+  });
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Container(
+      color: color,
+      child: tabBar,
+    );
+  }
+
+  @override
+  double get maxExtent => tabBar.preferredSize.height;
+
+  @override
+  double get minExtent => tabBar.preferredSize.height;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }

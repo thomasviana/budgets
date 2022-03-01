@@ -1,10 +1,10 @@
+import 'package:budgets/presentation/screens/home/home_bloc/home_screen_bloc.dart';
 import 'package:budgets/presentation/screens/transactions/transactions_bloc/transactions_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../di/dependency_injection.dart';
 import '../../resources/colors.dart';
-import '../home/cubit/home_screen_cubit.dart';
 import '../home/home_screen.dart';
 import '../settings/cubit/settings_screen_cubit.dart';
 import '../settings/settings_screen.dart';
@@ -49,7 +49,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
     switch (selectedPageIndex) {
       case 0:
         return BlocProvider(
-          create: (context) => sl<HomeScreenCubit>(),
+          create: (context) => sl<HomeScreenBloc>(),
           child: HomeScreen(),
         );
       case 1:
@@ -66,7 +66,7 @@ class _MainAppScreenState extends State<MainAppScreen> {
         );
 
       default:
-        return Placeholder(color: Colors.black);
+        return Placeholder(color: AppColors.black);
     }
   }
 

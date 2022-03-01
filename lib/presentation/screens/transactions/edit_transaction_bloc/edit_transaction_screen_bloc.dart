@@ -5,7 +5,6 @@ import 'package:budgets/core/categories/application.dart';
 import 'package:budgets/core/categories/domain.dart';
 import 'package:budgets/core/transactions/application.dart';
 import 'package:budgets/core/transactions/domain.dart';
-import 'package:budgets/core/user/application.dart';
 import 'package:budgets/presentation/resources/resources.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -18,14 +17,12 @@ class EditTransactionScreenBloc
     extends Bloc<EditTransactionScreenEvent, EditTransactionScreenState> {
   UpdateTransaction updateTransaction;
   DeleteTransaction deleteTransaction;
-  GetProfileInfo getProfileInfo;
   AddTransaction addTransaction;
   GetSubCategories getSubCategories;
   SetDefaultSubCategories setDefaultSubCategories;
   EditTransactionScreenBloc(
     this.updateTransaction,
     this.deleteTransaction,
-    this.getProfileInfo,
     this.addTransaction,
     this.getSubCategories,
     this.setDefaultSubCategories,
@@ -48,9 +45,10 @@ class EditTransactionScreenBloc
             transaction: event.transaction,
             isEditMode: true,
             isLoading: false,
-            account: optionOf(account),
-            subCategory: optionOf(subCategory),
-            budget: optionOf(budget),
+            account: some(account),
+            subCategory: some(subCategory),
+            budget: some(budget),
+            budgets: event.budgets,
           ),
         );
       } else {
@@ -61,6 +59,7 @@ class EditTransactionScreenBloc
             budget: optionOf(
               event.budgets.firstWhere((account) => account.id.value == 'seg'),
             ),
+            budgets: event.budgets,
           ),
         );
       }
@@ -103,81 +102,78 @@ class EditTransactionScreenBloc
     });
 
     on<TransactionSaved>(
-      (event, emit) async => getProfileInfo().then(
-        (optionUser) => optionUser.fold(
-          () => null,
-          (user) async {
-            if (state.isEditMode) {
-              await updateTransaction(
-                transactionId: state.transaction.id,
-                title: state.subCategory
-                    .fold(() => '', (subCategory) => subCategory.name),
-                amount: event.amount,
-                date: event.date,
-                note: state.transaction.note,
-                icon: state.subCategory
-                    .fold(() => 0xe532, (subCategory) => subCategory.icon),
-                color: state.subCategory.fold(
-                  () => AppColors.primaryColor.value,
-                  (subCategory) => subCategory.color,
-                ),
-                txAccountId: state.account.fold(
-                  () {},
-                  (account) => TransactionAccountId(account.id.value),
-                ),
-                txBudgetId: state.budget.fold(
-                  () {},
-                  (budget) => TransactionBudgetId(budget.id.value),
-                ),
-                txCategoryId: state.category.fold(
-                  () {},
-                  (category) => TransactionCategoryId(category.id.value),
-                ),
-                txType: state.transaction.transactionType,
-                txUserId: TransactionUserId(user.id.value),
-                incomeType: state.transaction.incomeType,
-                isIncomeManaged: state.transaction.isIncomeManaged,
-              );
-            } else {
-              await addTransaction(
-                title: state.subCategory
-                    .fold(() => '', (subCategory) => subCategory.name),
-                amount: event.amount,
-                date: event.date,
-                note: state.transaction.note ?? '',
-                icon: state.subCategory
-                    .fold(() => 0xe532, (subCategory) => subCategory.icon),
-                color: state.subCategory.fold(
-                  () => AppColors.primaryColor.value,
-                  (subCategory) => subCategory.color,
-                ),
-                txAccountId: state.account.fold(
-                  () {},
-                  (account) => TransactionAccountId(account.id.value),
-                ),
-                txBudgetId: state.budget.fold(
-                  () {},
-                  (budget) => TransactionBudgetId(budget.id.value),
-                ),
-                txCategoryId: state.category.fold(
-                  () {},
-                  (category) => TransactionCategoryId(category.id.value),
-                ),
-                txSubCategoryId: state.subCategory.fold(
-                  () {},
-                  (subCategory) =>
-                      TransactionSubCategoryId(subCategory.id.value),
-                ),
-                txType: state.transaction.transactionType,
-                txUserId: TransactionUserId(user.id.value),
-                incomeType: state.transaction.incomeType,
-                isIncomeManaged: state.transaction.isIncomeManaged,
-              );
-            }
-          },
-        ),
-      ),
+      (event, emit) async {
+        if (state.isEditMode) {
+          await updateTransaction(
+            transactionId: state.transaction.id,
+            title: state.subCategory
+                .fold(() => '', (subCategory) => subCategory.name),
+            amount: event.amount,
+            date: event.date,
+            note: state.transaction.note,
+            icon: state.subCategory
+                .fold(() => 0xe532, (subCategory) => subCategory.icon),
+            color: state.subCategory.fold(
+              () => AppColors.primaryColor.value,
+              (subCategory) => subCategory.color,
+            ),
+            txAccountId: state.account.fold(
+              () {},
+              (account) => TransactionAccountId(account.id.value),
+            ),
+            txBudgetId: state.budget.fold(
+              () {},
+              (budget) => TransactionBudgetId(budget.id.value),
+            ),
+            txCategoryId: state.category.fold(
+              () {},
+              (category) => TransactionCategoryId(category.id.value),
+            ),
+            txType: state.transaction.transactionType,
+            incomeType: state.transaction.incomeType,
+            isIncomeManaged: state.transaction.isIncomeManaged,
+            budgetManagement: state.transaction.budgetManagement,
+          );
+        } else {
+          await addTransaction(
+            title: state.subCategory
+                .fold(() => '', (subCategory) => subCategory.name),
+            amount: event.amount,
+            date: event.date,
+            note: state.transaction.note ?? '',
+            icon: state.subCategory
+                .fold(() => 0xe532, (subCategory) => subCategory.icon),
+            color: state.subCategory.fold(
+              () => AppColors.primaryColor.value,
+              (subCategory) => subCategory.color,
+            ),
+            txAccountId: state.account.fold(
+              () {},
+              (account) => TransactionAccountId(account.id.value),
+            ),
+            txBudgetId: state.budget.fold(
+              () {},
+              (budget) => TransactionBudgetId(budget.id.value),
+            ),
+            txCategoryId: state.category.fold(
+              () {},
+              (category) => TransactionCategoryId(category.id.value),
+            ),
+            txSubCategoryId: state.subCategory.fold(
+              () {},
+              (subCategory) => TransactionSubCategoryId(subCategory.id.value),
+            ),
+            txType: state.transaction.transactionType,
+            incomeType: state.transaction.incomeType,
+            isIncomeManaged: state.transaction.isIncomeManaged,
+            budgetManagement: state.transaction.isIncome
+                ? state.transaction.budgetManagement
+                : setBudgetSpent(event.amount),
+          );
+        }
+      },
     );
+
     on<TransactionTypeChanged>(
       (event, emit) {
         emit(
@@ -242,6 +238,7 @@ class EditTransactionScreenBloc
         state.copyWith(
           transaction: state.transaction.copyWith(
             isIncomeManaged: true,
+            budgetManagement: event.budgetsInfo,
           ),
         ),
       ),
@@ -265,5 +262,21 @@ class EditTransactionScreenBloc
         EditTransactionScreenState.initial(),
       ),
     );
+  }
+
+  BudgetManagementMap setBudgetSpent(double spentAmount) {
+    final budgetsInfo = <String, Map<String, double>>{};
+    for (var index = 0; index < state.budgets.length; index++) {
+      budgetsInfo.putIfAbsent(state.budgets[index].id.value, () {
+        return {
+          'spent': state.budget.fold(() => false, (budget) => budget) ==
+                  state.budgets[index]
+              ? spentAmount
+              : 0.0,
+          'budgeted': 0.0,
+        };
+      });
+    }
+    return budgetsInfo;
   }
 }

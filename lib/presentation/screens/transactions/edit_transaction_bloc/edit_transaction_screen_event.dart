@@ -96,6 +96,11 @@ class NoteUpdated extends EditTransactionScreenEvent {
   });
 }
 
-class IncomeManagementDone extends EditTransactionScreenEvent {}
+class IncomeManagementDone extends EditTransactionScreenEvent {
+  final BudgetManagementMap budgetsInfo;
+  IncomeManagementDone({
+    required this.budgetsInfo,
+  });
+}
 
 class Dispose extends EditTransactionScreenEvent {}

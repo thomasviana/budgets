@@ -9,6 +9,7 @@ class EditTransactionScreenState {
   final List<SubCategory>? allSubCategories;
   final List<SubCategory>? subCategorySuggestions;
   final Option<Budget> budget;
+  final List<Budget> budgets;
   final bool isLoading;
   final bool isEditMode;
   final String? query;
@@ -22,6 +23,7 @@ class EditTransactionScreenState {
     this.allSubCategories,
     this.subCategorySuggestions,
     required this.budget,
+    required this.budgets,
     required this.isLoading,
     required this.isEditMode,
     this.query = '',
@@ -50,6 +52,7 @@ class EditTransactionScreenState {
         category: none(),
         subCategory: none(),
         subCategorySuggestions: [],
+        budgets: [],
       );
 
   EditTransactionScreenState copyWith({
@@ -61,6 +64,7 @@ class EditTransactionScreenState {
     List<SubCategory>? allSubCategories,
     List<SubCategory>? subCategorySuggestions,
     Option<Budget>? budget,
+    List<Budget>? budgets,
     bool? isLoading,
     bool? isEditMode,
     String? query,
@@ -75,6 +79,7 @@ class EditTransactionScreenState {
       subCategorySuggestions:
           subCategorySuggestions ?? this.subCategorySuggestions,
       budget: budget ?? this.budget,
+      budgets: budgets ?? this.budgets,
       isLoading: isLoading ?? this.isLoading,
       isEditMode: isEditMode ?? this.isEditMode,
       query: query ?? this.query,

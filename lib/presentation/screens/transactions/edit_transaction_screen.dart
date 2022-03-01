@@ -420,6 +420,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                       : () => AppNavigator.navigateToManageIncomePage(
                             context,
                             arguments: [
+                              state.transaction.id,
                               settingsBloc.state.budgets,
                               state.transaction.amount
                             ],

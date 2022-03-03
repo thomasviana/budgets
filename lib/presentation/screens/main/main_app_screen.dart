@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:budgets/presentation/screens/home/home_bloc/home_screen_bloc.dart';
 import 'package:budgets/presentation/screens/transactions/transactions_bloc/transactions_screen_bloc.dart';
 import 'package:flutter/material.dart';
@@ -73,32 +74,15 @@ class _MainAppScreenState extends State<MainAppScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
       body: _buildPage(context, selectedPageIndex),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: () {
-      //     showModalBottomSheet(
-      //       backgroundColor: Colors.transparent,
-      //       isScrollControlled: true,
-      //       context: context,
-      //       builder: (context) => StatsScreen(),
-      //     );
-      //   },
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         notchMargin: 10,
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-          ),
+        child: SizedBox(
           height: 60,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              buildNavButton(
+              NavBarButton(
                 isSelected: homeSelected,
                 onPressed: () {
                   setState(() {
@@ -108,9 +92,8 @@ class _MainAppScreenState extends State<MainAppScreen> {
                 },
                 icon: Icons.home_outlined,
                 iconSelected: Icons.home,
-                label: 'Inicio',
               ),
-              buildNavButton(
+              NavBarButton(
                 isSelected: statsSelected,
                 onPressed: () {
                   setState(() {
@@ -120,9 +103,22 @@ class _MainAppScreenState extends State<MainAppScreen> {
                 },
                 icon: Icons.pie_chart_outline,
                 iconSelected: Icons.pie_chart,
-                label: 'Estado',
               ),
-              buildNavButton(
+              Expanded(
+                child: RawMaterialButton(
+                  padding: const EdgeInsets.all(8.0),
+                  fillColor: AppColors.primaryColor,
+                  shape: CircleBorder(),
+                  child: Icon(
+                    Icons.add,
+                    color: AppColors.white,
+                    size: 28,
+                  ),
+                  onPressed: () =>
+                      AppNavigator.navigateToEditTransactionPage(context),
+                ),
+              ),
+              NavBarButton(
                 isSelected: recordsSelected,
                 onPressed: () {
                   setState(() {
@@ -132,9 +128,8 @@ class _MainAppScreenState extends State<MainAppScreen> {
                 },
                 icon: Icons.format_list_bulleted_rounded,
                 iconSelected: Icons.format_list_bulleted_rounded,
-                label: 'Transacciones',
               ),
-              buildNavButton(
+              NavBarButton(
                 isSelected: settingSelected,
                 onPressed: () {
                   setState(() {
@@ -144,7 +139,6 @@ class _MainAppScreenState extends State<MainAppScreen> {
                 },
                 icon: Icons.settings_outlined,
                 iconSelected: Icons.settings,
-                label: 'Ajustes',
               ),
             ],
           ),
@@ -152,36 +146,33 @@ class _MainAppScreenState extends State<MainAppScreen> {
       ),
     );
   }
+}
 
-  MaterialButton buildNavButton({
-    required bool isSelected,
-    required final VoidCallback onPressed,
-    required final IconData icon,
-    required final IconData iconSelected,
-    required final String label,
-  }) {
-    return MaterialButton(
-      highlightColor: Colors.white,
-      minWidth: 80,
-      onPressed: onPressed,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            isSelected ? iconSelected : icon,
-            size: 35,
-            color:
-                isSelected ? AppColors.primaryColor : AppColors.greySecondary,
-          ),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 10,
-              color:
-                  isSelected ? AppColors.primaryColor : AppColors.greySecondary,
-            ),
-          )
-        ],
+class NavBarButton extends StatelessWidget {
+  final bool isSelected;
+  final VoidCallback onPressed;
+  final IconData icon;
+  final IconData iconSelected;
+  const NavBarButton({
+    Key? key,
+    required this.isSelected,
+    required this.onPressed,
+    required this.icon,
+    required this.iconSelected,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: MaterialButton(
+        highlightColor: AppColors.white,
+        splashColor: AppColors.white,
+        onPressed: onPressed,
+        child: Icon(
+          isSelected ? iconSelected : icon,
+          size: 32,
+          color: isSelected ? AppColors.primaryColor : AppColors.greySecondary,
+        ),
       ),
     );
   }

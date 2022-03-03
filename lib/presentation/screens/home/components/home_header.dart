@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/date/date_bloc.dart';
+import '../../../core/transactions/transactions_bloc.dart';
 import '../../../resources/resources.dart';
 
 class HomeHeader extends StatefulWidget {
@@ -92,6 +93,8 @@ class AnimatedHeader extends StatefulWidget {
 
 class _AnimatedHeaderState extends State<AnimatedHeader>
     with SingleTickerProviderStateMixin {
+  late TransactionsBloc bloc;
+  late DateBloc dateBloc;
   late Animation<double> _animation;
   late AnimationController _animationController;
 
@@ -114,6 +117,8 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
         });
       });
     triggerAnimation();
+    bloc = context.read<TransactionsBloc>();
+    dateBloc = context.read<DateBloc>();
     super.initState();
   }
 
@@ -137,126 +142,133 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
 
   @override
   Widget build(BuildContext context) {
-    print(headerOpacity);
-    return Material(
-      elevation: widget.elevation,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            bottom: 50 * widget.opacity,
-            child: Container(
-              color: AppColors.primaryColor,
-            ),
-          ),
-          Positioned(
-            top: 12,
-            left: 0,
-            right: 0,
-            child: Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..rotateX(widget.percent!)
-                ..scale(headerOpacity.clamp(0.8, 1)),
-              child: Column(
-                children: [
-                  Text(
-                    'Balance',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.white.withOpacity(0.5 * headerOpacity),
-                    ),
-                  ),
-                  Text(
-                    '\$ ${currency.format(5000000)}',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.white.withOpacity(0.9 * headerOpacity),
-                    ),
-                  ),
-                  Container(
-                    height: 30,
-                    width: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppColors.white.withOpacity(0.2 * headerOpacity),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          icon: Icon(
-                            Icons.chevron_left,
-                            color: AppColors.white
-                                .withOpacity(0.5 * headerOpacity),
-                          ),
-                          onPressed: () =>
-                              context.read<DateBloc>()..add(MonthDecremented()),
+    return BlocBuilder<TransactionsBloc, TransactionsState>(
+      builder: (context, state) {
+        return Material(
+          elevation: widget.elevation,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                bottom: 50 * widget.opacity,
+                child: Container(
+                  color: AppColors.primaryColor,
+                ),
+              ),
+              Positioned(
+                top: 12,
+                left: 0,
+                right: 0,
+                child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, 0.001)
+                    ..rotateX(widget.percent!)
+                    ..scale(headerOpacity.clamp(0.8, 1)),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Balance',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color:
+                              AppColors.white.withOpacity(0.5 * headerOpacity),
                         ),
-                        BlocBuilder<DateBloc, DateState>(
-                          builder: (context, state) {
-                            return Text(
-                              DateFormat(
-                                'MMMM - yyyy',
-                                AppLocalizations.of(context)!.localeName,
-                              ).format(state.date),
-                              style: TextStyle(
+                      ),
+                      Text(
+                        '\$ ${currency.format(5000000)}',
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              AppColors.white.withOpacity(0.9 * headerOpacity),
+                        ),
+                      ),
+                      Container(
+                        height: 30,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color:
+                              AppColors.white.withOpacity(0.2 * headerOpacity),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              icon: Icon(
+                                Icons.chevron_left,
                                 color: AppColors.white
                                     .withOpacity(0.5 * headerOpacity),
                               ),
-                            );
-                          },
+                              onPressed: () => dateBloc.add(MonthDecremented()),
+                            ),
+                            BlocListener<DateBloc, DateState>(
+                              listenWhen: (previous, current) =>
+                                  previous.date != current.date,
+                              listener: (context, state) {
+                                bloc.add(DateUpdated(date: state.date));
+                              },
+                              child: Text(
+                                DateFormat(
+                                  'MMMM - yyyy',
+                                  AppLocalizations.of(context)!.localeName,
+                                ).format(state.date),
+                                style: TextStyle(
+                                  color: AppColors.white
+                                      .withOpacity(0.5 * headerOpacity),
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0),
+                              icon: Icon(
+                                Icons.chevron_right,
+                                color: AppColors.white
+                                    .withOpacity(0.5 * headerOpacity),
+                              ),
+                              onPressed: () => dateBloc.add(MonthIncremented()),
+                            ),
+                          ],
                         ),
-                        IconButton(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          icon: Icon(
-                            Icons.chevron_right,
-                            color: AppColors.white
-                                .withOpacity(0.5 * headerOpacity),
-                          ),
-                          onPressed: () =>
-                              context.read<DateBloc>()..add(MonthIncremented()),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()
+                    ..setEntry(3, 2, -0.002)
+                    ..scale(widget.opacity)
+                    ..rotateX(-widget.percent!),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AccountCard(
+                        icon: Icons.account_balance_wallet_outlined,
+                        title: 'INGRESOS',
+                        amount: 4800000,
+                        opacity: widget.opacity,
+                      ),
+                      AccountCard(
+                        icon: Icons.account_balance_wallet_outlined,
+                        title: 'EGRESOS',
+                        amount: 200000,
+                        opacity: widget.opacity,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, -0.002)
-                ..scale(widget.opacity)
-                ..rotateX(-widget.percent!),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AccountCard(
-                    icon: Icons.account_balance_wallet_outlined,
-                    title: 'INGRESOS',
-                    amount: 4800000,
-                    opacity: widget.opacity,
-                  ),
-                  AccountCard(
-                    icon: Icons.account_balance_wallet_outlined,
-                    title: 'EGRESOS',
-                    amount: 200000,
-                    opacity: widget.opacity,
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -48,8 +48,9 @@ class AccountCard extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                  color: Colors.grey.withOpacity(opacity),
-                  fontWeight: FontWeight.bold),
+                color: Colors.grey.withOpacity(opacity),
+                fontWeight: FontWeight.bold,
+              ),
             ),
             SizedBox(
               height: 8,

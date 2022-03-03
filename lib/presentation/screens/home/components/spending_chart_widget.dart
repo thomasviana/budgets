@@ -6,7 +6,7 @@ class SpendingChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WidgetCard(
-      title: 'Presupuestos',
+      title: 'Gastos por categoría',
       actionTitle: 'Ver mas',
       onActionPressed: () {},
       content: Container(

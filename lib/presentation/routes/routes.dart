@@ -6,6 +6,7 @@ import '../../core/budgets/domain.dart';
 import '../../core/categories/domain.dart';
 import '../../core/transactions/domain.dart';
 import '../../di/dependency_injection.dart';
+import '../core/transactions/transactions_bloc.dart';
 import '../screens/accounts/accounts_screen.dart';
 import '../screens/accounts/edit_account_bloc/edit_account_screen_bloc.dart';
 import '../screens/accounts/edit_account_screen.dart';
@@ -23,6 +24,7 @@ import '../screens/categories/edit_sub_category_name_screen.dart';
 import '../screens/categories/edit_sub_category_screen.dart';
 import '../screens/categories/select_category_type_screen.dart';
 import '../screens/intro/intro_screen.dart';
+import '../screens/main/main_app_cubit/main_screen_cubit.dart';
 import '../screens/main/main_app_screen.dart';
 import '../screens/profile/cubit/profile_screen_cubit.dart';
 import '../screens/profile/profile_screen.dart';
@@ -47,6 +49,9 @@ class AppRouter {
   final EditSubCategoryScreenBloc _editSubCategoryScreenBloc =
       sl<EditSubCategoryScreenBloc>();
 
+  final TransactionsBloc _transactionsScreenBloc = sl<TransactionsBloc>()
+    ..add(TransactionsRequested());
+
   Route routes(RouteSettings settings) {
     switch (settings.name) {
       case AppNavigator.ROUTE_SPLASH_PAGE:
@@ -70,7 +75,17 @@ class AppRouter {
       case AppNavigator.ROUTE_MAIN_PAGE:
         return _buildRoute(
           settings,
-          MainAppScreen(),
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => sl<MainScreenCubit>(),
+              ),
+              BlocProvider.value(
+                value: _transactionsScreenBloc,
+              ),
+            ],
+            child: MainAppScreen(),
+          ),
         );
       case AppNavigator.ROUTE_PROFILE_PAGE:
         return _buildRoute(

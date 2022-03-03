@@ -264,9 +264,10 @@ class AccountsTableCompanion extends UpdateCompanion<AccountDbDto> {
 
 class $AccountsTableTable extends AccountsTable
     with TableInfo<$AccountsTableTable, AccountDbDto> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $AccountsTableTable(this._db, [this._alias]);
+  $AccountsTableTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -362,7 +363,7 @@ class $AccountsTableTable extends AccountsTable
 
   @override
   $AccountsTableTable createAlias(String alias) {
-    return $AccountsTableTable(_db, alias);
+    return $AccountsTableTable(attachedDatabase, alias);
   }
 
   static TypeConverter<AccountTypeTable, int> $converter0 =

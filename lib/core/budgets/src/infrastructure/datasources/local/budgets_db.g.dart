@@ -236,9 +236,10 @@ class BudgetsTableCompanion extends UpdateCompanion<BudgetDbDto> {
 
 class $BudgetsTableTable extends BudgetsTable
     with TableInfo<$BudgetsTableTable, BudgetDbDto> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $BudgetsTableTable(this._db, [this._alias]);
+  $BudgetsTableTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -330,7 +331,7 @@ class $BudgetsTableTable extends BudgetsTable
 
   @override
   $BudgetsTableTable createAlias(String alias) {
-    return $BudgetsTableTable(_db, alias);
+    return $BudgetsTableTable(attachedDatabase, alias);
   }
 }
 

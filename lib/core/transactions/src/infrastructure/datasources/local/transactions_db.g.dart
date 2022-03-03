@@ -523,9 +523,10 @@ class TransactionsTableCompanion extends UpdateCompanion<TransactionDbDto> {
 
 class $TransactionsTableTable extends TransactionsTable
     with TableInfo<$TransactionsTableTable, TransactionDbDto> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TransactionsTableTable(this._db, [this._alias]);
+  $TransactionsTableTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -736,7 +737,7 @@ class $TransactionsTableTable extends TransactionsTable
 
   @override
   $TransactionsTableTable createAlias(String alias) {
-    return $TransactionsTableTable(_db, alias);
+    return $TransactionsTableTable(attachedDatabase, alias);
   }
 
   static TypeConverter<TransactionTypeTable, int> $converter0 =

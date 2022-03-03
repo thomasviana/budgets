@@ -260,9 +260,10 @@ class CategoriesTableCompanion extends UpdateCompanion<CategoryDbDto> {
 
 class $CategoriesTableTable extends CategoriesTable
     with TableInfo<$CategoriesTableTable, CategoryDbDto> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $CategoriesTableTable(this._db, [this._alias]);
+  $CategoriesTableTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -360,7 +361,7 @@ class $CategoriesTableTable extends CategoriesTable
 
   @override
   $CategoriesTableTable createAlias(String alias) {
-    return $CategoriesTableTable(_db, alias);
+    return $CategoriesTableTable(attachedDatabase, alias);
   }
 
   static TypeConverter<CategoryTypeTable, int> $converter0 =
@@ -592,9 +593,10 @@ class SubCategoriesTableCompanion extends UpdateCompanion<SubCategoryDbDto> {
 
 class $SubCategoriesTableTable extends SubCategoriesTable
     with TableInfo<$SubCategoriesTableTable, SubCategoryDbDto> {
-  final GeneratedDatabase _db;
+  @override
+  final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SubCategoriesTableTable(this._db, [this._alias]);
+  $SubCategoriesTableTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String?> id = GeneratedColumn<String?>(
@@ -691,7 +693,7 @@ class $SubCategoriesTableTable extends SubCategoriesTable
 
   @override
   $SubCategoriesTableTable createAlias(String alias) {
-    return $SubCategoriesTableTable(_db, alias);
+    return $SubCategoriesTableTable(attachedDatabase, alias);
   }
 }
 

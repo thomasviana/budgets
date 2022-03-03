@@ -9,9 +9,9 @@ import '../../../core/budgets/domain.dart';
 import '../../../core/transactions/domain.dart';
 import '../../core/date/date_bloc.dart';
 import '../../core/settings/settings_bloc.dart';
+import '../../core/transactions/transactions_bloc.dart';
 import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
-import 'transactions_bloc/transactions_screen_bloc.dart';
 
 class TransactionsScreen extends StatefulWidget {
   @override
@@ -19,25 +19,24 @@ class TransactionsScreen extends StatefulWidget {
 }
 
 class _TransactionssScreenState extends State<TransactionsScreen> {
-  late TransactionsScreenBloc bloc;
+  late TransactionsBloc bloc;
   late DateBloc dateBloc;
 
   @override
   void initState() {
     super.initState();
     dateBloc = context.read<DateBloc>();
-    bloc = context.read<TransactionsScreenBloc>()
-      ..add(GetUserTransactions(date: dateBloc.state.date));
+    bloc = context.read<TransactionsBloc>();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TransactionsScreenBloc, TransactionsScreenState>(
+    return BlocBuilder<TransactionsBloc, TransactionsState>(
       builder: _buildState,
     );
   }
 
-  Widget _buildState(BuildContext context, TransactionsScreenState state) {
+  Widget _buildState(BuildContext context, TransactionsState state) {
     return DefaultStickyHeaderController(
       child: Scaffold(
         backgroundColor: AppColors.white,
@@ -46,7 +45,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
     );
   }
 
-  Widget _buildBody(BuildContext context, TransactionsScreenState state) {
+  Widget _buildBody(BuildContext context, TransactionsState state) {
     List<_StickyHeaderList> _sliverListTransactions() {
       final dates = state.filteredDates
           .map((date) => DateTime(date.year, date.month, date.day))
@@ -69,6 +68,10 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
         child: CircularProgressIndicator(),
       );
     } else {
+      final dateString = DateFormat(
+        'MMMM - yyyy',
+        AppLocalizations.of(context)!.localeName,
+      ).format(state.date);
       return SafeArea(
         child: CustomScrollView(
           slivers: [
@@ -157,7 +160,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                       vertical: MediaQuery.of(context).size.height / 3,
                     ),
                     child: Text(
-                      'No hay transacciones\ningresadas aún.',
+                      'No hay transacciones\nen $dateString.',
                       style: TextStyle(
                         color: AppColors.greyDisabled,
                         fontSize: 20,
@@ -200,18 +203,15 @@ class _StickyHeaderList extends StatelessWidget {
 
     return SliverStickyHeader(
       key: UniqueKey(),
-      header: Material(
-        elevation: 6,
-        child: Container(
-          height: 30,
-          color: AppColors.white,
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            DateFormat('MMM d', AppLocalizations.of(context)!.localeName)
-                .format(date),
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
+      header: Container(
+        height: 30,
+        color: AppColors.white,
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        alignment: Alignment.centerLeft,
+        child: Text(
+          DateFormat('MMM d', AppLocalizations.of(context)!.localeName)
+              .format(date),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
       sliver: SliverList(

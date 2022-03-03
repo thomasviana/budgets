@@ -4,9 +4,17 @@ import '../resources.dart';
 
 class WidgetCard extends StatelessWidget {
   final String title;
+  final String actionTitle;
+  final VoidCallback onActionPressed;
   final Widget content;
 
-  const WidgetCard({required this.title, required this.content});
+  const WidgetCard({
+    Key? key,
+    required this.title,
+    required this.actionTitle,
+    required this.onActionPressed,
+    required this.content,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +37,13 @@ class WidgetCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.more_horiz),
+                  TextButton(
+                    child: Text(actionTitle),
+                    onPressed: onActionPressed,
                   )
                 ],
               ),

@@ -10,8 +10,8 @@ import '../home/home_screen.dart';
 import '../settings/cubit/settings_screen_cubit.dart';
 import '../settings/settings_screen.dart';
 import '../stats/stats_screen.dart';
-import '../transactions/transactions_bloc/transactions_screen_bloc.dart';
 import '../transactions/transactions_screen.dart';
+import 'main_app_cubit/main_screen_cubit.dart';
 
 class MainAppScreen extends StatefulWidget {
   @override
@@ -20,40 +20,15 @@ class MainAppScreen extends StatefulWidget {
 
 class _MainAppScreenState extends State<MainAppScreen> {
   late DateBloc dateBloc;
+  late MainScreenCubit cubit;
   @override
   void initState() {
     dateBloc = context.read<DateBloc>();
+    cubit = context.read<MainScreenCubit>();
     super.initState();
   }
 
-  bool homeSelected = true;
-  bool statsSelected = false;
-  bool recordsSelected = false;
-  bool settingSelected = false;
-  int selectedPageIndex = 0;
-
-  void selectIcon(String selectedIcon) {
-    homeSelected = false;
-    statsSelected = false;
-    recordsSelected = false;
-    settingSelected = false;
-    if (selectedIcon == 'home') {
-      homeSelected = true;
-    }
-    if (selectedIcon == 'stats') {
-      statsSelected = true;
-    }
-    if (selectedIcon == 'transactions') {
-      recordsSelected = true;
-    }
-    if (selectedIcon == 'settings') {
-      settingSelected = true;
-    }
-  }
-
   Widget _buildPage(BuildContext context, int selectedPageIndex) {
-    final _transactionsBloc = sl<TransactionsScreenBloc>()
-      ..add(GetUserTransactions(date: dateBloc.state.date));
     switch (selectedPageIndex) {
       case 0:
         return MultiBlocProvider(
@@ -61,25 +36,18 @@ class _MainAppScreenState extends State<MainAppScreen> {
             BlocProvider(
               create: (context) => sl<HomeScreenBloc>(),
             ),
-            BlocProvider.value(
-              value: _transactionsBloc,
-            ),
           ],
           child: HomeScreen(),
         );
       case 1:
         return StatsScreen();
       case 2:
-        return BlocProvider.value(
-          value: _transactionsBloc,
-          child: TransactionsScreen(),
-        );
+        return TransactionsScreen();
       case 3:
         return BlocProvider(
           create: (context) => sl<SettingsScreenCubit>(),
           child: SettingsScreen(),
         );
-
       default:
         return Placeholder(color: AppColors.black);
     }
@@ -87,77 +55,69 @@ class _MainAppScreenState extends State<MainAppScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildPage(context, selectedPageIndex),
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 10,
-        child: SizedBox(
-          height: 60,
-          child: Row(
-            children: [
-              NavBarButton(
-                isSelected: homeSelected,
-                onPressed: () {
-                  setState(() {
-                    selectedPageIndex = 0;
-                    selectIcon('home');
-                  });
-                },
-                icon: Icons.home_outlined,
-                iconSelected: Icons.home,
-              ),
-              NavBarButton(
-                isSelected: statsSelected,
-                onPressed: () {
-                  setState(() {
-                    selectedPageIndex = 1;
-                    selectIcon('stats');
-                  });
-                },
-                icon: Icons.pie_chart_outline,
-                iconSelected: Icons.pie_chart,
-              ),
-              Expanded(
-                child: RawMaterialButton(
-                  padding: const EdgeInsets.all(8.0),
-                  fillColor: AppColors.primaryColor,
-                  shape: CircleBorder(),
-                  child: Icon(
-                    Icons.add,
-                    color: AppColors.white,
-                    size: 28,
+    return BlocBuilder<MainScreenCubit, MainScreenState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: _buildPage(context, state.selectedPageIndex ?? 0),
+          bottomNavigationBar: BottomAppBar(
+            shape: CircularNotchedRectangle(),
+            notchMargin: 10,
+            child: SizedBox(
+              height: 60,
+              child: Row(
+                children: [
+                  NavBarButton(
+                    isSelected: state.homeSelected,
+                    onPressed: () {
+                      cubit.onSelectedPageIndexChanged(0);
+                    },
+                    icon: Icons.home_outlined,
+                    iconSelected: Icons.home,
                   ),
-                  onPressed: () =>
-                      AppNavigator.navigateToEditTransactionPage(context),
-                ),
+                  NavBarButton(
+                    isSelected: state.statsSelected,
+                    onPressed: () {
+                      cubit.onSelectedPageIndexChanged(1);
+                    },
+                    icon: Icons.pie_chart_outline,
+                    iconSelected: Icons.pie_chart,
+                  ),
+                  Expanded(
+                    child: RawMaterialButton(
+                      padding: const EdgeInsets.all(8.0),
+                      fillColor: AppColors.primaryColor,
+                      shape: CircleBorder(),
+                      child: Icon(
+                        Icons.add,
+                        color: AppColors.white,
+                        size: 28,
+                      ),
+                      onPressed: () =>
+                          AppNavigator.navigateToEditTransactionPage(context),
+                    ),
+                  ),
+                  NavBarButton(
+                    isSelected: state.recordsSelected,
+                    onPressed: () {
+                      cubit.onSelectedPageIndexChanged(2);
+                    },
+                    icon: Icons.format_list_bulleted_rounded,
+                    iconSelected: Icons.format_list_bulleted_rounded,
+                  ),
+                  NavBarButton(
+                    isSelected: state.settingSelected,
+                    onPressed: () {
+                      cubit.onSelectedPageIndexChanged(3);
+                    },
+                    icon: Icons.settings_outlined,
+                    iconSelected: Icons.settings,
+                  ),
+                ],
               ),
-              NavBarButton(
-                isSelected: recordsSelected,
-                onPressed: () {
-                  setState(() {
-                    selectedPageIndex = 2;
-                    selectIcon('transactions');
-                  });
-                },
-                icon: Icons.format_list_bulleted_rounded,
-                iconSelected: Icons.format_list_bulleted_rounded,
-              ),
-              NavBarButton(
-                isSelected: settingSelected,
-                onPressed: () {
-                  setState(() {
-                    selectedPageIndex = 3;
-                    selectIcon('settings');
-                  });
-                },
-                icon: Icons.settings_outlined,
-                iconSelected: Icons.settings,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

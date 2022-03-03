@@ -157,7 +157,11 @@ class EditTransactionScreenBloc
               (budget) => TransactionBudgetId(budget.id.value),
             ),
             txCategoryId: state.category.fold(
-              () => null,
+              () => state.subCategory.fold(
+                () => null,
+                (subCategory) =>
+                    TransactionCategoryId(subCategory.categoryId.value),
+              ),
               (category) => TransactionCategoryId(category.id.value),
             ),
             txSubCategoryId: state.subCategory.fold(
@@ -215,7 +219,9 @@ class EditTransactionScreenBloc
     );
     on<SubCategorySelected>(
       (event, emit) => emit(
-        state.copyWith(subCategory: some(event.subCategory)),
+        state.copyWith(
+          subCategory: some(event.subCategory),
+        ),
       ),
     );
     on<IncomeTypeChanged>(

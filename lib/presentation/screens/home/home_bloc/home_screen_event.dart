@@ -8,3 +8,5 @@ class BudgetsInfoRequested extends HomeScreenEvent {
     required this.budgets,
   });
 }
+
+class HomeScreenShown extends HomeScreenEvent {}

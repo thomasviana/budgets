@@ -237,8 +237,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i49.GetCategories(get<_i25.CategoryRepository>()));
   gh.lazySingleton<_i50.GoogleSignIn>(
       () => firebaseInjectableModule.googleSignIn);
-  gh.factory<_i51.HomeScreenBloc>(
-      () => _i51.HomeScreenBloc(get<_i42.GetTransactions>()));
+  gh.factory<_i51.HomeScreenBloc>(() => _i51.HomeScreenBloc(
+      get<_i11.GetProfileInfo>(), get<_i42.GetTransactions>()));
   gh.lazySingleton<_i52.ImagePicker>(
       () => imagePickerInjectableModule.imagePicker);
   gh.factory<_i53.ManageIncomeScreenBloc>(() => _i53.ManageIncomeScreenBloc(
@@ -246,7 +246,6 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i54.PickUserImage>(
       () => _i54.PickUserImage(get<_i52.ImagePicker>()));
   gh.factory<_i55.ProfileScreenCubit>(() => _i55.ProfileScreenCubit(
-      get<_i11.CheckAuthStatus>(),
       get<_i11.GetProfileInfo>(),
       get<_i11.UpdateUserInfo>(),
       get<_i11.PickUserImage>()));

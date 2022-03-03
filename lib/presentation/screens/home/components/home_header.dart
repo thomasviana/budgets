@@ -91,37 +91,53 @@ class AnimatedHeader extends StatefulWidget {
 }
 
 class _AnimatedHeaderState extends State<AnimatedHeader>
-    with TickerProviderStateMixin {
-  late Animation<double> animation;
-  late AnimationController animationController;
+    with SingleTickerProviderStateMixin {
+  late Animation<double> _animation;
+  late AnimationController _animationController;
 
   late double headerOpacity;
+  late double scaleHeader;
 
   @override
   void initState() {
     headerOpacity = 0;
-    animationController = AnimationController(
-      duration: const Duration(seconds: 2),
+    _animationController = AnimationController(
+      duration: const Duration(seconds: 1),
       vsync: this,
-    )..forward();
+    );
 
-    animation = Tween<double>(begin: 0, end: 1).animate(animationController)
+    _animation = Tween<double>(begin: 0.8, end: 1).animate(_animationController)
       ..addListener(() {
         setState(() {
-          headerOpacity = animation.value;
+          headerOpacity = _animation.value;
+          scaleHeader = 1 - _animation.value;
         });
       });
+    triggerAnimation();
     super.initState();
   }
 
   @override
+  void didUpdateWidget(AnimatedHeader old) {
+    triggerAnimation();
+    super.didUpdateWidget(old);
+  }
+
+  void triggerAnimation() {
+    _animationController
+      ..reset()
+      ..forward();
+  }
+
+  @override
   void dispose() {
-    animation.removeListener(() {});
+    _animationController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print(headerOpacity);
     return Material(
       elevation: widget.elevation,
       child: Stack(
@@ -133,7 +149,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
             ),
           ),
           Positioned(
-            top: 12 * widget.opacity,
+            top: 12,
             left: 0,
             right: 0,
             child: Transform(
@@ -156,7 +172,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.white.withOpacity(0.9 * widget.opacity),
+                      color: AppColors.white.withOpacity(0.9 * headerOpacity),
                     ),
                   ),
                   Container(
@@ -164,7 +180,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                     width: 200,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: AppColors.white.withOpacity(0.2 * widget.opacity),
+                      color: AppColors.white.withOpacity(0.2 * headerOpacity),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,7 +190,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                           icon: Icon(
                             Icons.chevron_left,
                             color: AppColors.white
-                                .withOpacity(0.5 * widget.opacity),
+                                .withOpacity(0.5 * headerOpacity),
                           ),
                           onPressed: () =>
                               context.read<DateBloc>()..add(MonthDecremented()),
@@ -188,7 +204,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                               ).format(state.date),
                               style: TextStyle(
                                 color: AppColors.white
-                                    .withOpacity(0.5 * widget.opacity),
+                                    .withOpacity(0.5 * headerOpacity),
                               ),
                             );
                           },
@@ -198,7 +214,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                           icon: Icon(
                             Icons.chevron_right,
                             color: AppColors.white
-                                .withOpacity(0.5 * widget.opacity),
+                                .withOpacity(0.5 * headerOpacity),
                           ),
                           onPressed: () =>
                               context.read<DateBloc>()..add(MonthIncremented()),

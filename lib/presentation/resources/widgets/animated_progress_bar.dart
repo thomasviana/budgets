@@ -22,7 +22,7 @@ class AnimatedProgressBar extends StatefulWidget {
         const TextStyle(color: Color(0xFFFFFFFF), fontSize: 12),
   })  : _borderRadius = borderRadius ?? BorderRadius.circular(8),
         super(key: key);
-  final int currentValue;
+  final double currentValue;
   final int maxValue;
   final double size;
   final Duration animatedDuration;
@@ -70,6 +70,8 @@ class _FAProgressBarState extends State<AnimatedProgressBar>
 
       if (widget.currentValue == 0 || widget.maxValue == 0) {
         _currentEnd = 0;
+      } else if (widget.currentValue.isInfinite) {
+        _currentEnd = widget.maxValue.toDouble();
       } else {
         _currentEnd = widget.currentValue / widget.maxValue;
       }
@@ -83,6 +85,7 @@ class _FAProgressBarState extends State<AnimatedProgressBar>
 
   @override
   Widget build(BuildContext context) => _AProgressBar(
+        isInfinite: widget.currentValue.isInfinite,
         animation: _animation,
         widget: widget,
       );
@@ -95,13 +98,15 @@ class _FAProgressBarState extends State<AnimatedProgressBar>
 }
 
 class _AProgressBar extends AnimatedWidget {
+  final AnimatedProgressBar widget;
+  final bool isInfinite;
+
   const _AProgressBar({
     Key? key,
     required Animation<double> animation,
     required this.widget,
+    required this.isInfinite,
   }) : super(key: key, listenable: animation);
-
-  final AnimatedProgressBar widget;
 
   double transformValue(num x, num begin, num end, num before) {
     final double y = (end * x - (begin - before)) * (1.0 / before);
@@ -149,7 +154,9 @@ class _AProgressBar extends AnimatedWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Text(
-            '${(animation.value * widget.maxValue).toInt().toString()} ${widget.displayText!} ',
+            isInfinite
+                ? 'No hay presupuesto '
+                : '${(animation.value * widget.maxValue).toInt().toString()} ${widget.displayText!} ',
             softWrap: false,
             style: widget.displayTextStyle,
           ),

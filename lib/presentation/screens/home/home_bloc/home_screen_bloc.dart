@@ -19,7 +19,7 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
         getTransactions(),
         onData: (optionTransacions) {
           optionTransacions.fold(
-            () {},
+            () => emit(state.copyWith(isLoading: false)),
             (transactions) {
               for (final budget in event.budgets) {
                 state.budgetsInfo.putIfAbsent(budget, () {

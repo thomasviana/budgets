@@ -30,33 +30,34 @@ class _ProfileSreenState extends State<ProfileSreen> {
 
   Widget _buildState(BuildContext context, ProfileScreenState state) {
     return CupertinoPageScaffold(
-      resizeToAvoidBottomInset: false,
-      child: NestedScrollView(
-        headerSliverBuilder: (ctx, inner) => [
+      child: CustomScrollView(
+        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        slivers: [
           CupertinoSliverNavigationBar(
+            stretch: true,
             largeTitle: Text(AppLocalizations.of(context)!.misc_profile),
             previousPageTitle: AppLocalizations.of(context)!.misc_back,
-          )
+          ),
+          _buildBody(context, state),
         ],
-        body: _buildBody(context, state),
       ),
     );
   }
 
   Widget _buildBody(BuildContext context, ProfileScreenState state) {
     if (state.isLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
+      return SliverToBoxAdapter(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
       );
     } else {
-      return Column(
-        children: [
-          UserProfile(
-            user: state.userEntity,
-            isSavingForm: state.isSavingForm,
-            isSaveButtonEnabled: state.isSaveButtonEnabled,
-          ),
-        ],
+      return SliverToBoxAdapter(
+        child: UserProfile(
+          user: state.userEntity,
+          isSavingForm: state.isSavingForm,
+          isSaveButtonEnabled: state.isSaveButtonEnabled,
+        ),
       );
     }
   }

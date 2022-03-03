@@ -165,6 +165,7 @@ class _SubCategorySuggestions extends StatelessWidget {
                       if (stateCategoryt.id == subCategory.id) {
                         return Icon(Icons.check, color: AppColors.primaryColor);
                       }
+                      return null;
                     },
                   ),
                   onTap: () {
@@ -239,6 +240,7 @@ class _CategoriesList extends StatelessWidget {
                       if (stateCategoryt.id == category.id) {
                         return Icon(Icons.check, color: AppColors.primaryColor);
                       }
+                      return null;
                     },
                   ),
                   onTap: () {
@@ -298,6 +300,7 @@ class _SubCategoriesList extends StatelessWidget {
                   if (stateSubCategoryt.id == state.subCategories!.first.id) {
                     return Icon(Icons.check, color: AppColors.primaryColor);
                   }
+                  return null;
                 },
               ),
               onTap: () {
@@ -360,6 +363,7 @@ class _SubCategoriesList extends StatelessWidget {
                       if (stateSubCategoryt.id == subCategory.id) {
                         return Icon(Icons.check, color: AppColors.primaryColor);
                       }
+                      return null;
                     },
                   ),
                   onTap: () {

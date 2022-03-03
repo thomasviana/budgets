@@ -118,15 +118,15 @@ class EditTransactionScreenBloc
               (subCategory) => subCategory.color,
             ),
             txAccountId: state.account.fold(
-              () {},
+              () => null,
               (account) => TransactionAccountId(account.id.value),
             ),
             txBudgetId: state.budget.fold(
-              () {},
+              () => null,
               (budget) => TransactionBudgetId(budget.id.value),
             ),
             txCategoryId: state.category.fold(
-              () {},
+              () => null,
               (category) => TransactionCategoryId(category.id.value),
             ),
             txType: state.transaction.transactionType,
@@ -148,19 +148,19 @@ class EditTransactionScreenBloc
               (subCategory) => subCategory.color,
             ),
             txAccountId: state.account.fold(
-              () {},
+              () => null,
               (account) => TransactionAccountId(account.id.value),
             ),
             txBudgetId: state.budget.fold(
-              () {},
+              () => null,
               (budget) => TransactionBudgetId(budget.id.value),
             ),
             txCategoryId: state.category.fold(
-              () {},
+              () => null,
               (category) => TransactionCategoryId(category.id.value),
             ),
             txSubCategoryId: state.subCategory.fold(
-              () {},
+              () => null,
               (subCategory) => TransactionSubCategoryId(subCategory.id.value),
             ),
             txType: state.transaction.transactionType,

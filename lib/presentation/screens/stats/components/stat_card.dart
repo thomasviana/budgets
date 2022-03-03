@@ -9,7 +9,7 @@ SliverToBoxAdapter statCard(
 }) {
   return SliverToBoxAdapter(
     child: Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: Card(
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

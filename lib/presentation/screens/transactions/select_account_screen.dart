@@ -93,11 +93,13 @@ class SelectAccountScreen extends StatelessWidget {
                     if (account.id == accounts.first.id) {
                       return Icon(Icons.check, color: AppColors.primaryColor);
                     }
+                    return null;
                   },
                   (stateAccount) {
                     if (stateAccount.id == account.id) {
                       return Icon(Icons.check, color: AppColors.primaryColor);
                     }
+                    return null;
                   },
                 ),
                 onTap: () {

@@ -93,6 +93,7 @@ class SelectBudgetScreen extends StatelessWidget {
                     if (stateBudget.id == budget.id) {
                       return Icon(Icons.check, color: AppColors.primaryColor);
                     }
+                    return null;
                   },
                 ),
                 onTap: () {

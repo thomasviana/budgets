@@ -89,6 +89,7 @@ class _AuthFormState extends State<AuthForm> {
     } else if (!widget.state.emailAddress.isValid) {
       return 'Enter a valid email.';
     }
+    return null;
   }
 
   String? passwordValidator(String? value) {
@@ -97,6 +98,7 @@ class _AuthFormState extends State<AuthForm> {
     } else if (!widget.state.password.isSecure) {
       return 'Password must be at least 6 characters long.';
     }
+    return null;
   }
 
   String? passwordConfirmationValidator(String? value) {
@@ -108,5 +110,6 @@ class _AuthFormState extends State<AuthForm> {
         return "Doesn't match the previous one.";
       }
     }
+    return null;
   }
 }

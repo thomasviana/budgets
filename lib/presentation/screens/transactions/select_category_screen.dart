@@ -414,6 +414,7 @@ class _SearchBoxState extends State<SearchBox> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: TextField(
+        autofocus: true,
         controller: controller,
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: style.color),

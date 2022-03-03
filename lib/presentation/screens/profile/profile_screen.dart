@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -46,11 +45,7 @@ class _ProfileSreenState extends State<ProfileSreen> {
 
   Widget _buildBody(BuildContext context, ProfileScreenState state) {
     if (state.isLoading) {
-      return SliverToBoxAdapter(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
+      return SliverToBoxAdapter(child: SizedBox());
     } else {
       return SliverToBoxAdapter(
         child: UserProfile(

@@ -8,14 +8,10 @@ class AppTheme {
   static const ColorScheme _colorSchemeLight = ColorScheme.light(
     background: AppColors.greyBackground,
     primary: AppColors.primaryColor,
-    primaryVariant: AppColors.primaryVariant,
-    secondary: AppColors.greyPrimary,
-    secondaryVariant: AppColors.greySecondary,
+    primaryContainer: AppColors.primaryVariant,
+    secondary: AppColors.primaryColor,
+    secondaryContainer: AppColors.greySecondary,
   );
-
-  static final TextTheme _textThemeBlack = TextTheme()
-      .copyWith()
-      .apply(fontFamily: 'Quicksand', bodyColor: AppColors.textColor);
 
   final iconTheme = IconThemeData(color: AppColors.white);
   final listTileTheme =
@@ -24,7 +20,7 @@ class AppTheme {
   static final appBarTheme = AppBarTheme(
     color: AppColors.white,
     titleTextStyle: TextStyle(
-      color: Colors.black,
+      color: AppColors.black,
       fontWeight: FontWeight.bold,
       fontSize: 16,
     ),
@@ -33,10 +29,8 @@ class AppTheme {
   );
 
   static ThemeData get light {
-    return ThemeData.from(
+    return ThemeData(fontFamily: 'Nunito').copyWith(
       colorScheme: _colorSchemeLight,
-      textTheme: _textThemeBlack,
-    ).copyWith(
       visualDensity: VisualDensity.adaptivePlatformDensity,
       iconTheme: IconThemeData(color: Colors.white, size: 20),
       appBarTheme: appBarTheme,

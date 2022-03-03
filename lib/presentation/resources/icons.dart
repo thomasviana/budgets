@@ -682,7 +682,7 @@ class AppIcons {
     Icons.picture_in_picture,
     Icons.picture_in_picture_alt,
     Icons.pie_chart,
-    Icons.pie_chart_outlined,
+    Icons.pie_chart_outline,
     Icons.pin_drop,
     Icons.place,
     Icons.play_arrow,

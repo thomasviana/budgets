@@ -8,13 +8,11 @@ part 'profile_screen_state.dart';
 
 @injectable
 class ProfileScreenCubit extends Cubit<ProfileScreenState> {
-  CheckAuthStatus checkAuthStatus;
   GetProfileInfo getProfileInfo;
   UpdateUserInfo updateUserInfo;
   PickUserImage pickUserImage;
 
   ProfileScreenCubit(
-    this.checkAuthStatus,
     this.getProfileInfo,
     this.updateUserInfo,
     this.pickUserImage,

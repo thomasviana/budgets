@@ -3,8 +3,10 @@ part of 'transactions_screen_bloc.dart';
 abstract class TransactionScreenEvent {}
 
 class GetUserTransactions extends TransactionScreenEvent {
-  final Transaction? transaction;
-  GetUserTransactions({this.transaction});
+  final DateTime date;
+  GetUserTransactions({
+    required this.date,
+  });
 }
 
 class TransactionDeleted extends TransactionScreenEvent {
@@ -14,6 +16,9 @@ class TransactionDeleted extends TransactionScreenEvent {
   });
 }
 
-class MonthIncremented extends TransactionScreenEvent {}
-
-class MonthDecremented extends TransactionScreenEvent {}
+class DateUpdated extends TransactionScreenEvent {
+  final DateTime date;
+  DateUpdated({
+    required this.date,
+  });
+}

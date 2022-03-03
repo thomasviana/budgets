@@ -2,9 +2,11 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/date/date_bloc.dart';
 import '../../../resources/resources.dart';
 
 class HomeHeader extends StatefulWidget {
@@ -174,17 +176,22 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                             color: AppColors.white
                                 .withOpacity(0.5 * widget.opacity),
                           ),
-                          onPressed: () {},
+                          onPressed: () =>
+                              context.read<DateBloc>()..add(MonthDecremented()),
                         ),
-                        Text(
-                          DateFormat(
-                            'MMMM - yyyy',
-                            AppLocalizations.of(context)!.localeName,
-                          ).format(DateTime.now()),
-                          style: TextStyle(
-                            color: AppColors.white
-                                .withOpacity(0.5 * widget.opacity),
-                          ),
+                        BlocBuilder<DateBloc, DateState>(
+                          builder: (context, state) {
+                            return Text(
+                              DateFormat(
+                                'MMMM - yyyy',
+                                AppLocalizations.of(context)!.localeName,
+                              ).format(state.date),
+                              style: TextStyle(
+                                color: AppColors.white
+                                    .withOpacity(0.5 * widget.opacity),
+                              ),
+                            );
+                          },
                         ),
                         IconButton(
                           padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -193,7 +200,8 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                             color: AppColors.white
                                 .withOpacity(0.5 * widget.opacity),
                           ),
-                          onPressed: () {},
+                          onPressed: () =>
+                              context.read<DateBloc>()..add(MonthIncremented()),
                         ),
                       ],
                     ),
@@ -217,13 +225,13 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                 children: [
                   AccountCard(
                     icon: Icons.account_balance_wallet_outlined,
-                    title: 'GENERAL',
+                    title: 'INGRESOS',
                     amount: 4800000,
                     opacity: widget.opacity,
                   ),
                   AccountCard(
                     icon: Icons.account_balance_wallet_outlined,
-                    title: 'BILLETERA',
+                    title: 'EGRESOS',
                     amount: 200000,
                     opacity: widget.opacity,
                   ),

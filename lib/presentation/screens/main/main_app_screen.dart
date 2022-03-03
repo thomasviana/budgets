@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../di/dependency_injection.dart';
+import '../../core/date/date_bloc.dart';
 import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
 import '../home/home_bloc/home_screen_bloc.dart';
@@ -18,8 +19,12 @@ class MainAppScreen extends StatefulWidget {
 }
 
 class _MainAppScreenState extends State<MainAppScreen> {
-  final _transactionsBloc = sl<TransactionsScreenBloc>()
-    ..add(GetUserTransactions());
+  late DateBloc dateBloc;
+  @override
+  void initState() {
+    dateBloc = context.read<DateBloc>();
+    super.initState();
+  }
 
   bool homeSelected = true;
   bool statsSelected = false;
@@ -47,10 +52,19 @@ class _MainAppScreenState extends State<MainAppScreen> {
   }
 
   Widget _buildPage(BuildContext context, int selectedPageIndex) {
+    final _transactionsBloc = sl<TransactionsScreenBloc>()
+      ..add(GetUserTransactions(date: dateBloc.state.date));
     switch (selectedPageIndex) {
       case 0:
-        return BlocProvider(
-          create: (context) => sl<HomeScreenBloc>(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<HomeScreenBloc>(),
+            ),
+            BlocProvider.value(
+              value: _transactionsBloc,
+            ),
+          ],
           child: HomeScreen(),
         );
       case 1:

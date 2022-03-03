@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 
 import 'di/dependency_injection.dart';
 import 'presentation/core/auth/auth_bloc.dart';
+import 'presentation/core/date/date_bloc.dart';
 import 'presentation/core/settings/settings_bloc.dart';
 import 'presentation/resources/resources.dart';
 import 'presentation/routes/routes.dart';
@@ -27,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
   final AppRouter _appRouter = AppRouter();
   final _authBloc = sl<AuthBloc>()..add(AuthCheckRequested());
+  final _dateBloc = sl<DateBloc>();
   final _settingsBloc = sl<SettingsBloc>()
     ..add(GetUserAccounts())
     ..add(GetUserCategories())
@@ -41,6 +43,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider.value(
           value: _settingsBloc,
+        ),
+        BlocProvider.value(
+          value: _dateBloc,
         ),
       ],
       child: MaterialApp(

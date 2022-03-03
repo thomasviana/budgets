@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/budgets/domain.dart';
 import '../../../core/transactions/domain.dart';
+import '../../core/date/date_bloc.dart';
 import '../../core/settings/settings_bloc.dart';
 import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
@@ -19,11 +20,14 @@ class TransactionsScreen extends StatefulWidget {
 
 class _TransactionssScreenState extends State<TransactionsScreen> {
   late TransactionsScreenBloc bloc;
+  late DateBloc dateBloc;
 
   @override
   void initState() {
     super.initState();
-    bloc = context.read<TransactionsScreenBloc>()..add(GetUserTransactions());
+    dateBloc = context.read<DateBloc>();
+    bloc = context.read<TransactionsScreenBloc>()
+      ..add(GetUserTransactions(date: dateBloc.state.date));
   }
 
   @override
@@ -113,13 +117,20 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                               color: AppColors.greyPrimary
                                   .withOpacity(scaleAnimation),
                             ),
-                            onPressed: () => bloc.add(MonthDecremented()),
+                            onPressed: () => dateBloc.add(MonthDecremented()),
                           ),
-                          Text(
-                            DateFormat(
-                              'MMMM - yyyy',
-                              AppLocalizations.of(context)!.localeName,
-                            ).format(state.date),
+                          BlocListener<DateBloc, DateState>(
+                            listenWhen: (previous, current) =>
+                                previous.date != current.date,
+                            listener: (context, state) {
+                              bloc.add(DateUpdated(date: state.date));
+                            },
+                            child: Text(
+                              DateFormat(
+                                'MMMM - yyyy',
+                                AppLocalizations.of(context)!.localeName,
+                              ).format(state.date),
+                            ),
                           ),
                           IconButton(
                             iconSize: 24 * scaleAnimation,
@@ -129,7 +140,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                               color: AppColors.greyPrimary
                                   .withOpacity(scaleAnimation),
                             ),
-                            onPressed: () => bloc.add(MonthIncremented()),
+                            onPressed: () => dateBloc.add(MonthIncremented()),
                           ),
                         ],
                       ),

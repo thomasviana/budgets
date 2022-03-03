@@ -21,8 +21,10 @@ class TransactionsScreenBloc
       await emit.onEach<Option<List<Transaction>>>(
         getTransactions(),
         onData: (optionTransactions) => optionTransactions.fold(
-          () => emit(state.copyWith(transactions: [])),
-          (transactions) => emit(state.copyWith(transactions: transactions)),
+          () => emit(state.copyWith(transactions: [], date: event.date)),
+          (transactions) => emit(
+            state.copyWith(transactions: transactions, date: event.date),
+          ),
         ),
       );
     });
@@ -31,16 +33,6 @@ class TransactionsScreenBloc
       (event, emit) async => deleteTransaction(event.transactionId),
     );
 
-    on<MonthIncremented>(
-      (event, emit) => emit(
-        state.copyWith(date: DateTime(state.date.year, state.date.month + 1)),
-      ),
-    );
-
-    on<MonthDecremented>(
-      (event, emit) => emit(
-        state.copyWith(date: DateTime(state.date.year, state.date.month - 1)),
-      ),
-    );
+    on<DateUpdated>((event, emit) => emit(state.copyWith(date: event.date)));
   }
 }

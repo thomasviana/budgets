@@ -29,8 +29,8 @@ class WidgetCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           width: size.width - kDefaultPadding * 2,
-          height: 350,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

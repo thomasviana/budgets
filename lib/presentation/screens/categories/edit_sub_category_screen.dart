@@ -1,4 +1,3 @@
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../../core/categories/domain.dart';
+import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
 import 'edit_sub_category_bloc/edit_sub_category_screen_bloc.dart';
 

@@ -1,6 +1,6 @@
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/material.dart';
 
+import '../../../resources/resources.dart';
 import '../../../routes/app_navigator.dart';
 
 class GetStarted extends StatelessWidget {

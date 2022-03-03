@@ -1,9 +1,9 @@
-import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/categories/edit_sub_category_bloc/edit_sub_category_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../resources/colors.dart';
+import '../../routes/app_navigator.dart';
+import 'edit_sub_category_bloc/edit_sub_category_screen_bloc.dart';
 
 class EditSubCategoryNameScreen extends StatefulWidget {
   final String name;

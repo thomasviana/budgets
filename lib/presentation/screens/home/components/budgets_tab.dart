@@ -1,9 +1,10 @@
-import 'package:budgets/presentation/core/settings/settings_bloc.dart';
-import 'package:budgets/presentation/resources/resources.dart';
-import 'package:budgets/presentation/resources/widgets/animated_progress_bar.dart';
-import 'package:budgets/presentation/screens/home/home_bloc/home_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../core/settings/settings_bloc.dart';
+import '../../../resources/resources.dart';
+import '../../../resources/widgets/animated_progress_bar.dart';
+import '../home_bloc/home_screen_bloc.dart';
 
 class BudgetsTab extends StatefulWidget {
   const BudgetsTab({Key? key}) : super(key: key);

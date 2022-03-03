@@ -1,13 +1,14 @@
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/accounts/domain.dart';
-import 'package:budgets/core/budgets/domain.dart';
-import 'package:budgets/core/categories/application.dart';
-import 'package:budgets/core/categories/domain.dart';
-import 'package:budgets/core/transactions/application.dart';
-import 'package:budgets/core/transactions/domain.dart';
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/accounts/domain.dart';
+import '../../../../core/budgets/domain.dart';
+import '../../../../core/categories/application.dart';
+import '../../../../core/categories/domain.dart';
+import '../../../../core/transactions/application.dart';
+import '../../../../core/transactions/domain.dart';
+import '../../../resources/resources.dart';
 
 part 'edit_transaction_screen_event.dart';
 part 'edit_transaction_screen_state.dart';

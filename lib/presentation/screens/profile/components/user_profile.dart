@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/user/domain.dart';
+import '../../../resources/resources.dart';
 import '../../../routes/app_navigator.dart';
 import '../cubit/profile_screen_cubit.dart';
 

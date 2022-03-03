@@ -2,15 +2,16 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/accounts/application.dart';
-import 'package:budgets/core/accounts/domain.dart';
-import 'package:budgets/core/budgets/application.dart';
-import 'package:budgets/core/budgets/domain.dart';
-import 'package:budgets/core/categories/application.dart';
-import 'package:budgets/core/categories/domain.dart';
-import 'package:budgets/core/user/application.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../core/accounts/application.dart';
+import '../../../core/accounts/domain.dart';
+import '../../../core/budgets/application.dart';
+import '../../../core/budgets/domain.dart';
+import '../../../core/categories/application.dart';
+import '../../../core/categories/domain.dart';
+import '../../../core/user/application.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';

@@ -1,10 +1,10 @@
-import 'package:budgets/presentation/core/settings/settings_bloc.dart';
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../core/settings/settings_bloc.dart';
+import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
 
 class CategoriesScreen extends StatelessWidget {

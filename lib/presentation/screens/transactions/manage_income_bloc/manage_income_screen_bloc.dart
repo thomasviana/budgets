@@ -1,11 +1,12 @@
 import 'dart:core';
 
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/budgets/application.dart';
-import 'package:budgets/core/budgets/domain.dart';
-import 'package:budgets/core/transactions/application.dart';
-import 'package:budgets/core/transactions/domain.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/budgets/application.dart';
+import '../../../../core/budgets/domain.dart';
+import '../../../../core/transactions/application.dart';
+import '../../../../core/transactions/domain.dart';
 
 part 'manage_income_screen_event.dart';
 part 'manage_income_screen_state.dart';

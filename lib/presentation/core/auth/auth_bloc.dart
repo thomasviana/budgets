@@ -1,9 +1,10 @@
 import 'dart:developer' as developer;
 
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/user/application.dart';
-import 'package:budgets/core/user/domain.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../core/user/application.dart';
+import '../../../core/user/domain.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

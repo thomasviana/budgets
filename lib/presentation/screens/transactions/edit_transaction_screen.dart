@@ -1,6 +1,3 @@
-import 'package:budgets/core/transactions/domain.dart';
-import 'package:budgets/presentation/core/settings/settings_bloc.dart';
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as f;
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,6 +7,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/transactions/domain.dart';
+import '../../core/settings/settings_bloc.dart';
+import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
 import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 

@@ -1,9 +1,9 @@
-import 'package:budgets/core/budgets/domain.dart';
-import 'package:budgets/presentation/resources/resources.dart';
-import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/budgets/domain.dart';
+import '../../resources/resources.dart';
+import '../../routes/app_navigator.dart';
 import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class SelectBudgetScreen extends StatelessWidget {

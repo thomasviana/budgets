@@ -1,5 +1,6 @@
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/material.dart';
+
+import '../../../resources/resources.dart';
 
 SliverToBoxAdapter statCard(
   BuildContext context, {

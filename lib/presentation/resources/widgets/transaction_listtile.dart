@@ -1,9 +1,9 @@
-import 'package:budgets/core/budgets/domain.dart';
-import 'package:budgets/core/transactions/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/budgets/domain.dart';
+import '../../../core/transactions/domain.dart';
 import '../resources.dart';
 
 class TransactionListTile extends StatelessWidget {

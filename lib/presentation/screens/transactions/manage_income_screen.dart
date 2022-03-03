@@ -1,11 +1,12 @@
-import 'package:budgets/core/budgets/domain.dart';
-import 'package:budgets/core/transactions/domain.dart';
-import 'package:budgets/presentation/resources/resources.dart';
-import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
-import 'package:budgets/presentation/screens/transactions/manage_income_bloc/manage_income_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../core/budgets/domain.dart';
+import '../../../core/transactions/domain.dart';
+import '../../resources/resources.dart';
+import '../../routes/app_navigator.dart';
+import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
+import 'manage_income_bloc/manage_income_screen_bloc.dart';
 
 class ManageIncomeScreen extends StatefulWidget {
   final TransactionId transactionId;

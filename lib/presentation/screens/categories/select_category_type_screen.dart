@@ -1,9 +1,9 @@
-import 'package:budgets/core/categories/domain.dart';
-import 'package:budgets/presentation/resources/resources.dart';
-import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/categories/domain.dart';
+import '../../resources/resources.dart';
+import '../../routes/app_navigator.dart';
 import 'edit_category_bloc/edit_category_screen_bloc.dart';
 
 class SelectCategoryTypeScreen extends StatelessWidget {

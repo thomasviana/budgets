@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/budgets/application.dart';
-import 'package:budgets/core/budgets/domain.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/budgets/application.dart';
+import '../../../../core/budgets/domain.dart';
 
 part 'edit_budget_screen_event.dart';
 part 'edit_budget_screen_state.dart';

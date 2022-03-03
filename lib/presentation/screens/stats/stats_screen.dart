@@ -1,8 +1,8 @@
-import 'package:budgets/presentation/screens/stats/components/stat_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../resources/resources.dart';
+import 'components/stat_card.dart';
 
 class StatsScreen extends StatelessWidget {
   @override

@@ -1,8 +1,8 @@
-import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../resources/colors.dart';
+import '../../routes/app_navigator.dart';
 import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class EditNoteScreen extends StatefulWidget {

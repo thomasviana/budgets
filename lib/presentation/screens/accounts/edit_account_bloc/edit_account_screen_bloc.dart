@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/accounts/application.dart';
-import 'package:budgets/core/accounts/domain.dart';
-import 'package:budgets/core/user/application.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/accounts/application.dart';
+import '../../../../core/accounts/domain.dart';
+import '../../../../core/user/application.dart';
 
 part 'edit_account_screen_event.dart';
 part 'edit_account_screen_state.dart';

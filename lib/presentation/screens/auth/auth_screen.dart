@@ -1,8 +1,8 @@
 import 'package:another_flushbar/flushbar_helper.dart';
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
 import 'components/auth_form.dart';
 import 'components/custom_divider.dart';

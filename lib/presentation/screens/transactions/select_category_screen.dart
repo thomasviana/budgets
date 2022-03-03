@@ -1,11 +1,10 @@
-import 'package:budgets/core/categories/domain.dart';
-import 'package:budgets/presentation/core/settings/settings_bloc.dart';
-import 'package:budgets/presentation/resources/resources.dart';
-import 'package:budgets/presentation/routes/app_navigator.dart';
-import 'package:budgets/presentation/screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/categories/domain.dart';
+import '../../core/settings/settings_bloc.dart';
+import '../../resources/resources.dart';
+import '../../routes/app_navigator.dart';
 import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 
 class SelectCategoryScreen extends StatefulWidget {

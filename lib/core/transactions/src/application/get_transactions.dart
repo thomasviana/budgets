@@ -1,7 +1,7 @@
-import 'package:budgets/core/user/application.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../user/application.dart';
 import '../../domain.dart';
 
 @injectable

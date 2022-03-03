@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:budgets/core/categories/application.dart';
-import 'package:budgets/core/categories/domain.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
+
+import '../../../../core/categories/application.dart';
+import '../../../../core/categories/domain.dart';
 
 part 'edit_category_screen_event.dart';
 part 'edit_category_screen_state.dart';

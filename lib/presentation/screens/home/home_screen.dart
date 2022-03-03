@@ -1,7 +1,7 @@
-import 'package:budgets/presentation/screens/home/components/home_header.dart';
 import 'package:flutter/material.dart';
 
 import 'components/home_app_bar.dart';
+import 'components/home_header.dart';
 import 'components/last_records_widget.dart';
 import 'components/spending_chart_widget.dart';
 

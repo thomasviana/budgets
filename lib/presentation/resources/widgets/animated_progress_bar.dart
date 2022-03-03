@@ -1,5 +1,6 @@
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:flutter/material.dart';
+
+import '../resources.dart';
 
 class AnimatedProgressBar extends StatefulWidget {
   AnimatedProgressBar({

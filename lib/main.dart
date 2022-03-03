@@ -1,4 +1,3 @@
-import 'package:budgets/presentation/resources/resources.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'di/dependency_injection.dart';
 import 'presentation/core/auth/auth_bloc.dart';
 import 'presentation/core/settings/settings_bloc.dart';
+import 'presentation/resources/resources.dart';
 import 'presentation/routes/routes.dart';
 
 Future<void> main() async {

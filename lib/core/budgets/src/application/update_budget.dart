@@ -1,6 +1,6 @@
-import 'package:budgets/core/user/application.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../user/application.dart';
 import '../../application.dart';
 import '../../domain.dart';
 

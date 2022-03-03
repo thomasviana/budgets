@@ -1,9 +1,9 @@
-import 'package:budgets/core/transactions/domain.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/accounts/domain.dart';
 import '../../core/budgets/domain.dart';
 import '../../core/categories/domain.dart';
+import '../../core/transactions/domain.dart';
 
 class AppNavigator {
   AppNavigator._();

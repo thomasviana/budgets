@@ -1,8 +1,3 @@
-import 'package:budgets/core/budgets/domain.dart';
-import 'package:budgets/core/transactions/domain.dart';
-import 'package:budgets/presentation/core/settings/settings_bloc.dart';
-import 'package:budgets/presentation/resources/resources.dart';
-import 'package:budgets/presentation/routes/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +5,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/budgets/domain.dart';
+import '../../../core/transactions/domain.dart';
+import '../../core/settings/settings_bloc.dart';
+import '../../resources/resources.dart';
+import '../../routes/app_navigator.dart';
 import 'transactions_bloc/transactions_screen_bloc.dart';
 
 class TransactionsScreen extends StatefulWidget {

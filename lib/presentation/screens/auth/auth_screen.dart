@@ -59,95 +59,95 @@ class _AuthScreenState extends State<AuthScreen> {
         },
         builder: (context, state) {
           return Center(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: kDefaultPadding + 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.donut_large,
-                    size: 150,
-                    color: AppColors.primaryColor,
-                  ),
-                  SizedBox(height: 50),
-                  Text(
-                    state.isCreateAccountMode ? 'Register' : 'Login',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  SizedBox(height: 50),
-                  AuthForm(
-                    state: state,
-                    enabled: !state.isSubmitting,
-                    errorEnabled: state.showErrorMessages,
-                    isCreateAccountMode: state.isCreateAccountMode,
-                    onEmailChanged: (email) => cubit.onEmailChanged(email),
-                    onPasswordChanged: (password) =>
-                        cubit.onPasswordChanged(password),
-                    onConfirmationPasswordChanged: (confirmationPassword) =>
-                        cubit.onConfirmationPasswordChanged(
-                      confirmationPassword,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(kDefaultPadding),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.donut_large,
+                      size: 150,
+                      color: AppColors.primaryColor,
                     ),
-                  ),
-                  SizedBox(height: 30),
-                  if (state.isSubmitting)
-                    Center(
-                      child: CircularProgressIndicator(),
+                    SizedBox(height: 24),
+                    Text(
+                      state.isCreateAccountMode ? 'Register' : 'Login',
+                      style: Theme.of(context).textTheme.headline6,
                     ),
-                  if (!state.isSubmitting)
-                    RoundedButton(
-                      label: state.isCreateAccountMode
-                          ? 'Create account'
-                          : 'Login',
-                      isEnabled: true,
-                      onPressed: trySubmit,
+                    SizedBox(height: 16),
+                    AuthForm(
+                      state: state,
+                      enabled: !state.isSubmitting,
+                      errorEnabled: state.showErrorMessages,
+                      isCreateAccountMode: state.isCreateAccountMode,
+                      onEmailChanged: (email) => cubit.onEmailChanged(email),
+                      onPasswordChanged: (password) =>
+                          cubit.onPasswordChanged(password),
+                      onConfirmationPasswordChanged: (confirmationPassword) =>
+                          cubit.onConfirmationPasswordChanged(
+                        confirmationPassword,
+                      ),
                     ),
-                  SizedBox(height: 20),
-                  CustomDivider(),
-                  SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      LoginButton(
-                        imagePath: 'assets/images/google_icon.png',
-                        onTap: () => context
-                            .read<AuthScreenCubit>()
-                            .onSignInWithGoogle(),
+                    SizedBox(height: 24),
+                    if (state.isSubmitting)
+                      Center(
+                        child: CircularProgressIndicator(),
                       ),
-                      SizedBox(
-                        width: 22,
+                    if (!state.isSubmitting)
+                      RoundedButton(
+                        label: state.isCreateAccountMode
+                            ? 'Create account'
+                            : 'Login',
+                        isEnabled: true,
+                        onPressed: trySubmit,
                       ),
-                      LoginButton(
-                        imagePath: 'assets/images/facebook_icon.png',
-                        onTap: () => context
-                            .read<AuthScreenCubit>()
-                            .onSignInWithFacebook(),
-                      ),
-                      SizedBox(
-                        width: 22,
-                      ),
-                      LoginButton(
-                        imagePath: 'assets/images/anonymous_icon.png',
-                        onTap: () => context
-                            .read<AuthScreenCubit>()
-                            .onSignInAnonymously(),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      cubit.onAuthModeChanged();
-                    },
-                    child: Text(
-                      state.isCreateAccountMode
-                          ? 'Already have an account? Login'
-                          : 'Create account',
+                    SizedBox(height: 20),
+                    CustomDivider(),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LoginButton(
+                          imagePath: 'assets/images/google_icon.png',
+                          onTap: () => context
+                              .read<AuthScreenCubit>()
+                              .onSignInWithGoogle(),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        LoginButton(
+                          imagePath: 'assets/images/facebook_icon.png',
+                          onTap: () => context
+                              .read<AuthScreenCubit>()
+                              .onSignInWithFacebook(),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        LoginButton(
+                          imagePath: 'assets/images/anonymous_icon.png',
+                          onTap: () => context
+                              .read<AuthScreenCubit>()
+                              .onSignInAnonymously(),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 24,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        cubit.onAuthModeChanged();
+                      },
+                      child: Text(
+                        state.isCreateAccountMode
+                            ? 'Already have an account? Login'
+                            : 'Create account',
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -155,42 +155,6 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     );
   }
-
-  // String? emailValidator(String? value) {
-  //   if (!cubit.state.emailAddress.value.isNotEmpty) {
-  //     return 'This is a required field.';
-  //   } else if (!cubit.state.emailAddress.isValid) {
-  //     return 'Enter a valid email.';
-  //   }
-  //   // }
-  //   // // return !cubit.state.emailAddress.isValid ? 'Enter a valid email.' : null;
-  //   // return cubit.state.emailAddress.value.fold(
-  //   //   (f) => f.maybeMap(
-  //   //     empty: (_) => 'This is a required field.',
-  //   //     invalidEmail: (_) => 'Enter a valid email.',
-  //   //     orElse: () {},
-  //   //   ),
-  //   //   (r) => null,
-  //   // );
-  // }
-
-  // String? passwordValidator(String? value) {
-  //   if (!cubit.state.password.value.isNotEmpty) {
-  //     return 'This is a required field.';
-  //   } else if (!cubit.state.password.isSecure) {
-  //     return 'Password must be at least 6 characters long.';
-  //   }
-  //   //   return cubit.state.password.value.fold(
-  //   //     (f) => f.maybeMap(
-  //   //       empty: (_) => 'This is a required field.',
-  //   //       shortPassword: (_) => 'Password must be at least 6 characters long.',
-  //   //       passwordDoNotMatch: (_) => 'Password do not match.',
-  //   //       orElse: () {},
-  //   //     ),
-  //   //     (r) => null,
-  //   //   );
-  //   // }
-  // }
 }
 
 class LoginButton extends StatelessWidget {

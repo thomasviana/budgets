@@ -29,11 +29,22 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   late bool _isPasswordVisible;
+  late FocusNode myFocusNode1;
+  late FocusNode myFocusNode2;
 
   @override
   void initState() {
     super.initState();
     _isPasswordVisible = false;
+    myFocusNode1 = FocusNode();
+    myFocusNode2 = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    myFocusNode1.dispose();
+    myFocusNode2.dispose();
   }
 
   @override
@@ -49,6 +60,10 @@ class _AuthFormState extends State<AuthForm> {
             cursorColor: AppColors.primaryColor,
             keyboardType: TextInputType.emailAddress,
             validator: emailValidator,
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (v) {
+              FocusScope.of(context).requestFocus(myFocusNode1);
+            },
             decoration: InputDecoration(
               hintText: 'Enter email',
               enabled: widget.enabled,
@@ -61,6 +76,11 @@ class _AuthFormState extends State<AuthForm> {
             cursorColor: AppColors.primaryColor,
             keyboardType: TextInputType.emailAddress,
             validator: passwordValidator,
+            focusNode: myFocusNode1,
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (v) {
+              FocusScope.of(context).requestFocus(myFocusNode2);
+            },
             decoration: InputDecoration(
               hintText: 'Enter password',
             ),
@@ -73,6 +93,7 @@ class _AuthFormState extends State<AuthForm> {
               cursorColor: AppColors.primaryColor,
               keyboardType: TextInputType.emailAddress,
               validator: passwordConfirmationValidator,
+              focusNode: myFocusNode2,
               decoration: InputDecoration(
                 hintText: 'Confirm password',
               ),

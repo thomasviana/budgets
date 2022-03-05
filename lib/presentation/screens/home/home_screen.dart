@@ -44,8 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> homeWidgets = [
-    BudgetsInfoWidget(),
     LastRecordsWidget(),
+    BudgetsInfoWidget(),
     SpendingChart(),
   ];
 

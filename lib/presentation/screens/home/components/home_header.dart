@@ -23,9 +23,7 @@ class _HomeHeaderState extends State<HomeHeader> {
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
-      delegate: _HomeHeaderDelegate(
-        topPadding: MediaQuery.of(context).padding.top,
-      ),
+      delegate: _HomeHeaderDelegate(),
     );
   }
 }
@@ -34,11 +32,7 @@ class _HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
   static const double _defaultElevation = 4.0;
   static const double _defaultHeaderHeight = 148;
   static const double _mainCardHeight = 110;
-  final double topPadding;
-
-  _HomeHeaderDelegate({
-    required this.topPadding,
-  });
+  static const double _topPadding = 50;
 
   @override
   Widget build(
@@ -64,7 +58,7 @@ class _HomeHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   double get maxExtent =>
-      topPadding + _defaultHeaderHeight + (_mainCardHeight / 2);
+      _topPadding + _defaultHeaderHeight + (_mainCardHeight / 2);
 
   @override
   double get minExtent => 0;

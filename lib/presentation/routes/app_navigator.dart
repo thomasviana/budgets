@@ -25,9 +25,13 @@ class AppNavigator {
 
   static const ROUTE_ACCOUNTS_PAGE = '/accounts';
   static const ROUTE_EDIT_ACCOUNT_PAGE = '/edit-account';
+  static const ROUTE_EDIT_ACCOUNT_NAME_PAGE = '/edit-account-name';
 
   static const ROUTE_BUDGETS_PAGE = '/budgets';
   static const ROUTE_EDIT_BUDGET_PAGE = '/edit-budget';
+  static const ROUTE_EDIT_BUDGET_NAME_PAGE = '/edit-budget-name';
+  static const ROUTE_EDIT_BUDGET_ABBREVIATION_PAGE =
+      '/edit-budget-abbreviation';
 
   static const ROUTE_EDIT_TRANSACTION_PAGE = '/edit-transaction';
   static const ROUTE_SELECT_ACCOUNT_PAGE = '/select-account';
@@ -139,6 +143,17 @@ class AppNavigator {
     Navigator.pushNamed(context, ROUTE_EDIT_ACCOUNT_PAGE, arguments: account);
   }
 
+  static void navigateToEditAccountNamePage(
+    BuildContext context, {
+    String? name,
+  }) {
+    Navigator.pushNamed(
+      context,
+      ROUTE_EDIT_ACCOUNT_NAME_PAGE,
+      arguments: name,
+    );
+  }
+
   static void navigateToBudgetsPage(BuildContext context) {
     Navigator.pushNamed(context, ROUTE_BUDGETS_PAGE);
   }
@@ -148,6 +163,28 @@ class AppNavigator {
     Budget? budget,
   }) {
     Navigator.pushNamed(context, ROUTE_EDIT_BUDGET_PAGE, arguments: budget);
+  }
+
+  static void navigateToEditBudgetNamePage(
+    BuildContext context, {
+    String? name,
+  }) {
+    Navigator.pushNamed(
+      context,
+      ROUTE_EDIT_BUDGET_NAME_PAGE,
+      arguments: name,
+    );
+  }
+
+  static void navigateToEditBudgetAbbreviationPage(
+    BuildContext context, {
+    String? abbreviation,
+  }) {
+    Navigator.pushNamed(
+      context,
+      ROUTE_EDIT_BUDGET_ABBREVIATION_PAGE,
+      arguments: abbreviation,
+    );
   }
 
   static void navigateToEditTransactionPage(

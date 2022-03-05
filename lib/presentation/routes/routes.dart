@@ -9,11 +9,14 @@ import '../../di/dependency_injection.dart';
 import '../core/transactions/transactions_bloc.dart';
 import '../screens/accounts/accounts_screen.dart';
 import '../screens/accounts/edit_account_bloc/edit_account_screen_bloc.dart';
+import '../screens/accounts/edit_account_name_screen.dart';
 import '../screens/accounts/edit_account_screen.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/auth/cubit/auth_screen_cubit.dart';
 import '../screens/budgets/budgets_screen.dart';
+import '../screens/budgets/edit_budget_abbreviation_screen.dart';
 import '../screens/budgets/edit_budget_bloc/edit_budget_screen_bloc.dart';
+import '../screens/budgets/edit_budget_name_screen.dart';
 import '../screens/budgets/edit_budget_screen.dart';
 import '../screens/categories/categories_screen.dart';
 import '../screens/categories/edit_category_bloc/edit_category_screen_bloc.dart';
@@ -48,6 +51,11 @@ class AppRouter {
 
   final EditSubCategoryScreenBloc _editSubCategoryScreenBloc =
       sl<EditSubCategoryScreenBloc>();
+
+  final EditAccountScreenBloc _editAccountScreenBloc =
+      sl<EditAccountScreenBloc>();
+
+  final EditBudgetScreenBloc _editBudgetScreenBloc = sl<EditBudgetScreenBloc>();
 
   final TransactionsBloc _transactionsScreenBloc = sl<TransactionsBloc>()
     ..add(TransactionsRequested());
@@ -157,9 +165,20 @@ class AppRouter {
         final account = settings.arguments as Account?;
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<EditAccountScreenBloc>(),
+          BlocProvider.value(
+            value: _editAccountScreenBloc,
             child: EditAccountScreen(account: account),
+          ),
+        );
+      case AppNavigator.ROUTE_EDIT_ACCOUNT_NAME_PAGE:
+        final name = settings.arguments! as String;
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _editAccountScreenBloc,
+            child: EditAccountNameScreen(
+              name: name,
+            ),
           ),
         );
       case AppNavigator.ROUTE_BUDGETS_PAGE:
@@ -167,13 +186,36 @@ class AppRouter {
           settings,
           BudgetsScreen(),
         );
+
       case AppNavigator.ROUTE_EDIT_BUDGET_PAGE:
         final budget = settings.arguments as Budget?;
         return _buildRoute(
           settings,
-          BlocProvider(
-            create: (context) => sl<EditBudgetScreenBloc>(),
+          BlocProvider.value(
+            value: _editBudgetScreenBloc,
             child: EditBudgetScreen(budget: budget),
+          ),
+        );
+      case AppNavigator.ROUTE_EDIT_BUDGET_NAME_PAGE:
+        final name = settings.arguments! as String;
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _editBudgetScreenBloc,
+            child: EditBudgetNameScreen(
+              name: name,
+            ),
+          ),
+        );
+      case AppNavigator.ROUTE_EDIT_BUDGET_ABBREVIATION_PAGE:
+        final abbreviation = settings.arguments! as String;
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _editBudgetScreenBloc,
+            child: EditBudgetAbbreviationScreen(
+              abbreviation: abbreviation,
+            ),
           ),
         );
       case AppNavigator.ROUTE_EDIT_TRANSACTION_PAGE:

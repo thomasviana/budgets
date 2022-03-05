@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 
 import 'colors.dart';
@@ -17,16 +19,20 @@ class AppTheme {
   final listTileTheme =
       ListTileTheme(child: Text(''), iconColor: _colorSchemeLight.surface);
 
-  static final appBarTheme = AppBarTheme(
-    color: AppColors.white,
-    titleTextStyle: TextStyle(
-      color: AppColors.black,
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    ),
-    iconTheme: IconThemeData(color: AppColors.primaryColor),
-    elevation: 0,
-  );
+  static final appBarTheme = Platform.isIOS
+      ? AppBarTheme(
+          color: AppColors.white,
+          titleTextStyle: TextStyle(
+            color: AppColors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+          iconTheme: IconThemeData(color: AppColors.primaryColor),
+          elevation: 0,
+        )
+      : AppBarTheme(
+          color: AppColors.primaryColor,
+        );
 
   static ThemeData get light {
     return ThemeData(fontFamily: 'Nunito').copyWith(

@@ -40,20 +40,9 @@ class TransactionListTile extends StatelessWidget {
       ),
       child: ListTile(
         dense: true,
-        leading: CircleAvatar(
-          radius: 20,
-          backgroundColor: Color(transaction.color),
-          child: CircleAvatar(
-            radius: 18,
-            backgroundColor: AppColors.white,
-            child: Icon(
-              IconData(
-                transaction.icon,
-                fontFamily: 'MaterialIcons',
-              ),
-              color: Color(transaction.color),
-            ),
-          ),
+        leading: ListTileLeadingIcon(
+          icon: transaction.icon,
+          color: transaction.color,
         ),
         title: Text(
           transaction.title ?? '',

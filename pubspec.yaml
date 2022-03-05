@@ -34,7 +34,7 @@ dependencies:
   flutter_sticky_header: ^0.6.1
   freezed_annotation: ^1.1.0
   google_fonts: ^2.1.1
-  google_sign_in: 5.2.1
+  google_sign_in: ^5.2.4
   image_picker: ^0.8.4+10
   injectable: ^1.5.3
   intl: ^0.17.0

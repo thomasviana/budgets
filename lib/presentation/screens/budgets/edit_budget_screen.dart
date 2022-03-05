@@ -1,7 +1,10 @@
+import 'dart:io' show Platform;
+
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
@@ -38,16 +41,19 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
   }
 
   Widget _buildState(BuildContext context, EditBudgetScreenState state) {
-    return Scaffold(
-      body: CupertinoPageScaffold(
+    if (Platform.isIOS) {
+      return CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
-        child: NestedScrollView(
-          headerSliverBuilder: (ctx, inner) => [
+        child: CustomScrollView(
+          physics:
+              BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          slivers: [
             CupertinoSliverNavigationBar(
+              stretch: true,
               largeTitle: Text(
-                state.isEditMode ? 'Editar presupuesto' : 'Crear presupuesto',
+                state.isEditMode ? 'Editar presupuesto' : 'Nuevo presupuesto',
               ),
-              previousPageTitle: 'Atras',
+              previousPageTitle: AppLocalizations.of(context)!.misc_back,
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
@@ -55,22 +61,23 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                   if (state.budget?.id.value != 'inv' &&
                       state.budget?.id.value != 'seg' &&
                       state.budget?.id.value != 'dar')
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete_outline,
+                    GestureDetector(
+                      child: Icon(
+                        CupertinoIcons.trash_circle,
                         color: AppColors.red,
                       ),
-                      onPressed: () {
+                      onTap: () {
                         bloc.add(BudgetDeleted());
                         AppNavigator.navigateBack(context);
                       },
                     ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.check,
+                  SizedBox(width: 8),
+                  GestureDetector(
+                    child: Icon(
+                      CupertinoIcons.checkmark_circle,
                       color: AppColors.primaryColor,
                     ),
-                    onPressed: () {
+                    onTap: () {
                       if (state.budget!.name.isEmpty) return;
                       bloc.add(BudgetSaved());
                       AppNavigator.navigateBack(context);
@@ -78,12 +85,51 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                   ),
                 ],
               ),
+            ),
+            SliverToBoxAdapter(
+              child: Material(
+                child: _buildBody(context, state),
+              ),
             )
           ],
-          body: _buildBody(context, state),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: AppBar(
+          title: Text(
+            state.isEditMode ? 'Editar presupuesto' : 'Nuevo presupuesto',
+          ),
+          actions: [
+            if (state.budget?.id.value != 'inv' &&
+                state.budget?.id.value != 'seg' &&
+                state.budget?.id.value != 'dar')
+              IconButton(
+                icon: Icon(
+                  Icons.delete_outline,
+                  color: AppColors.red,
+                ),
+                onPressed: () {
+                  bloc.add(BudgetDeleted());
+                  AppNavigator.navigateBack(context);
+                },
+              ),
+            IconButton(
+              icon: Icon(
+                Icons.check,
+              ),
+              onPressed: () {
+                if (state.budget!.name.isEmpty) return;
+                bloc.add(BudgetSaved());
+                AppNavigator.navigateBack(context);
+              },
+            ),
+          ],
+        ),
+        body: _buildBody(context, state),
+      );
+    }
   }
 
   Widget _buildBody(BuildContext context, EditBudgetScreenState state) {
@@ -97,173 +143,122 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
       if (budget!.abbreviation == null || budget.abbreviation!.isEmpty) {
         hasAbbreviation = false;
       }
-      return Container(
-        alignment: Alignment.center,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 20),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  _showEditOptions(context, bloc, state);
-                },
-                child: Stack(
-                  alignment: Alignment(1, 1.2),
-                  children: [
-                    CircleAvatar(
-                      maxRadius: 40,
-                      backgroundColor: Color(state.budget!.color),
-                      child: hasAbbreviation
-                          ? Text(
-                              budget.abbreviation!,
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.white,
-                              ),
-                            )
-                          : Icon(
-                              Icons.inbox,
-                              color: AppColors.white,
-                              size: 40,
-                            ),
-                    ),
-                    CircleAvatar(
-                      maxRadius: 15,
-                      child: Icon(
-                        Icons.edit,
-                        color: AppColors.white,
-                        size: 15,
-                      ),
-                      backgroundColor: AppColors.greySecondary,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: kDefaultPadding,
-                left: kDefaultPadding,
-                right: kDefaultPadding,
-                bottom: 8,
-              ),
-              child: Text(
-                'GENERAL',
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
-                textAlign: TextAlign.start,
-              ),
-            ),
-            Container(
-              color: AppColors.white,
-              child: Column(
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 20),
+          Center(
+            child: InkWell(
+              onTap: () {
+                _showEditOptions(context, bloc, state);
+              },
+              child: Stack(
+                alignment: Alignment(1, 1.2),
                 children: [
-                  Divider(height: 2),
-                  ListTile(
-                    leading: Icon(Icons.drive_file_rename_outline_outlined),
-                    minLeadingWidth: 2,
-                    title: Text('Nombre'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (state.budget!.name.isNotEmpty)
-                          Text(
-                            state.budget!.name,
-                            style: TextStyle(color: AppColors.greySecondary),
+                  CircleAvatar(
+                    maxRadius: 40,
+                    backgroundColor: Color(state.budget!.color),
+                    child: hasAbbreviation
+                        ? Text(
+                            budget.abbreviation!,
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.white,
+                            ),
+                          )
+                        : Icon(
+                            Icons.inbox,
+                            color: AppColors.white,
+                            size: 40,
                           ),
-                        if (state.budget!.name.isEmpty)
-                          Text(
-                            'Requerido',
-                            style: TextStyle(color: AppColors.red),
-                          ),
-                        SizedBox(width: 10),
-                        Icon(Icons.chevron_right)
-                      ],
-                    ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) => _EditNameBottomSheet(
-                          state: state,
-                          onCancelPressed: () {},
-                          onSavePressed: (name) {
-                            bloc.add(NameChanged(name));
-                          },
-                        ),
-                      );
-                    },
                   ),
-                  Divider(height: 2),
-                  ListTile(
-                    leading: Icon(Icons.inbox),
-                    minLeadingWidth: 2,
-                    title: Text('Abreviatura'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          state.budget!.abbreviation ?? '',
-                          style: TextStyle(color: AppColors.greySecondary),
-                        ),
-                        SizedBox(width: 10),
-                        Icon(Icons.chevron_right)
-                      ],
+                  CircleAvatar(
+                    maxRadius: 15,
+                    child: Icon(
+                      Icons.edit,
+                      color: AppColors.white,
+                      size: 15,
                     ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) => _EditAbbreviationBottomSheet(
-                          state: state,
-                          onCancelPressed: () {},
-                          onSavePressed: (abbrevation) {
-                            bloc.add(AbbreviationChanged(abbrevation));
-                          },
-                        ),
-                      );
-                    },
+                    backgroundColor: AppColors.greySecondary,
                   ),
-                  Divider(height: 2),
-                  ListTile(
-                    leading: Icon(Icons.attach_money_rounded),
-                    minLeadingWidth: 2,
-                    title: Text('Balance'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '\$${currency.format(state.budget!.balance)}',
-                          style: TextStyle(color: AppColors.greySecondary),
-                        ),
-                        SizedBox(width: 10),
-                        Icon(Icons.chevron_right)
-                      ],
-                    ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) => _EditBalanceBottomSheet(
-                          state: state,
-                          onCancelPressed: () {},
-                          onSavePressed: (balance) {
-                            bloc.add(BalanceChanged(balance));
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                  Divider(height: 2),
                 ],
               ),
             ),
+          ),
+          if (Platform.isAndroid) ...[
+            SizedBox(height: 20),
+            Divider(height: 2),
           ],
-        ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: kDefaultPadding,
+              left: kDefaultPadding,
+              right: kDefaultPadding,
+              bottom: 8,
+            ),
+            child: Text(
+              'GENERAL',
+              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+              textAlign: TextAlign.start,
+            ),
+          ),
+          Container(
+            color: AppColors.white,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.drive_file_rename_outline_outlined),
+                  minLeadingWidth: 2,
+                  title: Text('Nombre'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (state.budget!.name.isNotEmpty)
+                        Text(
+                          state.budget!.name,
+                          style: TextStyle(color: AppColors.greySecondary),
+                        ),
+                      if (state.budget!.name.isEmpty)
+                        Text(
+                          'Requerido',
+                          style: TextStyle(color: AppColors.red),
+                        ),
+                      SizedBox(width: 10),
+                      if (Platform.isIOS) const Icon(CupertinoIcons.forward),
+                    ],
+                  ),
+                  onTap: () => AppNavigator.navigateToEditBudgetNamePage(
+                    context,
+                    name: state.budget!.name,
+                  ),
+                ),
+                if (Platform.isIOS) Divider(height: 2),
+                ListTile(
+                  leading: Icon(Icons.inbox),
+                  minLeadingWidth: 2,
+                  title: Text('Abreviatura'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        state.budget!.abbreviation ?? '',
+                        style: TextStyle(color: AppColors.greySecondary),
+                      ),
+                      SizedBox(width: 10),
+                      if (Platform.isIOS) const Icon(CupertinoIcons.forward),
+                    ],
+                  ),
+                  onTap: () =>
+                      AppNavigator.navigateToEditBudgetAbbreviationPage(
+                    context,
+                    abbreviation: state.budget!.abbreviation,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       );
     }
   }
@@ -332,97 +327,6 @@ Future _pickColor(
       ),
     ),
   );
-}
-
-class _EditNameBottomSheet extends HookWidget {
-  final Function(String) onSavePressed;
-  final VoidCallback onCancelPressed;
-  final EditBudgetScreenState state;
-
-  const _EditNameBottomSheet({
-    Key? key,
-    required this.onSavePressed,
-    required this.onCancelPressed,
-    required this.state,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textEditingController = useTextEditingController()
-      ..text = state.budget!.name;
-    return DraggableScrollableSheet(
-      initialChildSize: 0.95,
-      maxChildSize: 0.95,
-      builder: (context, controller) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  child: const Text('Cancelar'),
-                  onPressed: () {
-                    AppNavigator.navigateBack(context);
-                    onCancelPressed();
-                  },
-                ),
-                const Text(
-                  'Editar cuenta',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                TextButton(
-                  child: const Text('Guardar'),
-                  onPressed: () {
-                    AppNavigator.navigateBack(context);
-                    onSavePressed(textEditingController.value.text.trim());
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 50),
-            TextField(
-              controller: textEditingController,
-              keyboardType: TextInputType.name,
-              autofocus: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                label: Center(
-                  child: Text(
-                    'Nuevo nombre',
-                  ),
-                ),
-                labelStyle: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14,
-                ),
-                hintStyle: TextStyle(fontSize: 18),
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                hintText: '',
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 class _EditAbbreviationBottomSheet extends HookWidget {

@@ -1,5 +1,9 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
@@ -27,24 +31,42 @@ class _EditCategoryNameScreenState extends State<EditCategoryNameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditCategoryScreenBloc, EditCategoryScreenState>(
-      builder: _buildState,
-    );
-  }
-
-  Widget _buildState(BuildContext context, EditCategoryScreenState state) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Nombre'),
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () => AppNavigator.navigateBack(context),
+    if (Platform.isIOS) {
+      return CupertinoPageScaffold(
+        backgroundColor: AppColors.greyBackground,
+        navigationBar: CupertinoNavigationBar(
+          middle: Text('Nombre'),
+          previousPageTitle: AppLocalizations.of(context)!.misc_back,
+          trailing: GestureDetector(
+            child: Icon(
+              CupertinoIcons.checkmark_circle,
+              color: AppColors.primaryColor,
+            ),
+            onTap: () {
+              context
+                  .read<EditCategoryScreenBloc>()
+                  .add(NameChanged(textEditingController.text.trim()));
+              AppNavigator.navigateBack(context);
+            },
+          ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextButton(
-              child: Text('Listo'),
+        child: Material(
+          child: EditCategoryNameContent(
+            textEditingController: textEditingController,
+          ),
+        ),
+      );
+    } else {
+      return Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: AppBar(
+          title: Text('Nombre'),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.check,
+                color: AppColors.white,
+              ),
               onPressed: () {
                 context
                     .read<EditCategoryScreenBloc>()
@@ -52,44 +74,64 @@ class _EditCategoryNameScreenState extends State<EditCategoryNameScreen> {
                 AppNavigator.navigateBack(context);
               },
             ),
+          ],
+        ),
+        body: EditCategoryNameContent(
+          textEditingController: textEditingController,
+        ),
+      );
+    }
+  }
+}
+
+class EditCategoryNameContent extends StatelessWidget {
+  const EditCategoryNameContent({
+    Key? key,
+    required this.textEditingController,
+  }) : super(key: key);
+
+  final TextEditingController textEditingController;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: [
+        SizedBox(
+          height: 50,
+        ),
+        TextField(
+          controller: textEditingController,
+          keyboardType: TextInputType.name,
+          autofocus: true,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          SizedBox(height: 50),
-          TextField(
-            controller: textEditingController,
-            keyboardType: TextInputType.name,
-            autofocus: true,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-            decoration: InputDecoration(
-              alignLabelWithHint: true,
-              label: Center(
-                child: Text(
-                  'Nuevo nombre',
-                ),
+          decoration: InputDecoration(
+            alignLabelWithHint: true,
+            label: Center(
+              child: Text(
+                'Nuevo nombre',
               ),
-              labelStyle: TextStyle(
-                color: AppColors.black,
-                fontWeight: FontWeight.w300,
-                fontSize: 14,
-              ),
-              hintStyle: TextStyle(fontSize: 18),
-              border: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              hintText: '',
             ),
-          )
-        ],
-      ),
+            labelStyle: TextStyle(
+              color: AppColors.black,
+              fontWeight: FontWeight.w300,
+              fontSize: 14,
+            ),
+            hintStyle: TextStyle(fontSize: 18),
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            hintText: '',
+          ),
+        )
+      ],
     );
   }
 }

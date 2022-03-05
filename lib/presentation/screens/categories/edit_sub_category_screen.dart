@@ -1,6 +1,9 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
@@ -37,50 +40,85 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
   }
 
   Widget _buildState(BuildContext context, EditSubCategoryScreenState state) {
-    if (state.isLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
+    if (Platform.isIOS) {
+      return CupertinoPageScaffold(
+        backgroundColor: AppColors.greyBackground,
+        child: CustomScrollView(
+          physics:
+              BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          slivers: [
+            CupertinoSliverNavigationBar(
+              stretch: true,
+              largeTitle: Text(
+                'Subcategoría',
+              ),
+              previousPageTitle: AppLocalizations.of(context)!.misc_back,
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    child: Icon(
+                      CupertinoIcons.trash_circle,
+                      color: AppColors.red,
+                    ),
+                    onTap: () {
+                      bloc.add(SubCategoryDeleted());
+                      AppNavigator.navigateBack(context);
+                    },
+                  ),
+                  SizedBox(width: 8),
+                  GestureDetector(
+                    child: Icon(
+                      CupertinoIcons.checkmark_circle,
+                      color: AppColors.primaryColor,
+                    ),
+                    onTap: () {
+                      bloc.add(SubCategorySaved());
+                      AppNavigator.navigateBack(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Material(
+                child: _buildBody(context, state),
+              ),
+            )
+          ],
+        ),
       );
     } else {
       return Scaffold(
-        body: CupertinoPageScaffold(
-          backgroundColor: AppColors.greyBackground,
-          child: NestedScrollView(
-            headerSliverBuilder: (ctx, inner) => [
-              CupertinoSliverNavigationBar(
-                largeTitle: Text('Subcategoría'),
-                previousPageTitle: 'Atras',
-                trailing: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete_outline,
-                        color: AppColors.red,
-                      ),
-                      onPressed: () {
-                        bloc.add(SubCategoryDeleted());
-                        AppNavigator.navigateBack(context);
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.check,
-                        color: AppColors.primaryColor,
-                      ),
-                      onPressed: () {
-                        bloc.add(SubCategorySaved());
-                        AppNavigator.navigateBack(context);
-                      },
-                    ),
-                  ],
-                ),
-              )
-            ],
-            body: _buildBody(context, state),
+        backgroundColor: AppColors.white,
+        appBar: AppBar(
+          title: Text(
+            'Subcategoría',
           ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.delete_outline,
+                color: AppColors.red,
+              ),
+              onPressed: () {
+                bloc.add(SubCategoryDeleted());
+                AppNavigator.navigateBack(context);
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.check,
+                color: AppColors.white,
+              ),
+              onPressed: () {
+                bloc.add(SubCategorySaved());
+                AppNavigator.navigateBack(context);
+              },
+            ),
+          ],
         ),
+        body: _buildBody(context, state),
       );
     }
   }
@@ -129,6 +167,10 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                 ),
               ),
             ),
+            if (Platform.isAndroid) ...[
+              SizedBox(height: 20),
+              Divider(height: 2),
+            ],
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding,
@@ -146,7 +188,6 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
               color: AppColors.white,
               child: Column(
                 children: [
-                  Divider(height: 2),
                   ListTile(
                     leading: Icon(Icons.drive_file_rename_outline_outlined),
                     minLeadingWidth: 2,
@@ -165,7 +206,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                             style: TextStyle(color: AppColors.red),
                           ),
                         SizedBox(width: 10),
-                        Icon(Icons.chevron_right)
+                        if (Platform.isIOS) const Icon(CupertinoIcons.forward),
                       ],
                     ),
                     onTap: () => AppNavigator.navigateToEditSubCategoryNamePage(

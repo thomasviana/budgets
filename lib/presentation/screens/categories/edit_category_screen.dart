@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,49 +41,72 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
   }
 
   Widget _buildState(BuildContext context, EditCategoryScreenState state) {
-    return Scaffold(
-      body: CupertinoPageScaffold(
+    if (Platform.isIOS) {
+      return CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
-        child: NestedScrollView(
-          headerSliverBuilder: (ctx, inner) => [
+        child: CustomScrollView(
+          physics:
+              BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          slivers: [
             CupertinoSliverNavigationBar(
+              stretch: true,
               largeTitle: Text(
                 state.isEditMode ? 'Editar categoria' : 'Crear categoría',
               ),
               previousPageTitle: AppLocalizations.of(context)!.misc_back,
-              trailing: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (!state.isDefaultCategory)
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete_outline,
-                        color: AppColors.red,
-                      ),
-                      onPressed: () {
-                        bloc.add(CategoryDeleted());
-                        AppNavigator.navigateBack(context);
-                      },
-                    ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.check,
-                      color: AppColors.primaryColor,
-                    ),
-                    onPressed: () {
-                      bloc.add(CategorySaved());
-                      AppNavigator.navigateBack(context);
-                    },
-                  ),
-                ],
+              trailing: GestureDetector(
+                child: Icon(
+                  CupertinoIcons.checkmark_alt_circle,
+                  color: AppColors.primaryColor,
+                ),
+                onTap: () {
+                  bloc.add(CategorySaved());
+                  AppNavigator.navigateBack(context);
+                },
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Material(
+                child: _buildBody(context, state),
               ),
             )
           ],
-          body: _buildBody(context, state),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: AppBar(
+          title: Text(
+            state.isEditMode ? 'Editar categoria' : 'Crear categoría',
+          ),
+          actions: [
+            if (!state.isDefaultCategory)
+              IconButton(
+                icon: Icon(
+                  Icons.delete_outline,
+                  color: AppColors.red,
+                ),
+                onPressed: () {
+                  bloc.add(CategoryDeleted());
+                  AppNavigator.navigateBack(context);
+                },
+              ),
+            IconButton(
+              icon: Icon(
+                Icons.check,
+                color: AppColors.white,
+              ),
+              onPressed: () {
+                bloc.add(CategorySaved());
+                AppNavigator.navigateBack(context);
+              },
+            ),
+          ],
+        ),
+        body: _buildBody(context, state),
+      );
+    }
   }
 
   Widget _buildBody(BuildContext context, EditCategoryScreenState state) {
@@ -106,16 +131,20 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                   alignment: Alignment(1, 1.2),
                   children: [
                     CircleAvatar(
-                      maxRadius: 40,
-                      child: Icon(
-                        IconData(
-                          state.category!.icon,
-                          fontFamily: 'MaterialIcons',
-                        ),
-                        color: AppColors.white,
-                        size: 40,
-                      ),
+                      radius: 40,
                       backgroundColor: Color(state.category!.color),
+                      child: CircleAvatar(
+                        radius: 36,
+                        backgroundColor: AppColors.white,
+                        child: Icon(
+                          IconData(
+                            state.category!.icon,
+                            fontFamily: 'MaterialIcons',
+                          ),
+                          color: Color(state.category!.color),
+                          size: 40,
+                        ),
+                      ),
                     ),
                     CircleAvatar(
                       maxRadius: 15,
@@ -130,6 +159,10 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 ),
               ),
             ),
+            if (Platform.isAndroid) ...[
+              SizedBox(height: 20),
+              Divider(height: 2),
+            ],
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding,
@@ -147,7 +180,6 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
               color: AppColors.white,
               child: Column(
                 children: [
-                  Divider(height: 2),
                   ListTile(
                     leading: Icon(Icons.drive_file_rename_outline_outlined),
                     minLeadingWidth: 2,
@@ -166,7 +198,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                             style: TextStyle(color: AppColors.red),
                           ),
                         SizedBox(width: 10),
-                        Icon(Icons.chevron_right)
+                        if (Platform.isIOS) const Icon(CupertinoIcons.forward),
                       ],
                     ),
                     onTap: () => AppNavigator.navigateToEditCategoryNamePage(
@@ -189,7 +221,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                             style: TextStyle(color: AppColors.greySecondary),
                           ),
                           SizedBox(width: 10),
-                          Icon(Icons.chevron_right)
+                          if (Platform.isIOS)
+                            const Icon(CupertinoIcons.forward),
                         ],
                       ),
                       onTap: () =>
@@ -200,6 +233,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 ],
               ),
             ),
+            if (Platform.isAndroid) Divider(height: 2),
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding,
@@ -226,25 +260,20 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 itemCount:
                     subCategories.isNotEmpty ? subCategories.length - 1 : 0,
                 separatorBuilder: (BuildContext context, int index) =>
-                    Divider(height: 2),
+                    Platform.isIOS
+                        ? const Divider(height: 2)
+                        : const SizedBox(),
                 itemBuilder: (BuildContext context, int index) {
                   final subCategory = subCategories[index + 1];
                   return ListTile(
                     title: Text(subCategory.name),
-                    leading: CircleAvatar(
-                      maxRadius: 20,
-                      child: Icon(
-                        IconData(
-                          subCategory.icon,
-                          fontFamily: 'MaterialIcons',
-                        ),
-                        color: AppColors.white,
-                      ),
-                      backgroundColor: Color(subCategory.color),
+                    leading: ListTileLeadingIcon(
+                      icon: subCategory.icon,
+                      color: subCategory.color,
                     ),
-                    trailing: Icon(
-                      Icons.chevron_right,
-                    ),
+                    trailing: Platform.isIOS
+                        ? const Icon(CupertinoIcons.forward)
+                        : null,
                     onTap: () {
                       AppNavigator.navigateToEditSubCategoryPage(
                         context,
@@ -256,6 +285,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
               ),
             ),
             SizedBox(height: 40),
+            if (Platform.isAndroid) Divider(height: 2),
             Container(
               color: AppColors.white,
               child: ListTile(
@@ -268,9 +298,8 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                   ),
                   backgroundColor: AppColors.greyDisabled,
                 ),
-                trailing: Icon(
-                  Icons.chevron_right,
-                ),
+                trailing:
+                    Platform.isIOS ? const Icon(CupertinoIcons.forward) : null,
                 onTap: () => bloc.add(SubcategoryAdded()),
               ),
             ),

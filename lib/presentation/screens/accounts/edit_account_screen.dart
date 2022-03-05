@@ -1,8 +1,9 @@
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'dart:io' show Platform;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 import '../../../core/accounts/domain.dart';
@@ -38,39 +39,42 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
   }
 
   Widget _buildState(BuildContext context, EditAccountScreenState state) {
-    return Scaffold(
-      body: CupertinoPageScaffold(
+    if (Platform.isIOS) {
+      return CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
-        child: NestedScrollView(
-          headerSliverBuilder: (ctx, inner) => [
+        child: CustomScrollView(
+          physics:
+              BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          slivers: [
             CupertinoSliverNavigationBar(
+              stretch: true,
               largeTitle:
                   Text(state.isEditMode ? 'Editar cuenta' : 'Nueva cuenta'),
-              previousPageTitle: 'Atras',
+              previousPageTitle: AppLocalizations.of(context)!.misc_back,
               trailing: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (state.account?.id.value != 'bank' &&
                       state.account?.id.value != 'cash' &&
                       state.account?.id.value != 'wallet' &&
                       state.isEditMode)
-                    IconButton(
-                      icon: Icon(
-                        Icons.delete_outline,
+                    GestureDetector(
+                      child: Icon(
+                        CupertinoIcons.trash_circle,
                         color: AppColors.red,
                       ),
-                      onPressed: () {
+                      onTap: () {
                         bloc.add(AccountDeleted());
                         AppNavigator.navigateBack(context);
                       },
                     ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.check,
+                  SizedBox(width: 8),
+                  GestureDetector(
+                    child: Icon(
+                      CupertinoIcons.checkmark_circle,
                       color: AppColors.primaryColor,
                     ),
-                    onPressed: () {
+                    onTap: () {
                       if (state.account!.name.isEmpty) return;
                       bloc.add(AccountSaved());
                       AppNavigator.navigateBack(context);
@@ -78,12 +82,52 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                   ),
                 ],
               ),
+            ),
+            SliverToBoxAdapter(
+              child: Material(
+                child: _buildBody(context, state),
+              ),
             )
           ],
-          body: _buildBody(context, state),
         ),
-      ),
-    );
+      );
+    } else {
+      return Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: AppBar(
+          title: Text(
+            state.isEditMode ? 'Editar cuenta' : 'Nueva cuenta',
+          ),
+          actions: [
+            if (state.account?.id.value != 'bank' &&
+                state.account?.id.value != 'cash' &&
+                state.account?.id.value != 'wallet' &&
+                state.isEditMode)
+              IconButton(
+                icon: Icon(
+                  Icons.delete_outline,
+                  color: AppColors.red,
+                ),
+                onPressed: () {
+                  bloc.add(AccountDeleted());
+                  AppNavigator.navigateBack(context);
+                },
+              ),
+            IconButton(
+              icon: Icon(
+                Icons.check,
+              ),
+              onPressed: () {
+                if (state.account!.name.isEmpty) return;
+                bloc.add(AccountSaved());
+                AppNavigator.navigateBack(context);
+              },
+            ),
+          ],
+        ),
+        body: _buildBody(context, state),
+      );
+    }
   }
 
   Widget _buildBody(BuildContext context, EditAccountScreenState state) {
@@ -111,163 +155,125 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           color: AppColors.white,
         );
       }
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 20),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  _showEditOptions(context, bloc, state);
-                },
-                child: Stack(
-                  alignment: Alignment(1, 1.2),
-                  children: [
-                    CircleAvatar(
-                      maxRadius: 40,
-                      backgroundColor: Color(account.color),
-                      backgroundImage: image,
-                      child: isImageAvailable ? null : accountIcon,
-                    ),
-                    CircleAvatar(
-                      maxRadius: 15,
-                      child: Icon(
-                        Icons.edit,
-                        color: AppColors.white,
-                        size: 15,
-                      ),
-                      backgroundColor: AppColors.greySecondary,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: kDefaultPadding,
-                left: kDefaultPadding,
-                right: kDefaultPadding,
-                bottom: 8,
-              ),
-              child: Text(
-                'GENERAL',
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
-                textAlign: TextAlign.start,
-              ),
-            ),
-            Container(
-              color: AppColors.white,
-              child: Column(
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const SizedBox(height: 20),
+          Center(
+            child: InkWell(
+              onTap: () {
+                _showEditOptions(context, bloc, state);
+              },
+              child: Stack(
+                alignment: Alignment(1, 1.2),
                 children: [
-                  Divider(height: 2),
-                  ListTile(
-                    leading: Icon(Icons.drive_file_rename_outline_outlined),
-                    minLeadingWidth: 2,
-                    title: Text('Nombre'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (state.account!.name.isNotEmpty)
-                          Text(
-                            state.account!.name,
-                            style: TextStyle(color: AppColors.greySecondary),
-                          ),
-                        if (state.account!.name.isEmpty)
-                          Text(
-                            'Requerido',
-                            style: TextStyle(color: AppColors.red),
-                          ),
-                        SizedBox(width: 10),
-                        Icon(Icons.chevron_right)
-                      ],
-                    ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) => _EditNameBottomSheet(
-                          state: state,
-                          onCancelPressed: () {},
-                          onSavePressed: (name) => bloc.add(NameChanged(name)),
-                        ),
-                      );
-                    },
+                  CircleAvatar(
+                    maxRadius: 40,
+                    backgroundColor: Color(account.color),
+                    backgroundImage: image,
+                    child: isImageAvailable ? null : accountIcon,
                   ),
-                  Divider(height: 2),
-                  ListTile(
-                    leading: Icon(
-                      IconData(
-                        state.account!.icon,
-                        fontFamily: 'MaterialIcons',
-                      ),
+                  CircleAvatar(
+                    maxRadius: 15,
+                    child: Icon(
+                      Icons.edit,
+                      color: AppColors.white,
+                      size: 15,
                     ),
-                    minLeadingWidth: 2,
-                    title: Text('Tipo'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          state.account!.typeAsString,
-                          style: TextStyle(color: AppColors.greySecondary),
-                        ),
-                        SizedBox(width: 10),
-                        Icon(Icons.chevron_right)
-                      ],
-                    ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) => _EditTypeBottomSheet(
-                          state: state,
-                          onCancelPressed: () {},
-                          onTypeSelected: (accountType) {
-                            bloc.add(TypeChanged(accountType));
-                            AppNavigator.navigateBack(context);
-                          },
-                        ),
-                      );
-                    },
+                    backgroundColor: AppColors.greySecondary,
                   ),
-                  Divider(height: 2),
-                  ListTile(
-                    leading: Icon(Icons.attach_money_rounded),
-                    minLeadingWidth: 2,
-                    title: Text('Balance'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '\$${currency.format(state.account!.balance)}',
-                          style: TextStyle(color: AppColors.greySecondary),
-                        ),
-                        SizedBox(width: 10),
-                        Icon(Icons.chevron_right)
-                      ],
-                    ),
-                    onTap: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (context) => _EditBalanceBottomSheet(
-                          state: state,
-                          onCancelPressed: () {},
-                          onSavePressed: (balance) =>
-                              bloc.add(BalanceChanged(balance)),
-                        ),
-                      );
-                    },
-                  ),
-                  Divider(height: 2),
                 ],
               ),
             ),
+          ),
+          if (Platform.isAndroid) ...[
+            SizedBox(height: 20),
+            Divider(height: 2),
           ],
-        ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: kDefaultPadding,
+              left: kDefaultPadding,
+              right: kDefaultPadding,
+              bottom: 8,
+            ),
+            child: Text(
+              'GENERAL',
+              style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+              textAlign: TextAlign.start,
+            ),
+          ),
+          Container(
+            color: AppColors.white,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.drive_file_rename_outline_outlined),
+                  minLeadingWidth: 2,
+                  title: Text('Nombre'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (state.account!.name.isNotEmpty)
+                        Text(
+                          state.account!.name,
+                          style: TextStyle(color: AppColors.greySecondary),
+                        ),
+                      if (state.account!.name.isEmpty)
+                        Text(
+                          'Requerido',
+                          style: TextStyle(color: AppColors.red),
+                        ),
+                      SizedBox(width: 10),
+                      if (Platform.isIOS) const Icon(CupertinoIcons.forward),
+                    ],
+                  ),
+                  onTap: () => AppNavigator.navigateToEditAccountNamePage(
+                    context,
+                    name: state.account!.name,
+                  ),
+                ),
+                if (Platform.isIOS) Divider(height: 2),
+                ListTile(
+                  leading: Icon(
+                    IconData(
+                      state.account!.icon,
+                      fontFamily: 'MaterialIcons',
+                    ),
+                  ),
+                  minLeadingWidth: 2,
+                  title: Text('Tipo'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        state.account!.typeAsString,
+                        style: TextStyle(color: AppColors.greySecondary),
+                      ),
+                      SizedBox(width: 10),
+                      if (Platform.isIOS) const Icon(CupertinoIcons.forward),
+                    ],
+                  ),
+                  onTap: () {
+                    showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) => _EditTypeBottomSheet(
+                        state: state,
+                        onCancelPressed: () {},
+                        onTypeSelected: (accountType) {
+                          bloc.add(TypeChanged(accountType));
+                          AppNavigator.navigateBack(context);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
       );
     }
   }
@@ -425,97 +431,6 @@ Future _pickImage(
   );
 }
 
-class _EditNameBottomSheet extends HookWidget {
-  final Function(String) onSavePressed;
-  final VoidCallback onCancelPressed;
-  final EditAccountScreenState state;
-
-  const _EditNameBottomSheet({
-    Key? key,
-    required this.onSavePressed,
-    required this.onCancelPressed,
-    required this.state,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final textEditingController = useTextEditingController()
-      ..text = state.account!.name;
-    return DraggableScrollableSheet(
-      initialChildSize: 0.95,
-      maxChildSize: 0.95,
-      builder: (context, controller) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  child: const Text('Cancelar'),
-                  onPressed: () {
-                    AppNavigator.navigateBack(context);
-                    onCancelPressed();
-                  },
-                ),
-                const Text(
-                  'Editar cuenta',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                TextButton(
-                  child: const Text('Guardar'),
-                  onPressed: () {
-                    AppNavigator.navigateBack(context);
-                    onSavePressed(textEditingController.value.text.trim());
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 50),
-            TextField(
-              controller: textEditingController,
-              keyboardType: TextInputType.name,
-              autofocus: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                label: Center(
-                  child: Text(
-                    'Nuevo nombre',
-                  ),
-                ),
-                labelStyle: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14,
-                ),
-                hintStyle: TextStyle(fontSize: 18),
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                hintText: '',
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _EditTypeBottomSheet extends StatelessWidget {
   final Function(AccountType) onTypeSelected;
   final VoidCallback onCancelPressed;
@@ -612,102 +527,6 @@ class _EditTypeBottomSheet extends StatelessWidget {
               onTap: () => onTypeSelected(AccountType.wallet),
             ),
             Divider(height: 2),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _EditBalanceBottomSheet extends HookWidget {
-  final Function(double) onSavePressed;
-  final VoidCallback onCancelPressed;
-  final EditAccountScreenState state;
-
-  const _EditBalanceBottomSheet({
-    Key? key,
-    required this.onSavePressed,
-    required this.onCancelPressed,
-    required this.state,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final CurrencyTextInputFormatter _formatter =
-        CurrencyTextInputFormatter(symbol: '\$');
-    final textEditingController = useTextEditingController()
-      ..text = _formatter.format(state.account!.balance.toString());
-
-    return DraggableScrollableSheet(
-      initialChildSize: 0.95,
-      maxChildSize: 0.95,
-      builder: (context, controller) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  child: const Text('Cancelar'),
-                  onPressed: () {
-                    AppNavigator.navigateBack(context);
-                    onCancelPressed();
-                  },
-                ),
-                const Text(
-                  'Editar cuenta',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                TextButton(
-                  child: const Text('Guardar'),
-                  onPressed: () {
-                    final balance = _formatter.getUnformattedValue();
-                    onSavePressed(balance.toDouble());
-                    AppNavigator.navigateBack(context);
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 50),
-            TextField(
-              controller: textEditingController,
-              inputFormatters: [_formatter],
-              keyboardType: TextInputType.name,
-              autofocus: true,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              decoration: InputDecoration(
-                alignLabelWithHint: true,
-                label: Center(
-                  child: Text(
-                    'Nuevo balance',
-                  ),
-                ),
-                labelStyle: TextStyle(
-                  color: AppColors.black,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 14,
-                ),
-                hintStyle: TextStyle(fontSize: 18),
-                border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                hintText: '\$${currency.format(0)}',
-              ),
-            )
           ],
         ),
       ),

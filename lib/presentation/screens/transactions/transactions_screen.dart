@@ -139,7 +139,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                             iconSize: 24 * scaleAnimation,
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             icon: Icon(
-                              Icons.chevron_right,
+                              CupertinoIcons.forward,
                               color: AppColors.greyPrimary
                                   .withOpacity(scaleAnimation),
                             ),

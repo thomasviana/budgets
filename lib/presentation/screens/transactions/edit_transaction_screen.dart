@@ -248,7 +248,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                       style: TextStyle(color: AppColors.greySecondary),
                     ),
                     SizedBox(width: 10),
-                    Icon(Icons.chevron_right)
+                    const Icon(CupertinoIcons.forward)
                   ],
                 ),
                 onTap: () {
@@ -340,7 +340,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                       ),
                     ),
                     SizedBox(width: 10),
-                    Icon(Icons.chevron_right)
+                    const Icon(CupertinoIcons.forward)
                   ],
                 ),
                 onTap: () => AppNavigator.navigateToSelectCategoryPage(context),
@@ -375,7 +375,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                         style: TextStyle(color: AppColors.greySecondary),
                       ),
                       SizedBox(width: 10),
-                      Icon(Icons.chevron_right)
+                      const Icon(CupertinoIcons.forward)
                     ],
                   ),
                   onTap: () {
@@ -411,7 +411,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                           style: TextStyle(color: AppColors.red),
                         ),
                       SizedBox(width: 10),
-                      Icon(Icons.chevron_right)
+                      const Icon(CupertinoIcons.forward)
                     ],
                   ),
                   onTap: state.transaction.isIncomeManaged ||
@@ -439,7 +439,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                       style: TextStyle(color: AppColors.greySecondary),
                     ),
                     SizedBox(width: 10),
-                    Icon(Icons.chevron_right)
+                    const Icon(CupertinoIcons.forward)
                   ],
                 ),
                 onTap: () {
@@ -464,7 +464,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                         style: TextStyle(color: AppColors.greySecondary),
                       ),
                       SizedBox(width: 10),
-                      Icon(Icons.chevron_right)
+                      const Icon(CupertinoIcons.forward)
                     ],
                   ),
                   children: [

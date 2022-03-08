@@ -34,12 +34,6 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EditSubCategoryScreenBloc, EditSubCategoryScreenState>(
-      builder: _buildState,
-    );
-  }
-
-  Widget _buildState(BuildContext context, EditSubCategoryScreenState state) {
     if (Platform.isIOS) {
       return CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
@@ -82,7 +76,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
             ),
             SliverToBoxAdapter(
               child: Material(
-                child: _buildBody(context, state),
+                child: EditSubCategoryContent(),
               ),
             )
           ],
@@ -118,117 +112,143 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
             ),
           ],
         ),
-        body: _buildBody(context, state),
-      );
-    }
-  }
-
-  Widget _buildBody(BuildContext context, EditSubCategoryScreenState state) {
-    if (state.isLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    } else {
-      return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 20),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  _showEditOptions(context, bloc, state);
-                },
-                child: Stack(
-                  alignment: Alignment(1, 1.2),
-                  children: [
-                    CircleAvatar(
-                      maxRadius: 40,
-                      child: Icon(
-                        IconData(
-                          state.subCategory!.icon,
-                          fontFamily: 'MaterialIcons',
-                        ),
-                        color: AppColors.white,
-                        size: 40,
-                      ),
-                      backgroundColor: Color(state.subCategory!.color),
-                    ),
-                    CircleAvatar(
-                      maxRadius: 15,
-                      child: Icon(
-                        Icons.edit,
-                        color: AppColors.white,
-                        size: 15,
-                      ),
-                      backgroundColor: AppColors.greySecondary,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            if (Platform.isAndroid) ...[
-              SizedBox(height: 20),
-              Divider(height: 2),
-            ],
-            Padding(
-              padding: const EdgeInsets.only(
-                top: kDefaultPadding,
-                left: kDefaultPadding,
-                right: kDefaultPadding,
-                bottom: 8,
-              ),
-              child: Text(
-                'GENERAL',
-                style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
-                textAlign: TextAlign.start,
-              ),
-            ),
-            Container(
-              color: AppColors.white,
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.drive_file_rename_outline_outlined),
-                    minLeadingWidth: 2,
-                    title: Text('Nombre'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (state.subCategory!.name.isNotEmpty)
-                          Text(
-                            state.subCategory!.name,
-                            style: TextStyle(color: AppColors.greySecondary),
-                          ),
-                        if (state.subCategory!.name.isEmpty)
-                          Text(
-                            'Requerido',
-                            style: TextStyle(color: AppColors.red),
-                          ),
-                        SizedBox(width: 10),
-                        if (Platform.isIOS) const Icon(CupertinoIcons.forward),
-                      ],
-                    ),
-                    onTap: () => AppNavigator.navigateToEditSubCategoryNamePage(
-                      context,
-                      name: state.subCategory!.name,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        body: EditSubCategoryContent(),
       );
     }
   }
 }
 
+class EditSubCategoryContent extends StatelessWidget {
+  const EditSubCategoryContent({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EditSubCategoryScreenBloc, EditSubCategoryScreenState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20),
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      final bloc = context.read<EditSubCategoryScreenBloc>();
+                      _showEditOptions(
+                        context,
+                        state,
+                        onColorUpdated: (color) =>
+                            bloc.add(ColorUpdated(color)),
+                        onIconUpdated: (icon) => bloc.add(IconUpdated(icon)),
+                      );
+                    },
+                    child: Stack(
+                      alignment: Alignment(1, 1.2),
+                      children: [
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundColor: Color(state.subCategory!.color),
+                          child: CircleAvatar(
+                            radius: 36,
+                            backgroundColor: AppColors.white,
+                            child: Icon(
+                              IconData(
+                                state.subCategory!.icon,
+                                fontFamily: 'MaterialIcons',
+                              ),
+                              color: Color(state.subCategory!.color),
+                              size: 40,
+                            ),
+                          ),
+                        ),
+                        CircleAvatar(
+                          maxRadius: 15,
+                          child: Icon(
+                            Icons.edit,
+                            color: AppColors.white,
+                            size: 15,
+                          ),
+                          backgroundColor: AppColors.greySecondary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                if (Platform.isAndroid) ...[
+                  SizedBox(height: 20),
+                  Divider(height: 2),
+                ],
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: kDefaultPadding,
+                    left: kDefaultPadding,
+                    right: kDefaultPadding,
+                    bottom: 8,
+                  ),
+                  child: Text(
+                    'GENERAL',
+                    style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
+                    textAlign: TextAlign.start,
+                  ),
+                ),
+                Container(
+                  color: AppColors.white,
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.drive_file_rename_outline_outlined),
+                        minLeadingWidth: 2,
+                        title: Text('Nombre'),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (state.subCategory!.name.isNotEmpty)
+                              Text(
+                                state.subCategory!.name,
+                                style:
+                                    TextStyle(color: AppColors.greySecondary),
+                              ),
+                            if (state.subCategory!.name.isEmpty)
+                              Text(
+                                'Requerido',
+                                style: TextStyle(color: AppColors.red),
+                              ),
+                            SizedBox(width: 10),
+                            if (Platform.isIOS)
+                              const Icon(CupertinoIcons.forward),
+                          ],
+                        ),
+                        onTap: () =>
+                            AppNavigator.navigateToEditSubCategoryNamePage(
+                          context,
+                          name: state.subCategory!.name,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
 Future<void> _showEditOptions(
   BuildContext context,
-  EditSubCategoryScreenBloc bloc,
-  EditSubCategoryScreenState state,
-) async {
+  EditSubCategoryScreenState state, {
+  required Function(int color) onColorUpdated,
+  required Function(int icon) onIconUpdated,
+}) async {
   await showCupertinoModalPopup<void>(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
@@ -237,14 +257,21 @@ Future<void> _showEditOptions(
           child: const Text('Cambiar icono'),
           onPressed: () {
             Navigator.pop(context);
-            _pickIcon(context, bloc);
+            _pickIcon(
+              context,
+              onIconUpdated: onIconUpdated,
+            );
           },
         ),
         CupertinoActionSheetAction(
           child: const Text('Cambiar color'),
           onPressed: () {
             Navigator.pop(context);
-            _pickColor(context, bloc, state);
+            _pickColor(
+              context,
+              state,
+              onColorUpdated: onColorUpdated,
+            );
           },
         )
       ],
@@ -263,9 +290,12 @@ Future<void> _showEditOptions(
 
 Future _pickColor(
   BuildContext context,
-  EditSubCategoryScreenBloc bloc,
-  EditSubCategoryScreenState state,
-) {
+  EditSubCategoryScreenState state, {
+  required Function(int color) onColorUpdated,
+}
+
+    // EditSubCategoryScreenBloc bloc,
+    ) {
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -282,7 +312,8 @@ Future _pickColor(
         allowShades: false,
         selectedColor: Color(state.subCategory!.color),
         onMainColorChange: (colorSwatch) {
-          bloc.add(ColorUpdated(colorSwatch!.value));
+          onColorUpdated(colorSwatch!.value);
+          // bloc.add(ColorUpdated(colorSwatch!.value));
           Navigator.of(context).pop();
         },
       ),
@@ -291,9 +322,11 @@ Future _pickColor(
 }
 
 Future<void> _pickIcon(
-  BuildContext context,
-  EditSubCategoryScreenBloc bloc,
-) async {
+  BuildContext context, {
+  required Function(int icon) onIconUpdated,
+}
+    // EditSubCategoryScreenBloc bloc,
+    ) async {
   final materialIcons = AppIcons.materialIcons();
   final icon = await FlutterIconPicker.showIconPicker(
     context,
@@ -315,6 +348,7 @@ Future<void> _pickIcon(
   );
 
   if (icon != null) {
-    bloc.add(IconUpdated(icon.codePoint));
+    onIconUpdated(icon.codePoint);
+    // bloc.add(IconUpdated(icon.codePoint));
   }
 }

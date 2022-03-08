@@ -29,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
       );
     } else {
       return Scaffold(
-        backgroundColor: AppColors.greyBackground,
+        backgroundColor: AppColors.white,
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context)!.misc_settings,
@@ -53,7 +53,7 @@ class SettingsContent extends StatelessWidget {
         ListTile(
           title: Text(AppLocalizations.of(context)!.misc_profile),
           leading: Icon(Icons.person_outline),
-          trailing: Platform.isIOS ? Icon(Icons.chevron_right) : null,
+          trailing: Platform.isIOS ? const Icon(CupertinoIcons.forward) : null,
           onTap: () {
             AppNavigator.navigateToProfilePage(context);
           },
@@ -62,21 +62,21 @@ class SettingsContent extends StatelessWidget {
         ListTile(
           title: Text(AppLocalizations.of(context)!.misc_categories),
           leading: Icon(Icons.folder_open),
-          trailing: Platform.isIOS ? Icon(Icons.chevron_right) : null,
+          trailing: Platform.isIOS ? const Icon(CupertinoIcons.forward) : null,
           onTap: () => AppNavigator.navigateToCategoriesPage(context),
         ),
         Divider(height: 2),
         ListTile(
           title: Text(AppLocalizations.of(context)!.misc_accounts),
           leading: Icon(Icons.account_balance),
-          trailing: Platform.isIOS ? Icon(Icons.chevron_right) : null,
+          trailing: Platform.isIOS ? const Icon(CupertinoIcons.forward) : null,
           onTap: () => AppNavigator.navigateToAccountsPage(context),
         ),
         Divider(height: 2),
         ListTile(
           title: Text(AppLocalizations.of(context)!.misc_budgets),
           leading: Icon(Icons.all_inbox),
-          trailing: Platform.isIOS ? Icon(Icons.chevron_right) : null,
+          trailing: Platform.isIOS ? const Icon(CupertinoIcons.forward) : null,
           onTap: () => AppNavigator.navigateToBudgetsPage(context),
         ),
         Divider(height: 2),

@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -72,108 +73,47 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
         'MMMM - yyyy',
         AppLocalizations.of(context)!.localeName,
       ).format(state.date);
-      return SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              title: Text(
-                'Transactions',
-                style: CupertinoTheme.of(context).textTheme.navTitleTextStyle,
+      return CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            title: Text(
+              'Transactions',
+            ),
+            elevation: 0.5,
+            floating: true,
+            pinned: true,
+            actions: [
+              IconButton(
+                icon: Icon(Icons.sort),
+                onPressed: () {},
               ),
-              elevation: 0.5,
-              floating: true,
-              pinned: true,
-              actions: [
-                IconButton(
-                  icon: Icon(
-                    Icons.add_circle,
-                    color: AppColors.primaryColor,
-                    size: 34,
+            ],
+          ),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: _DateFilterDelegate(),
+          ),
+          if (state.filteredTransactions.isEmpty)
+            SliverToBoxAdapter(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.height / 3,
                   ),
-                  onPressed: () =>
-                      AppNavigator.navigateToEditTransactionPage(context),
-                ),
-              ],
-              expandedHeight: kToolbarHeight + 45,
-              flexibleSpace: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  final containerHeight =
-                      (constraints.biggest.height - 65) / 45;
-                  final scaleAnimation =
-                      containerHeight < 0.0 ? 0.0 : containerHeight;
-                  return Padding(
-                    padding: const EdgeInsets.only(top: kToolbarHeight),
-                    child: Container(
-                      margin: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.black12,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            iconSize: 24 * scaleAnimation,
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            icon: Icon(
-                              Icons.chevron_left,
-                              color: AppColors.greyPrimary
-                                  .withOpacity(scaleAnimation),
-                            ),
-                            onPressed: () => dateBloc.add(MonthDecremented()),
-                          ),
-                          BlocListener<DateBloc, DateState>(
-                            listenWhen: (previous, current) =>
-                                previous.date != current.date,
-                            listener: (context, state) {
-                              bloc.add(DateUpdated(date: state.date));
-                            },
-                            child: Text(
-                              DateFormat(
-                                'MMMM - yyyy',
-                                AppLocalizations.of(context)!.localeName,
-                              ).format(state.date),
-                            ),
-                          ),
-                          IconButton(
-                            iconSize: 24 * scaleAnimation,
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            icon: Icon(
-                              CupertinoIcons.forward,
-                              color: AppColors.greyPrimary
-                                  .withOpacity(scaleAnimation),
-                            ),
-                            onPressed: () => dateBloc.add(MonthIncremented()),
-                          ),
-                        ],
-                      ),
+                  child: Text(
+                    'No hay transacciones\nen $dateString.',
+                    style: TextStyle(
+                      color: AppColors.greyDisabled,
+                      fontSize: 20,
                     ),
-                  );
-                },
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
             ),
-            if (state.filteredTransactions.isEmpty)
-              SliverToBoxAdapter(
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: MediaQuery.of(context).size.height / 3,
-                    ),
-                    child: Text(
-                      'No hay transacciones\nen $dateString.',
-                      style: TextStyle(
-                        color: AppColors.greyDisabled,
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-              ),
-            if (state.filteredTransactions.isNotEmpty)
-              ..._sliverListTransactions(),
-          ],
-        ),
+          if (state.filteredTransactions.isNotEmpty)
+            ..._sliverListTransactions(),
+        ],
       );
     }
   }
@@ -235,6 +175,114 @@ class _StickyHeaderList extends StatelessWidget {
               .length,
         ),
       ),
+    );
+  }
+}
+
+class _DateFilterDelegate extends SliverPersistentHeaderDelegate {
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return DateFilter();
+  }
+
+  @override
+  double get maxExtent => 56;
+
+  @override
+  double get minExtent => 56;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}
+
+class DateFilter extends StatefulWidget {
+  const DateFilter({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<DateFilter> createState() => _DateFilterState();
+}
+
+class _DateFilterState extends State<DateFilter> {
+  late TransactionsBloc bloc;
+  late DateBloc dateBloc;
+  @override
+  void initState() {
+    bloc = context.read<TransactionsBloc>();
+    dateBloc = context.read<DateBloc>();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<TransactionsBloc, TransactionsState>(
+      builder: (context, state) {
+        return Stack(
+          children: [
+            ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                child: Container(
+                  color: AppColors.white.withOpacity(0.4),
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: 30,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.primaryColor.withOpacity(0.8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          icon: Icon(
+                            Icons.chevron_left,
+                            color: AppColors.white.withOpacity(0.5),
+                          ),
+                          onPressed: () => dateBloc.add(MonthDecremented()),
+                        ),
+                        BlocListener<DateBloc, DateState>(
+                          listenWhen: (previous, current) =>
+                              previous.date != current.date,
+                          listener: (context, state) {
+                            bloc.add(DateUpdated(date: state.date));
+                          },
+                          child: Text(
+                            DateFormat(
+                              'MMMM - yyyy',
+                              AppLocalizations.of(context)!.localeName,
+                            ).format(state.date),
+                            style: TextStyle(
+                              color: AppColors.white.withOpacity(0.5),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          padding: EdgeInsets.symmetric(horizontal: 8.0),
+                          icon: Icon(
+                            Icons.chevron_right,
+                            color: AppColors.white.withOpacity(0.5),
+                          ),
+                          onPressed: () => dateBloc.add(MonthIncremented()),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

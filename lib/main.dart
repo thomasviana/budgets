@@ -61,7 +61,6 @@ class _MyAppState extends State<MyApp> {
           Locale('en', ''), // English, no country code
           Locale('es', ''), // Spanish, no country code
         ],
-        navigatorObservers: [appRouteObserver],
         builder: (context, child) {
           // This custom MediaQuery forces the app to ignore any
           // font-size set by the system to avoid errors with texts
@@ -83,7 +82,6 @@ class _MyAppState extends State<MyApp> {
           child: Navigator(
             key: navigatorKey,
             onGenerateRoute: _appRouter.routes,
-            //observers: [appRouteObserver], review this later
           ),
           onWillPop: () async => !(await navigatorKey.currentState!.maybePop()),
         ),

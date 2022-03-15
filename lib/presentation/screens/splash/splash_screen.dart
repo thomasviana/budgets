@@ -9,9 +9,9 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state.isAuthenticated) {
+        if (state.status == AuthStatus.authenticated) {
           AppNavigator.navigateToMainPage(context);
-        } else if (state.isUnauthenticated) {
+        } else if (state.status == AuthStatus.unauthenticated) {
           AppNavigator.navigateToIntroPage(context);
         }
       },
@@ -19,8 +19,7 @@ class SplashScreen extends StatelessWidget {
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            // ignore: prefer_const_literals_to_create_immutables
-            children: [
+            children: const [
               CircularProgressIndicator(),
             ],
           ),

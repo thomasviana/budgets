@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,35 +10,33 @@ extension StatusX on Status {
   bool get isFailure => this == Status.failure;
 }
 
-abstract class MyState extends Equatable {
+abstract class MyState {
   final Status status;
 
   const MyState({
     this.status = Status.initial,
   });
-
-  @override
-  List<Object?> get props => [status];
 }
 
-class Observer<Bloc, State> extends StatelessWidget {
-  final StateStreamable<MyState> bloc;
+class Observer<B extends StateStreamable<S>, S extends MyState>
+    extends StatelessWidget {
+  final StateStreamable<S>? bloc;
   @required
-  final Widget Function(BuildContext context, MyState? state) onSuccess;
+  final Widget Function(BuildContext context, S state) onSuccess;
 
-  final Widget Function(BuildContext context, MyState? state)? onFailure;
+  final Widget Function(BuildContext context, S state)? onFailure;
 
   const Observer({
     Key? key,
-    required this.bloc,
+    this.bloc,
     required this.onSuccess,
     this.onFailure,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StateStreamable<MyState>, MyState>(
-      bloc: bloc,
+    return BlocBuilder<StateStreamable<S>, S>(
+      bloc: bloc ?? context.read<B>(),
       builder: (context, state) {
         switch (state.status) {
           case Status.initial:

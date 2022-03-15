@@ -29,7 +29,7 @@ class UserEntityDTO {
       id: UserId(id!),
       name: UserName(name!),
       emailAddress: EmailAddress(emailAddress!),
-      phoneNumber: PhoneNumber(phoneNumber!),
+      phoneNumber: PhoneNumber(phoneNumber ?? ''),
       photoUrl: photoUrl,
     );
   }

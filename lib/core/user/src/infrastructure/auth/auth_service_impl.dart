@@ -126,7 +126,7 @@ class AuthServiceImpl implements AuthService {
   }
 
   @override
-  Future<Option<UserEntity>> getUser() {
+  Stream<UserEntity?> getUser() {
     return _userFirebaseProvider.getUser();
   }
 

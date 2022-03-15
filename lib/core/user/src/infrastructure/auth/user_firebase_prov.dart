@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:injectable/injectable.dart';
@@ -21,30 +20,30 @@ class UserFirebaseProv {
     this._firebaseFirestore,
   );
 
-  // FirebaseStorage get storage => FirebaseStorage.instance;
-  // FirebaseFirestore get firestore => FirebaseFirestore.instance;
-
   User? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) throw Exception('Not authenticated exception.');
     return user;
   }
 
-  Future<Option<UserEntity>> getUser() async {
+  Stream<UserEntity?> getUser() async* {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      return Future.value(none());
+      yield null;
     } else {
-      final snapshot =
-          await _firebaseFirestore.doc('userTest/${user.uid}').get();
-      if (snapshot.exists) {
-        final userData = UserEntityDTO.fromFirebaseMap(snapshot.data()!);
-        final userEntity = userData.toDomain();
-        return some(userEntity);
-      } else {
-        final registeredUser = _userFromFirebase(user);
-        return some(registeredUser);
-      }
+      yield* _firebaseFirestore
+          .doc('userTest/${user.uid}')
+          .snapshots()
+          .map((snapshot) {
+        if (snapshot.exists) {
+          final userData = UserEntityDTO.fromFirebaseMap(snapshot.data()!);
+          final userEntity = userData.toDomain();
+          return userEntity;
+        } else {
+          final registeredUser = _userFromFirebase(user);
+          return registeredUser;
+        }
+      });
     }
   }
 

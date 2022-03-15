@@ -17,6 +17,6 @@ abstract class AuthService {
     required Password password,
   });
   Future<void> logOut();
-  Future<Option<UserEntity>> getUser();
+  Stream<UserEntity?> getUser();
   Future<void> saveUser(UserEntity user);
 }

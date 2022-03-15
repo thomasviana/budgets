@@ -99,7 +99,8 @@ class AppRouter {
         return _buildRoute(
           settings,
           BlocProvider(
-            create: (context) => sl<ProfileScreenCubit>(),
+            create: (context) =>
+                sl<ProfileScreenBloc>()..add(ProfileInfoSuscriptionRequested()),
             child: ProfileSreen(),
           ),
         );

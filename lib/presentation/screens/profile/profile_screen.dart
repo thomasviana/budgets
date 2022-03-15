@@ -2,36 +2,14 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../resources/resources.dart';
 import 'components/user_profile.dart';
-import 'cubit/profile_screen_cubit.dart';
 
-class ProfileSreen extends StatefulWidget {
-  @override
-  State<ProfileSreen> createState() => _ProfileSreenState();
-}
-
-class _ProfileSreenState extends State<ProfileSreen> {
-  late ProfileScreenCubit cubit;
-
-  @override
-  void initState() {
-    super.initState();
-    cubit = context.read<ProfileScreenCubit>();
-    cubit.init();
-  }
-
+class ProfileSreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileScreenCubit, ProfileScreenState>(
-      builder: _buildState,
-    );
-  }
-
-  Widget _buildState(BuildContext context, ProfileScreenState state) {
     if (Platform.isIOS) {
       return CupertinoPageScaffold(
         child: CustomScrollView(
@@ -45,10 +23,7 @@ class _ProfileSreenState extends State<ProfileSreen> {
             ),
             SliverToBoxAdapter(
               child: Material(
-                child: UserProfile(
-                  isSavingForm: state.isSavingForm,
-                  isSaveButtonEnabled: state.isSaveButtonEnabled,
-                ),
+                child: const UserProfile(),
               ),
             ),
           ],
@@ -62,10 +37,7 @@ class _ProfileSreenState extends State<ProfileSreen> {
             AppLocalizations.of(context)!.misc_settings,
           ),
         ),
-        body: UserProfile(
-          isSavingForm: state.isSavingForm,
-          isSaveButtonEnabled: state.isSaveButtonEnabled,
-        ),
+        body: const UserProfile(),
       );
     }
   }

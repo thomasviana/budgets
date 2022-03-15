@@ -11,14 +11,12 @@ import '../../../core/budgets/application.dart';
 import '../../../core/budgets/domain.dart';
 import '../../../core/categories/application.dart';
 import '../../../core/categories/domain.dart';
-import '../../../core/user/application.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
 
 @injectable
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  GetProfileInfo getProfileInfo;
   GetAccounts getAccounts;
   SetDefaultAccounts setDefaultAccounts;
   GetCategories getCategories;
@@ -28,7 +26,6 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SetDefaultSubCategories setDefaultSubCategories;
 
   SettingsBloc(
-    this.getProfileInfo,
     this.getAccounts,
     this.setDefaultAccounts,
     this.getCategories,
@@ -47,12 +44,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     SettingsEvent event,
     Emitter<SettingsState> emit,
   ) async {
-    final userOption = await getProfileInfo();
     await emit.onEach<Option<List<Account>>>(
-      userOption.fold(
-        () => Stream.empty(),
-        (user) => getAccounts(AccountUserId(user.id.value)),
-      ),
+      getAccounts(),
       onData: (userAccounts) async {
         userAccounts.fold(
           () async => setDefaultAccounts(),
@@ -66,12 +59,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     SettingsEvent event,
     Emitter<SettingsState> emit,
   ) async {
-    final userOption = await getProfileInfo();
     await emit.onEach<Option<List<Category>>>(
-      userOption.fold(
-        () => Stream.empty(),
-        (user) => getCategories(CategoryUserId(user.id.value)),
-      ),
+      getCategories(),
       onData: (userCategories) async {
         userCategories.fold(
           () async =>
@@ -86,12 +75,8 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     SettingsEvent event,
     Emitter<SettingsState> emit,
   ) async {
-    final userOption = await getProfileInfo();
     await emit.onEach<Option<List<Budget>>>(
-      userOption.fold(
-        () => Stream.empty(),
-        (user) => getBudgets(BudgetUserId(user.id.value)),
-      ),
+      getBudgets(),
       onData: (userBudgets) async {
         userBudgets.fold(
           () async => setDefaultBudgets(),

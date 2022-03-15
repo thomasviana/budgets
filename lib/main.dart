@@ -27,7 +27,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final navigatorKey = GlobalKey<NavigatorState>();
   final AppRouter _appRouter = AppRouter();
-  final _authBloc = sl<AuthBloc>()..add(AuthCheckRequested());
+  final _authBloc = sl<AuthBloc>()..add(AuthStatusRequested());
   final _dateBloc = sl<DateBloc>();
   final _settingsBloc = sl<SettingsBloc>()
     ..add(GetUserAccounts())

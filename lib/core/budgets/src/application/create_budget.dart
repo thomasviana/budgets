@@ -18,21 +18,17 @@ class CreateBudget {
     required String? abbreviation,
     required int color,
   }) async {
-    _getProfileInfo().then(
-      (optionUser) => optionUser.fold(
-        () {},
-        (user) {
-          _budgetRepository.save(
-            Budget(
-              id: BudgetId.auto(),
-              name: name,
-              abbreviation: abbreviation,
-              color: color,
-              budgetUserId: BudgetUserId(user.id.value),
-            ),
-          );
-        },
-      ),
-    );
+    final user = await _getProfileInfo().first;
+    if (user != null) {
+      _budgetRepository.save(
+        Budget(
+          id: BudgetId.auto(),
+          name: name,
+          abbreviation: abbreviation,
+          color: color,
+          budgetUserId: BudgetUserId(user.id.value),
+        ),
+      );
+    }
   }
 }

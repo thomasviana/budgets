@@ -30,32 +30,28 @@ class AddTransaction {
     bool isIncomeManaged = false,
     BudgetManagementMap? budgetManagement,
   }) async {
-    _getProfileInfo().then(
-      (optionUser) => optionUser.fold(
-        () {},
-        (user) {
-          _transactionRepository.save(
-            Transaction(
-              id: TransactionId.auto(),
-              transactionType: txType,
-              title: title,
-              amount: amount,
-              date: date,
-              note: note,
-              icon: icon,
-              color: color,
-              txUserId: TransactionUserId(user.id.value),
-              txAccountId: txAccountId,
-              txCategoryId: txCategoryId,
-              txSubCategoryId: txSubCategoryId,
-              txBudgetId: txBudgetId,
-              incomeType: incomeType,
-              isIncomeManaged: isIncomeManaged,
-              budgetManagement: budgetManagement,
-            ),
-          );
-        },
-      ),
-    );
+    final user = await _getProfileInfo().first;
+    if (user != null) {
+      _transactionRepository.save(
+        Transaction(
+          id: TransactionId.auto(),
+          transactionType: txType,
+          title: title,
+          amount: amount,
+          date: date,
+          note: note,
+          icon: icon,
+          color: color,
+          txUserId: TransactionUserId(user.id.value),
+          txAccountId: txAccountId,
+          txCategoryId: txCategoryId,
+          txSubCategoryId: txSubCategoryId,
+          txBudgetId: txBudgetId,
+          incomeType: incomeType,
+          isIncomeManaged: isIncomeManaged,
+          budgetManagement: budgetManagement,
+        ),
+      );
+    }
   }
 }

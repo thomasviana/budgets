@@ -19,22 +19,18 @@ class CreateCategory {
     required int color,
     required CategoryType type,
   }) async {
-    _getProfileInfo().then(
-      (optionUser) => optionUser.fold(
-        () {},
-        (user) {
-          _categoryRepository.save(
-            Category(
-              id: CategoryId.auto(),
-              name: name,
-              icon: icon,
-              color: color,
-              type: type,
-              categoryUserId: CategoryUserId(user.id.value),
-            ),
-          );
-        },
-      ),
-    );
+    final user = await _getProfileInfo().first;
+    if (user != null) {
+      _categoryRepository.save(
+        Category(
+          id: CategoryId.auto(),
+          name: name,
+          icon: icon,
+          color: color,
+          type: type,
+          categoryUserId: CategoryUserId(user.id.value),
+        ),
+      );
+    }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -15,14 +17,10 @@ class GetTransactions {
   );
 
   Stream<Option<List<Transaction>>> call() async* {
-    final userId = await _getProfileInfo().then(
-      (userOption) => userOption.fold(
-        () => null,
-        (user) => TransactionUserId(user.id.value),
-      ),
-    );
-    if (userId != null) {
-      yield* _transactionRepository.fetchTransactions(userId);
+    final user = await _getProfileInfo().first;
+    if (user != null) {
+      yield* _transactionRepository
+          .fetchTransactions(TransactionUserId(user.id.value));
     }
   }
 }

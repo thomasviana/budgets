@@ -14,17 +14,14 @@ class SetDefaultCategories {
   );
 
   Future<void> call() async {
-    _getProfileInfo().then(
-      (optionUser) => optionUser.fold(
-        () {},
-        (user) {
-          final categories = Category.defaultCategories;
-          for (final category in categories) {
-            category.setUserId(user.id.value);
-          }
-          _categoryRepository.saveList(categories);
-        },
-      ),
-    );
+    final user = await _getProfileInfo().first;
+
+    if (user != null) {
+      final categories = Category.defaultCategories;
+      for (final category in categories) {
+        category.setUserId(user.id.value);
+      }
+      _categoryRepository.saveList(categories);
+    }
   }
 }

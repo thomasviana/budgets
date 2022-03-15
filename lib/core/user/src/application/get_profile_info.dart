@@ -1,4 +1,5 @@
-import 'package:dartz/dartz.dart';
+import 'dart:async';
+
 import 'package:injectable/injectable.dart';
 
 import '../../domain.dart';
@@ -8,5 +9,5 @@ class GetProfileInfo {
   final AuthService _authService;
   GetProfileInfo(this._authService);
 
-  Future<Option<UserEntity>> call() => _authService.getUser();
+  Stream<UserEntity?> call() => _authService.getUser();
 }

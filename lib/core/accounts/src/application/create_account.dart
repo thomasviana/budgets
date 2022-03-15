@@ -19,22 +19,18 @@ class CreateAccount {
     required int color,
     String? imageUrl,
   }) async {
-    _getProfileInfo().then(
-      (optionUser) => optionUser.fold(
-        () {},
-        (user) {
-          _accountRepository.save(
-            Account(
-              id: AccountId.auto(),
-              name: name,
-              type: type,
-              color: color,
-              imageUrl: imageUrl,
-              accountUserId: AccountUserId(user.id.value),
-            ),
-          );
-        },
-      ),
-    );
+    final user = await _getProfileInfo().first;
+    if (user != null) {
+      _accountRepository.save(
+        Account(
+          id: AccountId.auto(),
+          name: name,
+          type: type,
+          color: color,
+          imageUrl: imageUrl,
+          accountUserId: AccountUserId(user.id.value),
+        ),
+      );
+    }
   }
 }

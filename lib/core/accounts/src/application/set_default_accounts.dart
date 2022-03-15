@@ -14,17 +14,13 @@ class SetDefaultAccounts {
   );
 
   Future<void> call() async {
-    _getProfileInfo().then(
-      (optionUser) => optionUser.fold(
-        () {},
-        (user) {
-          final accounts = Account.defaultAccounts;
-          for (final account in accounts) {
-            account.setUserId(user.id.value);
-          }
-          _accountRepository.saveList(accounts);
-        },
-      ),
-    );
+    final user = await _getProfileInfo().first;
+    if (user != null) {
+      final accounts = Account.defaultAccounts;
+      for (final account in accounts) {
+        account.setUserId(user.id.value);
+      }
+      _accountRepository.saveList(accounts);
+    }
   }
 }

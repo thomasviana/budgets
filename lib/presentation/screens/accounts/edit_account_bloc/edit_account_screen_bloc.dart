@@ -42,29 +42,24 @@ class EditAccountScreenBloc
       (event, emit) async => deleteAccount(state.account!.id),
     );
     on<AccountSaved>(
-      (event, emit) => getProfileInfo().then(
-        (userOption) => userOption.fold(
-          () {},
-          (user) async {
-            if (!state.isEditMode) {
-              await createAccount(
-                name: state.account!.name,
-                color: state.account!.color,
-                type: state.account!.type,
-                imageUrl: state.account!.imageUrl,
-              );
-            } else {
-              await updateAccount(
-                accountId: state.account!.id,
-                name: state.account!.name,
-                color: state.account!.color,
-                type: state.account!.type,
-                imageUrl: state.account!.imageUrl,
-              );
-            }
-          },
-        ),
-      ),
+      (event, emit) async {
+        if (!state.isEditMode) {
+          await createAccount(
+            name: state.account!.name,
+            color: state.account!.color,
+            type: state.account!.type,
+            imageUrl: state.account!.imageUrl,
+          );
+        } else {
+          await updateAccount(
+            accountId: state.account!.id,
+            name: state.account!.name,
+            color: state.account!.color,
+            type: state.account!.type,
+            imageUrl: state.account!.imageUrl,
+          );
+        }
+      },
     );
     on<ColorUpdated>(
       (event, emit) => emit(

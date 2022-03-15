@@ -1,6 +1,8 @@
-import 'dart:developer' as developer;
+import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/user/application.dart';
@@ -11,34 +13,28 @@ part 'auth_state.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  CheckAuthStatus checkAuthStatus;
-  LogOut logOut;
+  final CheckAuthStatus _checkAuthStatus;
+  final LogOut _logOut;
+
   AuthBloc(
-    this.checkAuthStatus,
-    this.logOut,
-  ) : super(AuthState.initial()) {
-    on<AuthCheckRequested>((event, emit) async {
-      final userOption = await checkAuthStatus();
-      userOption.fold(
-        () => emit(
-          state.copyWith(
-            isUnauthenticated: true,
-          ),
-        ),
-        (user) async {
-          emit(
-            state.copyWith(
-              isAuthenticated: true,
-              userEntity: user,
-            ),
-          );
-        },
-      );
-      developer.log('checkAuthStatus');
-    });
-    on<AuthLogOut>((event, emit) async {
-      await logOut();
-      emit(state.copyWith(isUnauthenticated: true));
-    });
+    this._checkAuthStatus,
+    this._logOut,
+  ) : super(AuthState.unauthenticated()) {
+    on<AuthStatusRequested>(_onCheckAuthStatus);
+    on<LogoutRequested>(_onLogoutRequested);
+  }
+
+  Future<void> _onCheckAuthStatus(
+      AuthStatusRequested event, Emitter<AuthState> emit) async {
+    await emit.onEach<UserEntity?>(
+      _checkAuthStatus(),
+      onData: (user) => user != null
+          ? emit(AuthState.authenticated())
+          : emit(AuthState.unauthenticated()),
+    );
+  }
+
+  void _onLogoutRequested(LogoutRequested event, Emitter<AuthState> emit) {
+    unawaited(_logOut());
   }
 }

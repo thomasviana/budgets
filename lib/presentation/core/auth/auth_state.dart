@@ -1,30 +1,20 @@
 part of 'auth_bloc.dart';
 
-class AuthState {
-  final bool isAuthenticated;
-  final bool isUnauthenticated;
-  final UserEntity userEntity;
+enum AuthStatus { authenticated, unauthenticated }
 
-  AuthState({
-    required this.isAuthenticated,
-    required this.isUnauthenticated,
-    required this.userEntity,
+class AuthState extends Equatable {
+  final AuthStatus status;
+
+  const AuthState._({
+    this.status = AuthStatus.unauthenticated,
   });
 
-  factory AuthState.initial() => AuthState(
-        isAuthenticated: false,
-        isUnauthenticated: true,
-        userEntity: UserEntity.empty(),
-      );
+  const AuthState.authenticated() : this._(status: AuthStatus.authenticated);
 
-  AuthState copyWith({
-    bool? isAuthenticated,
-    bool? isUnauthenticated,
-    UserEntity? userEntity,
-  }) =>
-      AuthState(
-        isAuthenticated: isAuthenticated ?? this.isAuthenticated,
-        isUnauthenticated: isUnauthenticated ?? this.isUnauthenticated,
-        userEntity: userEntity ?? this.userEntity,
-      );
+  const AuthState.unauthenticated()
+      : this._(status: AuthStatus.unauthenticated);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [status];
 }

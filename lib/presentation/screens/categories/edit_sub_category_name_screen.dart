@@ -31,6 +31,12 @@ class _EditSubCategoryNameScreenState extends State<EditSubCategoryNameScreen> {
   }
 
   @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (Platform.isIOS) {
       return CupertinoPageScaffold(

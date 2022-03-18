@@ -30,6 +30,12 @@ class _EditAccountNameScreenState extends State<EditAccountNameScreen> {
   }
 
   @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (Platform.isIOS) {
       return CupertinoPageScaffold(

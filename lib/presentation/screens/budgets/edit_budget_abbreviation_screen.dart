@@ -1,14 +1,13 @@
 import 'dart:io' show Platform;
 
-import 'package:budgets/presentation/resources/resources.dart';
-import 'package:budgets/presentation/screens/budgets/edit_budget_bloc/edit_budget_screen_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../resources/colors.dart';
+import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
+import 'edit_budget_bloc/edit_budget_screen_bloc.dart';
 
 class EditBudgetAbbreviationScreen extends StatefulWidget {
   final String abbreviation;
@@ -30,6 +29,12 @@ class _EditBudgetAbbreviationScreenState
   void initState() {
     textEditingController = TextEditingController()..text = widget.abbreviation;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -72,7 +77,8 @@ class _EditBudgetAbbreviationScreenState
               ),
               onPressed: () {
                 context.read<EditBudgetScreenBloc>().add(
-                    AbbreviationChanged(textEditingController.text.trim()));
+                      AbbreviationChanged(textEditingController.text.trim()),
+                    );
                 AppNavigator.navigateBack(context);
               },
             ),

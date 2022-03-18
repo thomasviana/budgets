@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 
-import 'package:budgets/presentation/screens/budgets/edit_budget_bloc/edit_budget_screen_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
+import 'edit_budget_bloc/edit_budget_screen_bloc.dart';
 
 class EditBudgetNameScreen extends StatefulWidget {
   final String name;
@@ -27,6 +27,12 @@ class _EditBudgetNameScreenState extends State<EditBudgetNameScreen> {
   void initState() {
     textEditingController = TextEditingController()..text = widget.name;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
   }
 
   @override

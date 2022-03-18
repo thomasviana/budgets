@@ -270,8 +270,8 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       get<_i39.SetDefaultSubCategories>()));
   gh.factory<_i63.SettingsScreenCubit>(() => _i63.SettingsScreenCubit(
       get<_i11.CheckAuthStatus>(), get<_i11.GetProfileInfo>()));
-  gh.factory<_i64.StatsBloc>(() =>
-      _i64.StatsBloc(get<_i42.GetTransactions>(), get<_i62.SettingsBloc>()));
+  gh.factory<_i64.StatsBloc>(() => _i64.StatsBloc(get<_i37.GetBudgets>(),
+      get<_i37.SetDefaultBudgets>(), get<_i42.GetTransactions>()));
   gh.lazySingleton<_i22.SubCategoryDao>(
       () => _i22.SubCategoryDao(get<_i23.CategoriesDatabase>()));
   gh.lazySingleton<_i65.SubCategoryMapper>(() => _i65.SubCategoryMapper());

@@ -107,30 +107,35 @@ class _AuthScreenState extends State<AuthScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        LoginButton(
-                          imagePath: 'assets/images/google_icon.png',
-                          onTap: () => context
+                        GoogleSignInButton(
+                          onPressed: () => context
                               .read<AuthScreenCubit>()
                               .onSignInWithGoogle(),
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        LoginButton(
-                          imagePath: 'assets/images/facebook_icon.png',
-                          onTap: () => context
-                              .read<AuthScreenCubit>()
-                              .onSignInWithFacebook(),
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        LoginButton(
-                          imagePath: 'assets/images/anonymous_icon.png',
-                          onTap: () => context
-                              .read<AuthScreenCubit>()
-                              .onSignInAnonymously(),
-                        ),
+                        // LoginButton(
+                        //   imagePath: 'assets/images/google_icon.png',
+                        //   onTap: () => context
+                        //       .read<AuthScreenCubit>()
+                        //       .onSignInWithGoogle(),
+                        // ),
+                        // SizedBox(
+                        //   width: 20,
+                        // ),
+                        // LoginButton(
+                        //   imagePath: 'assets/images/facebook_icon.png',
+                        //   onTap: () => context
+                        //       .read<AuthScreenCubit>()
+                        //       .onSignInWithFacebook(),
+                        // ),
+                        // SizedBox(
+                        //   width: 20,
+                        // ),
+                        // LoginButton(
+                        //   imagePath: 'assets/images/anonymous_icon.png',
+                        //   onTap: () => context
+                        //       .read<AuthScreenCubit>()
+                        //       .onSignInAnonymously(),
+                        // ),
                       ],
                     ),
                     SizedBox(

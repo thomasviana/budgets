@@ -25,7 +25,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onCheckAuthStatus(
-      AuthStatusRequested event, Emitter<AuthState> emit) async {
+    AuthStatusRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     await emit.onEach<UserEntity?>(
       _checkAuthStatus(),
       onData: (user) => user != null

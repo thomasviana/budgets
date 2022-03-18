@@ -1,52 +1,28 @@
 part of 'home_screen_bloc.dart';
 
-class HomeScreenState {
+class HomeScreenState extends MyState with EquatableMixin {
   final UserEntity user;
-  final DateTime date;
-  final List<Budget> budgets;
-  final Map<Budget, Map<String, double>> budgetsInfo;
-  final List<Transaction> transactions;
-  final bool isLoading;
-  HomeScreenState({
-    required this.user,
-    required this.date,
-    required this.budgets,
-    required this.budgetsInfo,
-    required this.transactions,
-    required this.isLoading,
-  });
 
-  List<Transaction> get filteredTransactions {
-    final filteredTransactions = transactions
-        .where((transaction) => transaction.date.month == date.month)
-        .toList();
-    return filteredTransactions;
-  }
+  HomeScreenState({
+    required Status status,
+    required this.user,
+  }) : super(status: status);
 
   factory HomeScreenState.initial() => HomeScreenState(
+        status: Status.initial,
         user: UserEntity.empty(),
-        budgets: [],
-        budgetsInfo: {},
-        transactions: [],
-        date: DateTime.now(),
-        isLoading: true,
       );
 
   HomeScreenState copyWith({
+    Status? status,
     UserEntity? user,
-    DateTime? date,
-    List<Budget>? budgets,
-    Map<Budget, Map<String, double>>? budgetsInfo,
-    List<Transaction>? transactions,
-    bool? isLoading,
   }) {
     return HomeScreenState(
+      status: status ?? this.status,
       user: user ?? this.user,
-      date: date ?? this.date,
-      budgets: budgets ?? this.budgets,
-      budgetsInfo: budgetsInfo ?? this.budgetsInfo,
-      transactions: transactions ?? this.transactions,
-      isLoading: isLoading ?? this.isLoading,
     );
   }
+
+  @override
+  List<Object?> get props => [status, user];
 }

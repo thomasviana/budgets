@@ -6,6 +6,7 @@ import '../../core/budgets/domain.dart';
 import '../../core/categories/domain.dart';
 import '../../core/transactions/domain.dart';
 import '../../di/dependency_injection.dart';
+import '../core/stats/stats_bloc.dart';
 import '../core/transactions/transactions_bloc.dart';
 import '../screens/accounts/accounts_screen.dart';
 import '../screens/accounts/edit_account_bloc/edit_account_screen_bloc.dart';
@@ -29,8 +30,8 @@ import '../screens/categories/select_category_type_screen.dart';
 import '../screens/intro/intro_screen.dart';
 import '../screens/main/main_app_cubit/main_screen_cubit.dart';
 import '../screens/main/main_app_screen.dart';
-import '../screens/profile/cubit/profile_screen_cubit.dart';
 import '../screens/profile/profile_screen.dart';
+import '../screens/profile/profile_screen_bloc/profile_sceen_bloc.dart';
 import '../screens/splash/splash_screen.dart';
 import '../screens/transactions/edit_note_screen.dart';
 import '../screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
@@ -57,8 +58,12 @@ class AppRouter {
 
   final EditBudgetScreenBloc _editBudgetScreenBloc = sl<EditBudgetScreenBloc>();
 
-  final TransactionsBloc _transactionsScreenBloc = sl<TransactionsBloc>()
+  final TransactionsBloc _transactionsBloc = sl<TransactionsBloc>()
     ..add(TransactionsRequested());
+
+  final StatsBloc _statsBloc = sl<StatsBloc>()
+    ..add(GetUserBudgets())
+    ..add(TransactionsSuscriptionRequested());
 
   Route routes(RouteSettings settings) {
     switch (settings.name) {
@@ -89,7 +94,10 @@ class AppRouter {
                 create: (context) => sl<MainScreenCubit>(),
               ),
               BlocProvider.value(
-                value: _transactionsScreenBloc,
+                value: _transactionsBloc,
+              ),
+              BlocProvider.value(
+                value: _statsBloc,
               ),
             ],
             child: MainAppScreen(),

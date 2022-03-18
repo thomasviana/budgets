@@ -131,11 +131,15 @@ class AnimatedCheck extends StatefulWidget {
 class _AnimatedCheckState extends State<AnimatedCheck>
     with TickerProviderStateMixin {
   late AnimationController scaleController = AnimationController(
-      duration: const Duration(milliseconds: 1000), vsync: this);
+    duration: const Duration(milliseconds: 1000),
+    vsync: this,
+  );
   late Animation<double> scaleAnimation =
       CurvedAnimation(parent: scaleController, curve: Curves.elasticOut);
   late AnimationController checkController = AnimationController(
-      duration: const Duration(milliseconds: 300), vsync: this);
+    duration: const Duration(milliseconds: 300),
+    vsync: this,
+  );
   late Animation<double> checkAnimation =
       CurvedAnimation(parent: checkController, curve: Curves.linear);
 
@@ -172,11 +176,13 @@ class _AnimatedCheckState extends State<AnimatedCheck>
           shape: BoxShape.circle,
         ),
         child: SizeTransition(
-            sizeFactor: checkAnimation,
-            axis: Axis.horizontal,
-            axisAlignment: -1,
-            child: Center(
-                child: Icon(Icons.check, color: Colors.white, size: iconSize))),
+          sizeFactor: checkAnimation,
+          axis: Axis.horizontal,
+          axisAlignment: -1,
+          child: Center(
+            child: Icon(Icons.check, color: Colors.white, size: iconSize),
+          ),
+        ),
       ),
     );
   }

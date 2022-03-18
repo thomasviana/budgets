@@ -2,8 +2,10 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../core/auth/auth_bloc.dart';
 import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
 
@@ -87,7 +89,7 @@ class SettingsContent extends StatelessWidget {
           ),
           leading: Icon(Icons.logout, color: AppColors.red),
           onTap: () {
-            // context.read<AuthBloc>().add(AuthLogOut());
+            context.read<AuthBloc>().add(LogoutRequested());
             AppNavigator.navigateToAuthPage(context);
           },
         ),

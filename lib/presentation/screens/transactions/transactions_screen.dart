@@ -254,7 +254,7 @@ class _DateFilterState extends State<DateFilter> {
                           listenWhen: (previous, current) =>
                               previous.date != current.date,
                           listener: (context, state) {
-                            bloc.add(DateUpdated(date: state.date));
+                            bloc.add(TxsDateUpdated(date: state.date));
                           },
                           child: Text(
                             DateFormat(

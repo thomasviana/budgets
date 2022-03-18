@@ -40,6 +40,6 @@ class TransactionsBloc extends Bloc<TransactionEvent, TransactionsState> {
       (event, emit) async => deleteTransaction(event.transactionId),
     );
 
-    on<DateUpdated>((event, emit) => emit(state.copyWith(date: event.date)));
+    on<TxsDateUpdated>((event, emit) => emit(state.copyWith(date: event.date)));
   }
 }

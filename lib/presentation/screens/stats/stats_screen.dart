@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
 import 'dart:ui';
 
-import 'package:budgets/presentation/core/transactions/transactions_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 import '../../core/date/date_bloc.dart';
+import '../../core/transactions/transactions_bloc.dart';
 import '../../resources/resources.dart';
 import 'components/stat_card.dart';
 
@@ -214,7 +214,7 @@ class _DateFilterState extends State<DateFilter> {
                           listenWhen: (previous, current) =>
                               previous.date != current.date,
                           listener: (context, state) {
-                            bloc.add(DateUpdated(date: state.date));
+                            bloc.add(TxsDateUpdated(date: state.date));
                           },
                           child: Text(
                             DateFormat(

@@ -25,7 +25,6 @@ class LastRecordsWidget extends StatelessWidget {
     return WidgetCard(
       title: 'Ultimas transacciones',
       actionTitle: 'Ver todas',
-      // onActionPressed: () {},
       onActionPressed: () =>
           context.read<MainScreenCubit>().onSelectedPageIndexChanged(2),
       content: BlocBuilder<TransactionsBloc, TransactionsState>(

@@ -11,9 +11,9 @@ class TransactionDeleted extends TransactionEvent {
   });
 }
 
-class DateUpdated extends TransactionEvent {
+class TxsDateUpdated extends TransactionEvent {
   final DateTime date;
-  DateUpdated({
+  TxsDateUpdated({
     required this.date,
   });
 }

@@ -4,6 +4,8 @@ abstract class StatsEvent {}
 
 class GetUserBudgets extends StatsEvent {}
 
+class GetUserCategories extends StatsEvent {}
+
 class TransactionsSuscriptionRequested extends StatsEvent {}
 
 class BudgetsInfoRequested extends StatsEvent {}

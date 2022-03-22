@@ -3,12 +3,14 @@ part of 'stats_bloc.dart';
 class StatsState extends MyState with EquatableMixin {
   final DateTime date;
   final List<Budget> budgets;
+  final List<Category> categories;
   final List<Transaction> transactions;
 
   StatsState({
     required Status status,
     required this.date,
     required this.budgets,
+    required this.categories,
     required this.transactions,
   }) : super(status: status);
 
@@ -16,6 +18,7 @@ class StatsState extends MyState with EquatableMixin {
         status: Status.initial,
         date: DateTime.now(),
         budgets: [],
+        categories: [],
         transactions: [],
       );
 
@@ -58,20 +61,69 @@ class StatsState extends MyState with EquatableMixin {
     return map;
   }
 
+  List<CategoryData> get categoriesInfo {
+    final list = <CategoryData>[];
+    final expenseCategories =
+        categories.where((category) => category.type == CategoryType.expense);
+
+    for (final category in expenseCategories) {
+      var spent = 0.0;
+      var total = 0.0;
+      for (final transaction in filteredTransactions) {
+        final amount = transaction.amount;
+        if (transaction.txCategoryId!.value == category.id.value) {
+          spent += amount;
+        }
+        total += amount;
+      }
+      final percent = spent / total;
+      list.add(
+        CategoryData(
+          name: category.name,
+          amount: spent,
+          percent: percent,
+          icon: category.icon,
+          color: category.color,
+        ),
+      );
+    }
+    return list.sorted(
+      (a, b) => (b.amount).compareTo(a.amount),
+    );
+  }
+
   StatsState copyWith({
     Status? status,
     DateTime? date,
     List<Budget>? budgets,
+    List<Category>? categories,
     List<Transaction>? transactions,
   }) {
     return StatsState(
       status: status ?? this.status,
       date: date ?? this.date,
       budgets: budgets ?? this.budgets,
+      categories: categories ?? this.categories,
       transactions: transactions ?? this.transactions,
     );
   }
 
   @override
-  List<Object?> get props => [status, date, budgets, transactions, budgetsInfo];
+  List<Object?> get props =>
+      [status, date, budgets, categories, transactions, budgetsInfo];
+}
+
+class CategoryData {
+  final String name;
+  final double amount;
+  final double percent;
+  final int icon;
+  final int color;
+  CategoryData({
+    required this.name,
+    required this.amount,
+    required this.percent,
+    required this.icon,
+    required this.color,
+  });
 }

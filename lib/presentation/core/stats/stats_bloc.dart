@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:budgets/core/categories/application.dart';
+import 'package:budgets/core/categories/domain.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -18,14 +20,24 @@ part 'stats_state.dart';
 class StatsBloc extends Bloc<StatsEvent, StatsState> {
   final GetBudgets _getBudgets;
   final SetDefaultBudgets _setDefaultBudgets;
+  final GetCategories _getCategories;
+  final SetDefaultCategories _setDefaultCategories;
+  final SetDefaultSubCategories _setDefaultSubCategories;
   final GetTransactions _getTransactions;
   StatsBloc(
     this._getBudgets,
     this._setDefaultBudgets,
+    this._getCategories,
+    this._setDefaultCategories,
+    this._setDefaultSubCategories,
     this._getTransactions,
   ) : super(StatsState.initial()) {
     on<GetUserBudgets>(
-      _getUserBudgets,
+      _onGetUserBudgets,
+      transformer: sequential(),
+    );
+    on<GetUserCategories>(
+      _onGetUserCategories,
       transformer: sequential(),
     );
     on<TransactionsSuscriptionRequested>(
@@ -35,7 +47,7 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
     on<StatsDateUpdated>(_onStatsDateUpdated);
   }
 
-  Future<void> _getUserBudgets(
+  Future<void> _onGetUserBudgets(
     GetUserBudgets event,
     Emitter<StatsState> emit,
   ) async {
@@ -50,6 +62,22 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
               budgets: budgets,
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Future<void> _onGetUserCategories(
+    GetUserCategories event,
+    Emitter<StatsState> emit,
+  ) async {
+    await emit.onEach<Option<List<Category>>>(
+      _getCategories(),
+      onData: (userCategories) async {
+        userCategories.fold(
+          () async => _setDefaultCategories()
+              .then((value) => _setDefaultSubCategories()),
+          (categories) => emit(state.copyWith(categories: categories)),
         );
       },
     );

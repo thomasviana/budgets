@@ -12,6 +12,7 @@ dependencies:
   bloc_concurrency: ^0.2.0
   cached_network_image: ^3.2.0
   cloud_firestore: ^3.1.10
+  collection: ^1.15.0
   cupertino_icons: ^1.0.4
   currency_text_input_formatter: ^2.1.5
   dartz: ^0.10.1
@@ -20,6 +21,7 @@ dependencies:
   firebase_auth: ^3.3.9
   firebase_core: ^1.13.1
   firebase_storage: ^10.2.9
+  fl_chart: ^0.46.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
@@ -42,6 +44,7 @@ dependencies:
   page_indicator: ^0.4.1
   path: 1.8.0
   path_provider: ^2.0.9
+  rxdart: ^0.27.3
   sqlite3_flutter_libs: ^0.5.4
   tuple: ^2.0.0
   uuid: ^3.0.6
@@ -75,4 +78,4 @@ flutter:
         - asset: assets/fonts/Nunito-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/Nunito-Bold.ttf
-          weight: 700      
+          weight: 700

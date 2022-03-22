@@ -63,6 +63,7 @@ class AppRouter {
 
   final StatsBloc _statsBloc = sl<StatsBloc>()
     ..add(GetUserBudgets())
+    ..add(GetUserCategories())
     ..add(TransactionsSuscriptionRequested());
 
   Route routes(RouteSettings settings) {

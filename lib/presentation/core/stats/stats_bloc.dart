@@ -1,7 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:budgets/core/categories/application.dart';
-import 'package:budgets/core/categories/domain.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -10,6 +8,8 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/transactions/domain.dart';
 import '../../../core/budgets/application.dart';
 import '../../../core/budgets/domain.dart';
+import '../../../core/categories/application.dart';
+import '../../../core/categories/domain.dart';
 import '../../../core/transactions/application.dart';
 import '../../utils/observer.dart';
 
@@ -60,6 +60,7 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
           (budgets) => emit(
             state.copyWith(
               budgets: budgets,
+              status: Status.success,
             ),
           ),
         );
@@ -77,7 +78,11 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
         userCategories.fold(
           () async => _setDefaultCategories()
               .then((value) => _setDefaultSubCategories()),
-          (categories) => emit(state.copyWith(categories: categories)),
+          (categories) => emit(
+            state.copyWith(
+              categories: categories,
+            ),
+          ),
         );
       },
     );
@@ -93,6 +98,7 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
         () => emit(
           state.copyWith(
             transactions: [],
+            status: Status.failure,
           ),
         ),
         (transactions) => emit(
@@ -109,6 +115,6 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
     StatsDateUpdated event,
     Emitter<StatsState> emit,
   ) async {
-    emit(state.copyWith(date: event.date));
+    emit(state.copyWith(date: event.date, status: Status.success));
   }
 }

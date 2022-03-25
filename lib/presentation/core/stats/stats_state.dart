@@ -41,27 +41,39 @@ class StatsState extends MyState with EquatableMixin {
 
   double get balance => incomes - expenses;
 
-  BudgetManagementMap get budgetsInfo {
-    final map = <String, Map<String, double>>{};
+  List<BudgetData> get budgetsData {
+    final list = <BudgetData>[];
     for (final budget in budgets) {
-      map.putIfAbsent(budget.id.value, () {
-        var spent = 0.0;
-        var budgeted = 0.0;
-        for (final transaction in filteredTransactions) {
-          final newAmount1 =
-              transaction.budgetManagement![budget.id.value]!['spent']!;
-          spent += newAmount1;
-          final newAmount2 =
-              transaction.budgetManagement![budget.id.value]!['budgeted']!;
-          budgeted += newAmount2;
+      var spent = 0.0;
+      var budgeted = 0.0;
+      for (final transaction in filteredTransactions) {
+        final amount1 = transaction.amount;
+        if (transaction.isExpense &&
+            transaction.txBudgetId!.value == budget.id.value) {
+          spent += amount1;
         }
-        return {'spent': spent, 'budgeted': budgeted};
-      });
+        if (transaction.isIncome) {
+          final amount2 = transaction.budgetManagement![budget.id.value]!;
+          budgeted += amount2;
+        }
+      }
+      final percent = spent / budgeted;
+      list.add(
+        BudgetData(
+          name: budget.name,
+          abbreviation: budget.abbreviation,
+          spent: spent,
+          budgeted: budgeted,
+          percent: percent.isNaN ? 0.0 : percent * 100,
+        ),
+      );
     }
-    return map;
+    return list.sorted(
+      (a, b) => (b.spent).compareTo(a.spent),
+    );
   }
 
-  List<CategoryData> get categoriesInfo {
+  List<CategoryData> get categoriesData {
     final list = <CategoryData>[];
     final expenseCategories =
         categories.where((category) => category.type == CategoryType.expense);
@@ -76,7 +88,7 @@ class StatsState extends MyState with EquatableMixin {
         }
         total += amount;
       }
-      final percent = spent / total;
+      final percent = (spent / total).isNaN ? 0.0 : (spent / total);
       list.add(
         CategoryData(
           name: category.name,
@@ -109,8 +121,22 @@ class StatsState extends MyState with EquatableMixin {
   }
 
   @override
-  List<Object?> get props =>
-      [status, date, budgets, categories, transactions, budgetsInfo];
+  List<Object?> get props => [status, date, budgets, categories, transactions];
+}
+
+class BudgetData {
+  final String name;
+  final String? abbreviation;
+  final double spent;
+  final double budgeted;
+  final double percent;
+  BudgetData({
+    required this.name,
+    this.abbreviation,
+    required this.spent,
+    required this.budgeted,
+    required this.percent,
+  });
 }
 
 class CategoryData {

@@ -14,7 +14,8 @@ class TransactionsState {
   List<Transaction> get filteredTransactions {
     final filteredTransactions = transactions
         .where((transaction) => transaction.date.month == date.month)
-        .toList();
+        .toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
     return filteredTransactions;
   }
 
@@ -22,7 +23,8 @@ class TransactionsState {
       .map((transaction) => transaction.date)
       .toList()
       .where((element) => element.month == date.month)
-      .toList();
+      .toList()
+    ..sort(((a, b) => b.day.compareTo(a.day)));
 
   factory TransactionsState.initial() => TransactionsState(
         isLoading: true,

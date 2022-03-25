@@ -1,9 +1,11 @@
-import 'package:budgets/presentation/core/stats/stats_bloc.dart';
-import 'package:budgets/presentation/utils/observer.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
+import '../../../core/stats/stats_bloc.dart';
 import '../../../resources/resources.dart';
+import '../../../utils/observer.dart';
 
 class SpendingChart extends StatefulWidget {
   @override
@@ -73,18 +75,31 @@ class _SpendingChartState extends State<SpendingChart> {
                           sectionsSpace: 4,
                           centerSpaceRadius: 72,
                           sections:
-                              getSections(touchedIndex, state.categoriesInfo),
+                              getSections(touchedIndex, state.categoriesData),
                         ),
                       ),
                       PieChartCenterText(
                         touchedIndex: touchedIndex,
-                        data: state.categoriesInfo,
+                        data: state.categoriesData,
                       ),
                     ],
                   ),
                 ),
-                IndicatorsWidget(data: state.categoriesInfo),
+                IndicatorsWidget(data: state.categoriesData),
               ],
+            ),
+          );
+        },
+        onFailure: (context, state) {
+          final dateString = DateFormat(
+            'MMMM - yyyy',
+            AppLocalizations.of(context)!.localeName,
+          ).format(state.date);
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'No hay transacciones en $dateString',
+              style: TextStyle(color: AppColors.greyDisabled),
             ),
           );
         },

@@ -10,7 +10,7 @@ part 'transactions_table.g.dart';
 
 @j.JsonSerializable()
 class BudgetManagement {
-  final Map<String, Map<String, double>>? budgetToAmount;
+  final Map<String, double>? budgetToAmount;
 
   BudgetManagement({
     required this.budgetToAmount,

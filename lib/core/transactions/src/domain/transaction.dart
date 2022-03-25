@@ -6,7 +6,7 @@ import '../../../../presentation/resources/resources.dart';
 enum TransactionType { expense, income }
 enum IncomeType { active, pasive }
 
-typedef BudgetManagementMap = Map<String, Map<String, double>>;
+typedef BudgetManagementMap = Map<String, double>;
 
 class Transaction extends Entity<TransactionId> {
   TransactionType transactionType;

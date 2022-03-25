@@ -171,9 +171,7 @@ class EditTransactionScreenBloc
             txType: state.transaction.transactionType,
             incomeType: state.transaction.incomeType,
             isIncomeManaged: state.transaction.isIncomeManaged,
-            budgetManagement: state.transaction.isIncome
-                ? state.transaction.budgetManagement
-                : setBudgetSpent(event.amount),
+            budgetManagement: state.transaction.budgetManagement,
           );
         }
       },
@@ -269,21 +267,5 @@ class EditTransactionScreenBloc
         EditTransactionScreenState.initial(),
       ),
     );
-  }
-
-  BudgetManagementMap setBudgetSpent(double spentAmount) {
-    final budgetsInfo = <String, Map<String, double>>{};
-    for (var index = 0; index < state.budgets.length; index++) {
-      budgetsInfo.putIfAbsent(state.budgets[index].id.value, () {
-        return {
-          'spent': state.budget.fold(() => false, (budget) => budget) ==
-                  state.budgets[index]
-              ? spentAmount
-              : 0.0,
-          'budgeted': 0.0,
-        };
-      });
-    }
-    return budgetsInfo;
   }
 }

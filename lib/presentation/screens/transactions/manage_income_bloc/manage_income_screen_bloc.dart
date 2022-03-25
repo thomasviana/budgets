@@ -79,13 +79,10 @@ class ManageIncomeScreenBloc
   }
 
   BudgetManagementMap getBudgetsInfo() {
-    final budgetsInfo = <String, Map<String, double>>{};
+    final budgetsInfo = <String, double>{};
     for (var index = 0; index < state.budgets!.length; index++) {
       budgetsInfo.putIfAbsent(state.budgets![index].id.value, () {
-        return {
-          'spent': 0.0,
-          'budgeted': state.budgetAmounts![index].round().toDouble(),
-        };
+        return state.budgetAmounts![index].round().toDouble();
       });
     }
     return budgetsInfo;

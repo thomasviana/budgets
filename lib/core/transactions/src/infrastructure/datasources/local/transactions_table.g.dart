@@ -9,11 +9,7 @@ part of 'transactions_table.dart';
 BudgetManagement _$BudgetManagementFromJson(Map<String, dynamic> json) =>
     BudgetManagement(
       budgetToAmount: (json['budgetToAmount'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(
-            k,
-            (e as Map<String, dynamic>).map(
-              (k, e) => MapEntry(k, (e as num).toDouble()),
-            )),
+        (k, e) => MapEntry(k, (e as num).toDouble()),
       ),
     );
 

@@ -8,8 +8,8 @@ import 'components/spending_chart_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<Widget> homeWidgets = [
-    BudgetsInfoWidget(),
     LastRecordsWidget(),
+    BudgetsInfoWidget(),
     SpendingChart(),
   ];
 

@@ -51,7 +51,14 @@ class Observer<B extends StateStreamable<S>, S extends MyState>
           case Status.success:
             return onSuccess(context, state);
           case Status.failure:
-            return onFailure!(context, state);
+            if (onFailure == null) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height / 1.3,
+                child: Center(child: Text('Error')),
+              );
+            } else {
+              return onFailure!(context, state);
+            }
           default:
             return SizedBox();
         }

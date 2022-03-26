@@ -736,6 +736,7 @@ class SubCategory extends CategoryModel {
     ...contributionSubCategories,
     ...dependentsSubCategories,
     ...investmentsSubCategories,
+    ...incomeSubCategories,
   ];
 
   static List<SubCategory> housingSubCategories = [
@@ -845,5 +846,16 @@ class SubCategory extends CategoryModel {
     SubCategory.financialInvestments(),
     SubCategory.nfts(),
     SubCategory.crypto(),
+  ];
+
+  static List<SubCategory> incomeSubCategories = [
+    SubCategory.salary(),
+    SubCategory.honorarium(),
+    SubCategory.rental(),
+    SubCategory.business(),
+    SubCategory.dividends(),
+    SubCategory.pension(),
+    SubCategory.occasional(),
+    SubCategory.gift(),
   ];
 }

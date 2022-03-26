@@ -340,16 +340,9 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
                     ),
                     backgroundColor: AppColors.greyDisabled,
                   ),
-                  (subcategory) => CircleAvatar(
-                    maxRadius: 20,
-                    child: Icon(
-                      IconData(
-                        subcategory.icon,
-                        fontFamily: 'MaterialIcons',
-                      ),
-                      color: AppColors.white,
-                    ),
-                    backgroundColor: Color(subcategory.color),
+                  (subCategory) => ListTileLeadingIcon(
+                    icon: subCategory.icon,
+                    color: subCategory.color,
                   ),
                 ),
                 title: Text('Categoría'),

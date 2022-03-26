@@ -48,7 +48,7 @@ class _SpendingChartState extends State<SpendingChart> {
           return Container(
             alignment: Alignment.center,
             width: double.infinity,
-            height: 640,
+            height: 828,
             child: Column(
               children: [
                 Expanded(

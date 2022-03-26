@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart' as f;
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../../core/transactions/domain.dart';
 import '../../core/settings/settings_bloc.dart';
@@ -23,12 +26,16 @@ class EditTransactionScreen extends StatefulWidget {
   _EditTransactionScreenState createState() => _EditTransactionScreenState();
 }
 
-class _EditTransactionScreenState extends State<EditTransactionScreen> {
+class _EditTransactionScreenState extends State<EditTransactionScreen>
+    with SingleTickerProviderStateMixin {
   late EditTransactionScreenBloc bloc;
   late SettingsBloc settingsBloc;
   late CurrencyTextInputFormatter formatter;
   late f.Timestamp dateTime;
+  late Animation<double> _animation;
+  late AnimationController _animationController;
 
+  late double dateArrowTransform = 0;
   @override
   void initState() {
     settingsBloc = context.read<SettingsBloc>();
@@ -46,7 +53,24 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
     dateTime = f.Timestamp.now();
     initializeDateFormatting();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 100),
+      vsync: this,
+    );
+
+    _animation =
+        Tween<double>(begin: 0, end: pi / 2).animate(_animationController)
+          ..addListener(() {
+            setState(() {
+              dateArrowTransform = _animation.value;
+            });
+          });
     super.initState();
+  }
+
+  void triggerArrowAnimation({bool collapsed = false}) {
+    if (collapsed) _animationController.forward();
+    if (!collapsed) _animationController.reverse();
   }
 
   @override
@@ -100,16 +124,25 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
       }
 
       //Date Picker
-      Widget buildDatePicker() => SizedBox(
-            height: 150,
-            child: CupertinoDatePicker(
-              initialDateTime: DateTime.now(),
-              maximumDate: DateTime.now(),
-              onDateTimeChanged: (dateTime) {
-                final timeStamp = f.Timestamp.fromDate(dateTime);
-                setState(() {
-                  this.dateTime = timeStamp;
-                });
+      Widget buildDatePicker() => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SfDateRangePicker(
+              onSelectionChanged: (args) {
+                if (args.value is DateTime) {
+                  final date = args.value as DateTime;
+                  final timeStamp = f.Timestamp.fromDate(
+                    DateTime(
+                      date.year,
+                      date.month,
+                      date.day,
+                      DateTime.now().hour,
+                      DateTime.now().minute,
+                    ),
+                  );
+                  setState(() {
+                    dateTime = timeStamp;
+                  });
+                }
               },
             ),
           );
@@ -130,56 +163,50 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
       }
 
       return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Transaction',
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              _showCancelOptions(
+                context,
+                onDiscardPressed: () => AppNavigator.navigateBack(context),
+              );
+            },
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                child: Text(
+                  'Guardar',
+                  style: TextStyle(
+                    color: state.isSaveEnabled
+                        ? AppColors.primaryColor
+                        : AppColors.greyDisabled,
+                  ),
+                ),
+                onPressed: state.isSaveEnabled
+                    ? () {
+                        bloc.add(
+                          TransactionSaved(
+                            amount: state.transaction.amount,
+                            date: dateTime.toDate(),
+                          ),
+                        );
+                        AppNavigator.navigateBack(context);
+                      }
+                    : null,
+              ),
+            ),
+          ],
+        ),
         body: Container(
           color: AppColors.white,
           child: ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                      child: const Text('Cancelar'),
-                      onPressed: () {
-                        _showCancelOptions(
-                          context,
-                          onDiscardPressed: () =>
-                              AppNavigator.navigateBack(context),
-                        );
-                      },
-                    ),
-                    const Text(
-                      'Transacción',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    TextButton(
-                      child: Text(
-                        'Guardar',
-                        style: TextStyle(
-                          color: state.isSaveEnabled
-                              ? AppColors.primaryColor
-                              : AppColors.greyDisabled,
-                        ),
-                      ),
-                      onPressed: state.isSaveEnabled
-                          ? () {
-                              bloc.add(
-                                TransactionSaved(
-                                  amount: state.transaction.amount,
-                                  date: dateTime.toDate(),
-                                ),
-                              );
-                              AppNavigator.navigateBack(context);
-                            }
-                          : null,
-                    ),
-                  ],
-                ),
-              ),
               SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -455,7 +482,10 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                     .copyWith(dividerColor: Colors.transparent),
                 child: ExpansionTile(
                   leading: Icon(Icons.calendar_today_rounded),
-                  title: Text('Fecha'),
+                  title: Transform.translate(
+                    offset: Offset(-20, 0),
+                    child: Text('Fecha'),
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -464,9 +494,16 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                         style: TextStyle(color: AppColors.greySecondary),
                       ),
                       SizedBox(width: 10),
-                      const Icon(CupertinoIcons.forward)
+                      Transform.rotate(
+                        angle: dateArrowTransform,
+                        child: Icon(CupertinoIcons.forward),
+                      )
                     ],
                   ),
+                  onExpansionChanged: (value) {
+                    print(value);
+                    triggerArrowAnimation(collapsed: value);
+                  },
                   children: [
                     buildDatePicker(),
                   ],

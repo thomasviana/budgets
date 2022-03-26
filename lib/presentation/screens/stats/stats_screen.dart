@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 import 'dart:ui';
 
+import 'package:budgets/presentation/core/stats/stats_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,7 +44,7 @@ class StatsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TransactionsBloc, TransactionsState>(
+    return BlocBuilder<StatsBloc, StatsState>(
       builder: (context, state) {
         return CustomScrollView(
           shrinkWrap: true,
@@ -72,66 +73,45 @@ class StatsContent extends StatelessWidget {
               pinned: true,
               delegate: _DateFilterDelegate(),
             ),
-            statCard(
-              context,
-              title: 'BALANCE',
-              amount: 22300,
-              graph: Icon(
+            StatsCard(
+              title: 'INGRESOS',
+              amount: state.incomes,
+              trailing: Icon(
                 Icons.donut_large,
                 size: 50,
                 color: AppColors.primaryColor,
               ),
             ),
-            statCard(
-              context,
-              title: 'INCOMES',
-              amount: 5000,
-              graph: Icon(
+            StatsCard(
+              title: 'EGRESOS',
+              amount: state.expenses,
+              trailing: Icon(
                 Icons.donut_large,
                 size: 50,
                 color: AppColors.primaryColor,
               ),
             ),
-            statCard(
-              context,
-              title: 'SPENDING',
-              amount: 270,
-              graph: Icon(
+            StatsCard(
+              title: 'FLUJO DE EFECTIVO',
+              amount: state.balance,
+              trailing: Icon(
                 Icons.donut_large,
                 size: 50,
                 color: AppColors.primaryColor,
               ),
             ),
-            statCard(
-              context,
-              title: 'CASH FLOW',
-              amount: 4730,
-              graph: Icon(
+            StatsCard(
+              title: 'PRESUPUESTOS',
+              amount: state.expenses,
+              trailing: Icon(
                 Icons.donut_large,
                 size: 50,
                 color: AppColors.primaryColor,
               ),
             ),
-            statCard(
-              context,
-              title: 'ASSETS',
-              amount: 100000,
-              graph: Icon(
-                Icons.donut_large,
-                size: 50,
-                color: AppColors.primaryColor,
-              ),
-            ),
-            statCard(
-              context,
-              title: 'DEBT',
-              amount: 50000,
-              graph: Icon(
-                Icons.donut_large,
-                size: 50,
-                color: AppColors.primaryColor,
-              ),
-            ),
+            SliverToBoxAdapter(
+              child: SizedBox(height: 16),
+            )
           ],
         );
       },

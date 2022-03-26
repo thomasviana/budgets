@@ -14,4 +14,6 @@ abstract class SubCategoryRepository {
   Future<void> saveList(List<SubCategory> subCategories);
 
   Future<void> delete(CategoryId subCategoryId);
+
+  Future<void> deleteAll();
 }

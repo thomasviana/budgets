@@ -21,6 +21,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SetDefaultAccounts setDefaultAccounts;
   GetCategories getCategories;
   SetDefaultCategories setDefaultCategories;
+  ResetCategories resetCategories;
   GetBudgets getBudgets;
   SetDefaultBudgets setDefaultBudgets;
   SetDefaultSubCategories setDefaultSubCategories;
@@ -30,6 +31,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     this.setDefaultAccounts,
     this.getCategories,
     this.setDefaultCategories,
+    this.resetCategories,
     this.getBudgets,
     this.setDefaultBudgets,
     this.setDefaultSubCategories,
@@ -37,6 +39,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     on<GetUserAccounts>(_getUserAccounts);
     on<GetUserCategories>(_getUserCategories);
     on<GetUserBudgets>(_getUserBudgets);
+    on<ResetFromFactoryRequested>(_onResetFromFactoryRequested);
     developer.log('getUserSettings');
   }
 
@@ -85,4 +88,10 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       },
     );
   }
+
+  Future<void> _onResetFromFactoryRequested(
+    SettingsEvent event,
+    Emitter<SettingsState> emit,
+  ) =>
+      resetCategories();
 }

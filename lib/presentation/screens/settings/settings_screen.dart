@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/auth/auth_bloc.dart';
+import '../../core/settings/settings_bloc.dart';
 import '../../resources/colors.dart';
 import '../../routes/app_navigator.dart';
 
@@ -80,6 +81,17 @@ class SettingsContent extends StatelessWidget {
           leading: Icon(Icons.all_inbox),
           trailing: Platform.isIOS ? const Icon(CupertinoIcons.forward) : null,
           onTap: () => AppNavigator.navigateToBudgetsPage(context),
+        ),
+        Divider(height: 2),
+        ListTile(
+          title: Text(
+            'Reset setttings from factory',
+            style: TextStyle(color: AppColors.red),
+          ),
+          leading: Icon(Icons.restore_outlined, color: AppColors.red),
+          onTap: () {
+            context.read<SettingsBloc>().add(ResetFromFactoryRequested());
+          },
         ),
         Divider(height: 2),
         ListTile(

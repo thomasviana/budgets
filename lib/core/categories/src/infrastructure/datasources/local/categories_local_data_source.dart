@@ -9,6 +9,8 @@ abstract class CategoriesLocalDataSource {
   Future<void> cacheCategories(List<Category> categories);
   Stream<Option<List<Category>>> getCachedCategories(CategoryUserId userId);
   Future<void> deleteCategory(CategoryId categoryId);
+  Future<void> deleteAllCategories();
+  Future<void> deleteAllSubCategories();
 
   Future<void> cacheSubCategory(SubCategory subCategory);
   Future<void> cacheSubCategories(List<SubCategory> subCategories);
@@ -56,6 +58,11 @@ class CategoriesLocalDataSourceImpl implements CategoriesLocalDataSource {
   }
 
   @override
+  Future<void> deleteAllCategories() {
+    return _categoryDao.deleteAllCategories();
+  }
+
+  @override
   Stream<Option<List<Category>>> getCachedCategories(
     CategoryUserId userId,
   ) =>
@@ -84,6 +91,11 @@ class CategoriesLocalDataSourceImpl implements CategoriesLocalDataSource {
   @override
   Future<void> deleteSubCategory(CategoryId subCategoryId) {
     return _subCategoryDao.deleteCategory(subCategoryId.value);
+  }
+
+  @override
+  Future<void> deleteAllSubCategories() {
+    return _subCategoryDao.deleteAllSubCategories();
   }
 
   @override

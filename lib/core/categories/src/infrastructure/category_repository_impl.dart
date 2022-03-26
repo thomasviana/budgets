@@ -13,11 +13,6 @@ class CategoryRepositoryImpl implements CategoryRepository {
   );
 
   @override
-  Future<void> delete(CategoryId categoryId) {
-    return _localDataSource.deleteCategory(categoryId);
-  }
-
-  @override
   Stream<Option<List<Category>>> fetchCategories(CategoryUserId userId) {
     return _localDataSource.getCachedCategories(userId);
   }
@@ -30,5 +25,15 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<void> saveList(List<Category> categories) {
     return _localDataSource.cacheCategories(categories);
+  }
+
+  @override
+  Future<void> delete(CategoryId categoryId) {
+    return _localDataSource.deleteCategory(categoryId);
+  }
+
+  @override
+  Future<void> deleteAll() {
+    return _localDataSource.deleteAllCategories();
   }
 }

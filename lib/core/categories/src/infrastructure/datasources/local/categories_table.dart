@@ -57,6 +57,8 @@ class CategoryDao extends DatabaseAccessor<CategoriesDatabase>
 
   Future<void> deleteCategory(String categoryId) =>
       (delete(categoriesTable)..where((tbl) => tbl.id.equals(categoryId))).go();
+
+  Future<void> deleteAllCategories() => delete(categoriesTable).go();
 }
 
 @lazySingleton
@@ -80,4 +82,6 @@ class SubCategoryDao extends DatabaseAccessor<CategoriesDatabase>
   Future<void> deleteCategory(String subCategoryId) =>
       (delete(subCategoriesTable)..where((tbl) => tbl.id.equals(subCategoryId)))
           .go();
+
+  Future<void> deleteAllSubCategories() => delete(subCategoriesTable).go();
 }

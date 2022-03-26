@@ -12,4 +12,6 @@ abstract class CategoryRepository {
   Future<void> saveList(List<Category> categories);
 
   Future<void> delete(CategoryId categoryId);
+
+  Future<void> deleteAll();
 }

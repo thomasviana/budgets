@@ -57,9 +57,10 @@ import '../core/categories/src/application/delete_category.dart' as _i33;
 import '../core/categories/src/application/delete_sub_category.dart' as _i87;
 import '../core/categories/src/application/get_categories.dart' as _i49;
 import '../core/categories/src/application/get_sub_categories.dart' as _i90;
+import '../core/categories/src/application/reset_categories.dart' as _i93;
 import '../core/categories/src/application/set_default_categories.dart' as _i61;
 import '../core/categories/src/application/set_default_sub_categories.dart'
-    as _i93;
+    as _i94;
 import '../core/categories/src/application/update_category.dart' as _i77;
 import '../core/categories/src/application/update_sub_category.dart' as _i78;
 import '../core/categories/src/infrastructure/category_repository_impl.dart'
@@ -102,8 +103,8 @@ import '../core/user/src/application/create_user.dart' as _i86;
 import '../core/user/src/application/get_profile_info.dart' as _i89;
 import '../core/user/src/application/log_out.dart' as _i92;
 import '../core/user/src/application/pick_user_image.dart' as _i55;
-import '../core/user/src/application/sign_in.dart' as _i94;
-import '../core/user/src/application/update_user_info.dart' as _i95;
+import '../core/user/src/application/sign_in.dart' as _i95;
+import '../core/user/src/application/update_user_info.dart' as _i96;
 import '../core/user/src/infrastructure/auth/auth_service_impl.dart' as _i83;
 import '../core/user/src/infrastructure/auth/user_firebase_prov.dart' as _i80;
 import '../presentation/core/auth/auth_bloc.dart' as _i10;
@@ -131,11 +132,11 @@ import '../presentation/screens/transactions/edit_transaction_bloc/edit_transact
     as _i41;
 import '../presentation/screens/transactions/manage_income_bloc/manage_income_screen_bloc.dart'
     as _i54;
-import 'db_injectable_module.dart' as _i96;
-import 'facebook_injectable_module.dart' as _i97;
-import 'firebase_injectable_module.dart' as _i98;
+import 'db_injectable_module.dart' as _i97;
+import 'facebook_injectable_module.dart' as _i98;
+import 'firebase_injectable_module.dart' as _i99;
 import 'image_picker_injectable_module.dart'
-    as _i99; // ignore_for_file: unnecessary_lambdas
+    as _i100; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -265,6 +266,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       get<_i35.SetDefaultAccounts>(),
       get<_i39.GetCategories>(),
       get<_i39.SetDefaultCategories>(),
+      get<_i39.ResetCategories>(),
       get<_i37.GetBudgets>(),
       get<_i37.SetDefaultBudgets>(),
       get<_i39.SetDefaultSubCategories>()));
@@ -328,18 +330,20 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.factory<_i91.GetTransactions>(() => _i91.GetTransactions(
       get<_i70.TransactionRepository>(), get<_i11.GetProfileInfo>()));
   gh.factory<_i92.LogOut>(() => _i92.LogOut(get<_i82.AuthService>()));
-  gh.factory<_i93.SetDefaultSubCategories>(
-      () => _i93.SetDefaultSubCategories(get<_i25.SubCategoryRepository>()));
-  gh.factory<_i94.SignIn>(() => _i94.SignIn(get<_i82.AuthService>()));
-  gh.factory<_i95.UpdateUserInfo>(
-      () => _i95.UpdateUserInfo(get<_i82.AuthService>()));
+  gh.factory<_i93.ResetCategories>(() => _i93.ResetCategories(
+      get<_i25.CategoryRepository>(), get<_i25.SubCategoryRepository>()));
+  gh.factory<_i94.SetDefaultSubCategories>(
+      () => _i94.SetDefaultSubCategories(get<_i25.SubCategoryRepository>()));
+  gh.factory<_i95.SignIn>(() => _i95.SignIn(get<_i82.AuthService>()));
+  gh.factory<_i96.UpdateUserInfo>(
+      () => _i96.UpdateUserInfo(get<_i82.AuthService>()));
   return get;
 }
 
-class _$DbInjectableModule extends _i96.DbInjectableModule {}
+class _$DbInjectableModule extends _i97.DbInjectableModule {}
 
-class _$FacebookInjectableModule extends _i97.FacebookInjectableModule {}
+class _$FacebookInjectableModule extends _i98.FacebookInjectableModule {}
 
-class _$FirebaseInjectableModule extends _i98.FirebaseInjectableModule {}
+class _$FirebaseInjectableModule extends _i99.FirebaseInjectableModule {}
 
-class _$ImagePickerInjectableModule extends _i99.ImagePickerInjectableModule {}
+class _$ImagePickerInjectableModule extends _i100.ImagePickerInjectableModule {}

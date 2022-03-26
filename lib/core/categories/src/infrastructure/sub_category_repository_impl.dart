@@ -13,11 +13,6 @@ class SubCategoryRepositoryImpl implements SubCategoryRepository {
   );
 
   @override
-  Future<void> delete(CategoryId subCategoryId) {
-    return _categoriesLocalDataSource.deleteSubCategory(subCategoryId);
-  }
-
-  @override
   Future<void> save(SubCategory subCategory) {
     return _categoriesLocalDataSource.cacheSubCategory(subCategory);
   }
@@ -35,5 +30,15 @@ class SubCategoryRepositoryImpl implements SubCategoryRepository {
   @override
   Stream<Option<List<SubCategory>>> fetchAllSubCategories() {
     return _categoriesLocalDataSource.getAllCachedSubCategories();
+  }
+
+  @override
+  Future<void> delete(CategoryId subCategoryId) {
+    return _categoriesLocalDataSource.deleteSubCategory(subCategoryId);
+  }
+
+  @override
+  Future<void> deleteAll() {
+    return _categoriesLocalDataSource.deleteAllSubCategories();
   }
 }

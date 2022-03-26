@@ -116,6 +116,38 @@ class Category extends CategoryModel {
         id: CategoryId('financial'),
         name: 'Gastos financieros',
         icon: 0xf58f,
+        color: CategoryColors.green,
+        type: CategoryType.expense,
+      );
+
+  factory Category.education() => Category(
+        id: CategoryId('education'),
+        name: 'Educación',
+        icon: 63568,
+        color: CategoryColors.deep_purple,
+        type: CategoryType.expense,
+      );
+
+  factory Category.contribution() => Category(
+        id: CategoryId('contribution'),
+        name: 'Contribución',
+        icon: 983707,
+        color: CategoryColors.pink,
+        type: CategoryType.expense,
+      );
+
+  factory Category.dependents() => Category(
+        id: CategoryId('dependents'),
+        name: 'Dependientes',
+        icon: 63036,
+        color: CategoryColors.orange,
+        type: CategoryType.expense,
+      );
+
+  factory Category.investments() => Category(
+        id: CategoryId('investments'),
+        name: 'Inversiones',
+        icon: 63513,
         color: CategoryColors.teal,
         type: CategoryType.expense,
       );
@@ -196,6 +228,10 @@ class Category extends CategoryModel {
       Category.recreation(),
       Category.shopping(),
       Category.financial(),
+      Category.education(),
+      Category.contribution(),
+      Category.dependents(),
+      Category.investments(),
       Category.salary(),
       Category.honorarium(),
       Category.rental(),

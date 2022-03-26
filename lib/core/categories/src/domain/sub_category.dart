@@ -343,6 +343,14 @@ class SubCategory extends CategoryModel {
         categoryId: CategoryId('recreation'),
       );
 
+  factory SubCategory.travels() => SubCategory(
+        id: CategoryId('travels'),
+        name: 'Viajes',
+        icon: 0xe23e,
+        color: CategoryColors.purple,
+        categoryId: CategoryId('recreation'),
+      );
+
   // ??????  SHOPPING
 
   factory SubCategory.shopping() => SubCategory(
@@ -393,14 +401,6 @@ class SubCategory extends CategoryModel {
         categoryId: CategoryId('shopping'),
       );
 
-  factory SubCategory.pets() => SubCategory(
-        id: CategoryId('pets'),
-        name: 'Para mascotas',
-        icon: 0xf0077,
-        color: CategoryColors.blue,
-        categoryId: CategoryId('shopping'),
-      );
-
   factory SubCategory.gifts() => SubCategory(
         id: CategoryId('gifts'),
         name: 'Regalos',
@@ -415,7 +415,7 @@ class SubCategory extends CategoryModel {
         id: CategoryId('financial'),
         name: 'Gastos financieros (general)',
         icon: 0xf58f,
-        color: CategoryColors.teal,
+        color: CategoryColors.green,
         categoryId: CategoryId('financial'),
       );
 
@@ -423,7 +423,7 @@ class SubCategory extends CategoryModel {
         id: CategoryId('loans'),
         name: 'Creditos',
         icon: 0xf58f,
-        color: CategoryColors.teal,
+        color: CategoryColors.green,
         categoryId: CategoryId('financial'),
       );
 
@@ -431,7 +431,7 @@ class SubCategory extends CategoryModel {
         id: CategoryId('creditCards'),
         name: 'Tarjetas de crédito',
         icon: 0xe19f,
-        color: CategoryColors.teal,
+        color: CategoryColors.green,
         categoryId: CategoryId('financial'),
       );
 
@@ -439,7 +439,7 @@ class SubCategory extends CategoryModel {
         id: CategoryId('assurances'),
         name: 'Seguros',
         icon: 0xf013e,
-        color: CategoryColors.teal,
+        color: CategoryColors.green,
         categoryId: CategoryId('financial'),
       );
 
@@ -447,8 +447,200 @@ class SubCategory extends CategoryModel {
         id: CategoryId('taxes'),
         name: 'Impuestos',
         icon: 0xf6ce,
-        color: CategoryColors.teal,
+        color: CategoryColors.green,
         categoryId: CategoryId('financial'),
+      );
+
+  // ??????  EDUCATION
+
+  factory SubCategory.education() => SubCategory(
+        id: CategoryId('education'),
+        name: 'Educación (general)',
+        icon: 63568,
+        color: CategoryColors.deep_purple,
+        categoryId: CategoryId('education'),
+      );
+
+  factory SubCategory.books() => SubCategory(
+        id: CategoryId('books'),
+        name: 'Libros',
+        icon: 63568,
+        color: CategoryColors.deep_purple,
+        categoryId: CategoryId('education'),
+      );
+
+  factory SubCategory.courses() => SubCategory(
+        id: CategoryId('courses'),
+        name: 'Cursos',
+        icon: 63568,
+        color: CategoryColors.deep_purple,
+        categoryId: CategoryId('education'),
+      );
+
+  factory SubCategory.educationalEvents() => SubCategory(
+        id: CategoryId('educationalEvents'),
+        name: 'Eventos educativos',
+        icon: 63568,
+        color: CategoryColors.deep_purple,
+        categoryId: CategoryId('education'),
+      );
+
+  factory SubCategory.university() => SubCategory(
+        id: CategoryId('university'),
+        name: 'Universidad',
+        icon: 63568,
+        color: CategoryColors.deep_purple,
+        categoryId: CategoryId('education'),
+      );
+
+  factory SubCategory.educationLoan() => SubCategory(
+        id: CategoryId('educationLoan'),
+        name: 'Crédito educativo',
+        icon: 63568,
+        color: CategoryColors.deep_purple,
+        categoryId: CategoryId('education'),
+      );
+
+  // ??????  CONTRIBUTION
+
+  factory SubCategory.contribution() => SubCategory(
+        id: CategoryId('contribution'),
+        name: 'Contribución (general)',
+        icon: 983707,
+        color: CategoryColors.pink,
+        categoryId: CategoryId('contribution'),
+      );
+
+  factory SubCategory.donations() => SubCategory(
+        id: CategoryId('donations'),
+        name: 'Donaciones',
+        icon: 983707,
+        color: CategoryColors.pink,
+        categoryId: CategoryId('contribution'),
+      );
+
+  factory SubCategory.curchTithe() => SubCategory(
+        id: CategoryId('curchTithe'),
+        name: 'Diezmo',
+        icon: 983707,
+        color: CategoryColors.pink,
+        categoryId: CategoryId('contribution'),
+      );
+
+  factory SubCategory.offering() => SubCategory(
+        id: CategoryId('offering'),
+        name: 'Ofrendas',
+        icon: 983707,
+        color: CategoryColors.pink,
+        categoryId: CategoryId('contribution'),
+      );
+
+  factory SubCategory.tips() => SubCategory(
+        id: CategoryId('tips'),
+        name: 'Propinas',
+        icon: 983707,
+        color: CategoryColors.pink,
+        categoryId: CategoryId('contribution'),
+      );
+
+  // ??????  DEPENDENTS
+
+  factory SubCategory.dependents() => SubCategory(
+        id: CategoryId('dependents'),
+        name: 'Dependientes (general)',
+        icon: 58502,
+        color: CategoryColors.orange,
+        categoryId: CategoryId('dependents'),
+      );
+
+  factory SubCategory.familyDepenent() => SubCategory(
+        id: CategoryId('familyDepenent'),
+        name: 'Familiares dependientes',
+        icon: 58502,
+        color: CategoryColors.orange,
+        categoryId: CategoryId('dependents'),
+      );
+
+  factory SubCategory.allowance() => SubCategory(
+        id: CategoryId('allowance'),
+        name: 'Mesadas',
+        icon: 63036,
+        color: CategoryColors.orange,
+        categoryId: CategoryId('dependents'),
+      );
+
+  factory SubCategory.school() => SubCategory(
+        id: CategoryId('school'),
+        name: 'Colegio',
+        icon: 983342,
+        color: CategoryColors.orange,
+        categoryId: CategoryId('dependents'),
+      );
+
+  factory SubCategory.pets() => SubCategory(
+        id: CategoryId('pets'),
+        name: 'Mascotas',
+        icon: 983159,
+        color: CategoryColors.orange,
+        categoryId: CategoryId('dependents'),
+      );
+
+  // ??????  INVESTMENTS
+
+  factory SubCategory.investments() => SubCategory(
+        id: CategoryId('investments'),
+        name: 'Inversiones (general)',
+        icon: 63513,
+        color: CategoryColors.teal,
+        categoryId: CategoryId('investments'),
+      );
+
+  factory SubCategory.realEstate() => SubCategory(
+        id: CategoryId('realEstate'),
+        name: 'Propiedad raiz',
+        icon: 983697,
+        color: CategoryColors.teal,
+        categoryId: CategoryId('investments'),
+      );
+
+  factory SubCategory.stocks() => SubCategory(
+        id: CategoryId('stocks'),
+        name: 'Mercado de valores',
+        icon: 63513,
+        color: CategoryColors.teal,
+        categoryId: CategoryId('investments'),
+      );
+
+  factory SubCategory.shares() => SubCategory(
+        id: CategoryId('shares'),
+        name: 'Acciones',
+        icon: 63513,
+        color: CategoryColors.teal,
+        categoryId: CategoryId('investments'),
+      );
+
+  factory SubCategory.financialInvestments() => SubCategory(
+        id: CategoryId('financialInvestments'),
+        name: 'Inversiones financieras',
+        icon: 63513,
+        color: CategoryColors.teal,
+        categoryId: CategoryId('investments'),
+      );
+
+  factory SubCategory.nfts() => SubCategory(
+        id: CategoryId('nfts'),
+        name: 'NFTs',
+        icon: 62849,
+        color: CategoryColors.teal,
+        categoryId: CategoryId('investments'),
+      );
+
+  factory SubCategory.crypto() => SubCategory(
+        id: CategoryId('crypto'),
+        name: 'Criptomonedas',
+        icon: 59060,
+        color: CategoryColors.teal,
+        categoryId: CategoryId('investments'),
       );
 
   // !!!!!!!  SALARY
@@ -532,6 +724,21 @@ class SubCategory extends CategoryModel {
       );
 
   static List<SubCategory> allSubCategories = [
+    ...housingSubCategories,
+    ...foodSubCategories,
+    ...transportationSubCategories,
+    ...healthCareSubCategories,
+    ...servicesSubCategories,
+    ...recreationSubCategories,
+    ...shoppingSubCategories,
+    ...financialSubCategories,
+    ...educationSubCategories,
+    ...contributionSubCategories,
+    ...dependentsSubCategories,
+    ...investmentsSubCategories,
+  ];
+
+  static List<SubCategory> housingSubCategories = [
     SubCategory.housing(),
     SubCategory.rent(),
     SubCategory.morgage(),
@@ -539,72 +746,18 @@ class SubCategory extends CategoryModel {
     SubCategory.admin(),
     SubCategory.houseMaintenance(),
     SubCategory.propertyTaxes(),
-    SubCategory.food(),
-    SubCategory.generalFood(),
-    SubCategory.meats(),
-    SubCategory.fruitsAndVegetables(),
-    SubCategory.miscellaneous(),
-    SubCategory.transportation(),
-    SubCategory.publicTransport(),
-    SubCategory.uber(),
-    SubCategory.tolls(),
-    SubCategory.gas(),
-    SubCategory.parking(),
-    SubCategory.carCredit(),
-    SubCategory.carAssurance(),
-    SubCategory.carTaxes(),
-    SubCategory.maintenance(),
-    SubCategory.carWash(),
-    SubCategory.healthCare(),
-    SubCategory.publicHealth(),
-    SubCategory.healthCarePlan(),
-    SubCategory.medicalAppointments(),
-    SubCategory.medicines(),
-    SubCategory.services(),
-    SubCategory.cellPhonePlan(),
-    SubCategory.homePlan(),
-    SubCategory.subscriptions(),
-    SubCategory.otherServices(),
-    SubCategory.recreation(),
-    SubCategory.restaurants(),
-    SubCategory.cinema(),
-    SubCategory.events(),
-    SubCategory.shopping(),
-    SubCategory.clothes(),
-    SubCategory.home(),
-    SubCategory.electronics(),
-    SubCategory.healthAndBeauty(),
-    SubCategory.accessories(),
-    SubCategory.pets(),
-    SubCategory.gifts(),
-    SubCategory.financial(),
-    SubCategory.loans(),
-    SubCategory.creditCards(),
-    SubCategory.assurances(),
-    SubCategory.taxes(),
-    SubCategory.salary(),
-    SubCategory.honorarium(),
-    SubCategory.rental(),
-    SubCategory.business(),
-    SubCategory.dividends(),
-    SubCategory.pension(),
-    SubCategory.occasional(),
-    SubCategory.gift(),
-  ];
-
-  static List<SubCategory> housingSubCategories = [
-    SubCategory.rent(),
-    SubCategory.morgage(),
-    SubCategory.housingServices(),
   ];
 
   static List<SubCategory> foodSubCategories = [
+    SubCategory.food(),
+    SubCategory.generalFood(),
     SubCategory.meats(),
     SubCategory.fruitsAndVegetables(),
     SubCategory.miscellaneous(),
   ];
 
   static List<SubCategory> transportationSubCategories = [
+    SubCategory.transportation(),
     SubCategory.publicTransport(),
     SubCategory.uber(),
     SubCategory.tolls(),
@@ -618,6 +771,7 @@ class SubCategory extends CategoryModel {
   ];
 
   static List<SubCategory> healthCareSubCategories = [
+    SubCategory.healthCare(),
     SubCategory.publicHealth(),
     SubCategory.healthCarePlan(),
     SubCategory.medicalAppointments(),
@@ -625,6 +779,7 @@ class SubCategory extends CategoryModel {
   ];
 
   static List<SubCategory> servicesSubCategories = [
+    SubCategory.services(),
     SubCategory.cellPhonePlan(),
     SubCategory.homePlan(),
     SubCategory.subscriptions(),
@@ -632,25 +787,63 @@ class SubCategory extends CategoryModel {
   ];
 
   static List<SubCategory> recreationSubCategories = [
+    SubCategory.recreation(),
     SubCategory.restaurants(),
     SubCategory.cinema(),
     SubCategory.events(),
+    SubCategory.travels(),
   ];
 
   static List<SubCategory> shoppingSubCategories = [
+    SubCategory.shopping(),
     SubCategory.clothes(),
     SubCategory.home(),
     SubCategory.electronics(),
     SubCategory.healthAndBeauty(),
     SubCategory.accessories(),
-    SubCategory.pets(),
     SubCategory.gifts(),
   ];
 
   static List<SubCategory> financialSubCategories = [
+    SubCategory.financial(),
     SubCategory.loans(),
     SubCategory.creditCards(),
     SubCategory.assurances(),
     SubCategory.taxes(),
+  ];
+
+  static List<SubCategory> educationSubCategories = [
+    SubCategory.education(),
+    SubCategory.books(),
+    SubCategory.courses(),
+    SubCategory.educationalEvents(),
+    SubCategory.university(),
+    SubCategory.educationLoan(),
+  ];
+
+  static List<SubCategory> contributionSubCategories = [
+    SubCategory.contribution(),
+    SubCategory.donations(),
+    SubCategory.curchTithe(),
+    SubCategory.offering(),
+    SubCategory.tips(),
+  ];
+
+  static List<SubCategory> dependentsSubCategories = [
+    SubCategory.dependents(),
+    SubCategory.familyDepenent(),
+    SubCategory.allowance(),
+    SubCategory.school(),
+    SubCategory.pets(),
+  ];
+
+  static List<SubCategory> investmentsSubCategories = [
+    SubCategory.investments(),
+    SubCategory.realEstate(),
+    SubCategory.stocks(),
+    SubCategory.shares(),
+    SubCategory.financialInvestments(),
+    SubCategory.nfts(),
+    SubCategory.crypto(),
   ];
 }

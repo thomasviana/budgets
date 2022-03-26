@@ -215,6 +215,7 @@ class _CategoriesList extends StatelessWidget {
             ),
             ListView.separated(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: categories.length,
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(height: 0),
@@ -222,16 +223,9 @@ class _CategoriesList extends StatelessWidget {
                 final category = categories[index];
                 return ListTile(
                   title: Text(categories[index].name),
-                  leading: CircleAvatar(
-                    maxRadius: 20,
-                    child: Icon(
-                      IconData(
-                        category.icon,
-                        fontFamily: 'MaterialIcons',
-                      ),
-                      color: AppColors.white,
-                    ),
-                    backgroundColor: Color(category.color),
+                  leading: ListTileLeadingIcon(
+                    icon: category.icon,
+                    color: category.color,
                   ),
                   trailing: state.category.fold(
                     () => null,
@@ -266,6 +260,7 @@ class _SubCategoriesList extends StatelessWidget {
       builder: (context, state) {
         return ListView(
           shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
           children: [
             Padding(
               padding: const EdgeInsets.only(
@@ -282,21 +277,14 @@ class _SubCategoriesList extends StatelessWidget {
             ),
             ListTile(
               title: Text(state.subCategories!.first.name),
-              leading: CircleAvatar(
-                maxRadius: 20,
-                child: Icon(
-                  IconData(
-                    state.subCategories!.first.icon,
-                    fontFamily: 'MaterialIcons',
-                  ),
-                  color: AppColors.white,
-                ),
-                backgroundColor: Color(state.subCategories!.first.color),
+              leading: ListTileLeadingIcon(
+                icon: state.subCategories!.first.icon,
+                color: state.subCategories!.first.color,
               ),
               trailing: state.subCategory.fold(
                 () => null,
-                (stateSubCategoryt) {
-                  if (stateSubCategoryt.id == state.subCategories!.first.id) {
+                (stateSubCategory) {
+                  if (stateSubCategory.id == state.subCategories!.first.id) {
                     return Icon(Icons.check, color: AppColors.primaryColor);
                   }
                   return null;
@@ -338,6 +326,7 @@ class _SubCategoriesList extends StatelessWidget {
               ),
             ListView.separated(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: state.subCategories!.length - 1,
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(height: 0),
@@ -345,16 +334,9 @@ class _SubCategoriesList extends StatelessWidget {
                 final subCategory = state.subCategories![index + 1];
                 return ListTile(
                   title: Text(subCategory.name),
-                  leading: CircleAvatar(
-                    maxRadius: 20,
-                    child: Icon(
-                      IconData(
-                        subCategory.icon,
-                        fontFamily: 'MaterialIcons',
-                      ),
-                      color: AppColors.white,
-                    ),
-                    backgroundColor: Color(subCategory.color),
+                  leading: ListTileLeadingIcon(
+                    icon: subCategory.icon,
+                    color: subCategory.color,
                   ),
                   trailing: state.subCategory.fold(
                     () => null,

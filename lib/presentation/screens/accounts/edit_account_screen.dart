@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 
+import 'package:budgets/common/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,10 +55,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (state.account?.id.value != 'bank' &&
-                      state.account?.id.value != 'cash' &&
-                      state.account?.id.value != 'wallet' &&
-                      state.isEditMode)
+                  if ([
+                    state.account?.id.value != 'bank',
+                    state.account?.id.value != 'cash',
+                    state.account?.id.value != 'wallet',
+                    state.isEditMode
+                  ].flatten())
                     GestureDetector(
                       child: Icon(
                         CupertinoIcons.trash_circle,
@@ -99,10 +102,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
             state.isEditMode ? 'Editar cuenta' : 'Nueva cuenta',
           ),
           actions: [
-            if (state.account?.id.value != 'bank' &&
-                state.account?.id.value != 'cash' &&
-                state.account?.id.value != 'wallet' &&
-                state.isEditMode)
+            if ([
+              state.account?.id.value != 'bank',
+              state.account?.id.value != 'cash',
+              state.account?.id.value != 'wallet',
+              state.isEditMode
+            ].flatten())
               IconButton(
                 icon: Icon(
                   Icons.delete_outline,

@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 
+import 'package:budgets/common/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,9 +57,11 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (state.budget?.id.value != 'inv' &&
-                      state.budget?.id.value != 'seg' &&
-                      state.budget?.id.value != 'dar')
+                  if ([
+                    state.budget?.id.value != 'inv',
+                    state.budget?.id.value != 'seg',
+                    state.budget?.id.value != 'dar'
+                  ].flatten())
                     GestureDetector(
                       child: Icon(
                         CupertinoIcons.trash_circle,
@@ -100,9 +103,11 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
             state.isEditMode ? 'Editar presupuesto' : 'Nuevo presupuesto',
           ),
           actions: [
-            if (state.budget?.id.value != 'inv' &&
-                state.budget?.id.value != 'seg' &&
-                state.budget?.id.value != 'dar')
+            if ([
+              state.budget?.id.value != 'inv',
+              state.budget?.id.value != 'seg',
+              state.budget?.id.value != 'dar'
+            ].flatten())
               IconButton(
                 icon: Icon(
                   Icons.delete_outline,

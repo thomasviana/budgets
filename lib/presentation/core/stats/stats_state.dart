@@ -41,6 +41,26 @@ class StatsState extends MyState with EquatableMixin {
 
   double get balance => incomes - expenses;
 
+  double get activeIncomes => filteredTransactions
+      .where(
+        (transaction) => [
+          transaction.isIncome,
+          transaction.incomeType == IncomeType.active
+        ].flatten(),
+      )
+      .map((income) => income.amount)
+      .sum;
+
+  double get pasiveIncomes => filteredTransactions
+      .where(
+        (transaction) => [
+          transaction.isIncome,
+          transaction.incomeType == IncomeType.pasive
+        ].flatten(),
+      )
+      .map((income) => income.amount)
+      .sum;
+
   List<BudgetData> get budgetsData {
     final list = <BudgetData>[];
     for (final budget in budgets) {

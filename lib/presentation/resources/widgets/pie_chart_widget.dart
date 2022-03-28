@@ -7,8 +7,8 @@ import '../constants.dart';
 
 class PieChartWidget extends StatefulWidget {
   static const double _defaultRadious = 72;
-  static const double _tileHeight = 56;
-  static const double _aditionalPadding = 20;
+  static const double _tileHeight = 50;
+  static const double _aditionalPadding = 84;
   final List<PieData> data;
   final double total;
 

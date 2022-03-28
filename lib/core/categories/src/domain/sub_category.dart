@@ -736,7 +736,7 @@ class SubCategory extends CategoryModel {
     ...contributionSubCategories,
     ...dependentsSubCategories,
     ...investmentsSubCategories,
-    ...incomeSubCategories,
+    ...incomeSubCategories
   ];
 
   static List<SubCategory> housingSubCategories = [

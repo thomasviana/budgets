@@ -1,14 +1,20 @@
 import 'dart:io' show Platform;
 
+import 'package:budgets/presentation/screens/stats/widgets/stat_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/stats/stats_bloc.dart';
 import '../../resources/resources.dart';
-import 'components/stat_card.dart';
+import 'widgets/trailing_pie_chart.dart';
 
-class StatsScreen extends StatelessWidget {
+class StatsScreen extends StatefulWidget {
+  @override
+  State<StatsScreen> createState() => _StatsScreenState();
+}
+
+class _StatsScreenState extends State<StatsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,11 +51,7 @@ class StatsScreen extends StatelessWidget {
               StatsCard(
                 title: 'INGRESOS',
                 amount: state.incomes,
-                trailing: Icon(
-                  Icons.donut_large,
-                  size: 50,
-                  color: AppColors.primaryColor,
-                ),
+                trailing: TrailingPieChart(data: state.incomeCategoriesData),
               ),
               StatsCard(
                 title: 'EGRESOS',

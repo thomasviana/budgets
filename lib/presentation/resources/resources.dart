@@ -13,6 +13,7 @@ export './widgets/custom_textfield.dart';
 export './widgets/date_filter_delegate.dart';
 export './widgets/google_sign_in_button.dart';
 export './widgets/list_tile_leading_icon.dart';
+export './widgets/pie_chart_widget.dart';
 export './widgets/rounded_button.dart';
 export './widgets/transaction_listtile.dart';
 export './widgets/widget_card.dart';

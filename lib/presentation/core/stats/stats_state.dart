@@ -73,8 +73,8 @@ class StatsState extends MyState with EquatableMixin {
     );
   }
 
-  List<CategoryData> get categoriesData {
-    final list = <CategoryData>[];
+  List<PieData> get expenseCategoriesData {
+    final list = <PieData>[];
     final expenseCategories =
         categories.where((category) => category.type == CategoryType.expense);
 
@@ -90,7 +90,38 @@ class StatsState extends MyState with EquatableMixin {
       }
       final percent = (spent / total).isNaN ? 0.0 : (spent / total);
       list.add(
-        CategoryData(
+        PieData(
+          name: category.name,
+          amount: spent,
+          percent: percent,
+          icon: category.icon,
+          color: category.color,
+        ),
+      );
+    }
+    return list.sorted(
+      (a, b) => (b.amount).compareTo(a.amount),
+    );
+  }
+
+  List<PieData> get incomeCategoriesData {
+    final list = <PieData>[];
+    final incomeCategories =
+        categories.where((category) => category.type == CategoryType.income);
+
+    for (final category in incomeCategories) {
+      var spent = 0.0;
+      var total = 0.0;
+      for (final transaction in filteredTransactions) {
+        final amount = transaction.amount;
+        if (transaction.txCategoryId!.value == category.id.value) {
+          spent += amount;
+        }
+        total += amount;
+      }
+      final percent = (spent / total).isNaN ? 0.0 : (spent / total);
+      list.add(
+        PieData(
           name: category.name,
           amount: spent,
           percent: percent,
@@ -139,13 +170,13 @@ class BudgetData {
   });
 }
 
-class CategoryData {
+class PieData {
   final String name;
   final double amount;
   final double percent;
   final int icon;
   final int color;
-  CategoryData({
+  PieData({
     required this.name,
     required this.amount,
     required this.percent,

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../resources/resources.dart';
 import 'components/incomes_by_category.dart';
+import 'components/incomes_by_type.dart';
 
 class IncomesScreen extends StatelessWidget {
   @override
@@ -41,6 +42,7 @@ class IncomesScreen extends StatelessWidget {
                 pinned: true,
                 delegate: DateFilterDelegate(),
               ),
+              IncomesByType(),
               IncomesByCategroy(),
               SliverToBoxAdapter(
                 child: SizedBox(height: 16),

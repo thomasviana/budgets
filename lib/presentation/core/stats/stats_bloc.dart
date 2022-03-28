@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:budgets/common/extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/transactions/domain.dart';
+import '../../../common/extensions.dart';
 import '../../../core/budgets/application.dart';
 import '../../../core/budgets/domain.dart';
 import '../../../core/categories/application.dart';

@@ -1,10 +1,10 @@
-import 'package:budgets/presentation/utils/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/stats/stats_bloc.dart';
 import '../../../resources/resources.dart';
+import '../../../utils/observer.dart';
 
 class IncomesByCategroy extends StatelessWidget {
   const IncomesByCategroy({

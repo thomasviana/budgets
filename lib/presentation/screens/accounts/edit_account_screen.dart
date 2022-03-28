@@ -1,12 +1,12 @@
 import 'dart:io' show Platform;
 
-import 'package:budgets/common/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
+import '../../../common/extensions.dart';
 import '../../../core/accounts/domain.dart';
 import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';

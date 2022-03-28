@@ -1,10 +1,10 @@
 import 'dart:io' show Platform;
 
-import 'package:budgets/presentation/core/stats/stats_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/stats/stats_bloc.dart';
 import '../../resources/resources.dart';
 import 'components/stat_card.dart';
 

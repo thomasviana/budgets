@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/stats/stats_bloc.dart';
 import '../../resources/resources.dart';
@@ -22,6 +23,7 @@ class IncomesScreen extends StatelessWidget {
                 CupertinoSliverNavigationBar(
                   stretch: true,
                   largeTitle: Text('Ingresos'),
+                  previousPageTitle: AppLocalizations.of(context)!.misc_back,
                 ),
               if (Platform.isAndroid)
                 SliverAppBar(

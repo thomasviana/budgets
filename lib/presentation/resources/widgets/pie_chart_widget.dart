@@ -22,8 +22,50 @@ class PieChartWidget extends StatefulWidget {
   State<PieChartWidget> createState() => _PieChartWidgetState();
 }
 
-class _PieChartWidgetState extends State<PieChartWidget> {
+class _PieChartWidgetState extends State<PieChartWidget>
+    with SingleTickerProviderStateMixin {
+  late Animation<double> _animation;
+  late AnimationController _animationController;
   late int touchedIndex = -1;
+
+  double sectionAnimation = 0;
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: Duration(seconds: 2),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeOutCirc,
+    )..addListener(() {
+        setState(() {
+          sectionAnimation = _animation.value;
+        });
+      });
+    triggerAnimation();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(PieChartWidget old) {
+    triggerAnimation();
+
+    super.didUpdateWidget(old);
+  }
+
+  void triggerAnimation() {
+    _animationController
+      ..reset()
+      ..forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<PieChartSectionData> getSections(
@@ -38,14 +80,21 @@ class _PieChartWidgetState extends State<PieChartWidget> {
 
             final value = PieChartSectionData(
               color: Color(data.color),
-              value: data.amount,
+              value: data.percent,
               title: '',
               radius: radious,
             );
             return MapEntry(index, value);
           })
           .values
-          .toList();
+          .toList()
+        ..add(
+          PieChartSectionData(
+            value: -(sectionAnimation - 1) * 1,
+            title: '',
+            color: Colors.transparent,
+          ),
+        );
     }
 
     return Container(

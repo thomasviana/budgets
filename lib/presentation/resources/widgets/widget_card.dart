@@ -4,15 +4,15 @@ import '../resources.dart';
 
 class WidgetCard extends StatelessWidget {
   final String title;
-  final String actionTitle;
-  final VoidCallback onActionPressed;
+  final String? actionTitle;
+  final VoidCallback? onActionPressed;
   final Widget content;
 
   const WidgetCard({
     Key? key,
     required this.title,
-    required this.actionTitle,
-    required this.onActionPressed,
+    this.actionTitle,
+    this.onActionPressed,
     required this.content,
   }) : super(key: key);
 
@@ -42,7 +42,7 @@ class WidgetCard extends StatelessWidget {
                         ),
                   ),
                   TextButton(
-                    child: Text(actionTitle),
+                    child: Text(actionTitle ?? ''),
                     onPressed: onActionPressed,
                   )
                 ],

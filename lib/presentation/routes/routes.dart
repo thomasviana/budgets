@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/screens/stats_incomes/incomes_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -102,6 +103,21 @@ class AppRouter {
               ),
             ],
             child: MainAppScreen(),
+          ),
+        );
+      case AppNavigator.ROUTE_INCOMES_PAGE:
+        return _buildRoute(
+          settings,
+          MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: _statsBloc,
+              ),
+              BlocProvider.value(
+                value: _transactionsBloc,
+              ),
+            ],
+            child: IncomesScreen(),
           ),
         );
       case AppNavigator.ROUTE_PROFILE_PAGE:

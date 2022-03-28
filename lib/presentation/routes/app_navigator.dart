@@ -13,6 +13,9 @@ class AppNavigator {
   static const ROUTE_AUTH_PAGE = '/auth';
   static const ROUTE_MAIN_PAGE = '/main';
 
+  //Stats
+  static const ROUTE_INCOMES_PAGE = '/incomes';
+
   // Settings
   static const ROUTE_PROFILE_PAGE = '/profile';
 
@@ -71,6 +74,10 @@ class AppNavigator {
       ROUTE_MAIN_PAGE,
       (route) => false,
     );
+  }
+
+  static void navigateToIncomesPage(BuildContext context) {
+    Navigator.pushNamed(context, ROUTE_INCOMES_PAGE);
   }
 
   static void navigateToProfilePage(BuildContext context) {

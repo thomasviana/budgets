@@ -91,7 +91,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
           ),
           SliverPersistentHeader(
             pinned: true,
-            delegate: _DateFilterDelegate(),
+            delegate: DateFilterDelegate(),
           ),
           if (state.filteredTransactions.isEmpty)
             SliverToBoxAdapter(
@@ -175,114 +175,6 @@ class _StickyHeaderList extends StatelessWidget {
               .length,
         ),
       ),
-    );
-  }
-}
-
-class _DateFilterDelegate extends SliverPersistentHeaderDelegate {
-  @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return DateFilter();
-  }
-
-  @override
-  double get maxExtent => 56;
-
-  @override
-  double get minExtent => 56;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
-  }
-}
-
-class DateFilter extends StatefulWidget {
-  const DateFilter({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<DateFilter> createState() => _DateFilterState();
-}
-
-class _DateFilterState extends State<DateFilter> {
-  late TransactionsBloc bloc;
-  late DateBloc dateBloc;
-  @override
-  void initState() {
-    bloc = context.read<TransactionsBloc>();
-    dateBloc = context.read<DateBloc>();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<TransactionsBloc, TransactionsState>(
-      builder: (context, state) {
-        return Stack(
-          children: [
-            ClipRRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                child: Container(
-                  color: AppColors.white.withOpacity(0.4),
-                  alignment: Alignment.center,
-                  child: Container(
-                    height: 30,
-                    width: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppColors.primaryColor.withOpacity(0.8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          icon: Icon(
-                            Icons.chevron_left,
-                            color: AppColors.white.withOpacity(0.5),
-                          ),
-                          onPressed: () => dateBloc.add(MonthDecremented()),
-                        ),
-                        BlocListener<DateBloc, DateState>(
-                          listenWhen: (previous, current) =>
-                              previous.date != current.date,
-                          listener: (context, state) {
-                            bloc.add(TxsDateUpdated(date: state.date));
-                          },
-                          child: Text(
-                            DateFormat(
-                              'MMMM - yyyy',
-                              AppLocalizations.of(context)!.localeName,
-                            ).format(state.date),
-                            style: TextStyle(
-                              color: AppColors.white.withOpacity(0.5),
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          icon: Icon(
-                            Icons.chevron_right,
-                            color: AppColors.white.withOpacity(0.5),
-                          ),
-                          onPressed: () => dateBloc.add(MonthIncremented()),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }

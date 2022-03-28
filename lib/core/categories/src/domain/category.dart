@@ -180,7 +180,7 @@ class Category extends CategoryModel {
 
   factory Category.business() => Category(
         id: CategoryId('business'),
-        name: 'Negocio',
+        name: 'Negocios',
         icon: 0xf58f,
         color: CategoryColors.cyan,
         type: CategoryType.income,
@@ -212,7 +212,7 @@ class Category extends CategoryModel {
 
   factory Category.gift() => Category(
         id: CategoryId('gift'),
-        name: 'Regalo',
+        name: 'Regalos',
         icon: 0xf58f,
         color: CategoryColors.teal,
         type: CategoryType.income,

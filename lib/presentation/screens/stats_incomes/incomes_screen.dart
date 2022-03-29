@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../core/stats/stats_bloc.dart';
 import '../../resources/resources.dart';
+import 'components/incomes_by_account.dart';
 import 'components/incomes_by_category.dart';
 import 'components/incomes_by_type.dart';
 

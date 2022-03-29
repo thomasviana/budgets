@@ -493,7 +493,6 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
                     ],
                   ),
                   onExpansionChanged: (value) {
-                    print(value);
                     triggerArrowAnimation(collapsed: value);
                   },
                   children: [

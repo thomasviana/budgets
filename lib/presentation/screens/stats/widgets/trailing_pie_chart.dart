@@ -1,6 +1,7 @@
-import 'package:budgets/presentation/core/stats/stats_bloc.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/stats/stats_bloc.dart';
 
 class TrailingPieChart extends StatefulWidget {
   final List<PieData> data;
@@ -86,7 +87,7 @@ class _TrailingPieChartState extends State<TrailingPieChart>
 
     return PieChart(
       PieChartData(
-        sectionsSpace: 4,
+        sectionsSpace: 2,
         centerSpaceRadius: 15,
         sections: getSections(widget.data),
       ),

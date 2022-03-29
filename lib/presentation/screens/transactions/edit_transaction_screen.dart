@@ -291,7 +291,6 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
                   leading: CircleAvatar(
                     maxRadius: 20,
                     backgroundColor: Color(account.color),
-                    backgroundImage: image,
                     child: Text(
                       state.transaction.incomeType == IncomeType.active
                           ? 'IA'

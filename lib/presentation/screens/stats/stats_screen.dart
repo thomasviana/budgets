@@ -1,12 +1,12 @@
 import 'dart:io' show Platform;
 
-import 'package:budgets/presentation/screens/stats/widgets/stat_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/stats/stats_bloc.dart';
 import '../../resources/resources.dart';
+import 'widgets/stat_card.dart';
 import 'widgets/trailing_pie_chart.dart';
 
 class StatsScreen extends StatefulWidget {

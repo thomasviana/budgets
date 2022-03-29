@@ -1,3 +1,4 @@
+import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
@@ -37,7 +38,7 @@ class IncomesByType extends StatelessWidget {
                   ),
                 ),
                 title: Text('Ingresos Activos'),
-                trailing: Text('\$${currency.format(state.activeIncomes)}'),
+                trailing: Text(state.activeIncomes.toCurrencyFormat()),
               ),
               ListTile(
                 dense: true,
@@ -56,7 +57,7 @@ class IncomesByType extends StatelessWidget {
                   ),
                 ),
                 title: Text('Ingresos Pasivos'),
-                trailing: Text('\$${currency.format(state.pasiveIncomes)}'),
+                trailing: Text(state.pasiveIncomes.toCurrencyFormat()),
               ),
               const Divider(),
               Row(
@@ -69,7 +70,7 @@ class IncomesByType extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '\$${currency.format(state.incomes)}',
+                    state.incomes.toCurrencyFormat(),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),

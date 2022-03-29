@@ -1,3 +1,4 @@
+import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -93,7 +94,7 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
               Text('Ingreso'),
               const SizedBox(height: 8),
               Text(
-                '\$${currency.format(widget.incomeAmount)}',
+                widget.incomeAmount.toCurrencyFormat(),
                 style: TextStyle(
                   color: AppColors.primaryColor,
                   fontSize: 20,
@@ -110,7 +111,7 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                         Text('Administrado'),
                         const SizedBox(height: 8),
                         Text(
-                          '\$${currency.format(state.managedAmount)}',
+                          state.managedAmount!.toCurrencyFormat(),
                           style: TextStyle(
                             color: AppColors.green,
                             fontSize: 20,
@@ -124,7 +125,7 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                         Text('Pendiente'),
                         const SizedBox(height: 8),
                         Text(
-                          '\$${currency.format(state.pendingAmount)}',
+                          state.pendingAmount!.toCurrencyFormat(),
                           style: TextStyle(
                             color: AppColors.amber,
                             fontSize: 20,
@@ -250,7 +251,7 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                             ),
                           ),
                           Text(
-                            '\$${currency.format(state.budgetAmounts![index])}',
+                            state.budgetAmounts![index].toCurrencyFormat(),
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,

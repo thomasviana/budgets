@@ -1,3 +1,4 @@
+import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -76,7 +77,7 @@ class TransactionListTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '\$${currency.format(transaction.amount)}',
+              transaction.amount.toCurrencyFormat(),
               style: TextStyle(
                 color: transaction.isExpense ? AppColors.red : AppColors.green,
               ),
@@ -158,7 +159,7 @@ class LastTransactionsListTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '\$${currency.format(transaction.amount)}',
+            transaction.amount.toCurrencyFormat(),
             style: TextStyle(
               color: transaction.isExpense ? AppColors.red : AppColors.green,
             ),

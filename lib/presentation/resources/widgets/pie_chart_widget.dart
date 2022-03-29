@@ -1,3 +1,4 @@
+import 'package:budgets/common/extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -170,8 +171,8 @@ class PieChartCenterText extends StatelessWidget {
         final String title =
             touchedIndex == -1 ? 'Total' : data[touchedIndex].name;
         final String amount = touchedIndex == -1
-            ? '\$${currency.format(total)}'
-            : '\$${currency.format(data[touchedIndex].amount)}';
+            ? total.toCurrencyFormat()
+            : data[touchedIndex].amount.toCurrencyFormat();
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -218,7 +219,7 @@ class IndicatorsWidget extends StatelessWidget {
             ),
             color: Color(category.color),
           ),
-          trailing: Text('\$${currency.format(category.amount)}'),
+          trailing: Text(category.amount.toCurrencyFormat()),
           onTap: () {},
         );
       },

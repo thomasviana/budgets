@@ -1,6 +1,5 @@
+import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
-
-import '../../../resources/resources.dart';
 
 class StatsCard extends StatelessWidget {
   final String title;
@@ -46,7 +45,7 @@ class StatsCard extends StatelessWidget {
                               .copyWith(fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          '\$ ${currency.format(amount)}',
+                          amount.toCurrencyFormat(),
                           style: Theme.of(context)
                               .textTheme
                               .headline5!

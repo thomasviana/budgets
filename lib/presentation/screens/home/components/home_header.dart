@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -169,7 +170,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                         ),
                       ),
                       Text(
-                        '\$ ${currency.format(state.balance)}',
+                        state.balance.toCurrencyFormat(),
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,

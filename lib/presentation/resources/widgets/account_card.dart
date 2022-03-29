@@ -1,3 +1,4 @@
+import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
 
 import '../resources.dart';
@@ -56,7 +57,7 @@ class AccountCard extends StatelessWidget {
               height: 8,
             ),
             Text(
-              '\$ ${currency.format(amount)}',
+              amount.toCurrencyFormat(),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: AppColors.black.withOpacity(opacity),

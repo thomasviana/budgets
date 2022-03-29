@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:budgets/common/extensions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as f;
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
@@ -242,7 +243,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
                         : AppColors.green,
                   ),
                   focusedBorder: InputBorder.none,
-                  hintText: '\$${currency.format(state.transaction.amount)}',
+                  hintText: state.transaction.amount.toCurrencyFormat(),
                 ),
                 onChanged: (amount) => bloc.add(
                   AmountUpdated(

@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/accounts/application.dart';
@@ -44,7 +45,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _getUserAccounts(
-    SettingsEvent event,
+    GetUserAccounts event,
     Emitter<SettingsState> emit,
   ) async {
     await emit.onEach<Option<List<Account>>>(
@@ -59,7 +60,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _getUserCategories(
-    SettingsEvent event,
+    GetUserCategories event,
     Emitter<SettingsState> emit,
   ) async {
     await emit.onEach<Option<List<Category>>>(
@@ -75,7 +76,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _getUserBudgets(
-    SettingsEvent event,
+    GetUserBudgets event,
     Emitter<SettingsState> emit,
   ) async {
     await emit.onEach<Option<List<Budget>>>(
@@ -90,7 +91,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   Future<void> _onResetFromFactoryRequested(
-    SettingsEvent event,
+    ResetFromFactoryRequested event,
     Emitter<SettingsState> emit,
   ) =>
       resetCategories();

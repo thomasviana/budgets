@@ -45,7 +45,8 @@ class IncomesScreen extends StatelessWidget {
                 delegate: DateFilterDelegate(),
               ),
               IncomesByType(),
-              IncomesByCategroy(),
+              IncomesByCategory(),
+              IncomesByAccount(),
               SliverToBoxAdapter(
                 child: SizedBox(height: 16),
               )

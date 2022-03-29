@@ -6,8 +6,8 @@ import '../../../core/stats/stats_bloc.dart';
 import '../../../resources/resources.dart';
 import '../../../utils/observer.dart';
 
-class IncomesByCategroy extends StatelessWidget {
-  const IncomesByCategroy({
+class IncomesByCategory extends StatelessWidget {
+  const IncomesByCategory({
     Key? key,
   }) : super(key: key);
 

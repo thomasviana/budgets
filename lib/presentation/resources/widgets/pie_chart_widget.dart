@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/stats/stats_bloc.dart';
 import '../../utils/observer.dart';
-import '../constants.dart';
+import '../resources.dart';
 
 class PieChartWidget extends StatefulWidget {
   static const double _defaultRadious = 72;
@@ -77,11 +77,18 @@ class _PieChartWidgetState extends State<PieChartWidget>
           .map<int, PieChartSectionData>((index, data) {
             final isTouched = index == touchedIndex;
             final double radious = isTouched ? 40 : 32;
+            final double fontSize = isTouched ? 12 : 0;
+            final double title =
+                double.parse((data.percent * 100).toStringAsFixed(1));
 
             final value = PieChartSectionData(
               color: Color(data.color),
               value: data.percent,
-              title: '',
+              titleStyle: TextStyle(
+                fontSize: fontSize,
+                color: AppColors.white,
+              ),
+              title: '$title%',
               radius: radious,
             );
             return MapEntry(index, value);

@@ -103,15 +103,13 @@ class StatsState extends MyState {
 
     for (final category in expenseCategories) {
       var spent = 0.0;
-      var total = 0.0;
       for (final transaction in filteredTransactions) {
         final amount = transaction.amount;
         if (transaction.txCategoryId!.value == category.id.value) {
           spent += amount;
         }
-        total += amount;
       }
-      final percent = (spent / total).isNaN ? 0.0 : (spent / total);
+      final percent = (spent / expenses).isNaN ? 0.0 : (spent / expenses);
       list.add(
         PieData(
           name: category.name,
@@ -134,15 +132,13 @@ class StatsState extends MyState {
 
     for (final category in incomeCategories) {
       var spent = 0.0;
-      var total = 0.0;
       for (final transaction in filteredTransactions) {
         final amount = transaction.amount;
         if (transaction.txCategoryId!.value == category.id.value) {
           spent += amount;
         }
-        total += amount;
       }
-      final percent = (spent / total).isNaN ? 0.0 : (spent / total);
+      final percent = (spent / incomes).isNaN ? 0.0 : (spent / incomes);
       list.add(
         PieData(
           name: category.name,
@@ -165,7 +161,6 @@ class StatsState extends MyState {
 
     for (final account in incomeAccounts) {
       var spent = 0.0;
-      var total = 0.0;
       for (final transaction in filteredTransactions) {
         final amount = transaction.amount;
         if ([
@@ -174,9 +169,8 @@ class StatsState extends MyState {
         ].flatten()) {
           spent += amount;
         }
-        total += amount;
       }
-      final percent = (spent / total).isNaN ? 0.0 : (spent / total);
+      final percent = (spent / incomes).isNaN ? 0.0 : (spent / incomes);
       list.add(
         PieData(
           name: account.name,

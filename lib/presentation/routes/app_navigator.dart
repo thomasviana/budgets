@@ -15,6 +15,7 @@ class AppNavigator {
 
   //Stats
   static const ROUTE_INCOMES_PAGE = '/incomes';
+  static const ROUTE_EXPENSES_PAGE = '/expenses';
 
   // Settings
   static const ROUTE_PROFILE_PAGE = '/profile';
@@ -78,6 +79,10 @@ class AppNavigator {
 
   static void navigateToIncomesPage(BuildContext context) {
     Navigator.pushNamed(context, ROUTE_INCOMES_PAGE);
+  }
+
+  static void navigateToExpensesPage(BuildContext context) {
+    Navigator.pushNamed(context, ROUTE_EXPENSES_PAGE);
   }
 
   static void navigateToProfilePage(BuildContext context) {

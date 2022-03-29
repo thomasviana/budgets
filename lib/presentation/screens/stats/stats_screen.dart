@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/stats/stats_bloc.dart';
 import '../../resources/resources.dart';
+import '../../routes/app_navigator.dart';
 import 'widgets/stat_card.dart';
 import 'widgets/trailing_pie_chart.dart';
 
@@ -52,15 +53,13 @@ class _StatsScreenState extends State<StatsScreen> {
                 title: 'INGRESOS',
                 amount: state.incomes,
                 trailing: TrailingPieChart(data: state.incomeCategoriesData),
+                onTap: () => AppNavigator.navigateToIncomesPage(context),
               ),
               StatsCard(
                 title: 'EGRESOS',
                 amount: state.expenses,
-                trailing: Icon(
-                  Icons.donut_large,
-                  size: 50,
-                  color: AppColors.primaryColor,
-                ),
+                trailing: TrailingPieChart(data: state.expenseCategoriesData),
+                onTap: () => AppNavigator.navigateToExpensesPage(context),
               ),
               StatsCard(
                 title: 'FLUJO DE EFECTIVO',
@@ -70,6 +69,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   size: 50,
                   color: AppColors.primaryColor,
                 ),
+                onTap: () => AppNavigator.navigateToExpensesPage(context),
               ),
               StatsCard(
                 title: 'PRESUPUESTOS',
@@ -79,6 +79,7 @@ class _StatsScreenState extends State<StatsScreen> {
                   size: 50,
                   color: AppColors.primaryColor,
                 ),
+                onTap: () => AppNavigator.navigateToExpensesPage(context),
               ),
               SliverToBoxAdapter(
                 child: SizedBox(height: 16),

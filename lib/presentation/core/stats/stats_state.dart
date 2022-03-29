@@ -125,6 +125,66 @@ class StatsState extends MyState {
     );
   }
 
+  List<PieData> get expenseBudgetsData {
+    final list = <PieData>[];
+
+    for (final budget in budgets) {
+      var spent = 0.0;
+      for (final transaction in filteredTransactions) {
+        final amount = transaction.amount;
+        if ([
+          transaction.txBudgetId!.value == budget.id.value,
+          transaction.isExpense
+        ].flatten()) {
+          spent += amount;
+        }
+      }
+      final percent = (spent / expenses).isNaN ? 0.0 : (spent / expenses);
+      list.add(
+        PieData(
+          name: budget.name,
+          amount: spent,
+          percent: percent,
+          icon: 0xe33a,
+          color: budget.color,
+        ),
+      );
+    }
+    return list.sorted(
+      (a, b) => (b.amount).compareTo(a.amount),
+    );
+  }
+
+  List<PieData> get expenseAccountsData {
+    final list = <PieData>[];
+
+    for (final account in accounts) {
+      var spent = 0.0;
+      for (final transaction in filteredTransactions) {
+        final amount = transaction.amount;
+        if ([
+          transaction.txAccountId!.value == account.id.value,
+          transaction.isExpense
+        ].flatten()) {
+          spent += amount;
+        }
+      }
+      final percent = (spent / expenses).isNaN ? 0.0 : (spent / expenses);
+      list.add(
+        PieData(
+          name: account.name,
+          amount: spent,
+          percent: percent,
+          icon: account.icon,
+          color: account.color,
+        ),
+      );
+    }
+    return list.sorted(
+      (a, b) => (b.amount).compareTo(a.amount),
+    );
+  }
+
   List<PieData> get incomeCategoriesData {
     final list = <PieData>[];
     final incomeCategories =
@@ -157,9 +217,7 @@ class StatsState extends MyState {
   List<PieData> get incomeAccountsData {
     final list = <PieData>[];
 
-    final incomeAccounts = accounts;
-
-    for (final account in incomeAccounts) {
+    for (final account in accounts) {
       var spent = 0.0;
       for (final transaction in filteredTransactions) {
         final amount = transaction.amount;

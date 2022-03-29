@@ -78,8 +78,7 @@ class _PieChartWidgetState extends State<PieChartWidget>
             final isTouched = index == touchedIndex;
             final double radious = isTouched ? 40 : 32;
             final double fontSize = isTouched ? 12 : 0;
-            final double title =
-                double.parse((data.percent * 100).toStringAsFixed(1));
+            final int percent = (data.percent * 100).round();
 
             final value = PieChartSectionData(
               color: Color(data.color),
@@ -88,7 +87,7 @@ class _PieChartWidgetState extends State<PieChartWidget>
                 fontSize: fontSize,
                 color: AppColors.white,
               ),
-              title: '$title%',
+              title: '$percent%',
               radius: radious,
             );
             return MapEntry(index, value);

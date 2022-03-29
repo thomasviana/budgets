@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 
 import '../../../resources/resources.dart';
-import '../../../routes/app_navigator.dart';
 
 class StatsCard extends StatelessWidget {
   final String title;
   final double amount;
   final Widget trailing;
+  final VoidCallback onTap;
   const StatsCard({
     Key? key,
     required this.title,
     required this.amount,
     required this.trailing,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: InkWell(
-        onTap: () => AppNavigator.navigateToIncomesPage(context),
+        onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
           child: Card(

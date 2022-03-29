@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:collection/collection.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -7,12 +8,15 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/transactions/domain.dart';
 import '../../../common/extensions.dart';
+import '../../../core/accounts/application.dart';
+import '../../../core/accounts/domain.dart';
 import '../../../core/budgets/application.dart';
 import '../../../core/budgets/domain.dart';
 import '../../../core/categories/application.dart';
 import '../../../core/categories/domain.dart';
 import '../../../core/transactions/application.dart';
 import '../../utils/observer.dart';
+import '../settings/settings_bloc.dart';
 
 part 'stats_event.dart';
 part 'stats_state.dart';
@@ -20,72 +24,120 @@ part 'stats_state.dart';
 @injectable
 class StatsBloc extends Bloc<StatsEvent, StatsState> {
   final GetBudgets _getBudgets;
-  final SetDefaultBudgets _setDefaultBudgets;
   final GetCategories _getCategories;
-  final SetDefaultCategories _setDefaultCategories;
-  final SetDefaultSubCategories _setDefaultSubCategories;
+  final GetAccounts _getAccounts;
   final GetTransactions _getTransactions;
+
   StatsBloc(
     this._getBudgets,
-    this._setDefaultBudgets,
     this._getCategories,
-    this._setDefaultCategories,
-    this._setDefaultSubCategories,
+    this._getAccounts,
     this._getTransactions,
   ) : super(StatsState.initial()) {
-    on<GetUserBudgets>(
-      _onGetUserBudgets,
-      transformer: sequential(),
+    on<BudgetsSuscriptionRequested>(
+      _onBudgetsSuscriptionRequested,
     );
-    on<GetUserCategories>(
-      _onGetUserCategories,
-      transformer: sequential(),
+    on<CategoriesSuscriptionRequested>(
+      _onCategoriesSuscriptionRequested,
+    );
+    on<AccountsSuscriptionRequested>(
+      _onAccountsSuscriptionRequested,
     );
     on<TransactionsSuscriptionRequested>(
       _onTransactionsSuscriptionRequested,
-      transformer: sequential(),
     );
     on<StatsDateUpdated>(_onStatsDateUpdated);
   }
 
-  Future<void> _onGetUserBudgets(
-    GetUserBudgets event,
+  // Future<void> _onUpdateSettings(
+  //   UpdateSettings event,
+  //   Emitter<StatsState> emit,
+  // ) async {
+  //   print(event.settings.accounts[0].name);
+  //   emit(
+  //     state.copyWith(
+  //       accounts: event.settings.accounts,
+  //       categories: event.settings.categories,
+  //       budgets: event.settings.budgets,
+  //       status: Status.success,
+  //     ),
+  //   );
+  //   print(event.settings.accounts[0].name);
+  // }
+
+  Future<void> _onBudgetsSuscriptionRequested(
+    BudgetsSuscriptionRequested event,
     Emitter<StatsState> emit,
   ) async {
     emit(state.copyWith(status: Status.loading));
     await emit.onEach<Option<List<Budget>>>(
       _getBudgets(),
-      onData: (userBudgets) async {
-        userBudgets.fold(
-          () async => _setDefaultBudgets(),
-          (budgets) => emit(
+      onData: (optionBudgets) => optionBudgets.fold(
+        () => emit(
+          state.copyWith(
+            budgets: [],
+            status: Status.failure,
+          ),
+        ),
+        (budgets) {
+          emit(
             state.copyWith(
               budgets: budgets,
               status: Status.success,
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
-  Future<void> _onGetUserCategories(
-    GetUserCategories event,
+  Future<void> _onCategoriesSuscriptionRequested(
+    CategoriesSuscriptionRequested event,
     Emitter<StatsState> emit,
   ) async {
     await emit.onEach<Option<List<Category>>>(
       _getCategories(),
-      onData: (userCategories) async {
-        userCategories.fold(
-          () async => _setDefaultCategories()
-              .then((value) => _setDefaultSubCategories()),
-          (categories) => emit(
+      onData: (optionCategories) => optionCategories.fold(
+        () => emit(
+          state.copyWith(
+            categories: [],
+            status: Status.failure,
+          ),
+        ),
+        (categories) {
+          emit(
             state.copyWith(
               categories: categories,
+              status: Status.success,
             ),
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _onAccountsSuscriptionRequested(
+    AccountsSuscriptionRequested event,
+    Emitter<StatsState> emit,
+  ) async {
+    await emit.onEach<Option<List<Account>>>(
+      _getAccounts(),
+      onData: (optionAccounts) => optionAccounts.fold(
+        () => emit(
+          state.copyWith(
+            accounts: [],
+            status: Status.failure,
           ),
-        );
-      },
+        ),
+        (accounts) {
+          emit(
+            state.copyWith(
+              accounts: accounts,
+              status: Status.success,
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -118,4 +170,10 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
   ) async {
     emit(state.copyWith(date: event.date, status: Status.success));
   }
+
+  // @override
+  // Future<void> close() {
+  //   _settingsBlocSuscription?.cancel();
+  //   return super.close();
+  // }
 }

@@ -1,9 +1,10 @@
 part of 'stats_bloc.dart';
 
-class StatsState extends MyState with EquatableMixin {
+class StatsState extends MyState {
   final DateTime date;
   final List<Budget> budgets;
   final List<Category> categories;
+  final List<Account> accounts;
   final List<Transaction> transactions;
 
   StatsState({
@@ -11,6 +12,7 @@ class StatsState extends MyState with EquatableMixin {
     required this.date,
     required this.budgets,
     required this.categories,
+    required this.accounts,
     required this.transactions,
   }) : super(status: status);
 
@@ -19,6 +21,7 @@ class StatsState extends MyState with EquatableMixin {
         date: DateTime.now(),
         budgets: [],
         categories: [],
+        accounts: [],
         transactions: [],
       );
 
@@ -155,11 +158,46 @@ class StatsState extends MyState with EquatableMixin {
     );
   }
 
+  List<PieData> get incomeAccountsData {
+    final list = <PieData>[];
+
+    final incomeAccounts = accounts;
+
+    for (final account in incomeAccounts) {
+      var spent = 0.0;
+      var total = 0.0;
+      for (final transaction in filteredTransactions) {
+        final amount = transaction.amount;
+        if ([
+          transaction.txAccountId!.value == account.id.value,
+          transaction.isIncome
+        ].flatten()) {
+          spent += amount;
+        }
+        total += amount;
+      }
+      final percent = (spent / total).isNaN ? 0.0 : (spent / total);
+      list.add(
+        PieData(
+          name: account.name,
+          amount: spent,
+          percent: percent,
+          icon: account.icon,
+          color: account.color,
+        ),
+      );
+    }
+    return list.sorted(
+      (a, b) => (b.amount).compareTo(a.amount),
+    );
+  }
+
   StatsState copyWith({
     Status? status,
     DateTime? date,
     List<Budget>? budgets,
     List<Category>? categories,
+    List<Account>? accounts,
     List<Transaction>? transactions,
   }) {
     return StatsState(
@@ -167,12 +205,10 @@ class StatsState extends MyState with EquatableMixin {
       date: date ?? this.date,
       budgets: budgets ?? this.budgets,
       categories: categories ?? this.categories,
+      accounts: accounts ?? this.accounts,
       transactions: transactions ?? this.transactions,
     );
   }
-
-  @override
-  List<Object?> get props => [status, date, budgets, categories, transactions];
 }
 
 class BudgetData {

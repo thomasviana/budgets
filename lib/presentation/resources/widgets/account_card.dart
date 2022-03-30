@@ -1,6 +1,6 @@
-import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/extensions.dart';
 import '../resources.dart';
 
 class AccountCard extends StatelessWidget {

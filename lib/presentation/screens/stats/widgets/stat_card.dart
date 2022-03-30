@@ -1,5 +1,6 @@
-import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../common/extensions.dart';
 
 class StatsCard extends StatelessWidget {
   final String title;

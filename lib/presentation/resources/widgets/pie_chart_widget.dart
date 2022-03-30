@@ -1,7 +1,7 @@
-import 'package:budgets/common/extensions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../../common/extensions.dart';
 import '../../core/stats/stats_bloc.dart';
 import '../../utils/observer.dart';
 import '../resources.dart';

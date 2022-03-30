@@ -1,7 +1,7 @@
-import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../common/extensions.dart';
 import '../../../core/budgets/domain.dart';
 import '../../../core/transactions/domain.dart';
 import '../../resources/resources.dart';

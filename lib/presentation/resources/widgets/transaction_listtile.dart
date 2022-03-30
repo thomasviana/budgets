@@ -1,8 +1,8 @@
-import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
+import '../../../common/extensions.dart';
 import '../../../core/budgets/domain.dart';
 import '../../../core/transactions/domain.dart';
 import '../resources.dart';

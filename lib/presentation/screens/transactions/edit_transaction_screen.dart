@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:budgets/common/extensions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as f;
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +10,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../../common/extensions.dart';
 import '../../../core/transactions/domain.dart';
 import '../../core/settings/settings_bloc.dart';
 import '../../resources/resources.dart';

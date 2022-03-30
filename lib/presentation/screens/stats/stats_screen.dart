@@ -64,12 +64,18 @@ class _StatsScreenState extends State<StatsScreen> {
               StatsCard(
                 title: 'FLUJO DE EFECTIVO',
                 amount: state.balance,
-                trailing: Icon(
-                  Icons.donut_large,
-                  size: 50,
-                  color: AppColors.primaryColor,
-                ),
-                onTap: () => AppNavigator.navigateToExpensesPage(context),
+                trailing: state.balance > 0
+                    ? Icon(
+                        Icons.thumb_up_rounded,
+                        size: 50,
+                        color: AppColors.green,
+                      )
+                    : Icon(
+                        Icons.thumb_down_rounded,
+                        size: 50,
+                        color: AppColors.red.withOpacity(0.7),
+                      ),
+                onTap: () => AppNavigator.navigateToCashFlowPage(context),
               ),
               StatsCard(
                 title: 'PRESUPUESTOS',

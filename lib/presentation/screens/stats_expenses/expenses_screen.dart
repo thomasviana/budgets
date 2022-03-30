@@ -29,7 +29,7 @@ class ExpensesScreen extends StatelessWidget {
               if (Platform.isAndroid)
                 SliverAppBar(
                   title: Text(
-                    'Ingresos',
+                    'Egresos',
                   ),
                   elevation: 0.5,
                   floating: true,

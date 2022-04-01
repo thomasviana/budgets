@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/screens/stats_budgets/budgets_stats_sreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -151,6 +152,21 @@ class AppRouter {
               ),
             ],
             child: CashFlowScreen(),
+          ),
+        );
+      case AppNavigator.ROUTE_BUDGETS_STATS_PAGE:
+        return _buildRoute(
+          settings,
+          MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: _statsBloc,
+              ),
+              BlocProvider.value(
+                value: _transactionsBloc,
+              ),
+            ],
+            child: BudgetsStatsScreen(),
           ),
         );
       case AppNavigator.ROUTE_PROFILE_PAGE:

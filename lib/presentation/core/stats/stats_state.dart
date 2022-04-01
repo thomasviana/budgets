@@ -80,6 +80,7 @@ class StatsState extends MyState {
           budgeted += amount2;
         }
       }
+      final savings = budgeted - spent;
       final percent = spent / budgeted;
       list.add(
         BudgetData(
@@ -87,7 +88,9 @@ class StatsState extends MyState {
           abbreviation: budget.abbreviation,
           spent: spent,
           budgeted: budgeted,
+          savings: savings,
           percent: percent.isNaN ? 0.0 : percent * 100,
+          color: budget.color,
         ),
       );
     }
@@ -96,7 +99,13 @@ class StatsState extends MyState {
     );
   }
 
+  List<BudgetData> get budgetsDataSortedBySavings => budgetsData.sorted(
+        (a, b) => (b.savings).compareTo(a.savings),
+      );
+
   List<PieData> get expenseCategoriesData {
+    if (filteredTransactions.isEmpty) return [];
+
     final list = <PieData>[];
     final expenseCategories =
         categories.where((category) => category.type == CategoryType.expense);
@@ -126,6 +135,8 @@ class StatsState extends MyState {
   }
 
   List<PieData> get expenseBudgetsData {
+    if (filteredTransactions.isEmpty) return [];
+
     final list = <PieData>[];
 
     for (final budget in budgets) {
@@ -156,6 +167,8 @@ class StatsState extends MyState {
   }
 
   List<PieData> get expenseAccountsData {
+    if (filteredTransactions.isEmpty) return [];
+
     final list = <PieData>[];
 
     for (final account in accounts) {
@@ -186,6 +199,8 @@ class StatsState extends MyState {
   }
 
   List<PieData> get incomeCategoriesData {
+    if (filteredTransactions.isEmpty) return [];
+
     final list = <PieData>[];
     final incomeCategories =
         categories.where((category) => category.type == CategoryType.income);
@@ -215,6 +230,8 @@ class StatsState extends MyState {
   }
 
   List<PieData> get incomeAccountsData {
+    if (filteredTransactions.isEmpty) return [];
+
     final list = <PieData>[];
 
     for (final account in accounts) {
@@ -268,13 +285,17 @@ class BudgetData {
   final String? abbreviation;
   final double spent;
   final double budgeted;
+  final double savings;
   final double percent;
+  final int color;
   BudgetData({
     required this.name,
     this.abbreviation,
     required this.spent,
     required this.budgeted,
+    required this.savings,
     required this.percent,
+    required this.color,
   });
 }
 

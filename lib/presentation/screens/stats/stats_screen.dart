@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 
+import 'package:budgets/presentation/screens/stats/widgets/trailing_progress_bars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -80,12 +81,8 @@ class _StatsScreenState extends State<StatsScreen> {
               StatsCard(
                 title: 'PRESUPUESTOS',
                 amount: state.expenses,
-                trailing: Icon(
-                  Icons.donut_large,
-                  size: 50,
-                  color: AppColors.primaryColor,
-                ),
-                onTap: () => AppNavigator.navigateToExpensesPage(context),
+                trailing: TrailingProgressBars(data: state.budgetsData),
+                onTap: () => AppNavigator.navigateToBudgetsStatsPage(context),
               ),
               SliverToBoxAdapter(
                 child: SizedBox(height: 16),

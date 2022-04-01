@@ -346,7 +346,7 @@ class SubCategory extends CategoryModel {
   factory SubCategory.travels() => SubCategory(
         id: CategoryId('travels'),
         name: 'Viajes',
-        icon: 0xe23e,
+        icon: 0xf54c,
         color: CategoryColors.purple,
         categoryId: CategoryId('recreation'),
       );

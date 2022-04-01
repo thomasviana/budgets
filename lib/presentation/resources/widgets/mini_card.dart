@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import '../../../common/extensions.dart';
 import '../resources.dart';
 
-class AccountCard extends StatelessWidget {
+class MiniCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final double amount;
   final double opacity;
 
-  const AccountCard({
+  const MiniCard({
     Key? key,
     required this.icon,
     required this.title,

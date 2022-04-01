@@ -242,14 +242,14 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AccountCard(
-                        icon: Icons.account_balance_wallet_outlined,
+                      MiniCard(
+                        icon: Icons.arrow_downward_rounded,
                         title: 'INGRESOS',
                         amount: state.incomes,
                         opacity: widget.opacity,
                       ),
-                      AccountCard(
-                        icon: Icons.account_balance_wallet_outlined,
+                      MiniCard(
+                        icon: Icons.arrow_upward_rounded,
                         title: 'EGRESOS',
                         amount: state.expenses,
                         opacity: widget.opacity,

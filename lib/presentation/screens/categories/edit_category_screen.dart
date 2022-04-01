@@ -58,6 +58,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 child: Icon(
                   CupertinoIcons.checkmark_alt_circle,
                   color: AppColors.primaryColor,
+                  size: 24,
                 ),
                 onTap: () {
                   bloc.add(CategorySaved());

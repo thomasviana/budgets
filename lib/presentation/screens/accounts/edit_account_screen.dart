@@ -65,6 +65,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       child: Icon(
                         CupertinoIcons.trash_circle,
                         color: AppColors.red,
+                        size: 24,
                       ),
                       onTap: () {
                         bloc.add(AccountDeleted());
@@ -76,6 +77,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     child: Icon(
                       CupertinoIcons.checkmark_circle,
                       color: AppColors.primaryColor,
+                      size: 24,
                     ),
                     onTap: () {
                       if (state.account!.name.isEmpty) return;

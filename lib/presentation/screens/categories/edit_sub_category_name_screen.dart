@@ -48,6 +48,7 @@ class _EditSubCategoryNameScreenState extends State<EditSubCategoryNameScreen> {
             child: Icon(
               CupertinoIcons.checkmark_circle,
               color: AppColors.primaryColor,
+              size: 24,
             ),
             onTap: () {
               context

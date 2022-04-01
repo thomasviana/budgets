@@ -54,6 +54,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                     child: Icon(
                       CupertinoIcons.trash_circle,
                       color: AppColors.red,
+                      size: 24,
                     ),
                     onTap: () {
                       bloc.add(SubCategoryDeleted());
@@ -65,6 +66,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
                     child: Icon(
                       CupertinoIcons.checkmark_circle,
                       color: AppColors.primaryColor,
+                      size: 24,
                     ),
                     onTap: () {
                       bloc.add(SubCategorySaved());

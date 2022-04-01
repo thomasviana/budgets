@@ -49,6 +49,7 @@ class _EditBudgetAbbreviationScreenState
             child: Icon(
               CupertinoIcons.checkmark_circle,
               color: AppColors.primaryColor,
+              size: 24,
             ),
             onTap: () {
               context

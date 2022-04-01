@@ -66,6 +66,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                       child: Icon(
                         CupertinoIcons.trash_circle,
                         color: AppColors.red,
+                        size: 24,
                       ),
                       onTap: () {
                         bloc.add(BudgetDeleted());
@@ -77,6 +78,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                     child: Icon(
                       CupertinoIcons.checkmark_circle,
                       color: AppColors.primaryColor,
+                      size: 24,
                     ),
                     onTap: () {
                       if (state.budget!.name.isEmpty) return;

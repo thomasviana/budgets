@@ -27,6 +27,7 @@ class BudgetsScreen extends StatelessWidget {
                 child: const Icon(
                   CupertinoIcons.add,
                   color: AppColors.primaryColor,
+                  size: 24,
                 ),
                 onTap: () => AppNavigator.navigateToEditBudgetPage(context),
               ),

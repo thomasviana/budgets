@@ -10,7 +10,7 @@ extension Flatten on Iterable<bool> {
 extension MyCurrencyFormat on num {
   static final _currencyWithPrefixSignAndSymbol =
       NumberFormat(' \$ #,##0;- \$ #,##0');
-  static final _currencyZero = NumberFormat('#,##0', 'en_US');
+  static final _currencyZero = NumberFormat('\$ #,##0', 'en_US');
 
   String toCurrencyFormat() {
     return this == 0

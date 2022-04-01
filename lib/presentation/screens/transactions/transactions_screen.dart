@@ -11,6 +11,7 @@ import '../../core/settings/settings_bloc.dart';
 import '../../core/transactions/transactions_bloc.dart';
 import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
+import '../../utils/observer.dart';
 
 class TransactionsScreen extends StatefulWidget {
   @override
@@ -62,7 +63,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
           .toList();
     }
 
-    if (state.isLoading) {
+    if (state.status == Status.loading) {
       return Center(
         child: CircularProgressIndicator(),
       );
@@ -91,7 +92,9 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
             pinned: true,
             delegate: DateFilterDelegate(),
           ),
-          if (state.filteredTransactions.isEmpty)
+          if (state.filteredTransactions.isNotEmpty)
+            ..._sliverListTransactions(),
+          if (state.status == Status.failure)
             SliverToBoxAdapter(
               child: Center(
                 child: Padding(
@@ -109,8 +112,6 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
                 ),
               ),
             ),
-          if (state.filteredTransactions.isNotEmpty)
-            ..._sliverListTransactions(),
         ],
       );
     }

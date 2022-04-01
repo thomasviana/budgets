@@ -1,15 +1,14 @@
 part of 'transactions_bloc.dart';
 
-class TransactionsState {
-  final bool isLoading;
+class TransactionsState extends MyState {
   List<Transaction> transactions;
   DateTime date;
 
   TransactionsState({
-    required this.isLoading,
+    required Status status,
     required this.transactions,
     required this.date,
-  });
+  }) : super(status: status);
 
   List<Transaction> get filteredTransactions {
     final filteredTransactions = transactions
@@ -27,18 +26,18 @@ class TransactionsState {
     ..sort(((a, b) => b.day.compareTo(a.day)));
 
   factory TransactionsState.initial() => TransactionsState(
-        isLoading: true,
+        status: Status.initial,
         transactions: [],
         date: DateTime.now(),
       );
 
   TransactionsState copyWith({
-    bool? isLoading,
+    Status? status,
     List<Transaction>? transactions,
     DateTime? date,
   }) {
     return TransactionsState(
-      isLoading: isLoading ?? this.isLoading,
+      status: status ?? this.status,
       transactions: transactions ?? this.transactions,
       date: date ?? this.date,
     );

@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/transactions/application.dart';
 import '../../../../core/transactions/domain.dart';
+import '../../utils/observer.dart';
 
 part 'transactions_event.dart';
 part 'transactions_state.dart';
@@ -16,30 +17,40 @@ class TransactionsBloc extends Bloc<TransactionEvent, TransactionsState> {
     this.getTransactions,
     this.deleteTransaction,
   ) : super(TransactionsState.initial()) {
-    on<TransactionsRequested>((event, emit) async {
-      await emit.onEach<Option<List<Transaction>>>(
-        getTransactions(),
-        onData: (optionTransactions) => optionTransactions.fold(
-          () => emit(
-            state.copyWith(
-              transactions: [],
-              isLoading: false,
-            ),
-          ),
-          (transactions) => emit(
-            state.copyWith(
-              transactions: transactions,
-              isLoading: false,
-            ),
+    on<TransactionsRequested>(_onTransactionsRequested);
+    on<TransactionDeleted>(_onTransactionDeleted);
+    on<TxsDateUpdated>(_onTxsDateUpdated);
+  }
+
+  Future<void> _onTransactionsRequested(
+    TransactionsRequested event,
+    Emitter emit,
+  ) async {
+    await emit.onEach<Option<List<Transaction>>>(
+      getTransactions(),
+      onData: (optionTransactions) => optionTransactions.fold(
+        () => emit(
+          state.copyWith(
+            transactions: [],
+            status: Status.failure,
           ),
         ),
-      );
-    });
-
-    on<TransactionDeleted>(
-      (event, emit) async => deleteTransaction(event.transactionId),
+        (transactions) => emit(
+          state.copyWith(
+            transactions: transactions,
+            status: Status.success,
+          ),
+        ),
+      ),
     );
-
-    on<TxsDateUpdated>((event, emit) => emit(state.copyWith(date: event.date)));
   }
+
+  Future<void> _onTransactionDeleted(
+    TransactionDeleted event,
+    Emitter emit,
+  ) =>
+      deleteTransaction(event.transactionId);
+
+  Future<void> _onTxsDateUpdated(TxsDateUpdated event, Emitter emit) async =>
+      emit(state.copyWith(date: event.date));
 }

@@ -9,6 +9,7 @@ import '../../../core/settings/settings_bloc.dart';
 import '../../../core/transactions/transactions_bloc.dart';
 import '../../../resources/resources.dart';
 import '../../../routes/app_navigator.dart';
+import '../../../utils/observer.dart';
 import '../../main/main_app_cubit/main_screen_cubit.dart';
 
 class LastRecordsWidget extends StatelessWidget {
@@ -27,51 +28,45 @@ class LastRecordsWidget extends StatelessWidget {
       actionTitle: 'Ver todas',
       onActionPressed: () =>
           context.read<MainScreenCubit>().onSelectedPageIndexChanged(2),
-      content: BlocBuilder<TransactionsBloc, TransactionsState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state.filteredTransactions.isEmpty) {
-            final dateString = DateFormat(
-              'MMMM - yyyy',
-              AppLocalizations.of(context)!.localeName,
-            ).format(state.date);
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'No hay transacciones en $dateString',
-                style: TextStyle(color: AppColors.greyDisabled),
-              ),
-            );
-          } else {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    final transaction = state.filteredTransactions[index];
-                    return LastTransactionsListTile(
+      content: Observer<TransactionsBloc, TransactionsState>(
+        onSuccess: (context, state) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final transaction = state.filteredTransactions[index];
+                  return LastTransactionsListTile(
+                    transaction: transaction,
+                    budget: _getBudget(transaction.txBudgetId),
+                    onPressed: () => AppNavigator.navigateToEditTransactionPage(
+                      context,
                       transaction: transaction,
-                      budget: _getBudget(transaction.txBudgetId),
-                      onPressed: () =>
-                          AppNavigator.navigateToEditTransactionPage(
-                        context,
-                        transaction: transaction,
-                      ),
-                    );
-                  },
-                  itemCount: state.filteredTransactions.length < 4
-                      ? state.filteredTransactions.length
-                      : 4,
-                ),
-              ],
-            );
-          }
+                    ),
+                  );
+                },
+                itemCount: state.filteredTransactions.length < 4
+                    ? state.filteredTransactions.length
+                    : 4,
+              ),
+            ],
+          );
+        },
+        onFailure: (context, state) {
+          final dateString = DateFormat(
+            'MMMM - yyyy',
+            AppLocalizations.of(context)!.localeName,
+          ).format(state.date);
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'No hay transacciones en $dateString',
+              style: TextStyle(color: AppColors.greyDisabled),
+            ),
+          );
         },
       ),
     );

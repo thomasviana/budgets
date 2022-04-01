@@ -34,19 +34,13 @@ class ExpensesScreen extends StatelessWidget {
                   elevation: 0.5,
                   floating: true,
                   pinned: true,
-                  actions: [
-                    IconButton(
-                      icon: Icon(Icons.sort),
-                      onPressed: () {},
-                    ),
-                  ],
                 ),
               SliverPersistentHeader(
                 pinned: true,
                 delegate: DateFilterDelegate(),
               ),
-              ExpensesByBudget(),
               ExpensesByCategory(),
+              ExpensesByBudget(),
               ExpensesByAccount(),
               SliverToBoxAdapter(
                 child: SizedBox(height: 16),

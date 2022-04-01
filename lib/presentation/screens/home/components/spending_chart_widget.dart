@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/stats/stats_bloc.dart';
 import '../../../resources/resources.dart';
+import '../../../routes/app_navigator.dart';
 import '../../../utils/observer.dart';
 
 class SpendingChart extends StatefulWidget {
@@ -17,7 +18,7 @@ class _SpendingChartState extends State<SpendingChart> {
     return WidgetCard(
       title: 'Gastos por categoría',
       actionTitle: 'Ver mas',
-      onActionPressed: () {},
+      onActionPressed: () => AppNavigator.navigateToExpensesPage(context),
       content: Observer<StatsBloc, StatsState>(
         onSuccess: (context, state) {
           return PieChartWidget(

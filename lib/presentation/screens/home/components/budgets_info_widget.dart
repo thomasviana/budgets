@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../../common/extensions.dart';
 import '../../../core/stats/stats_bloc.dart';
 import '../../../resources/resources.dart';
+import '../../../routes/app_navigator.dart';
 import '../../../utils/observer.dart';
 
 class BudgetsInfoWidget extends StatelessWidget {
@@ -15,7 +16,7 @@ class BudgetsInfoWidget extends StatelessWidget {
     return WidgetCard(
       title: 'Presupuestos',
       actionTitle: 'Ver mas',
-      onActionPressed: () {},
+      onActionPressed: () => AppNavigator.navigateToBudgetsStatsPage(context),
       content: Column(
         children: [
           Observer<StatsBloc, StatsState>(
@@ -23,6 +24,26 @@ class BudgetsInfoWidget extends StatelessWidget {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'PRESUPUESTO',
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        'GASTADO / PRESUPUESTADO',
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),

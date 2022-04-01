@@ -53,53 +53,58 @@ class DateFilterView extends StatelessWidget {
                 child: Container(
                   color: AppColors.white.withOpacity(0.4),
                   alignment: Alignment.center,
-                  child: Container(
-                    height: 30,
-                    width: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: AppColors.primaryColor.withOpacity(0.8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          icon: Icon(
-                            Icons.chevron_left,
-                            color: AppColors.white.withOpacity(0.5),
-                          ),
-                          onPressed: () =>
-                              context.read<DateBloc>().add(MonthDecremented()),
-                        ),
-                        BlocListener<DateBloc, DateState>(
-                          listenWhen: (previous, current) =>
-                              previous.date != current.date,
-                          listener: (context, state) {
-                            context
-                                .read<TransactionsBloc>()
-                                .add(TxsDateUpdated(date: state.date));
-                          },
-                          child: Text(
-                            DateFormat(
-                              'MMMM - yyyy',
-                              AppLocalizations.of(context)!.localeName,
-                            ).format(state.date),
-                            style: TextStyle(
+                  child: FittedBox(
+                    fit: BoxFit.fitWidth,
+                    child: Container(
+                      height: 30,
+                      constraints: BoxConstraints(minWidth: 200),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.primaryColor.withOpacity(0.8),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            icon: Icon(
+                              Icons.chevron_left,
                               color: AppColors.white.withOpacity(0.5),
                             ),
+                            onPressed: () => context
+                                .read<DateBloc>()
+                                .add(MonthDecremented()),
                           ),
-                        ),
-                        IconButton(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          icon: Icon(
-                            Icons.chevron_right,
-                            color: AppColors.white.withOpacity(0.5),
+                          BlocListener<DateBloc, DateState>(
+                            listenWhen: (previous, current) =>
+                                previous.date != current.date,
+                            listener: (context, state) {
+                              context
+                                  .read<TransactionsBloc>()
+                                  .add(TxsDateUpdated(date: state.date));
+                            },
+                            child: Text(
+                              DateFormat(
+                                'MMMM - yyyy',
+                                AppLocalizations.of(context)!.localeName,
+                              ).format(state.date),
+                              style: TextStyle(
+                                color: AppColors.white.withOpacity(0.5),
+                              ),
+                            ),
                           ),
-                          onPressed: () =>
-                              context.read<DateBloc>().add(MonthIncremented()),
-                        ),
-                      ],
+                          IconButton(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            icon: Icon(
+                              Icons.chevron_right,
+                              color: AppColors.white.withOpacity(0.5),
+                            ),
+                            onPressed: () => context
+                                .read<DateBloc>()
+                                .add(MonthIncremented()),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

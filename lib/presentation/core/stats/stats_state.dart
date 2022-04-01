@@ -104,7 +104,7 @@ class StatsState extends MyState {
       );
 
   List<PieData> get expenseCategoriesData {
-    if (filteredTransactions.isEmpty) return [];
+    if (expenses == 0) return [];
 
     final list = <PieData>[];
     final expenseCategories =
@@ -135,7 +135,7 @@ class StatsState extends MyState {
   }
 
   List<PieData> get expenseBudgetsData {
-    if (filteredTransactions.isEmpty) return [];
+    if (expenses == 0) return [];
 
     final list = <PieData>[];
 
@@ -167,7 +167,7 @@ class StatsState extends MyState {
   }
 
   List<PieData> get expenseAccountsData {
-    if (filteredTransactions.isEmpty) return [];
+    if (expenses == 0) return [];
 
     final list = <PieData>[];
 
@@ -199,7 +199,7 @@ class StatsState extends MyState {
   }
 
   List<PieData> get incomeCategoriesData {
-    if (filteredTransactions.isEmpty) return [];
+    if (incomes == 0) return [];
 
     final list = <PieData>[];
     final incomeCategories =
@@ -230,7 +230,7 @@ class StatsState extends MyState {
   }
 
   List<PieData> get incomeAccountsData {
-    if (filteredTransactions.isEmpty) return [];
+    if (incomes == 0) return [];
 
     final list = <PieData>[];
 

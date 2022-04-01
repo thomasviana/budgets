@@ -1,8 +1,8 @@
-import 'package:budgets/presentation/resources/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/stats/stats_bloc.dart';
+import '../../../resources/colors.dart';
 
 class TrailingPieChart extends StatefulWidget {
   final List<PieData> data;
@@ -49,7 +49,6 @@ class _TrailingPieChartState extends State<TrailingPieChart>
   @override
   void didUpdateWidget(TrailingPieChart old) {
     triggerAnimation();
-
     super.didUpdateWidget(old);
   }
 

@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart' as f;
@@ -35,6 +36,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
   late f.Timestamp dateTime;
   late Animation<double> _animation;
   late AnimationController _animationController;
+  late ScrollController _scrollController;
 
   late double dateArrowTransform = 0;
   @override
@@ -66,12 +68,24 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
               dateArrowTransform = _animation.value;
             });
           });
+    _scrollController = ScrollController();
     super.initState();
   }
 
   void triggerArrowAnimation({bool collapsed = false}) {
     if (collapsed) _animationController.forward();
     if (!collapsed) _animationController.reverse();
+  }
+
+  Future<void> scrollDown({bool collapsed = false}) async {
+    await Future.delayed(Duration(milliseconds: 300));
+    final double end = _scrollController.position.maxScrollExtent;
+    if (collapsed)
+      _scrollController.animateTo(
+        end,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.linear,
+      );
   }
 
   @override
@@ -163,159 +177,129 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
         }
       }
 
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Transaction',
+      return GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Transaction',
+            ),
+            leading: IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                _showCancelOptions(
+                  context,
+                  onDiscardPressed: () => AppNavigator.navigateBack(context),
+                );
+              },
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  child: Text(
+                    'Guardar',
+                    style: TextStyle(
+                      color: state.isSaveEnabled
+                          ? Platform.isIOS
+                              ? AppColors.primaryColor
+                              : AppColors.white
+                          : AppColors.greyDisabled,
+                    ),
+                  ),
+                  onPressed: state.isSaveEnabled
+                      ? () {
+                          bloc.add(
+                            TransactionSaved(
+                              amount: state.transaction.amount,
+                              date: dateTime.toDate(),
+                            ),
+                          );
+                          AppNavigator.navigateBack(context);
+                        }
+                      : null,
+                ),
+              ),
+            ],
           ),
-          leading: IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () {
-              _showCancelOptions(
-                context,
-                onDiscardPressed: () => AppNavigator.navigateBack(context),
-              );
-            },
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextButton(
-                child: Text(
-                  'Guardar',
-                  style: TextStyle(
-                    color: state.isSaveEnabled
-                        ? AppColors.primaryColor
-                        : AppColors.greyDisabled,
+          body: Container(
+            color: AppColors.white,
+            child: ListView(
+              controller: _scrollController,
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              children: [
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: CupertinoSlidingSegmentedControl(
+                    children: const {
+                      0: Text('Egreso'),
+                      1: Text('Ingreso'),
+                    },
+                    onValueChanged: (int? index) =>
+                        bloc.add(TransactionTypeChanged(index: index)),
+                    groupValue: state.transaction.transactionType.index,
                   ),
                 ),
-                onPressed: state.isSaveEnabled
-                    ? () {
-                        bloc.add(
-                          TransactionSaved(
-                            amount: state.transaction.amount,
-                            date: dateTime.toDate(),
-                          ),
-                        );
-                        AppNavigator.navigateBack(context);
-                      }
-                    : null,
-              ),
-            ),
-          ],
-        ),
-        body: Container(
-          color: AppColors.white,
-          child: ListView(
-            children: [
-              SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: CupertinoSlidingSegmentedControl(
-                  children: const {
-                    0: Text('Egreso'),
-                    1: Text('Ingreso'),
-                  },
-                  onValueChanged: (int? index) =>
-                      bloc.add(TransactionTypeChanged(index: index)),
-                  groupValue: state.transaction.transactionType.index,
-                ),
-              ),
-              const SizedBox(height: 25),
-              TextField(
-                inputFormatters: [formatter],
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                autofocus: true,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: state.transaction.isExpense
-                      ? AppColors.red
-                      : AppColors.green,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                ),
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(height: 25),
+                TextField(
+                  inputFormatters: [formatter],
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  autofocus: true,
+                  textAlign: TextAlign.center,
+                  cursorColor: AppColors.greyDisabled,
+                  style: TextStyle(
                     color: state.transaction.isExpense
                         ? AppColors.red
                         : AppColors.green,
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
                   ),
-                  focusedBorder: InputBorder.none,
-                  hintText: state.transaction.amount.toCurrencyFormat(),
-                ),
-                onChanged: (amount) => bloc.add(
-                  AmountUpdated(
-                    amount: amount.isEmpty
-                        ? 0.0
-                        : double.parse(
-                            amount.replaceAll(RegExp(r'[^\w\s]+'), ''),
-                          ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Divider(height: 2),
-              ListTile(
-                leading: CircleAvatar(
-                  maxRadius: 20,
-                  backgroundColor: Color(account.color),
-                  backgroundImage: image,
-                  child: isImageAvailable ? null : accountIcon,
-                ),
-                minLeadingWidth: 2,
-                title: Text('Cuenta'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      account.name,
-                      style: TextStyle(color: AppColors.greySecondary),
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: state.transaction.isExpense
+                          ? AppColors.red
+                          : AppColors.green,
                     ),
-                    SizedBox(width: 10),
-                    const Icon(CupertinoIcons.forward)
-                  ],
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    hintText: state.transaction.amount.toCurrencyFormat(),
+                  ),
+                  onChanged: (amount) => bloc.add(
+                    AmountUpdated(
+                      amount: amount.isEmpty
+                          ? 0.0
+                          : double.parse(
+                              amount.replaceAll(RegExp(r'[^\w\s]+'), ''),
+                            ),
+                    ),
+                  ),
                 ),
-                onTap: () {
-                  AppNavigator.navigateToSelectAccountPage(
-                    context,
-                    settingsBloc.state.accounts,
-                  );
-                },
-              ),
-              if (state.transaction.isIncome) ...[
+                SizedBox(
+                  height: 20,
+                ),
                 Divider(height: 2),
                 ListTile(
                   leading: CircleAvatar(
                     maxRadius: 20,
                     backgroundColor: Color(account.color),
-                    child: Text(
-                      state.transaction.incomeType == IncomeType.active
-                          ? 'IA'
-                          : 'IP',
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
+                    backgroundImage: image,
+                    child: isImageAvailable ? null : accountIcon,
                   ),
                   minLeadingWidth: 2,
-                  title: Text('Tipo'),
-                  trailing: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: CupertinoSlidingSegmentedControl(
-                      children: const {
-                        0: Text('Activo'),
-                        1: Text('Pasivo'),
-                      },
-                      onValueChanged: (int? index) =>
-                          bloc.add(IncomeTypeChanged(index: index)),
-                      groupValue: state.transaction.incomeType!.index,
-                    ),
+                  title: Text('Cuenta'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        account.name,
+                        style: TextStyle(color: AppColors.greySecondary),
+                      ),
+                      SizedBox(width: 10),
+                      const Icon(CupertinoIcons.forward)
+                    ],
                   ),
                   onTap: () {
                     AppNavigator.navigateToSelectAccountPage(
@@ -324,74 +308,177 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
                     );
                   },
                 ),
-              ],
-              Divider(height: 2),
-              ListTile(
-                leading: state.subCategory.fold(
-                  () => CircleAvatar(
-                    maxRadius: 20,
-                    child: Text(
-                      '?',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
+                if (state.transaction.isIncome) ...[
+                  Divider(height: 2),
+                  ListTile(
+                    leading: CircleAvatar(
+                      maxRadius: 20,
+                      backgroundColor: Color(account.color),
+                      child: Text(
+                        state.transaction.incomeType == IncomeType.active
+                            ? 'IA'
+                            : 'IP',
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                    minLeadingWidth: 2,
+                    title: Text('Tipo'),
+                    trailing: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: CupertinoSlidingSegmentedControl(
+                        children: const {
+                          0: Text('Activo'),
+                          1: Text('Pasivo'),
+                        },
+                        onValueChanged: (int? index) =>
+                            bloc.add(IncomeTypeChanged(index: index)),
+                        groupValue: state.transaction.incomeType!.index,
+                      ),
+                    ),
+                    onTap: () {
+                      AppNavigator.navigateToSelectAccountPage(
+                        context,
+                        settingsBloc.state.accounts,
+                      );
+                    },
+                  ),
+                ],
+                Divider(height: 2),
+                ListTile(
+                  leading: state.subCategory.fold(
+                    () => CircleAvatar(
+                      maxRadius: 20,
+                      child: Text(
+                        '?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: AppColors.white,
+                        ),
+                      ),
+                      backgroundColor: AppColors.greyDisabled,
+                    ),
+                    (subCategory) => ListTileLeadingIcon(
+                      icon: subCategory.icon,
+                      color: subCategory.color,
+                    ),
+                  ),
+                  title: Text('Categoría'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      state.subCategory.fold(
+                        () => Text(
+                          'Requerido',
+                          style: TextStyle(color: AppColors.red),
+                        ),
+                        (subCategory) => Text(
+                          subCategory.name,
+                          style: TextStyle(color: AppColors.greySecondary),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      const Icon(CupertinoIcons.forward)
+                    ],
+                  ),
+                  onTap: () =>
+                      AppNavigator.navigateToSelectCategoryPage(context),
+                ),
+                Divider(height: 2),
+                if (state.transaction.isExpense)
+                  ListTile(
+                    leading: CircleAvatar(
+                      maxRadius: 20,
+                      backgroundColor: Color(budget.color),
+                      child: hasAbbreviation
+                          ? Text(
+                              budget.abbreviation!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.white,
+                              ),
+                            )
+                          : Icon(
+                              Icons.inbox,
+                              color: AppColors.white,
+                            ),
+                    ),
+                    minLeadingWidth: 2,
+                    title: Text('Presupuesto'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          budget.name,
+                          style: TextStyle(color: AppColors.greySecondary),
+                        ),
+                        SizedBox(width: 10),
+                        const Icon(CupertinoIcons.forward)
+                      ],
+                    ),
+                    onTap: () {
+                      AppNavigator.navigateToSelectBudgetPage(
+                        context,
+                        budgets: settingsBloc.state.budgets,
+                      );
+                    },
+                  ),
+                if (state.transaction.isIncome)
+                  ListTile(
+                    leading: CircleAvatar(
+                      maxRadius: 20,
+                      backgroundColor: Color(budget.color),
+                      child: Icon(
+                        Icons.all_inbox_rounded,
                         color: AppColors.white,
                       ),
                     ),
-                    backgroundColor: AppColors.greyDisabled,
-                  ),
-                  (subCategory) => ListTileLeadingIcon(
-                    icon: subCategory.icon,
-                    color: subCategory.color,
-                  ),
-                ),
-                title: Text('Categoría'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    state.subCategory.fold(
-                      () => Text(
-                        'Requerido',
-                        style: TextStyle(color: AppColors.red),
-                      ),
-                      (subCategory) => Text(
-                        subCategory.name,
-                        style: TextStyle(color: AppColors.greySecondary),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    const Icon(CupertinoIcons.forward)
-                  ],
-                ),
-                onTap: () => AppNavigator.navigateToSelectCategoryPage(context),
-              ),
-              Divider(height: 2),
-              if (state.transaction.isExpense)
-                ListTile(
-                  leading: CircleAvatar(
-                    maxRadius: 20,
-                    backgroundColor: Color(budget.color),
-                    child: hasAbbreviation
-                        ? Text(
-                            budget.abbreviation!,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.white,
-                            ),
+                    minLeadingWidth: 2,
+                    title: Text('Administrar'),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (state.transaction.isIncomeManaged)
+                          Text(
+                            'Hecho',
+                            style: TextStyle(color: AppColors.green),
                           )
-                        : Icon(
-                            Icons.inbox,
-                            color: AppColors.white,
+                        else
+                          Text(
+                            'Requerido',
+                            style: TextStyle(color: AppColors.red),
                           ),
+                        SizedBox(width: 10),
+                        const Icon(CupertinoIcons.forward)
+                      ],
+                    ),
+                    onTap: state.transaction.isIncomeManaged ||
+                            state.transaction.amount == 0
+                        ? () {}
+                        : () => AppNavigator.navigateToManageIncomePage(
+                              context,
+                              arguments: [
+                                state.transaction.id,
+                                settingsBloc.state.budgets,
+                                state.transaction.amount
+                              ],
+                            ),
                   ),
+                Divider(height: 2),
+                ListTile(
+                  leading: Icon(Icons.drive_file_rename_outline_outlined),
                   minLeadingWidth: 2,
-                  title: Text('Presupuesto'),
+                  title: Text('Nota'),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        budget.name,
+                        state.transaction.note ?? '',
                         style: TextStyle(color: AppColors.greySecondary),
                       ),
                       SizedBox(width: 10),
@@ -399,110 +486,49 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
                     ],
                   ),
                   onTap: () {
-                    AppNavigator.navigateToSelectBudgetPage(
+                    AppNavigator.navigateToEditNotePage(
                       context,
-                      budgets: settingsBloc.state.budgets,
+                      content: state.transaction.note,
                     );
                   },
                 ),
-              if (state.transaction.isIncome)
-                ListTile(
-                  leading: CircleAvatar(
-                    maxRadius: 20,
-                    backgroundColor: Color(budget.color),
-                    child: Icon(
-                      Icons.all_inbox_rounded,
-                      color: AppColors.white,
+                Divider(height: 2),
+                Theme(
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    leading: Icon(Icons.calendar_today_rounded),
+                    title: Transform.translate(
+                      offset: Offset(-20, 0),
+                      child: Text('Fecha'),
                     ),
-                  ),
-                  minLeadingWidth: 2,
-                  title: Text('Administrar'),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (state.transaction.isIncomeManaged)
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
                         Text(
-                          'Hecho',
-                          style: TextStyle(color: AppColors.green),
-                        )
-                      else
-                        Text(
-                          'Requerido',
-                          style: TextStyle(color: AppColors.red),
+                          getFormattedDate(dateTime.toDate()),
+                          style: TextStyle(color: AppColors.greySecondary),
                         ),
-                      SizedBox(width: 10),
-                      const Icon(CupertinoIcons.forward)
-                    ],
-                  ),
-                  onTap: state.transaction.isIncomeManaged ||
-                          state.transaction.amount == 0
-                      ? () {}
-                      : () => AppNavigator.navigateToManageIncomePage(
-                            context,
-                            arguments: [
-                              state.transaction.id,
-                              settingsBloc.state.budgets,
-                              state.transaction.amount
-                            ],
-                          ),
-                ),
-              Divider(height: 2),
-              ListTile(
-                leading: Icon(Icons.drive_file_rename_outline_outlined),
-                minLeadingWidth: 2,
-                title: Text('Nota'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      state.transaction.note ?? '',
-                      style: TextStyle(color: AppColors.greySecondary),
+                        SizedBox(width: 10),
+                        Transform.rotate(
+                          angle: dateArrowTransform,
+                          child: Icon(CupertinoIcons.forward),
+                        )
+                      ],
                     ),
-                    SizedBox(width: 10),
-                    const Icon(CupertinoIcons.forward)
-                  ],
-                ),
-                onTap: () {
-                  AppNavigator.navigateToEditNotePage(
-                    context,
-                    content: state.transaction.note,
-                  );
-                },
-              ),
-              Divider(height: 2),
-              Theme(
-                data: Theme.of(context)
-                    .copyWith(dividerColor: Colors.transparent),
-                child: ExpansionTile(
-                  leading: Icon(Icons.calendar_today_rounded),
-                  title: Transform.translate(
-                    offset: Offset(-20, 0),
-                    child: Text('Fecha'),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
+                    onExpansionChanged: (value) {
+                      triggerArrowAnimation(collapsed: value);
+                      FocusScope.of(context).unfocus();
+                      scrollDown(collapsed: value);
+                    },
                     children: [
-                      Text(
-                        getFormattedDate(dateTime.toDate()),
-                        style: TextStyle(color: AppColors.greySecondary),
-                      ),
-                      SizedBox(width: 10),
-                      Transform.rotate(
-                        angle: dateArrowTransform,
-                        child: Icon(CupertinoIcons.forward),
-                      )
+                      buildDatePicker(),
                     ],
                   ),
-                  onExpansionChanged: (value) {
-                    triggerArrowAnimation(collapsed: value);
-                  },
-                  children: [
-                    buildDatePicker(),
-                  ],
                 ),
-              ),
-              Divider(height: 2),
-            ],
+                Divider(height: 2),
+              ],
+            ),
           ),
         ),
       );

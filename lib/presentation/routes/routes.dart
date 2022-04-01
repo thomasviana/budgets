@@ -1,4 +1,3 @@
-import 'package:budgets/presentation/screens/stats_budgets/budgets_stats_sreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,6 +33,7 @@ import '../screens/main/main_app_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/profile_screen_bloc/profile_sceen_bloc.dart';
 import '../screens/splash/splash_screen.dart';
+import '../screens/stats_budgets/budgets_stats_sreen.dart';
 import '../screens/stats_cash_flow.dart/cash_flow_screen.dart.dart';
 import '../screens/stats_expenses/expenses_screen.dart';
 import '../screens/stats_incomes/incomes_screen.dart';

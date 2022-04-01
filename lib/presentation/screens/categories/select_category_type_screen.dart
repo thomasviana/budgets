@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../core/categories/domain.dart';
 import '../../resources/resources.dart';
-import '../../routes/app_navigator.dart';
 import 'edit_category_bloc/edit_category_screen_bloc.dart';
 
 class SelectCategoryTypeScreen extends StatelessWidget {
@@ -18,10 +17,6 @@ class SelectCategoryTypeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Tipo'),
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () => AppNavigator.navigateBack(context),
-        ),
       ),
       body: ListView(
         shrinkWrap: true,

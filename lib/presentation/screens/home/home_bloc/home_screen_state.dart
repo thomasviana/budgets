@@ -1,6 +1,6 @@
 part of 'home_screen_bloc.dart';
 
-class HomeScreenState extends MyState with EquatableMixin {
+class HomeScreenState extends MyState {
   final UserEntity user;
 
   HomeScreenState({
@@ -22,7 +22,4 @@ class HomeScreenState extends MyState with EquatableMixin {
       user: user ?? this.user,
     );
   }
-
-  @override
-  List<Object?> get props => [status, user];
 }

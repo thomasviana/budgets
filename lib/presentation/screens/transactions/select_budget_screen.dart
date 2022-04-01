@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,15 +26,17 @@ class SelectBudgetScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Presupuesto'),
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () => AppNavigator.navigateBack(context),
-        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
-              child: Text('Editar'),
+              child: Text(
+                'Editar',
+                style: TextStyle(
+                  color:
+                      Platform.isIOS ? AppColors.primaryColor : AppColors.white,
+                ),
+              ),
               onPressed: () => AppNavigator.navigateToBudgetsPage(context),
             ),
           ),

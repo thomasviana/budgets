@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -57,10 +59,6 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
       return Scaffold(
         appBar: AppBar(
           title: Text('Administrar'),
-          leading: IconButton(
-            icon: Icon(Icons.chevron_left),
-            onPressed: () => AppNavigator.navigateBack(context),
-          ),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
@@ -69,7 +67,9 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                   'Hecho',
                   style: TextStyle(
                     color: state.isDoneEnabled
-                        ? AppColors.primaryColor
+                        ? Platform.isIOS
+                            ? AppColors.primaryColor
+                            : AppColors.white
                         : AppColors.greyDisabled,
                   ),
                 ),

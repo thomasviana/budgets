@@ -34,12 +34,6 @@ class IncomesScreen extends StatelessWidget {
                   elevation: 0.5,
                   floating: true,
                   pinned: true,
-                  actions: [
-                    IconButton(
-                      icon: Icon(Icons.sort),
-                      onPressed: () {},
-                    ),
-                  ],
                 ),
               SliverPersistentHeader(
                 pinned: true,

@@ -24,10 +24,6 @@ class SelectAccountScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Cuenta'),
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () => AppNavigator.navigateBack(context),
-        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),

@@ -42,10 +42,6 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Nota'),
-        leading: IconButton(
-          icon: Icon(Icons.chevron_left),
-          onPressed: () => AppNavigator.navigateBack(context),
-        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),

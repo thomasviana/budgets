@@ -1,8 +1,8 @@
-import 'package:budgets/common/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../common/extensions.dart';
 import '../../../core/stats/stats_bloc.dart';
 import '../../../resources/resources.dart';
 import '../../../utils/observer.dart';

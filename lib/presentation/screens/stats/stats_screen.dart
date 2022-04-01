@@ -1,6 +1,5 @@
 import 'dart:io' show Platform;
 
-import 'package:budgets/presentation/screens/stats/widgets/trailing_progress_bars.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +9,7 @@ import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
 import 'widgets/stat_card.dart';
 import 'widgets/trailing_pie_chart.dart';
+import 'widgets/trailing_progress_bars.dart';
 
 class StatsScreen extends StatefulWidget {
   @override
@@ -39,12 +39,6 @@ class _StatsScreenState extends State<StatsScreen> {
                   elevation: 0.5,
                   floating: true,
                   pinned: true,
-                  actions: [
-                    IconButton(
-                      icon: Icon(Icons.sort),
-                      onPressed: () {},
-                    ),
-                  ],
                 ),
               SliverPersistentHeader(
                 pinned: true,
@@ -65,17 +59,23 @@ class _StatsScreenState extends State<StatsScreen> {
               StatsCard(
                 title: 'FLUJO DE EFECTIVO',
                 amount: state.balance,
-                trailing: state.balance > 0
+                trailing: state.balance == 0
                     ? Icon(
                         Icons.thumb_up_rounded,
                         size: 50,
-                        color: AppColors.green,
+                        color: AppColors.greyDisabled,
                       )
-                    : Icon(
-                        Icons.thumb_down_rounded,
-                        size: 50,
-                        color: AppColors.red.withOpacity(0.7),
-                      ),
+                    : state.balance > 0
+                        ? Icon(
+                            Icons.thumb_up_rounded,
+                            size: 50,
+                            color: AppColors.green,
+                          )
+                        : Icon(
+                            Icons.thumb_down_rounded,
+                            size: 50,
+                            color: AppColors.red.withOpacity(0.7),
+                          ),
                 onTap: () => AppNavigator.navigateToCashFlowPage(context),
               ),
               StatsCard(

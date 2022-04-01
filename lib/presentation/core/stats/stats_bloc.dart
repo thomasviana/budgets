@@ -49,22 +49,6 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
     on<StatsDateUpdated>(_onStatsDateUpdated);
   }
 
-  // Future<void> _onUpdateSettings(
-  //   UpdateSettings event,
-  //   Emitter<StatsState> emit,
-  // ) async {
-  //   print(event.settings.accounts[0].name);
-  //   emit(
-  //     state.copyWith(
-  //       accounts: event.settings.accounts,
-  //       categories: event.settings.categories,
-  //       budgets: event.settings.budgets,
-  //       status: Status.success,
-  //     ),
-  //   );
-  //   print(event.settings.accounts[0].name);
-  // }
-
   Future<void> _onBudgetsSuscriptionRequested(
     BudgetsSuscriptionRequested event,
     Emitter<StatsState> emit,
@@ -170,10 +154,4 @@ class StatsBloc extends Bloc<StatsEvent, StatsState> {
   ) async {
     emit(state.copyWith(date: event.date, status: Status.success));
   }
-
-  // @override
-  // Future<void> close() {
-  //   _settingsBlocSuscription?.cancel();
-  //   return super.close();
-  // }
 }

@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -54,7 +56,9 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
       appBar: AppBar(
         title: Text('Categoría'),
         leading: IconButton(
-          icon: Icon(Icons.chevron_left),
+          icon: Platform.isIOS
+              ? Icon(Icons.arrow_back_ios)
+              : Icon(Icons.arrow_back),
           onPressed: () {
             if (_controller.index == 1) {
               _controller.animateTo(0);
@@ -67,7 +71,13 @@ class _SelectCategoryScreenState extends State<SelectCategoryScreen>
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
-              child: Text('Editar'),
+              child: Text(
+                'Editar',
+                style: TextStyle(
+                  color:
+                      Platform.isIOS ? AppColors.primaryColor : AppColors.white,
+                ),
+              ),
               onPressed: () => state.category.fold(
                 () {},
                 (category) => _controller.index == 0
@@ -124,6 +134,7 @@ class _SubCategorySuggestions extends StatelessWidget {
       builder: (context, state) {
         return ListView(
           shrinkWrap: true,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           children: [
             Padding(
               padding: const EdgeInsets.only(
@@ -147,16 +158,9 @@ class _SubCategorySuggestions extends StatelessWidget {
                 final subCategory = state.subCategorySuggestions![index];
                 return ListTile(
                   title: Text(subCategory.name),
-                  leading: CircleAvatar(
-                    maxRadius: 20,
-                    child: Icon(
-                      IconData(
-                        subCategory.icon,
-                        fontFamily: 'MaterialIcons',
-                      ),
-                      color: AppColors.white,
-                    ),
-                    backgroundColor: Color(subCategory.color),
+                  leading: ListTileLeadingIcon(
+                    icon: subCategory.icon,
+                    color: subCategory.color,
                   ),
                   trailing: state.category.fold(
                     () => null,
@@ -199,6 +203,7 @@ class _CategoriesList extends StatelessWidget {
       builder: (context, state) {
         return ListView(
           shrinkWrap: true,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           children: [
             Padding(
               padding: const EdgeInsets.only(
@@ -261,6 +266,7 @@ class _SubCategoriesList extends StatelessWidget {
         return ListView(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           children: [
             Padding(
               padding: const EdgeInsets.only(
@@ -396,7 +402,6 @@ class _SearchBoxState extends State<SearchBox> {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: TextField(
-        autofocus: true,
         controller: controller,
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: style.color),

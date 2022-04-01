@@ -38,4 +38,6 @@ class BudgetDao extends DatabaseAccessor<BudgetsDatabase>
 
   Future<void> deleteBudget(String budgetId) =>
       (delete(budgetsTable)..where((tbl) => tbl.id.equals(budgetId))).go();
+
+  Future<void> deleteAllBudgets() => delete(budgetsTable).go();
 }

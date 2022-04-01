@@ -9,6 +9,7 @@ abstract class BudgetsLocalDataSource {
   Future<void> cacheBudgets(List<Budget> budgets);
   Stream<Option<List<Budget>>> getCachedBudgets(BudgetUserId userId);
   Future<void> deleteBudget(BudgetId budgetId);
+  Future<void> deleteAllBudgets();
 }
 
 @LazySingleton(as: BudgetsLocalDataSource)
@@ -39,6 +40,11 @@ class BudgetsLocalDataSourceImpl implements BudgetsLocalDataSource {
   @override
   Future<void> deleteBudget(BudgetId budgetId) {
     return _budgetDao.deleteBudget(budgetId.value);
+  }
+
+  @override
+  Future<void> deleteAllBudgets() {
+    return _budgetDao.deleteAllBudgets();
   }
 
   @override

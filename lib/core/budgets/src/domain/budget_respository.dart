@@ -12,4 +12,6 @@ abstract class BudgetRepository {
   Future<void> saveList(List<Budget> budgets);
 
   Future<void> delete(BudgetId budgetId);
+
+  Future<void> deleteAll();
 }

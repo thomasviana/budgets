@@ -9,6 +9,7 @@ abstract class AccountsLocalDataSource {
   Future<void> cacheAccounts(List<Account> accounts);
   Stream<Option<List<Account>>> getCachedAccounts(AccountUserId userId);
   Future<void> deleteAccount(AccountId accountId);
+  Future<void> deleteAllAccounts();
 }
 
 @LazySingleton(as: AccountsLocalDataSource)
@@ -40,6 +41,11 @@ class AccountsLocalDataSourceImpl implements AccountsLocalDataSource {
   @override
   Future<void> deleteAccount(AccountId accountId) {
     return _accountDao.deleteAccount(accountId.value);
+  }
+
+  @override
+  Future<void> deleteAllAccounts() {
+    return _accountDao.deleteAllAccounts();
   }
 
   @override

@@ -23,6 +23,14 @@ class SettingsScreen extends StatelessWidget {
             CupertinoSliverNavigationBar(
               stretch: true,
               largeTitle: Text(AppLocalizations.of(context)!.misc_settings),
+              trailing: GestureDetector(
+                child: Icon(
+                  CupertinoIcons.restart,
+                  color: AppColors.primaryColor,
+                  size: 24,
+                ),
+                onTap: () => _showResetOption(context, Platform.isIOS),
+              ),
             ),
             SliverToBoxAdapter(
               child: SettingsContent(),
@@ -37,6 +45,14 @@ class SettingsScreen extends StatelessWidget {
           title: Text(
             AppLocalizations.of(context)!.misc_settings,
           ),
+          actions: [
+            IconButton(
+              onPressed: () => _showResetOption(context, false),
+              icon: Icon(
+                Icons.restart_alt,
+              ),
+            )
+          ],
         ),
         body: SettingsContent(),
       );
@@ -85,17 +101,6 @@ class SettingsContent extends StatelessWidget {
         Divider(height: 2),
         ListTile(
           title: Text(
-            'Reset setttings from factory',
-            style: TextStyle(color: AppColors.red),
-          ),
-          leading: Icon(Icons.restore_outlined, color: AppColors.red),
-          onTap: () {
-            context.read<SettingsBloc>().add(ResetFromFactoryRequested());
-          },
-        ),
-        Divider(height: 2),
-        ListTile(
-          title: Text(
             AppLocalizations.of(context)!.misc_logOut,
             style: TextStyle(color: AppColors.red),
           ),
@@ -109,4 +114,66 @@ class SettingsContent extends StatelessWidget {
       ],
     );
   }
+}
+
+Future<void> _showResetOption(
+  BuildContext context,
+  bool isIOS,
+) async {
+  if (isIOS)
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            child: const Text('Restaurar datos de fabrica'),
+            onPressed: () {
+              Navigator.pop(context);
+              context.read<SettingsBloc>().add(ResetFromFactoryRequested());
+            },
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          child: const Text(
+            'Cancelar',
+            style: TextStyle(color: AppColors.red),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+    );
+  else
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        ),
+        title: Text(
+          'Restablecer datos de fabrica',
+          textAlign: TextAlign.center,
+        ),
+        content: Text(
+          'Los datos guardados serán eliminados y se restablecerán los datos de fábrica.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              context.read<SettingsBloc>().add(ResetFromFactoryRequested());
+            },
+            child: Text(
+              'Restablecer',
+              style: TextStyle(color: AppColors.red),
+            ),
+          ),
+          TextButton(
+            onPressed: Navigator.of(context).pop,
+            child: Text('Cerrar'),
+          ),
+        ],
+      ),
+    );
 }

@@ -41,4 +41,6 @@ class AccountDao extends DatabaseAccessor<AccountsDatabase>
 
   Future<void> deleteAccount(String accountId) =>
       (delete(accountsTable)..where((tbl) => tbl.id.equals(accountId))).go();
+
+  Future<void> deleteAllAccounts() => delete(accountsTable).go();
 }

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:bloc/bloc.dart';
+import 'package:budgets/core/accounts/src/application/reset_accounts.dart';
+import 'package:budgets/core/budgets/src/application/reset_budgets.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -19,23 +21,27 @@ part 'settings_state.dart';
 @injectable
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   GetAccounts getAccounts;
-  SetDefaultAccounts setDefaultAccounts;
   GetCategories getCategories;
-  SetDefaultCategories setDefaultCategories;
-  ResetCategories resetCategories;
   GetBudgets getBudgets;
-  SetDefaultBudgets setDefaultBudgets;
+  SetDefaultAccounts setDefaultAccounts;
+  SetDefaultCategories setDefaultCategories;
   SetDefaultSubCategories setDefaultSubCategories;
+  SetDefaultBudgets setDefaultBudgets;
+  ResetAccounts resetAccounts;
+  ResetCategories resetCategories;
+  ResetBudgets resetBudgets;
 
   SettingsBloc(
     this.getAccounts,
-    this.setDefaultAccounts,
     this.getCategories,
-    this.setDefaultCategories,
-    this.resetCategories,
     this.getBudgets,
-    this.setDefaultBudgets,
+    this.setDefaultAccounts,
+    this.setDefaultCategories,
     this.setDefaultSubCategories,
+    this.setDefaultBudgets,
+    this.resetAccounts,
+    this.resetCategories,
+    this.resetBudgets,
   ) : super(SettingsState.initial()) {
     on<GetUserAccounts>(_getUserAccounts);
     on<GetUserCategories>(_getUserCategories);
@@ -93,6 +99,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   Future<void> _onResetFromFactoryRequested(
     ResetFromFactoryRequested event,
     Emitter<SettingsState> emit,
-  ) =>
-      resetCategories();
+  ) async {
+    await resetCategories();
+    await resetBudgets();
+    resetAccounts();
+  }
 }

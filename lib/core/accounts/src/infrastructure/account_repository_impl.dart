@@ -13,11 +13,6 @@ class AccountRepositoryImpl implements AccountRepository {
   );
 
   @override
-  Future<void> delete(AccountId accountId) {
-    return _accountslocalDataSource.deleteAccount(accountId);
-  }
-
-  @override
   Stream<Option<List<Account>>> fetchAccounts(AccountUserId userId) {
     return _accountslocalDataSource.getCachedAccounts(userId);
   }
@@ -30,5 +25,15 @@ class AccountRepositoryImpl implements AccountRepository {
   @override
   Future<void> saveList(List<Account> accounts) {
     return _accountslocalDataSource.cacheAccounts(accounts);
+  }
+
+  @override
+  Future<void> delete(AccountId accountId) {
+    return _accountslocalDataSource.deleteAccount(accountId);
+  }
+
+  @override
+  Future<void> deleteAll() {
+    return _accountslocalDataSource.deleteAllAccounts();
   }
 }

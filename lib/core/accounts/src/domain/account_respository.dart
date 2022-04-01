@@ -12,4 +12,6 @@ abstract class AccountRepository {
   Future<void> saveList(List<Account> accounts);
 
   Future<void> delete(AccountId accountId);
+
+  Future<void> deleteAll();
 }

@@ -13,11 +13,6 @@ class BudgetRepositoryImpl implements BudgetRepository {
   );
 
   @override
-  Future<void> delete(BudgetId budgetId) {
-    return _budgetslocalDataSource.deleteBudget(budgetId);
-  }
-
-  @override
   Stream<Option<List<Budget>>> fetchBudgets(BudgetUserId userId) {
     return _budgetslocalDataSource.getCachedBudgets(userId);
   }
@@ -30,5 +25,15 @@ class BudgetRepositoryImpl implements BudgetRepository {
   @override
   Future<void> saveList(List<Budget> budgets) {
     return _budgetslocalDataSource.cacheBudgets(budgets);
+  }
+
+  @override
+  Future<void> delete(BudgetId budgetId) {
+    return _budgetslocalDataSource.deleteBudget(budgetId);
+  }
+
+  @override
+  Future<void> deleteAll() {
+    return _budgetslocalDataSource.deleteAllBudgets();
   }
 }

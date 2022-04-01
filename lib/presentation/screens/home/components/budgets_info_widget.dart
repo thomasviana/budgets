@@ -68,11 +68,12 @@ class BudgetsInfoWidget extends StatelessWidget {
                             changeColorValue: 105,
                             changeProgressColor: AppColors.red.withOpacity(0.6),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                         ],
                       );
                     },
                   ),
+                  const SizedBox(height: 8),
                 ],
               );
             },

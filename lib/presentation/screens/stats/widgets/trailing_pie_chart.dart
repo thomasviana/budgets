@@ -1,3 +1,4 @@
+import 'package:budgets/presentation/resources/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -63,6 +64,21 @@ class _TrailingPieChartState extends State<TrailingPieChart>
     List<PieChartSectionData> getSections(
       List<PieData> data,
     ) {
+      if (data.isEmpty)
+        return [
+          PieChartSectionData(
+            color: AppColors.greyDisabled,
+            value: 3,
+            title: '',
+            radius: 10,
+          ),
+          PieChartSectionData(
+            color: AppColors.greyDisabled,
+            value: 1,
+            title: '',
+            radius: 10,
+          ),
+        ];
       return data
           .asMap()
           .map<int, PieChartSectionData>((index, data) {

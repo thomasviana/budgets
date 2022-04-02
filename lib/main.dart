@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -33,6 +34,12 @@ class _MyAppState extends State<MyApp> {
     ..add(GetUserAccounts())
     ..add(GetUserCategories())
     ..add(GetUserBudgets());
+
+  @override
+  void initState() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

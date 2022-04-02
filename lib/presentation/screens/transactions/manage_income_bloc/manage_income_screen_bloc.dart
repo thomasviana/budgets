@@ -21,29 +21,38 @@ class ManageIncomeScreenBloc
     this.updateTransaction,
   ) : super(ManageIncomeScreenState.initial()) {
     on<CheckInitialValues>((event, emit) {
+      final bool isManagedAlready =
+          event.transaction.budgetManagement!.isNotEmpty;
       event.budgets != null
           ? emit(
               state.copyWith(
-                transactionId: event.transactionId,
+                transactionId: event.transaction.id,
                 budgets: event.budgets,
-                incomeAmount: event.incomeAmount,
-                pendingAmount: event.incomeAmount,
+                incomeAmount: event.transaction.amount,
+                pendingAmount:
+                    isManagedAlready ? 0.0 : event.transaction.amount,
                 isLoading: false,
-                budgetAmounts: List<double>.filled(
-                  event.budgets!.length,
-                  0,
-                  growable: true,
-                ),
-                budgetPercentages: List<double>.filled(
-                  event.budgets!.length,
-                  0,
-                  growable: true,
-                ),
+                budgetAmounts: isManagedAlready
+                    ? event.transaction.budgetManagement!.values.toList()
+                    : List<double>.filled(
+                        event.budgets!.length,
+                        0,
+                        growable: true,
+                      ),
+                budgetPercentages: isManagedAlready
+                    ? event.transaction.budgetManagement!.values
+                        .map((value) => value / event.transaction.amount)
+                        .toList()
+                    : List<double>.filled(
+                        event.budgets!.length,
+                        0,
+                        growable: true,
+                      ),
               ),
             )
           : emit(
               state.copyWith(
-                transactionId: event.transactionId,
+                transactionId: event.transaction.id,
                 budgets: [],
                 incomeAmount: 0.0,
                 isLoading: false,

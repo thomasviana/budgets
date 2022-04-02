@@ -3,13 +3,11 @@ part of 'manage_income_screen_bloc.dart';
 abstract class ManageIncomeScreenEvent {}
 
 class CheckInitialValues extends ManageIncomeScreenEvent {
-  final TransactionId transactionId;
+  final Transaction transaction;
   final List<Budget>? budgets;
-  final double incomeAmount;
   CheckInitialValues({
-    required this.transactionId,
+    required this.transaction,
     this.budgets,
-    required this.incomeAmount,
   });
 }
 

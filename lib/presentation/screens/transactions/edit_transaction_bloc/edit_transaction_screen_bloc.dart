@@ -193,7 +193,11 @@ class EditTransactionScreenBloc
     on<AmountUpdated>(
       (event, emit) => emit(
         state.copyWith(
-          transaction: state.transaction.copyWith(amount: event.amount),
+          transaction: state.transaction.copyWith(
+            amount: event.amount,
+            isIncomeManaged: false,
+            budgetManagement: {},
+          ),
         ),
       ),
     );

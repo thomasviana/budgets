@@ -12,14 +12,12 @@ import 'edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 import 'manage_income_bloc/manage_income_screen_bloc.dart';
 
 class ManageIncomeScreen extends StatefulWidget {
-  final TransactionId transactionId;
+  final Transaction transaction;
   final List<Budget> budgets;
-  final double incomeAmount;
   const ManageIncomeScreen({
     Key? key,
-    required this.transactionId,
+    required this.transaction,
     required this.budgets,
-    required this.incomeAmount,
   }) : super(key: key);
   @override
   State<ManageIncomeScreen> createState() => _ManageIncomeScreenState();
@@ -34,9 +32,8 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
     bloc = context.read<ManageIncomeScreenBloc>()
       ..add(
         CheckInitialValues(
-          transactionId: widget.transactionId,
+          transaction: widget.transaction,
           budgets: widget.budgets,
-          incomeAmount: widget.incomeAmount,
         ),
       );
     txBloc = context.read<EditTransactionScreenBloc>();
@@ -94,7 +91,7 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
               Text('Ingreso'),
               const SizedBox(height: 8),
               Text(
-                widget.incomeAmount.toCurrencyFormat(),
+                widget.transaction.amount.toCurrencyFormat(),
                 style: TextStyle(
                   color: AppColors.primaryColor,
                   fontSize: 20,

@@ -457,15 +457,13 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
                         const Icon(CupertinoIcons.forward)
                       ],
                     ),
-                    onTap: state.transaction.isIncomeManaged ||
-                            state.transaction.amount == 0
+                    onTap: state.transaction.amount == 0
                         ? () {}
                         : () => AppNavigator.navigateToManageIncomePage(
                               context,
                               arguments: [
-                                state.transaction.id,
+                                state.transaction,
                                 settingsBloc.state.budgets,
-                                state.transaction.amount
                               ],
                             ),
                   ),

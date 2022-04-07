@@ -61,7 +61,7 @@ class _StatsScreenState extends State<StatsScreen> {
                 amount: state.balance,
                 trailing: state.balance == 0
                     ? Icon(
-                        Icons.thumb_up_rounded,
+                        Icons.thumbs_up_down_rounded,
                         size: 50,
                         color: AppColors.greyDisabled,
                       )

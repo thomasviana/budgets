@@ -22,10 +22,11 @@ class ManageIncomeScreenState {
   });
 
   bool get isDoneEnabled => pendingAmount == 0;
-  bool isDecrementEnabled(int index) =>
-      budgetPercentages![index] > 0.0 + 0.1; // + step
-  bool isIncrementEnabled(int index) =>
-      budgetPercentages![index] < 1.0 - 0.1 && pendingAmount! > 0; // - step
+  bool isDecrementEnabled(int index, double step) =>
+      budgetPercentages![index] >= 0.0 + step; // + step
+  bool isIncrementEnabled(int index, double step) =>
+      budgetPercentages![index] <= 1.0 - step && pendingAmount! > 0; // - step
+  double get pendingPercentage => pendingAmount! / incomeAmount!;
 
   factory ManageIncomeScreenState.initial() => ManageIncomeScreenState(
         isLoading: true,

@@ -61,10 +61,16 @@ class ManageIncomeScreenBloc
     });
 
     on<BudgetIncremented>((event, emit) {
-      state.budgetPercentages![event.index] += 0.1;
+      final step = event.step / 100;
+      if (state.pendingPercentage >= step) {
+        state.budgetPercentages![event.index] += event.step / 100;
+      } else {
+        state.budgetPercentages![event.index] += state.pendingPercentage;
+      }
+
       state.budgetAmounts![event.index] =
           state.incomeAmount! * (state.budgetPercentages![event.index]);
-      updateValues(emit);
+      _updateValues(emit);
       emit(
         state.copyWith(
           budgetAmounts: state.budgetAmounts,
@@ -74,10 +80,15 @@ class ManageIncomeScreenBloc
     });
 
     on<BudgetDecremented>((event, emit) {
-      state.budgetPercentages![event.index] -= 0.1;
+      final step = event.step / 100;
+      if (state.budgetPercentages![event.index] > step) {
+        state.budgetPercentages![event.index] -= event.step / 100;
+      } else {
+        state.budgetPercentages![event.index] = 0;
+      }
       state.budgetAmounts![event.index] =
           state.incomeAmount! * (state.budgetPercentages![event.index]);
-      updateValues(emit);
+      _updateValues(emit);
       emit(
         state.copyWith(
           budgetAmounts: state.budgetAmounts,
@@ -97,7 +108,7 @@ class ManageIncomeScreenBloc
     return budgetsInfo;
   }
 
-  void updateValues(Emitter emit) {
+  void _updateValues(Emitter emit) {
     double totalManagedAmount = 0;
     for (final amount in state.budgetAmounts!) {
       totalManagedAmount += amount.round();

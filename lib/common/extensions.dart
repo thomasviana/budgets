@@ -18,3 +18,11 @@ extension MyCurrencyFormat on num {
         : _currencyWithPrefixSignAndSymbol.format(this);
   }
 }
+
+extension MyPercentageFormat on num {
+  static final _percentage = NumberFormat.percentPattern('ar');
+
+  String toPercentFormat() {
+    return _percentage.format(this);
+  }
+}

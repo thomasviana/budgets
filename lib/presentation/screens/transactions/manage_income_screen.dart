@@ -212,6 +212,11 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                   itemCount: state.budgets!.length,
                   itemBuilder: (BuildContext context, int index) {
                     final budget = state.budgets![index];
+                    bool hasAbbreviation = true;
+                    if (budget.abbreviation == null ||
+                        budget.abbreviation!.isEmpty) {
+                      hasAbbreviation = false;
+                    }
                     return Container(
                       alignment: Alignment.center,
                       margin: const EdgeInsets.all(4.0),
@@ -229,29 +234,45 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(8.0),
-                            margin: const EdgeInsets.all(8.0),
-                            alignment: Alignment.center,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Color(budget.color),
-                              borderRadius: BorderRadius.circular(15),
+                          GestureDetector(
+                            onTap: () =>
+                                AppNavigator.navigateToManageIncomeBudgetPage(
+                              context,
+                              arguments: [state.budgets?[index], index],
                             ),
-                            child: Text(
-                              budget.abbreviation ?? budget.name,
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.white,
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              margin: const EdgeInsets.all(8.0),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Color(budget.color),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Text(
+                                hasAbbreviation
+                                    ? budget.abbreviation!
+                                    : budget.name,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.white,
+                                ),
                               ),
                             ),
                           ),
-                          Text(
-                            state.budgetAmounts![index].toCurrencyFormat(),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                          GestureDetector(
+                            onTap: () =>
+                                AppNavigator.navigateToManageIncomeBudgetPage(
+                              context,
+                              arguments: [state.budgets?[index], index],
+                            ),
+                            child: Text(
+                              state.budgetAmounts![index].toCurrencyFormat(),
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                           Row(
@@ -262,36 +283,44 @@ class _ManageIncomeScreenState extends State<ManageIncomeScreen> {
                                 clipBehavior: Clip.hardEdge,
                                 shape: CircleBorder(),
                                 child: IconButton(
-                                  onPressed: state.isDecrementEnabled(index)
-                                      ? () => bloc.add(
-                                            BudgetDecremented(index: index),
-                                          )
-                                      : null,
+                                  onPressed:
+                                      state.isDecrementEnabled(index, 0.1)
+                                          ? () => bloc.add(
+                                                BudgetDecremented(
+                                                  index: index,
+                                                  step: 10,
+                                                ),
+                                              )
+                                          : null,
                                   icon: Icon(
                                     Icons.remove,
-                                    color: state.isDecrementEnabled(index)
+                                    color: state.isDecrementEnabled(index, 0.1)
                                         ? AppColors.primaryColor
                                         : AppColors.greyDisabled,
                                   ),
                                 ),
                               ),
                               Text(
-                                percentage
-                                    .format(state.budgetPercentages![index]),
+                                state.budgetPercentages![index]
+                                    .toPercentFormat(),
                               ),
                               Material(
                                 type: MaterialType.transparency,
                                 clipBehavior: Clip.hardEdge,
                                 shape: CircleBorder(),
                                 child: IconButton(
-                                  onPressed: state.isIncrementEnabled(index)
-                                      ? () => bloc.add(
-                                            BudgetIncremented(index: index),
-                                          )
-                                      : null,
+                                  onPressed:
+                                      state.isIncrementEnabled(index, 0.1)
+                                          ? () => bloc.add(
+                                                BudgetIncremented(
+                                                  index: index,
+                                                  step: 10,
+                                                ),
+                                              )
+                                          : null,
                                   icon: Icon(
                                     Icons.add,
-                                    color: state.isIncrementEnabled(index)
+                                    color: state.isIncrementEnabled(index, 0.1)
                                         ? AppColors.primaryColor
                                         : AppColors.greyDisabled,
                                   ),

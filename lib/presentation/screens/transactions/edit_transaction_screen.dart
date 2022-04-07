@@ -313,7 +313,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
                   ListTile(
                     leading: CircleAvatar(
                       maxRadius: 20,
-                      backgroundColor: Color(account.color),
+                      backgroundColor: AppColors.primaryColor,
                       child: Text(
                         state.transaction.incomeType == IncomeType.active
                             ? 'IA'
@@ -432,7 +432,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen>
                   ListTile(
                     leading: CircleAvatar(
                       maxRadius: 20,
-                      backgroundColor: Color(budget.color),
+                      backgroundColor: AppColors.primaryColor,
                       child: Icon(
                         Icons.all_inbox_rounded,
                         color: AppColors.white,

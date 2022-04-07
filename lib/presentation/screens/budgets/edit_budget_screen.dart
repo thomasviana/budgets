@@ -257,7 +257,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                   onTap: () =>
                       AppNavigator.navigateToEditBudgetAbbreviationPage(
                     context,
-                    abbreviation: state.budget!.abbreviation,
+                    abbreviation: state.budget!.abbreviation ?? '',
                   ),
                 ),
               ],

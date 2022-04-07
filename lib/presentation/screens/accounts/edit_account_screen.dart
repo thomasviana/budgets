@@ -148,10 +148,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
       bool isImageAvailable;
       final account = state.account;
 
-      if (account!.imageUrl != null) {
-        isImageAvailable = true;
-        image = NetworkImage(account.imageUrl!);
-      } else {
+      if ((account!.imageUrl ?? '').isEmpty) {
         isImageAvailable = false;
         accountIcon = Icon(
           IconData(
@@ -161,6 +158,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           size: 40,
           color: AppColors.white,
         );
+      } else {
+        isImageAvailable = true;
+        image = NetworkImage(account.imageUrl!);
       }
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -295,13 +295,14 @@ Future<void> _showEditOptions(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
       actions: <CupertinoActionSheetAction>[
-        CupertinoActionSheetAction(
-          child: const Text('Cambiar color'),
-          onPressed: () {
-            Navigator.pop(context);
-            _pickColor(context, bloc, state);
-          },
-        ),
+        if (state.account!.imageUrl!.isEmpty)
+          CupertinoActionSheetAction(
+            child: const Text('Cambiar color'),
+            onPressed: () {
+              Navigator.pop(context);
+              _pickColor(context, bloc, state);
+            },
+          ),
         CupertinoActionSheetAction(
           child: const Text('Seleccionar logo'),
           onPressed: () {
@@ -309,7 +310,7 @@ Future<void> _showEditOptions(
             _pickImage(context, bloc, state);
           },
         ),
-        if (state.account!.imageUrl != null)
+        if (state.account!.imageUrl!.isNotEmpty)
           CupertinoActionSheetAction(
             child: Text(
               'Eliminar logo',
@@ -471,12 +472,12 @@ class _EditTypeBottomSheet extends StatelessWidget {
                 children: [
                   Container(
                     alignment: Alignment.centerLeft,
-                    child: TextButton(
-                      child: const Text('Cancelar'),
-                      onPressed: () {
-                        onCancelPressed();
-                        AppNavigator.navigateBack(context);
-                      },
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: AppColors.greyPrimary,
+                      ),
+                      onPressed: () => AppNavigator.navigateBack(context),
                     ),
                   ),
                   const Text(

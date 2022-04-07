@@ -84,7 +84,7 @@ class _TransactionssScreenState extends State<TransactionsScreen> {
             actions: [
               IconButton(
                 icon: Icon(Icons.sort),
-                onPressed: () {},
+                onPressed: () => bloc.add(ToggleSortOption()),
               ),
             ],
           ),

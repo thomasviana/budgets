@@ -20,6 +20,7 @@ class TransactionsBloc extends Bloc<TransactionEvent, TransactionsState> {
     on<TransactionsRequested>(_onTransactionsRequested);
     on<TransactionDeleted>(_onTransactionDeleted);
     on<TxsDateUpdated>(_onTxsDateUpdated);
+    on<ToggleSortOption>(_onToggleSortOption);
   }
 
   Future<void> _onTransactionsRequested(
@@ -53,4 +54,15 @@ class TransactionsBloc extends Bloc<TransactionEvent, TransactionsState> {
 
   Future<void> _onTxsDateUpdated(TxsDateUpdated event, Emitter emit) async =>
       emit(state.copyWith(date: event.date));
+
+  Future<void> _onToggleSortOption(
+    ToggleSortOption event,
+    Emitter emit,
+  ) async {
+    if (state.sortOption == SortOption.ascending) {
+      emit(state.copyWith(sortOption: SortOption.descending));
+    } else {
+      emit(state.copyWith(sortOption: SortOption.ascending));
+    }
+  }
 }

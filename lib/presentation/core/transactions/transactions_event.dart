@@ -17,3 +17,5 @@ class TxsDateUpdated extends TransactionEvent {
     required this.date,
   });
 }
+
+class ToggleSortOption extends TransactionEvent {}

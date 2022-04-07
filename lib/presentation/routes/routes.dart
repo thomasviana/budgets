@@ -41,6 +41,7 @@ import '../screens/transactions/edit_note_screen.dart';
 import '../screens/transactions/edit_transaction_bloc/edit_transaction_screen_bloc.dart';
 import '../screens/transactions/edit_transaction_screen.dart';
 import '../screens/transactions/manage_income_bloc/manage_income_screen_bloc.dart';
+import '../screens/transactions/manage_income_budget_screen.dart';
 import '../screens/transactions/manage_income_screen.dart';
 import '../screens/transactions/select_account_screen.dart';
 import '../screens/transactions/select_budget_screen.dart';
@@ -64,6 +65,9 @@ class AppRouter {
 
   final TransactionsBloc _transactionsBloc = sl<TransactionsBloc>()
     ..add(TransactionsRequested());
+
+  final ManageIncomeScreenBloc _manageIncomeScreenBloc =
+      sl<ManageIncomeScreenBloc>();
 
   final StatsBloc _statsBloc = sl<StatsBloc>()
     ..add(CategoriesSuscriptionRequested())
@@ -351,8 +355,8 @@ class AppRouter {
           settings,
           MultiBlocProvider(
             providers: [
-              BlocProvider(
-                create: (context) => sl<ManageIncomeScreenBloc>(),
+              BlocProvider.value(
+                value: _manageIncomeScreenBloc,
               ),
               BlocProvider.value(
                 value: _editTransactionScreenBloc,
@@ -361,6 +365,18 @@ class AppRouter {
             child: ManageIncomeScreen(
               transaction: arguments[0] as Transaction,
               budgets: arguments[1] as List<Budget>,
+            ),
+          ),
+        );
+      case AppNavigator.ROUTE_MANAGE_INCOME_BUDGET_PAGE:
+        final arguments = settings.arguments! as List<dynamic>;
+        return _buildRoute(
+          settings,
+          BlocProvider.value(
+            value: _manageIncomeScreenBloc,
+            child: ManageIncomeBudgetScreen(
+              budget: arguments[0] as Budget,
+              index: arguments[1] as int,
             ),
           ),
         );

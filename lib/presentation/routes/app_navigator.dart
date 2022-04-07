@@ -45,6 +45,7 @@ class AppNavigator {
   static const ROUTE_SELECT_BUDGET_PAGE = '/select-budget';
   static const ROUTE_EDIT_NOTE_PAGE = '/edit-note';
   static const ROUTE_MANAGE_INCOME_PAGE = '/manage-income';
+  static const ROUTE_MANAGE_INCOME_BUDGET_PAGE = '/manage-income-budget';
 
   static void navigateBack(BuildContext context) => Navigator.pop(context);
 
@@ -258,6 +259,17 @@ class AppNavigator {
     Navigator.pushNamed(
       context,
       ROUTE_MANAGE_INCOME_PAGE,
+      arguments: arguments,
+    );
+  }
+
+  static void navigateToManageIncomeBudgetPage(
+    BuildContext context, {
+    List<dynamic>? arguments,
+  }) {
+    Navigator.pushNamed(
+      context,
+      ROUTE_MANAGE_INCOME_BUDGET_PAGE,
       arguments: arguments,
     );
   }

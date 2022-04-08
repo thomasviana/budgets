@@ -9,7 +9,7 @@ class AppNavigator {
   AppNavigator._();
 
   static const ROUTE_SPLASH_PAGE = Navigator.defaultRouteName;
-  static const ROUTE_INTRO_PAGE = '/intro';
+  static const ROUTE_ONBOARDING_PAGE = '/onboarding';
   static const ROUTE_AUTH_PAGE = '/auth';
   static const ROUTE_MAIN_PAGE = '/main';
 
@@ -56,12 +56,12 @@ class AppNavigator {
     }
   }
 
-  static void navigateToIntroPage(BuildContext context) {
-    Navigator.pushNamed(context, ROUTE_INTRO_PAGE);
+  static void navigateToOnboardingPage(BuildContext context) {
+    Navigator.pushNamed(context, ROUTE_ONBOARDING_PAGE);
   }
 
   static void navigateToAuthPage(BuildContext context) {
-    Navigator.pushReplacementNamed(context, ROUTE_AUTH_PAGE);
+    Navigator.pushNamed(context, ROUTE_AUTH_PAGE);
   }
 
   static void navigateToMainPage(BuildContext context) {

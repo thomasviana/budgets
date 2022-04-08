@@ -27,9 +27,9 @@ import '../screens/categories/edit_sub_category_bloc/edit_sub_category_screen_bl
 import '../screens/categories/edit_sub_category_name_screen.dart';
 import '../screens/categories/edit_sub_category_screen.dart';
 import '../screens/categories/select_category_type_screen.dart';
-import '../screens/intro/intro_screen.dart';
 import '../screens/main/main_app_cubit/main_screen_cubit.dart';
 import '../screens/main/main_app_screen.dart';
+import '../screens/onboarding/onboarding_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/profile_screen_bloc/profile_sceen_bloc.dart';
 import '../screens/splash/splash_screen.dart';
@@ -82,10 +82,10 @@ class AppRouter {
           settings,
           SplashScreen(),
         );
-      case AppNavigator.ROUTE_INTRO_PAGE:
+      case AppNavigator.ROUTE_ONBOARDING_PAGE:
         return _buildRoute(
           settings,
-          IntroScreen(),
+          OnboardingScreen(),
         );
       case AppNavigator.ROUTE_AUTH_PAGE:
         return _buildRoute(

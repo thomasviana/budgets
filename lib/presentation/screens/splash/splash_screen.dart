@@ -12,7 +12,7 @@ class SplashScreen extends StatelessWidget {
         if (state.status == AuthStatus.authenticated) {
           AppNavigator.navigateToMainPage(context);
         } else if (state.status == AuthStatus.unauthenticated) {
-          AppNavigator.navigateToIntroPage(context);
+          AppNavigator.navigateToOnboardingPage(context);
         }
       },
       child: Scaffold(

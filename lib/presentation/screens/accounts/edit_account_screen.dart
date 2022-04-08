@@ -295,7 +295,7 @@ Future<void> _showEditOptions(
     context: context,
     builder: (BuildContext context) => CupertinoActionSheet(
       actions: <CupertinoActionSheetAction>[
-        if (state.account!.imageUrl!.isEmpty)
+        if ((state.account!.imageUrl ?? '').isEmpty)
           CupertinoActionSheetAction(
             child: const Text('Cambiar color'),
             onPressed: () {
@@ -310,7 +310,7 @@ Future<void> _showEditOptions(
             _pickImage(context, bloc, state);
           },
         ),
-        if (state.account!.imageUrl!.isNotEmpty)
+        if ((state.account!.imageUrl ?? '').isNotEmpty)
           CupertinoActionSheetAction(
             child: Text(
               'Eliminar logo',

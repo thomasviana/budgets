@@ -80,7 +80,7 @@ class AccountsContent extends StatelessWidget {
             state.accounts.sort(
               (a, b) => (a.type.toString()).compareTo(b.type.toString()),
             );
-            if (account.imageUrl != null) {
+            if ((account.imageUrl ?? '').isNotEmpty) {
               isImageAvailable = true;
               image = NetworkImage(account.imageUrl!);
             } else {

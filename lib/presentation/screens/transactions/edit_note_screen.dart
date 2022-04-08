@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -46,7 +48,13 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextButton(
-              child: Text('Listo'),
+              child: Text(
+                'Listo',
+                style: TextStyle(
+                  color:
+                      Platform.isIOS ? AppColors.primaryColor : AppColors.white,
+                ),
+              ),
               onPressed: () {
                 context
                     .read<EditTransactionScreenBloc>()

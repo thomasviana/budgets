@@ -34,7 +34,7 @@
     "global_view_more": "Ver mas",
     "global_no_transactions_message": "No hay transacciones en",
     "widgets_progress_bar_no_budget": "No hay presupuesto",
-    "widgets_google_sign_in_button": "Iniciar sesión con Google",
+    "widgets_google_sign_in_button": "Iniciar con Google",
     "accounts_edit_account": "Editar cuenta",
     "accounts_new_account": "Nueva cuenta",
     "accounts_select_logo": "Seleccionar logo",
@@ -78,5 +78,15 @@
     "categories_category_types": "Tipos de categoría",
     "home_last_transactions_title": "Ultimas transacciones",
     "home_last_transactions_view_all": "Ver todas",
-    "home_spending_chart_title": "Gastos por categoría"
+    "home_spending_chart_title": "Gastos por categoría",
+    "onboarding_welcome_title_line_1": "Bienvenido a ",
+    "onboarding_welcome_title_line_2": "Budgets",
+    "onboarding_welcome_swipe_message": "Desliza para aprender más sobre la app",
+    "onboarding_description_1": "Registra tus ingresos.",
+    "onboarding_description_2": "Controla tus gastos.",
+    "onboarding_description_3": "Hazle seguimiento a tus finanzas.",
+    "onboarding_description_4": "Podrás salir de deudas y alcanzar libertad financiera.",
+    "onboarding_get_started_ready": "¿Estás listo?",
+    "onboarding_get_started_cta": "Comenzar",
+    "onboarding_skip": "Omitir"
 }

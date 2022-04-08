@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../resources/colors.dart';
 import '../cubit/auth_screen_cubit.dart';
@@ -65,7 +66,7 @@ class _AuthFormState extends State<AuthForm> {
               FocusScope.of(context).requestFocus(myFocusNode1);
             },
             decoration: InputDecoration(
-              hintText: 'Enter email',
+              hintText: AppLocalizations.of(context)!.auth_form_enter_email,
               enabled: widget.enabled,
             ),
             onChanged: widget.onEmailChanged,
@@ -82,7 +83,7 @@ class _AuthFormState extends State<AuthForm> {
               FocusScope.of(context).requestFocus(myFocusNode2);
             },
             decoration: InputDecoration(
-              hintText: 'Enter password',
+              hintText: AppLocalizations.of(context)!.auth_form_enter_password,
             ),
             onChanged: widget.onPasswordChanged,
           ),
@@ -95,7 +96,8 @@ class _AuthFormState extends State<AuthForm> {
               validator: passwordConfirmationValidator,
               focusNode: myFocusNode2,
               decoration: InputDecoration(
-                hintText: 'Confirm password',
+                hintText:
+                    AppLocalizations.of(context)!.auth_form_confirm_password,
               ),
               onChanged: widget.onConfirmationPasswordChanged,
             ),
@@ -106,29 +108,32 @@ class _AuthFormState extends State<AuthForm> {
 
   String? emailValidator(String? value) {
     if (!widget.state.emailAddress.value.isNotEmpty) {
-      return 'This is a required field.';
+      return AppLocalizations.of(context)!.auth_form_emailValidator_required;
     } else if (!widget.state.emailAddress.isValid) {
-      return 'Enter a valid email.';
+      return AppLocalizations.of(context)!.auth_form_emailValidator_valid_email;
     }
     return null;
   }
 
   String? passwordValidator(String? value) {
     if (!widget.state.password.value.isNotEmpty) {
-      return 'This is a required field.';
+      return AppLocalizations.of(context)!.auth_form_passwordValidator_required;
     } else if (!widget.state.password.isSecure) {
-      return 'Password must be at least 6 characters long.';
+      return AppLocalizations.of(context)!
+          .auth_form_passwordValidator_characters_long;
     }
     return null;
   }
 
   String? passwordConfirmationValidator(String? value) {
     if (!widget.state.confirmationPassword.value.isNotEmpty) {
-      return 'This is a required field.';
+      return AppLocalizations.of(context)!
+          .auth_form_passwordConfirmationValidator_required;
     }
     if (widget.state.isCreateAccountMode) {
       if (widget.state.password != widget.state.confirmationPassword) {
-        return "Doesn't match the previous one.";
+        return AppLocalizations.of(context)!
+            .auth_form_passwordConfirmationValidator_doesnt_match;
       }
     }
     return null;

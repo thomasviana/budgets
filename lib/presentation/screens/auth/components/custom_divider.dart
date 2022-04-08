@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomDivider extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class CustomDivider extends StatelessWidget {
           alignment: Alignment.center,
           width: 40,
           child: Text(
-            'or',
+            AppLocalizations.of(context)!.misc_or,
             style: TextStyle(color: Colors.grey.shade400),
           ),
         ),

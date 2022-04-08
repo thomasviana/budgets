@@ -1,6 +1,7 @@
 import 'package:another_flushbar/flushbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../resources/resources.dart';
 import '../../routes/app_navigator.dart';
@@ -41,12 +42,17 @@ class _AuthScreenState extends State<AuthScreen> {
               (failure) => {
                 FlushbarHelper.createError(
                   message: failure.map(
-                    cancelledByUser: (_) => 'Cancelled',
-                    serverError: (_) => 'Server Error',
-                    userNotFound: (_) => "User doesn't exist",
-                    emailAlreadyInUser: (_) => 'Email already in use',
+                    cancelledByUser: (_) =>
+                        AppLocalizations.of(context)!.auth_snackbar_cancelled,
+                    serverError: (_) => AppLocalizations.of(context)!
+                        .auth_snackbar_server_error,
+                    userNotFound: (_) => AppLocalizations.of(context)!
+                        .auth_snackbar_user_doesnt_exist,
+                    emailAlreadyInUser: (_) => AppLocalizations.of(context)!
+                        .auth_snackbar_email_already_in_une,
                     invalidEmailAndPasswordCombination: (_) =>
-                        'Invalid email and password combination',
+                        AppLocalizations.of(context)!
+                            .auth_snackbar_invalid_combination,
                   ),
                 ).show(context)
               },
@@ -71,7 +77,11 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     SizedBox(height: 24),
                     Text(
-                      state.isCreateAccountMode ? 'Register' : 'Login',
+                      state.isCreateAccountMode
+                          ? AppLocalizations.of(context)!
+                              .auth_screen_register_title
+                          : AppLocalizations.of(context)!
+                              .auth_screen_login_title,
                       style: Theme.of(context).textTheme.headline6,
                     ),
                     SizedBox(height: 16),
@@ -96,8 +106,10 @@ class _AuthScreenState extends State<AuthScreen> {
                     if (!state.isSubmitting)
                       RoundedButton(
                         label: state.isCreateAccountMode
-                            ? 'Create account'
-                            : 'Login',
+                            ? AppLocalizations.of(context)!
+                                .auth_screen_create_account_button
+                            : AppLocalizations.of(context)!
+                                .auth_screen_login_button,
                         isEnabled: true,
                         onPressed: trySubmit,
                       ),
@@ -147,8 +159,10 @@ class _AuthScreenState extends State<AuthScreen> {
                       },
                       child: Text(
                         state.isCreateAccountMode
-                            ? 'Already have an account? Login'
-                            : 'Create account',
+                            ? AppLocalizations.of(context)!
+                                .auth_screen_already_have_an_account
+                            : AppLocalizations.of(context)!
+                                .auth_screen_create_account_switch,
                       ),
                     ),
                   ],
@@ -178,8 +192,6 @@ class LoginButton extends StatelessWidget {
       elevation: 5,
       borderRadius: BorderRadius.circular(50),
       child: InkWell(
-        // customBorder:
-        //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         onTap: onTap,
         child: CircleAvatar(
           backgroundImage: AssetImage(imagePath),

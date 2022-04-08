@@ -78,5 +78,15 @@
     "categories_category_types": "Category types",
     "home_last_transactions_title": "Last transactions",
     "home_last_transactions_view_all": "View all",
-    "home_spending_chart_title": "Expenses by category"
+    "home_spending_chart_title": "Expenses by category",
+    "onboarding_welcome_title_line_1": "Welcome to ",
+    "onboarding_welcome_title_line_2": "Budgets",
+    "onboarding_welcome_swipe_message": "Swipe to learn more about the app",
+    "onboarding_description_1": "Register your incomes.",
+    "onboarding_description_2": "Control your expenses.",
+    "onboarding_description_3": "Track your stats.",
+    "onboarding_description_4": "Get out of debt and achieve financial freedom.",
+    "onboarding_get_started_ready": "Now you are ready",
+    "onboarding_get_started_cta": "Get started",
+    "onboarding_skip": "Skip"
 }

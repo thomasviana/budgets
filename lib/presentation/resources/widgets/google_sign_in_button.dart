@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../colors.dart';
 
@@ -25,14 +26,14 @@ class GoogleSignInButton extends StatelessWidget {
         onPressed();
       },
       child: Row(
-        children: const [
+        children: [
           CircleAvatar(
             backgroundImage: AssetImage('assets/images/google_icon.png'),
             backgroundColor: AppColors.greyBackground,
           ),
           SizedBox(width: 8),
           Text(
-            'Iniciar sesión con Google',
+            AppLocalizations.of(context)!.widgets_google_sign_in_button,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: AppColors.textColor,

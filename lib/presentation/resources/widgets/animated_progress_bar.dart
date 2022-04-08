@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../resources.dart';
 
@@ -155,7 +156,7 @@ class _AProgressBar extends AnimatedWidget {
           padding: const EdgeInsets.only(left: 8.0),
           child: Text(
             isInfinite
-                ? 'No hay presupuesto '
+                ? AppLocalizations.of(context)!.widgets_progress_bar_no_budget
                 : '${(animation.value * widget.maxValue).toInt().toString()} ${widget.displayText!} ',
             softWrap: false,
             style: widget.displayTextStyle,

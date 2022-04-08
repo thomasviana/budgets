@@ -1,3 +1,4 @@
+import 'dart:core';
 import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
@@ -49,8 +50,11 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           slivers: [
             CupertinoSliverNavigationBar(
               stretch: true,
-              largeTitle:
-                  Text(state.isEditMode ? 'Editar cuenta' : 'Nueva cuenta'),
+              largeTitle: Text(
+                state.isEditMode
+                    ? AppLocalizations.of(context)!.accounts_edit_account
+                    : AppLocalizations.of(context)!.accounts_new_account,
+              ),
               previousPageTitle: AppLocalizations.of(context)!.misc_back,
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -101,7 +105,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         backgroundColor: AppColors.white,
         appBar: AppBar(
           title: Text(
-            state.isEditMode ? 'Editar cuenta' : 'Nueva cuenta',
+            state.isEditMode
+                ? AppLocalizations.of(context)!.accounts_edit_account
+                : AppLocalizations.of(context)!.accounts_new_account,
           ),
           actions: [
             if ([
@@ -217,7 +223,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                 ListTile(
                   leading: Icon(Icons.drive_file_rename_outline_outlined),
                   minLeadingWidth: 2,
-                  title: Text('Nombre'),
+                  title: Text(AppLocalizations.of(context)!.misc_name),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -228,7 +234,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                         ),
                       if (state.account!.name.isEmpty)
                         Text(
-                          'Requerido',
+                          AppLocalizations.of(context)!.misc_required,
                           style: TextStyle(color: AppColors.red),
                         ),
                       SizedBox(width: 10),
@@ -249,7 +255,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     ),
                   ),
                   minLeadingWidth: 2,
-                  title: Text('Tipo'),
+                  title: Text(AppLocalizations.of(context)!.misc_type),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -297,14 +303,14 @@ Future<void> _showEditOptions(
       actions: <CupertinoActionSheetAction>[
         if ((state.account!.imageUrl ?? '').isEmpty)
           CupertinoActionSheetAction(
-            child: const Text('Cambiar color'),
+            child: Text(AppLocalizations.of(context)!.global_change_color),
             onPressed: () {
               Navigator.pop(context);
               _pickColor(context, bloc, state);
             },
           ),
         CupertinoActionSheetAction(
-          child: const Text('Seleccionar logo'),
+          child: Text(AppLocalizations.of(context)!.accounts_select_logo),
           onPressed: () {
             Navigator.pop(context);
             _pickImage(context, bloc, state);
@@ -313,7 +319,7 @@ Future<void> _showEditOptions(
         if ((state.account!.imageUrl ?? '').isNotEmpty)
           CupertinoActionSheetAction(
             child: Text(
-              'Eliminar logo',
+              AppLocalizations.of(context)!.accounts_delete_logo,
               style: TextStyle(
                 color: AppColors.red,
               ),
@@ -325,8 +331,8 @@ Future<void> _showEditOptions(
           )
       ],
       cancelButton: CupertinoActionSheetAction(
-        child: const Text(
-          'Cancelar',
+        child: Text(
+          AppLocalizations.of(context)!.misc_cancel,
           style: TextStyle(color: AppColors.red),
         ),
         onPressed: () => Navigator.pop(context),
@@ -349,13 +355,13 @@ Future _pickColor(
         ),
       ),
       title: Text(
-        'Seleccionar color',
+        AppLocalizations.of(context)!.global_select_color,
         textAlign: TextAlign.center,
       ),
       actions: [
         TextButton(
           onPressed: Navigator.of(context).pop,
-          child: Text('Cerrar'),
+          child: Text(AppLocalizations.of(context)!.misc_close),
         )
       ],
       content: MaterialColorPicker(
@@ -384,13 +390,13 @@ Future _pickImage(
         ),
       ),
       title: Text(
-        'Seleccionar logo',
+        AppLocalizations.of(context)!.accounts_select_logo,
         textAlign: TextAlign.center,
       ),
       actions: [
         TextButton(
           onPressed: Navigator.of(context).pop,
-          child: Text('Cerrar'),
+          child: Text(AppLocalizations.of(context)!.misc_close),
         )
       ],
       content: SizedBox(
@@ -461,7 +467,7 @@ class _EditTypeBottomSheet extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
         ),
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -480,8 +486,8 @@ class _EditTypeBottomSheet extends StatelessWidget {
                       onPressed: () => AppNavigator.navigateBack(context),
                     ),
                   ),
-                  const Text(
-                    'Editar cuenta',
+                  Text(
+                    AppLocalizations.of(context)!.accounts_edit_account,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -499,7 +505,9 @@ class _EditTypeBottomSheet extends StatelessWidget {
                 bottom: 8,
               ),
               child: Text(
-                'TIPOS DE CUENTA',
+                AppLocalizations.of(context)!
+                    .accounts_account_types
+                    .toUpperCase(),
                 style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
                 textAlign: TextAlign.start,
               ),
@@ -508,7 +516,8 @@ class _EditTypeBottomSheet extends StatelessWidget {
             ListTile(
               leading: Icon(AppIcons.bank),
               minLeadingWidth: 2,
-              title: Text('Cuenta bancaria'),
+              title:
+                  Text(AppLocalizations.of(context)!.accounts_banking_account),
               trailing: state.account!.type == AccountType.bank
                   ? Icon(Icons.check, color: AppColors.primaryColor)
                   : null,
@@ -518,7 +527,7 @@ class _EditTypeBottomSheet extends StatelessWidget {
             ListTile(
               leading: Icon(AppIcons.cash),
               minLeadingWidth: 2,
-              title: Text('Efectivo'),
+              title: Text(AppLocalizations.of(context)!.accounts_cash),
               trailing: state.account!.type == AccountType.cash
                   ? Icon(Icons.check, color: AppColors.primaryColor)
                   : null,
@@ -528,7 +537,7 @@ class _EditTypeBottomSheet extends StatelessWidget {
             ListTile(
               leading: Icon(AppIcons.wallet),
               minLeadingWidth: 2,
-              title: Text('Billetera'),
+              title: Text(AppLocalizations.of(context)!.accounts_wallet),
               trailing: state.account!.type == AccountType.wallet
                   ? Icon(Icons.check, color: AppColors.primaryColor)
                   : null,

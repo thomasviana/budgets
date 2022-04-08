@@ -63,7 +63,9 @@ class CategoriesContent extends StatelessWidget {
                   bottom: 8,
                 ),
                 child: Text(
-                  'CATEGORIAS DE EGRESOS',
+                  AppLocalizations.of(context)!
+                      .categories_expense_categories
+                      .toUpperCase(),
                   style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
                   textAlign: TextAlign.start,
                 ),
@@ -104,7 +106,9 @@ class CategoriesContent extends StatelessWidget {
                   bottom: 8,
                 ),
                 child: Text(
-                  'CATEGORIAS DE INGRESOS',
+                  AppLocalizations.of(context)!
+                      .categories_income_categories
+                      .toUpperCase(),
                   style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
                   textAlign: TextAlign.start,
                 ),

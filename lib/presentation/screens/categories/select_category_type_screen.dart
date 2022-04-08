@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../core/categories/domain.dart';
 import '../../resources/resources.dart';
@@ -16,7 +17,7 @@ class SelectCategoryTypeScreen extends StatelessWidget {
   Widget _buildState(BuildContext context, EditCategoryScreenState state) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tipo'),
+        title: Text(AppLocalizations.of(context)!.misc_type),
       ),
       body: ListView(
         shrinkWrap: true,
@@ -29,7 +30,9 @@ class SelectCategoryTypeScreen extends StatelessWidget {
               bottom: 8,
             ),
             child: Text(
-              'TIPOS DE CATEGORÍA',
+              AppLocalizations.of(context)!
+                  .categories_category_types
+                  .toUpperCase(),
               style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
               textAlign: TextAlign.start,
             ),
@@ -41,7 +44,7 @@ class SelectCategoryTypeScreen extends StatelessWidget {
             ),
             minLeadingWidth: 2,
             title: Text(
-              'Categoría de egreso',
+              AppLocalizations.of(context)!.categories_type_expense_category,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             trailing: state.category!.type == CategoryType.expense
@@ -62,7 +65,7 @@ class SelectCategoryTypeScreen extends StatelessWidget {
             ),
             minLeadingWidth: 2,
             title: Text(
-              'Categoría de ingreso',
+              AppLocalizations.of(context)!.categories_type_income_category,
               style: Theme.of(context).textTheme.bodyText1,
             ),
             trailing: state.category!.type == CategoryType.income

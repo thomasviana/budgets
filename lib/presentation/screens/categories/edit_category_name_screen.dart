@@ -41,7 +41,7 @@ class _EditCategoryNameScreenState extends State<EditCategoryNameScreen> {
       return CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
         navigationBar: CupertinoNavigationBar(
-          middle: Text('Nombre'),
+          middle: Text(AppLocalizations.of(context)!.misc_name),
           previousPageTitle: AppLocalizations.of(context)!.misc_back,
           trailing: GestureDetector(
             child: Icon(
@@ -67,7 +67,7 @@ class _EditCategoryNameScreenState extends State<EditCategoryNameScreen> {
       return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
-          title: Text('Nombre'),
+          title: Text(AppLocalizations.of(context)!.misc_name),
           actions: [
             IconButton(
               icon: Icon(
@@ -120,9 +120,7 @@ class EditCategoryNameContent extends StatelessWidget {
           decoration: InputDecoration(
             alignLabelWithHint: true,
             label: Center(
-              child: Text(
-                'Nuevo nombre',
-              ),
+              child: Text(AppLocalizations.of(context)!.global_new_name),
             ),
             labelStyle: TextStyle(
               color: AppColors.black,

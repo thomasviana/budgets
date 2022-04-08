@@ -51,7 +51,9 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
             CupertinoSliverNavigationBar(
               stretch: true,
               largeTitle: Text(
-                state.isEditMode ? 'Editar categoria' : 'Crear categoría',
+                state.isEditMode
+                    ? AppLocalizations.of(context)!.categories_edit_category
+                    : AppLocalizations.of(context)!.categories_new_category,
               ),
               previousPageTitle: AppLocalizations.of(context)!.misc_back,
               trailing: GestureDetector(
@@ -79,7 +81,9 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
         backgroundColor: AppColors.white,
         appBar: AppBar(
           title: Text(
-            state.isEditMode ? 'Editar categoria' : 'Crear categoría',
+            state.isEditMode
+                ? AppLocalizations.of(context)!.categories_edit_category
+                : AppLocalizations.of(context)!.categories_new_category,
           ),
           actions: [
             if (!state.isDefaultCategory)
@@ -195,7 +199,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                           ),
                         if (state.category!.name.isEmpty)
                           Text(
-                            'Requerido',
+                            AppLocalizations.of(context)!.misc_required,
                             style: TextStyle(color: AppColors.red),
                           ),
                         SizedBox(width: 10),
@@ -211,14 +215,16 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                     ListTile(
                       leading: Icon(Icons.compare_outlined),
                       minLeadingWidth: 2,
-                      title: Text('Tipo'),
+                      title: Text(AppLocalizations.of(context)!.misc_type),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                             state.category!.type == CategoryType.income
-                                ? 'Categoria de Ingreso'
-                                : 'Categoria de Egreso',
+                                ? AppLocalizations.of(context)!
+                                    .categories_type_income_category
+                                : AppLocalizations.of(context)!
+                                    .categories_type_expense_category,
                             style: TextStyle(color: AppColors.greySecondary),
                           ),
                           SizedBox(width: 10),
@@ -243,7 +249,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                 bottom: 8,
               ),
               child: Text(
-                'SUBCATEGORIES',
+                AppLocalizations.of(context)!.misc_subcategories.toUpperCase(),
                 style: TextStyle(fontWeight: FontWeight.w200, fontSize: 12),
                 textAlign: TextAlign.start,
               ),
@@ -290,7 +296,9 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
             Container(
               color: AppColors.white,
               child: ListTile(
-                title: Text('Añadir subcategoria'),
+                title: Text(
+                  AppLocalizations.of(context)!.categories_add_subcategory,
+                ),
                 leading: CircleAvatar(
                   maxRadius: 20,
                   child: Icon(
@@ -322,14 +330,14 @@ Future<void> _showEditOptions(
     builder: (BuildContext context) => CupertinoActionSheet(
       actions: <CupertinoActionSheetAction>[
         CupertinoActionSheetAction(
-          child: const Text('Cambiar icono'),
+          child: Text(AppLocalizations.of(context)!.global_change_icon),
           onPressed: () {
             Navigator.pop(context);
             _pickIcon(context, bloc);
           },
         ),
         CupertinoActionSheetAction(
-          child: const Text('Cambiar color'),
+          child: Text(AppLocalizations.of(context)!.global_change_color),
           onPressed: () {
             Navigator.pop(context);
             _pickColor(context, bloc, state);
@@ -337,8 +345,8 @@ Future<void> _showEditOptions(
         )
       ],
       cancelButton: CupertinoActionSheetAction(
-        child: const Text(
-          'Cancelar',
+        child: Text(
+          AppLocalizations.of(context)!.misc_cancel,
           style: TextStyle(color: AppColors.red),
         ),
         onPressed: () {
@@ -363,7 +371,7 @@ Future _pickColor(
         ),
       ),
       title: Text(
-        'Seleccionar color',
+        AppLocalizations.of(context)!.global_select_color,
         textAlign: TextAlign.center,
       ),
       content: MaterialColorPicker(
@@ -386,7 +394,7 @@ Future<void> _pickIcon(
   final icon = await FlutterIconPicker.showIconPicker(
     context,
     title: Text(
-      'Selecionar icono',
+      AppLocalizations.of(context)!.global_select_icon,
       textAlign: TextAlign.center,
     ),
     iconPickerShape: RoundedRectangleBorder(

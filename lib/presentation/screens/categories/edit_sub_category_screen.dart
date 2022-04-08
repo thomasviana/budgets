@@ -44,7 +44,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
             CupertinoSliverNavigationBar(
               stretch: true,
               largeTitle: Text(
-                'Subcategoría',
+                AppLocalizations.of(context)!.misc_subcategory,
               ),
               previousPageTitle: AppLocalizations.of(context)!.misc_back,
               trailing: Row(
@@ -89,7 +89,7 @@ class _EditSubCategoryScreenState extends State<EditSubCategoryScreen> {
         backgroundColor: AppColors.white,
         appBar: AppBar(
           title: Text(
-            'Subcategoría',
+            AppLocalizations.of(context)!.misc_subcategory,
           ),
           actions: [
             IconButton(
@@ -207,7 +207,7 @@ class EditSubCategoryContent extends StatelessWidget {
                       ListTile(
                         leading: Icon(Icons.drive_file_rename_outline_outlined),
                         minLeadingWidth: 2,
-                        title: Text('Nombre'),
+                        title: Text(AppLocalizations.of(context)!.misc_name),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -219,7 +219,7 @@ class EditSubCategoryContent extends StatelessWidget {
                               ),
                             if (state.subCategory!.name.isEmpty)
                               Text(
-                                'Requerido',
+                                AppLocalizations.of(context)!.misc_required,
                                 style: TextStyle(color: AppColors.red),
                               ),
                             SizedBox(width: 10),
@@ -256,7 +256,7 @@ Future<void> _showEditOptions(
     builder: (BuildContext context) => CupertinoActionSheet(
       actions: <CupertinoActionSheetAction>[
         CupertinoActionSheetAction(
-          child: const Text('Cambiar icono'),
+          child: Text(AppLocalizations.of(context)!.global_change_icon),
           onPressed: () {
             Navigator.pop(context);
             _pickIcon(
@@ -266,7 +266,7 @@ Future<void> _showEditOptions(
           },
         ),
         CupertinoActionSheetAction(
-          child: const Text('Cambiar color'),
+          child: Text(AppLocalizations.of(context)!.global_change_color),
           onPressed: () {
             Navigator.pop(context);
             _pickColor(
@@ -278,8 +278,8 @@ Future<void> _showEditOptions(
         )
       ],
       cancelButton: CupertinoActionSheetAction(
-        child: const Text(
-          'Cancelar',
+        child: Text(
+          AppLocalizations.of(context)!.misc_cancel,
           style: TextStyle(color: AppColors.red),
         ),
         onPressed: () {
@@ -294,10 +294,7 @@ Future _pickColor(
   BuildContext context,
   EditSubCategoryScreenState state, {
   required Function(int color) onColorUpdated,
-}
-
-    // EditSubCategoryScreenBloc bloc,
-    ) {
+}) {
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -307,7 +304,7 @@ Future _pickColor(
         ),
       ),
       title: Text(
-        'Seleccionar color',
+        AppLocalizations.of(context)!.global_select_color,
         textAlign: TextAlign.center,
       ),
       content: MaterialColorPicker(
@@ -315,7 +312,6 @@ Future _pickColor(
         selectedColor: Color(state.subCategory!.color),
         onMainColorChange: (colorSwatch) {
           onColorUpdated(colorSwatch!.value);
-          // bloc.add(ColorUpdated(colorSwatch!.value));
           Navigator.of(context).pop();
         },
       ),
@@ -326,14 +322,12 @@ Future _pickColor(
 Future<void> _pickIcon(
   BuildContext context, {
   required Function(int icon) onIconUpdated,
-}
-    // EditSubCategoryScreenBloc bloc,
-    ) async {
+}) async {
   final materialIcons = AppIcons.materialIcons();
   final icon = await FlutterIconPicker.showIconPicker(
     context,
     title: Text(
-      'Selecionar icono',
+      AppLocalizations.of(context)!.global_select_icon,
       textAlign: TextAlign.center,
     ),
     iconPickerShape: RoundedRectangleBorder(
@@ -341,8 +335,8 @@ Future<void> _pickIcon(
         Radius.circular(16),
       ),
     ),
-    searchHintText: 'Buscar',
-    closeChild: Text('Cerrar'),
+    searchHintText: AppLocalizations.of(context)!.misc_search,
+    closeChild: Text(AppLocalizations.of(context)!.misc_close),
     iconSize: 30,
     customIconPack: materialIcons,
     iconColor: AppColors.black,
@@ -351,6 +345,5 @@ Future<void> _pickIcon(
 
   if (icon != null) {
     onIconUpdated(icon.codePoint);
-    // bloc.add(IconUpdated(icon.codePoint));
   }
 }

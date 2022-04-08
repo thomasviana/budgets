@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'components/budgets_info_widget.dart';
 import 'components/home_app_bar.dart';
 import 'components/home_header.dart';
-import 'components/last_records_widget.dart';
+import 'components/last_transactions_widget.dart';
 import 'components/spending_chart_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<Widget> homeWidgets = [
-    LastRecordsWidget(),
+    LastTransactionsWidget(),
     BudgetsInfoWidget(),
     SpendingChart(),
   ];

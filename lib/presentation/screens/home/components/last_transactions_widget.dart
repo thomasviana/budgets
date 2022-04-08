@@ -12,7 +12,7 @@ import '../../../routes/app_navigator.dart';
 import '../../../utils/observer.dart';
 import '../../main/main_app_cubit/main_screen_cubit.dart';
 
-class LastRecordsWidget extends StatelessWidget {
+class LastTransactionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Budget _getBudget(TransactionBudgetId? id) {
@@ -24,8 +24,9 @@ class LastRecordsWidget extends StatelessWidget {
     }
 
     return WidgetCard(
-      title: 'Ultimas transacciones',
-      actionTitle: 'Ver todas',
+      title: AppLocalizations.of(context)!.home_last_transactions_title,
+      actionTitle:
+          AppLocalizations.of(context)!.home_last_transactions_view_all,
       onActionPressed: () =>
           context.read<MainScreenCubit>().onSelectedPageIndexChanged(2),
       content: Observer<TransactionsBloc, TransactionsState>(
@@ -63,7 +64,7 @@ class LastRecordsWidget extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'No hay transacciones en $dateString',
+              '${AppLocalizations.of(context)!.global_no_transactions_message} $dateString',
               style: TextStyle(color: AppColors.greyDisabled),
             ),
           );

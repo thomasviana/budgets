@@ -16,8 +16,8 @@ class _SpendingChartState extends State<SpendingChart> {
   @override
   Widget build(BuildContext context) {
     return WidgetCard(
-      title: 'Gastos por categoría',
-      actionTitle: 'Ver mas',
+      title: AppLocalizations.of(context)!.home_spending_chart_title,
+      actionTitle: AppLocalizations.of(context)!.global_view_more,
       onActionPressed: () => AppNavigator.navigateToExpensesPage(context),
       content: Observer<StatsBloc, StatsState>(
         onSuccess: (context, state) {
@@ -34,7 +34,7 @@ class _SpendingChartState extends State<SpendingChart> {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'No hay transacciones en $dateString',
+              '${AppLocalizations.of(context)!.global_no_transactions_message} $dateString',
               style: TextStyle(color: AppColors.greyDisabled),
             ),
           );

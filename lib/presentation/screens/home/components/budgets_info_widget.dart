@@ -14,8 +14,8 @@ class BudgetsInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WidgetCard(
-      title: 'Presupuestos',
-      actionTitle: 'Ver mas',
+      title: AppLocalizations.of(context)!.misc_budgets,
+      actionTitle: AppLocalizations.of(context)!.global_view_more,
       onActionPressed: () => AppNavigator.navigateToBudgetsStatsPage(context),
       content: Column(
         children: [
@@ -28,14 +28,16 @@ class BudgetsInfoWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'PRESUPUESTO',
+                        AppLocalizations.of(context)!.misc_budget.toUpperCase(),
                         style: Theme.of(context)
                             .textTheme
                             .caption!
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'GASTADO / PRESUPUESTADO',
+                        AppLocalizations.of(context)!
+                            .butgets_spent_vs_budgeted
+                            .toUpperCase(),
                         style: Theme.of(context)
                             .textTheme
                             .caption!
@@ -106,7 +108,7 @@ class BudgetsInfoWidget extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'No hay transacciones en $dateString',
+                  '${AppLocalizations.of(context)!.global_no_transactions_message} $dateString',
                   style: TextStyle(color: AppColors.greyDisabled),
                 ),
               );

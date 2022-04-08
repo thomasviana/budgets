@@ -162,7 +162,7 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                   child: Column(
                     children: [
                       Text(
-                        'Balance',
+                        AppLocalizations.of(context)!.misc_balance,
                         style: TextStyle(
                           fontSize: 12,
                           color:
@@ -244,13 +244,17 @@ class _AnimatedHeaderState extends State<AnimatedHeader>
                     children: [
                       MiniCard(
                         icon: Icons.arrow_downward_rounded,
-                        title: 'INGRESOS',
+                        title: AppLocalizations.of(context)!
+                            .misc_incomes
+                            .toUpperCase(),
                         amount: state.incomes,
                         opacity: widget.opacity,
                       ),
                       MiniCard(
                         icon: Icons.arrow_upward_rounded,
-                        title: 'EGRESOS',
+                        title: AppLocalizations.of(context)!
+                            .misc_expenses
+                            .toUpperCase(),
                         amount: state.expenses,
                         opacity: widget.opacity,
                       ),

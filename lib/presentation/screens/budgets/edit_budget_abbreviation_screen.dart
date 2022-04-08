@@ -43,7 +43,7 @@ class _EditBudgetAbbreviationScreenState
       return CupertinoPageScaffold(
         backgroundColor: AppColors.greyBackground,
         navigationBar: CupertinoNavigationBar(
-          middle: Text('Abreviatura'),
+          middle: Text(AppLocalizations.of(context)!.butgets_abbreviation),
           previousPageTitle: AppLocalizations.of(context)!.misc_back,
           trailing: GestureDetector(
             child: Icon(
@@ -69,7 +69,7 @@ class _EditBudgetAbbreviationScreenState
       return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
-          title: Text('Abreviatura'),
+          title: Text(AppLocalizations.of(context)!.butgets_abbreviation),
           actions: [
             IconButton(
               icon: Icon(
@@ -126,7 +126,7 @@ class EditCategoryNameContent extends StatelessWidget {
               alignLabelWithHint: true,
               label: Center(
                 child: Text(
-                  'Nueva abreviatura',
+                  AppLocalizations.of(context)!.butgets_new_abbreviation,
                 ),
               ),
               labelStyle: TextStyle(

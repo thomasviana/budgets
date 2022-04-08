@@ -50,7 +50,9 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
             CupertinoSliverNavigationBar(
               stretch: true,
               largeTitle: Text(
-                state.isEditMode ? 'Editar presupuesto' : 'Nuevo presupuesto',
+                state.isEditMode
+                    ? AppLocalizations.of(context)!.butgets_edit_budget
+                    : AppLocalizations.of(context)!.butgets_new_budget,
               ),
               previousPageTitle: AppLocalizations.of(context)!.misc_back,
               trailing: Row(
@@ -102,7 +104,9 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
         backgroundColor: AppColors.white,
         appBar: AppBar(
           title: Text(
-            state.isEditMode ? 'Editar presupuesto' : 'Nuevo presupuesto',
+            state.isEditMode
+                ? AppLocalizations.of(context)!.butgets_edit_budget
+                : AppLocalizations.of(context)!.butgets_new_budget,
           ),
           actions: [
             if ([
@@ -215,7 +219,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                 ListTile(
                   leading: Icon(Icons.drive_file_rename_outline_outlined),
                   minLeadingWidth: 2,
-                  title: Text('Nombre'),
+                  title: Text(AppLocalizations.of(context)!.misc_name),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -226,7 +230,7 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                         ),
                       if (state.budget!.name.isEmpty)
                         Text(
-                          'Requerido',
+                          AppLocalizations.of(context)!.misc_required,
                           style: TextStyle(color: AppColors.red),
                         ),
                       SizedBox(width: 10),
@@ -242,7 +246,8 @@ class _EditBudgetScreenState extends State<EditBudgetScreen> {
                 ListTile(
                   leading: Icon(Icons.inbox),
                   minLeadingWidth: 2,
-                  title: Text('Abreviatura'),
+                  title:
+                      Text(AppLocalizations.of(context)!.butgets_abbreviation),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -279,7 +284,7 @@ Future<void> _showEditOptions(
     builder: (BuildContext context) => CupertinoActionSheet(
       actions: <CupertinoActionSheetAction>[
         CupertinoActionSheetAction(
-          child: const Text('Cambiar color'),
+          child: Text(AppLocalizations.of(context)!.global_change_color),
           onPressed: () {
             Navigator.pop(context);
             _pickColor(context, bloc, state);
@@ -287,8 +292,8 @@ Future<void> _showEditOptions(
         ),
       ],
       cancelButton: CupertinoActionSheetAction(
-        child: const Text(
-          'Cancelar',
+        child: Text(
+          AppLocalizations.of(context)!.misc_cancel,
           style: TextStyle(color: AppColors.red),
         ),
         onPressed: () {
@@ -313,13 +318,13 @@ Future _pickColor(
         ),
       ),
       title: Text(
-        'Seleccionar color',
+        AppLocalizations.of(context)!.global_select_color,
         textAlign: TextAlign.center,
       ),
       actions: [
         TextButton(
           onPressed: Navigator.of(context).pop,
-          child: Text('Cerrar'),
+          child: Text(AppLocalizations.of(context)!.misc_close),
         )
       ],
       content: MaterialColorPicker(

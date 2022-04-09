@@ -16,9 +16,6 @@ class SignIn {
   Future<Either<AuthFailure, Unit>> withGoogle() =>
       _authService.signInWithGoogle();
 
-  Future<Either<AuthFailure, Unit>> withFacebook() =>
-      _authService.signInWithFacebook();
-
   Future<Either<AuthFailure, Unit>> withEmailAndPassword(
     EmailAddress email,
     Password password,

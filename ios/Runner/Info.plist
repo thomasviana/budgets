@@ -57,12 +57,7 @@
 	<dict>
     	<key>NSAllowsLocalNetworking</key>
     	<true/>
-	</dict>
-	<key>FacebookAppID</key>
-	<string>{402621874660313}</string>
-	<key>FacebookDisplayName</key>
-	<string>{Budgets}</string>
-	
+	</dict>	
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

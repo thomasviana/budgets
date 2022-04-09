@@ -76,22 +76,6 @@ class AuthScreenCubit extends Cubit<AuthScreenState> {
     );
   }
 
-  Future<void> onSignInWithFacebook() async {
-    emit(
-      state.copyWith(
-        isSubmitting: true,
-        authFailureOrSuccessOption: none(),
-      ),
-    );
-    final failureOrSuccess = await signIn.withFacebook();
-    emit(
-      state.copyWith(
-        isSubmitting: false,
-        authFailureOrSuccessOption: some(failureOrSuccess),
-      ),
-    );
-  }
-
   Future<void> onCreateUserWithEmailAndPassword() async {
     final isEmailValid = state.emailAddress.isValid;
     final isPasswordSecure = state.password.isSecure;

@@ -7,7 +7,6 @@ import 'value_objects.dart';
 abstract class AuthService {
   Future<Either<AuthFailure, Unit>> signInAnonymously();
   Future<Either<AuthFailure, Unit>> signInWithGoogle();
-  Future<Either<AuthFailure, Unit>> signInWithFacebook();
   Future<Either<AuthFailure, Unit>> createUserWithEmailAndPassword({
     required EmailAddress emailAddress,
     required Password password,

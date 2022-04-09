@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,13 +10,11 @@ import 'user_firebase_prov.dart';
 class AuthServiceImpl implements AuthService {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
-  // final FacebookAuth _facebookAuth;
   final UserFirebaseProv _userFirebaseProvider;
 
   AuthServiceImpl(
     this._firebaseAuth,
     this._googleSignIn,
-    // this._facebookAuth,
     this._userFirebaseProvider,
   );
 
@@ -46,25 +43,6 @@ class AuthServiceImpl implements AuthService {
       return _firebaseAuth
           .signInWithCredential(authCredential)
           .then((value) => right(unit));
-    } on FirebaseAuthException catch (_) {
-      return left(const AuthFailure.serverError());
-    }
-  }
-
-  @override
-  Future<Either<AuthFailure, Unit>> signInWithFacebook() async {
-    try {
-      final loginResult = await FacebookAuth.instance.login();
-      final accessToken = loginResult.accessToken;
-      if (accessToken != null) {
-        final facebookAuthCredential =
-            FacebookAuthProvider.credential(accessToken.token);
-        return _firebaseAuth
-            .signInWithCredential(facebookAuthCredential)
-            .then((value) => right(unit));
-      } else {
-        return left(const AuthFailure.serverError());
-      }
     } on FirebaseAuthException catch (_) {
       return left(const AuthFailure.serverError());
     }
